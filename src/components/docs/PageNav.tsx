@@ -15,6 +15,7 @@ function NavCard({
   direction: "prev" | "next";
 }) {
   const isPrev = direction === "prev";
+
   return (
     <Link
       to={page.href}

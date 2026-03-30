@@ -39,6 +39,21 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
     }
   }, [open]);
 
+  
+  useEffect(() => {
+    if (!open) return;
+
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleGlobalKeyDown);
+    return () => window.removeEventListener("keydown", handleGlobalKeyDown);
+  }, [open, onClose]);
+
   useEffect(() => {
     setActiveIndex(0);
   }, [query]);
@@ -100,9 +115,13 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
               <X size={14} />
             </button>
           )}
-          <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-docs-bg-surface-alt border border-docs-border-default text-docs-text-faint">
+          <button
+            type="button"
+            onClick={onClose}
+            className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-docs-bg-surface-alt border border-docs-border-default text-docs-text-faint hover:text-docs-text-muted transition-colors cursor-pointer"
+          >
             Esc
-          </kbd>
+          </button>
         </div>
 
         {/* Results */}
@@ -182,9 +201,13 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
             select
           </span>
           <span className="flex items-center gap-1">
-            <kbd className="border border-docs-border-default rounded px-1">
+            <button
+              type="button"
+              onClick={onClose}
+              className="border border-docs-border-default rounded px-1 hover:text-docs-text-muted transition-colors cursor-pointer"
+            >
               Esc
-            </kbd>{" "}
+            </button>{" "}
             close
           </span>
         </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Pencil } from "lucide-react";
 
 export interface TocItem {
@@ -17,6 +17,7 @@ export default function TableOfContents({
   editHref,
 }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>("");
+  const activeRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     if (items.length === 0) return;
@@ -45,60 +46,65 @@ export default function TableOfContents({
     return () => observer.disconnect();
   }, [items]);
 
+  useEffect(() => {
+    if (activeRef.current) {
+      activeRef.current.scrollIntoView({ block: "nearest" });
+    }
+  }, [activeId]);
+
   if (items.length === 0) return null;
 
   return (
     <aside
-      className="w-[220px] shrink-0 hidden xl:block"
+      className="hidden xl:block shrink-0 w-[220px] px-6 py-12 sticky top-16 self-start max-h-[calc(100vh-64px)] overflow-y-auto thin-scrollbar"
       aria-label="Table of contents"
     >
-      <div className="sticky top-[80px]">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.05em] text-docs-text-faint mb-3">
-          On this page
-        </p>
+      <p className="text-[11px] font-semibold uppercase tracking-[0.05em] text-docs-text-faint mb-3">
+        On this page
+      </p>
 
-        <ul className="space-y-0.5">
-          {items.map((item) => {
-            const isActive = activeId === item.id;
-            return (
-              <li key={item.id}>
-                <a
-                  href={`#${item.id}`}
-                  className={`block py-1.5 text-[13px] leading-snug transition-colors border-l-2 ${
-                    item.level === 3 ? "pl-4" : "pl-2"
-                  } ${
-                    isActive
-                      ? "text-brand-primary border-brand-primary font-medium"
-                      : "text-docs-text-muted border-transparent hover:text-docs-text-primary"
-                  }`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document
-                      .getElementById(item.id)
-                      ?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                >
-                  {item.title}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
+      <ul className="space-y-0.5">
+        {items.map((item) => {
+          const isActive = activeId === item.id;
+          return (
+            <li key={item.id}>
+              <a
+                href={`#${item.id}`}
+                ref={isActive ? activeRef : undefined}
+                className={`block py-1.5 text-[13px] leading-snug transition-colors border-l-2 ${
+                  item.level === 3 ? "pl-4" : "pl-2"
+                } ${
+                  isActive
+                    ? "text-brand-primary border-brand-primary font-medium"
+                    : "text-docs-text-muted border-transparent hover:text-docs-text-primary"
+                }`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document
+                    .getElementById(item.id)
+                    ?.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                {item.title}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
 
-        {editHref && (
-          <div className="mt-6 pt-4 border-t border-docs-border-subtle">
-            <a
-              href={editHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-[13px] text-docs-text-faint hover:text-docs-text-muted transition-colors"
-            >
-              <Pencil size={12} />
-              Edit this page
-            </a>
-          </div>
-        )}
-      </div>
+      {editHref && (
+        <div className="mt-6 pt-4 border-t border-docs-border-subtle">
+          <a
+            href={editHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-[13px] text-docs-text-faint hover:text-docs-text-muted transition-colors"
+          >
+            <Pencil size={12} />
+            Edit this page
+          </a>
+        </div>
+      )}
     </aside>
   );
 }
