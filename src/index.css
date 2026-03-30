@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* ── Backgrounds ── */
+    --bg-page: 0 0% 100%;
+    --bg-surface: 210 40% 98%;
+    --bg-surface-alt: 214 32% 96%;
+    --bg-sidebar: 210 20% 99%;
+    --bg-code: 214 32% 97%;
+    --bg-code-header: 214 27% 94%;
+    --bg-hover: 214 32% 96%;
+    --bg-active: 217 100% 61% / 0.06;
+
+    /* ── Brand ── */
+    --brand-primary: 217 100% 61%;
+    --brand-primary-hover: 217 89% 56%;
+    --brand-primary-light: 217 100% 61% / 0.08;
+    --brand-primary-ring: 217 100% 61% / 0.25;
+    --brand-steel: 213 28% 57%;
+    --brand-steel-light: 213 28% 57% / 0.1;
+
+    /* ── Text ── */
+    --text-primary: 222 84% 5%;
+    --text-secondary: 215 28% 27%;
+    --text-muted: 215 16% 47%;
+    --text-faint: 215 20% 65%;
+    --text-on-brand: 0 0% 100%;
+
+    /* ── Borders ── */
+    --border-default: 214 32% 91%;
+    --border-subtle: 214 32% 95%;
+    --border-strong: 215 25% 80%;
+
+    /* ── Semantic — Callouts ── */
+    --info-bg: 217 100% 61% / 0.06;
+    --info-border: 217 100% 61%;
+    --info-text: 224 76% 39%;
+
+    --warning-bg: 38 92% 50% / 0.06;
+    --warning-border: 38 92% 50%;
+    --warning-text: 32 81% 29%;
+
+    --tip-bg: 142 71% 45% / 0.06;
+    --tip-border: 142 71% 45%;
+    --tip-text: 142 72% 29%;
+
+    --danger-bg: 0 84% 60% / 0.06;
+    --danger-border: 0 84% 60%;
+    --danger-text: 0 74% 42%;
+
+    /* ── Shadows ── */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+    /* ── Layout ── */
+    --header-height: 64px;
+    --sidebar-width: 260px;
+    --content-max-width: 720px;
+    --toc-width: 220px;
+
+    /* ── Radius ── */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 9999px;
+
+    /* ── shadcn tokens (mapped to brand) ── */
+    --background: var(--bg-page);
+    --foreground: var(--text-primary);
+
+    --card: var(--bg-page);
+    --card-foreground: var(--text-primary);
+
+    --popover: var(--bg-page);
+    --popover-foreground: var(--text-primary);
+
+    --primary: var(--brand-primary);
+    --primary-foreground: var(--text-on-brand);
+
+    --secondary: var(--bg-surface);
+    --secondary-foreground: var(--text-primary);
+
+    --muted: var(--bg-surface-alt);
+    --muted-foreground: var(--text-muted);
+
+    --accent: var(--bg-hover);
+    --accent-foreground: var(--text-primary);
+
+    --destructive: var(--danger-border);
+    --destructive-foreground: var(--text-on-brand);
+
+    --border: var(--border-default);
+    --input: var(--border-default);
+    --ring: var(--brand-primary);
+
+    --radius: var(--radius-md);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    font-family:
+      "Inter",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: hsl(var(--bg-page));
+    color: hsl(var(--text-secondary));
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  code,
+  pre,
+  kbd,
+  samp {
+    font-family:
+      "JetBrains Mono", "SF Mono", "Fira Code", ui-monospace, monospace;
+  }
+
+  /* Thin scrollbar for sidebar */
+  .thin-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .thin-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .thin-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--border-strong));
+    border-radius: 99px;
+  }
+
+  /* Skip to content */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .skip-link:focus {
+    position: static;
+    width: auto;
+    height: auto;
+  }
+}
