@@ -39,7 +39,6 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
     }
   }, [open]);
 
-  
   useEffect(() => {
     if (!open) return;
 
