@@ -43,9 +43,7 @@ export default function DocsLayout({
 
           {/* TOC — only on xl */}
           {toc.length > 0 && (
-            <div className="hidden xl:block shrink-0 w-[220px] px-6 py-12">
-              <TableOfContents items={toc} editHref={editHref} />
-            </div>
+            <TableOfContents items={toc} editHref={editHref} />
           )}
         </div>
       </div>

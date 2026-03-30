@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ScrollToTop from "./components/layout/ScrollToTop";
 import Index from "./pages/Index";
 import DocsHub from "./pages/docs/DocsHub";
 import SectionPage from "./pages/docs/SectionPage";
@@ -40,6 +41,7 @@ import McpServer from "./pages/docs/McpServer";
 
 const App = () => (
   <BrowserRouter>
+    <ScrollToTop />
     <Routes>
       <Route path="/" element={<Index />} />
       <Route path="/docs" element={<DocsHub />} />
