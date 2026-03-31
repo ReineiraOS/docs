@@ -44,7 +44,7 @@ export default function ContentTabs({
       </div>
 
       {/* Tab content */}
-      <div className="p-5 bg-white text-[14px] text-docs-text-secondary leading-relaxed [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+      <div className="p-5 bg-docs-bg-page text-[14px] text-docs-text-secondary leading-relaxed [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
         {tabs[active]?.props.children}
       </div>
     </div>

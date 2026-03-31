@@ -27,9 +27,9 @@ export default function LinkCard({ items, columns = 2 }: LinkCardProps) {
         const isExternal = item.external || item.href.startsWith("http");
 
         const inner = (
-          <div className="group flex items-start gap-3 border border-docs-border-default rounded-lg p-4 bg-white hover:border-brand-primary hover:shadow-sm transition-all duration-200">
+          <div className="group flex items-start gap-3 border border-docs-border-default rounded-lg p-4 bg-docs-bg-page hover:border-brand-primary hover:shadow-sm transition-all duration-200">
             {Icon && (
-              <div className="shrink-0 mt-0.5 w-8 h-8 rounded-md bg-[hsl(217_100%_61%_/_0.08)] flex items-center justify-center">
+              <div className="shrink-0 mt-0.5 w-8 h-8 rounded-md bg-brand-primary-light flex items-center justify-center">
                 <Icon size={16} className="text-brand-primary" />
               </div>
             )}
@@ -40,7 +40,7 @@ export default function LinkCard({ items, columns = 2 }: LinkCardProps) {
                   {item.title}
                 </span>
                 {item.badge && (
-                  <span className="text-[10px] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded-full bg-[hsl(217_100%_61%_/_0.08)] text-brand-primary">
+                  <span className="text-[10px] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded-full bg-brand-primary-light text-brand-primary">
                     {item.badge}
                   </span>
                 )}

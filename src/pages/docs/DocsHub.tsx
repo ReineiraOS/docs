@@ -33,7 +33,7 @@ export default function DocsHub() {
       {/* Hero */}
       <div>
         <div className="mb-3">
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-[hsl(217_100%_61%_/_0.08)] text-brand-primary border border-[hsl(217_100%_61%_/_0.2)]">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-brand-primary-light text-brand-primary border border-brand-primary-ring">
             v0.1 — Protocol Documentation
           </span>
         </div>
@@ -58,7 +58,7 @@ export default function DocsHub() {
               <Link
                 key={section.id}
                 to={`/docs/${section.id}`}
-                className="group flex flex-col bg-white border border-docs-border-default rounded-xl p-6 transition-colors duration-200 hover:border-brand-primary"
+                className="group flex flex-col bg-docs-bg-page border border-docs-border-default rounded-xl p-6 transition-colors duration-200 hover:border-brand-primary"
               >
                 <div className={`mb-3 ${colorClass}`}>
                   <IconComp size={26} strokeWidth={1.8} />

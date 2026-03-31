@@ -30,7 +30,7 @@ export default function ArchitectureDiagram({
             <div key={i} className="flex items-start">
               {/* Step box */}
               <div className="flex flex-col items-center">
-                <div className="inline-flex items-center justify-center rounded-lg border border-docs-border-default bg-white px-5 py-3 shadow-sm min-w-[120px] text-center">
+                <div className="inline-flex items-center justify-center rounded-lg border border-docs-border-default bg-docs-bg-page px-5 py-3 shadow-sm min-w-[120px] text-center">
                   <span className="text-[14px] font-semibold text-docs-text-primary leading-tight">
                     {step.label}
                   </span>

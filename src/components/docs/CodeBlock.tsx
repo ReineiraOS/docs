@@ -108,7 +108,7 @@ function CodeContent({
             <tr
               key={i}
               className={
-                line.highlighted ? "bg-[hsl(217_100%_61%_/_0.06)]" : ""
+                line.highlighted ? "bg-brand-primary-light" : ""
               }
             >
               {showLineNumbers && (
@@ -119,7 +119,7 @@ function CodeContent({
                   {i + 1}
                 </td>
               )}
-              <td className="pl-4 pr-4 whitespace-pre font-mono">
+              <td className="pl-4 pr-4 whitespace-pre font-mono text-docs-text-secondary">
                 {tokenize(line.content, language)}
               </td>
             </tr>
@@ -155,9 +155,9 @@ export default function CodeBlock({
   };
 
   return (
-    <div className="rounded-lg border border-docs-border-default overflow-hidden my-6 shadow-sm">
+    <div className="rounded-lg border border-docs-border-subtle overflow-hidden my-6 shadow-lg bg-docs-bg-surface">
       {/* Header */}
-      <div className="bg-docs-bg-code-header border-b border-docs-border-default">
+      <div className="bg-docs-bg-code-header border-b border-docs-border-subtle">
         {isMultiTab ? (
           <div className="flex items-center justify-between">
             <div className="flex">
@@ -194,6 +194,9 @@ export default function CodeBlock({
           language={currentLang}
           showLineNumbers={showLineNumbers}
         />
+      </div>
+      <div className="border-t border-docs-border-subtle bg-docs-bg-surface-alt px-4 py-2 text-[12px] text-docs-text-muted">
+        {currentFilename ?? currentLang}
       </div>
     </div>
   );

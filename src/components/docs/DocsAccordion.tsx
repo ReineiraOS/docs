@@ -59,7 +59,7 @@ export function AccordionItem({
 
 export default function DocsAccordion({ children }: DocsAccordionProps) {
   return (
-    <div className="my-6 rounded-lg border border-docs-border-default bg-white overflow-hidden px-4">
+    <div className="my-6 rounded-lg border border-docs-border-default bg-docs-bg-page overflow-hidden px-4">
       {children}
     </div>
   );

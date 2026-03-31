@@ -81,7 +81,7 @@ function SectionGroup({
                   ref={isActive ? activeRef : undefined}
                   className={`block py-1.5 px-3 ml-1 rounded-r-md text-[13.5px] transition-colors border-l-2 ${
                     isActive
-                      ? "text-brand-primary bg-[hsl(217_100%_61%_/_0.06)] border-brand-primary font-medium"
+                      ? "text-brand-primary bg-brand-primary-light border-brand-primary font-medium"
                       : "text-docs-text-muted border-transparent hover:text-docs-text-primary hover:bg-docs-bg-hover"
                   }`}
                 >

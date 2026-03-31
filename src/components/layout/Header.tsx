@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, Search, Github, X } from "lucide-react";
+import { Menu, Search, Github, X, Sun, Moon } from "lucide-react";
 import { navigation } from "@/data/navigation";
 import SearchModal from "@/components/docs/SearchModal";
 
@@ -14,7 +14,25 @@ export default function Header({
   mobileMenuOpen,
 }: HeaderProps) {
   const [searchOpen, setSearchOpen] = useState(false);
+  const [isDark, setIsDark] = useState(false);
   const location = useLocation();
+
+  // Initialize theme from localStorage
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const initialDark = savedTheme === "dark" || (!savedTheme && prefersDark);
+    setIsDark(initialDark);
+    document.documentElement.classList.toggle("dark", initialDark);
+  }, []);
+
+  // Toggle theme
+  const toggleTheme = () => {
+    const newDark = !isDark;
+    setIsDark(newDark);
+    document.documentElement.classList.toggle("dark", newDark);
+    localStorage.setItem("theme", newDark ? "dark" : "light");
+  };
 
   // Cmd+K shortcut
   useEffect(() => {
@@ -38,7 +56,7 @@ export default function Header({
       </a>
 
       <header
-        className="fixed top-0 left-0 right-0 z-50 h-16 bg-white border-b border-docs-border-default flex items-center px-4 gap-4"
+        className="fixed top-0 left-0 right-0 z-50 h-16 bg-docs-bg-page border-b border-docs-border-default flex items-center px-4 gap-4"
         style={{ height: "var(--header-height)" }}
       >
         {/* Mobile hamburger */}
@@ -109,6 +127,15 @@ export default function Header({
             aria-label="Search"
           >
             <Search size={18} />
+          </button>
+
+          {/* Theme toggle */}
+          <button
+            onClick={toggleTheme}
+            className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-docs-bg-hover transition-colors text-docs-text-muted hover:text-docs-text-primary"
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {isDark ? <Sun size={18} /> : <Moon size={18} />}
           </button>
 
           <a

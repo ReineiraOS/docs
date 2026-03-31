@@ -62,6 +62,29 @@ export default {
           "border-strong": "hsl(var(--border-strong))",
         },
 
+        semantic: {
+          info: {
+            bg: "hsl(var(--info-bg))",
+            border: "hsl(var(--info-border))",
+            text: "hsl(var(--info-text))",
+          },
+          warning: {
+            bg: "hsl(var(--warning-bg))",
+            border: "hsl(var(--warning-border))",
+            text: "hsl(var(--warning-text))",
+          },
+          tip: {
+            bg: "hsl(var(--tip-bg))",
+            border: "hsl(var(--tip-border))",
+            text: "hsl(var(--tip-text))",
+          },
+          danger: {
+            bg: "hsl(var(--danger-bg))",
+            border: "hsl(var(--danger-border))",
+            text: "hsl(var(--danger-text))",
+          },
+        },
+
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
