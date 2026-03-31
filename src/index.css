@@ -104,34 +104,34 @@
 
   .dark {
     /* ── Backgrounds ── */
-    --bg-page: 0 0% 0%;                    /* #000000 */
-    --bg-surface: 210 33% 7%;              /* #0d1117 */
-    --bg-surface-alt: 216 18% 12%;         /* #1a1e28 */
-    --bg-sidebar: 210 27% 5%;             /* #080c10 */
-    --bg-code: 216 18% 12%;               /* #1a1e28 */
+    --bg-page: 0 0% 0%; /* #000000 */
+    --bg-surface: 210 33% 7%; /* #0d1117 */
+    --bg-surface-alt: 216 18% 12%; /* #1a1e28 */
+    --bg-sidebar: 210 27% 5%; /* #080c10 */
+    --bg-code: 216 18% 12%; /* #1a1e28 */
     --bg-code-header: 213 28% 57% / 0.04; /* steel-4 */
-    --bg-hover: 213 28% 57% / 0.08;       /* steel-8 */
-    --bg-active: 217 100% 62% / 0.08;     /* blue-8 */
+    --bg-hover: 213 28% 57% / 0.08; /* steel-8 */
+    --bg-active: 217 100% 62% / 0.08; /* blue-8 */
 
     /* ── Brand ── */
-    --brand-primary: 215 100% 62%;         /* #3b8bff */
-    --brand-primary-hover: 215 100% 69%;   /* #5da3ff */
+    --brand-primary: 215 100% 62%; /* #3b8bff */
+    --brand-primary-hover: 215 100% 69%; /* #5da3ff */
     --brand-primary-light: 215 100% 62% / 0.12;
     --brand-primary-ring: 215 100% 62% / 0.25;
-    --brand-steel: 213 28% 58%;           /* #6d8eba */
+    --brand-steel: 213 28% 58%; /* #6d8eba */
     --brand-steel-light: 213 28% 58% / 0.1;
 
     /* ── Text ── */
-    --text-primary: 0 0% 85%;             /* #d9d9d9 */
-    --text-secondary: 0 0% 75%;           /* #bfbfbf */
-    --text-muted: 0 0% 60%;               /* #999999 */
-    --text-faint: 0 0% 55% / 0.6;         /* #8c8c8c @ 60% */
+    --text-primary: 0 0% 85%; /* #d9d9d9 */
+    --text-secondary: 0 0% 75%; /* #bfbfbf */
+    --text-muted: 0 0% 60%; /* #999999 */
+    --text-faint: 0 0% 55% / 0.6; /* #8c8c8c @ 60% */
     --text-on-brand: 0 0% 100%;
 
     /* ── Borders ── */
-    --border-default: 213 28% 58% / 0.12;  /* steel-12 */
-    --border-subtle: 213 28% 58% / 0.08;   /* steel-8 */
-    --border-strong: 213 28% 58% / 0.25;   /* steel-25 */
+    --border-default: 213 28% 58% / 0.12; /* steel-12 */
+    --border-subtle: 213 28% 58% / 0.08; /* steel-8 */
+    --border-strong: 213 28% 58% / 0.25; /* steel-25 */
 
     /* ── Semantic — Callouts ── */
     --info-bg: 215 100% 62% / 0.08;
@@ -211,7 +211,9 @@
     color: hsl(var(--text-secondary));
     font-size: 16px;
     line-height: 1.7;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
   }
 
   code,

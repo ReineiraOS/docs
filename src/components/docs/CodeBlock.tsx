@@ -107,9 +107,7 @@ function CodeContent({
           {lines.map((line, i) => (
             <tr
               key={i}
-              className={
-                line.highlighted ? "bg-brand-primary-light" : ""
-              }
+              className={line.highlighted ? "bg-brand-primary-light" : ""}
             >
               {showLineNumbers && (
                 <td

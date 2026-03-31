@@ -20,7 +20,9 @@ export default function Header({
   // Initialize theme from localStorage
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
     const initialDark = savedTheme === "dark" || (!savedTheme && prefersDark);
     setIsDark(initialDark);
     document.documentElement.classList.toggle("dark", initialDark);
