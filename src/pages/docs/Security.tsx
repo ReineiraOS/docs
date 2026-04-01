@@ -51,8 +51,8 @@ const stakingRows = [
   },
   {
     param: "Relay fee",
-    value: "0.80%",
-    desc: "Total fee split: 0.30% protocol fee + 0.50% operator fee. Configurable via FeeManager.setFeeConfig().",
+    value: "0.50%",
+    desc: "Total fee split: 0.15% protocol fee + 0.35% operator fee. Configurable via FeeManager.setFeeConfig(). An additional 0.25% escrow settlement fee is collected on redemption.",
   },
 ];
 

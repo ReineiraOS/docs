@@ -492,7 +492,7 @@ export default function QuickStart() {
       </h2>
 
       <ArchitectureDiagram
-        title="VAULT FLOW"
+        title="ESCROW FLOW"
         steps={[
           { label: "Create Escrow", sublabel: "FHE-encrypt amounts on-chain" },
           { label: "Gate Verifies", sublabel: "Condition proof checked" },

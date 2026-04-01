@@ -52,13 +52,13 @@ const feeColumns = [
 ];
 const feeRows = [
   {
-    fee: "Operator fee",
-    rate: "0.5%",
+    fee: "Operator relay fee",
+    rate: "0.35%",
     recipient: "Relay operator who executed the task",
   },
   {
-    fee: "Protocol fee",
-    rate: "0.3%",
+    fee: "Protocol relay fee",
+    rate: "0.15%",
     recipient: "ReineiraOS protocol (FeeManager)",
   },
 ];

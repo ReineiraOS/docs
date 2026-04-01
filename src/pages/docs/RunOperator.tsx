@@ -57,17 +57,18 @@ const economicsColumns = [
   { header: "Value", key: "value" },
 ];
 const economicsRows = [
-  { metric: "Operator relay fee", value: "0.5% (50 bps) of bridged USDC" },
+  { metric: "Operator relay fee", value: "0.35% (35 bps) of bridged USDC" },
   {
-    metric: "Protocol fee",
-    value: "0.3% of bridged USDC (separate from operator fee)",
+    metric: "Protocol relay fee",
+    value: "0.15% (15 bps) of bridged USDC (separate from operator fee)",
   },
+  { metric: "Escrow settlement fee", value: "0.25% (25 bps) on escrow redemption" },
   { metric: "Minimum stake", value: "TBD" },
   {
     metric: "Unbonding period",
     value: "7 days (hardcoded in OperatorRegistry)",
   },
-  { metric: "Example: 10,000 USDC relay", value: "50 USDC operator earnings" },
+  { metric: "Example: 10,000 USDC relay", value: "35 USDC operator earnings" },
   {
     metric: "Fee settlement",
     value: "Automatic \u2014 credited to operator wallet on task completion",
@@ -106,7 +107,7 @@ export default function RunOperator() {
           { header: "Value", key: "value" },
         ]}
         rows={[
-          { prop: "Fee", value: "50 bps (0.5%) of bridged USDC per relay" },
+          { prop: "Relay fee", value: "35 bps (0.35%) of bridged USDC per relay" },
           {
             prop: "Exclusive window",
             value: "60 seconds for the assigned operator (configurable)",

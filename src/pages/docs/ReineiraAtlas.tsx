@@ -757,7 +757,7 @@ export default function ReineiraAtlas() {
         lines={[
           {
             content:
-              "/tokenomics Model the unit economics for an escrow fee of 0.5% with insurance premium of 2%",
+              "/tokenomics Model the unit economics for an escrow fee of 0.25% with insurance premium of 2%",
           },
         ]}
       />
