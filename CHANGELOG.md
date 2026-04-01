@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.0.0...v1.0.1) (2026-04-01)
+
+
+### Bug Fixes
+
+* align fees, terminology, and naming with litepaper v0.4 ([9ef0cea](https://github.com/ReineiraOS/platform-web-docs-app/commit/9ef0ceaf0d2f8233216bd470270b12d9d301f13e))
+
 # 1.0.0 (2026-03-30)
 
 
