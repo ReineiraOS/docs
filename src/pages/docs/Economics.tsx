@@ -51,7 +51,7 @@ const overviewRows = [
   {
     role: "Operators",
     what: "Run staked relay nodes that execute cross-chain CCTP tasks",
-    how: "Earn 50 bps on every USDC amount they bridge",
+    how: "Earn 35 bps on every USDC amount they bridge",
   },
 ];
 
@@ -63,14 +63,20 @@ const protocolFeeColumns = [
 ];
 const protocolFeeRows = [
   {
-    fee: "Protocol fee",
-    rate: "30 bps (0.3%)",
+    fee: "Escrow settlement fee",
+    rate: "25 bps (0.25%)",
+    trigger: "Escrow redemption",
+    recipient: "Protocol treasury",
+  },
+  {
+    fee: "Protocol relay fee",
+    rate: "15 bps (0.15%)",
     trigger: "Cross-chain task execution",
     recipient: "Protocol (accumulated in FeeManager)",
   },
   {
     fee: "Operator relay fee",
-    rate: "50 bps (0.5%)",
+    rate: "35 bps (0.35%)",
     trigger: "Cross-chain task execution",
     recipient: "Relay operator who executed the task",
   },
@@ -109,7 +115,7 @@ const operatorParamColumns = [
 ];
 const operatorParamRows = [
   { param: "Monthly relay volume", value: "500,000 USDC" },
-  { param: "Operator fee rate", value: "50 bps (0.5%)" },
+  { param: "Operator fee rate", value: "35 bps (0.35%)" },
   { param: "Number of relay tasks", value: "100" },
   { param: "Minimum stake", value: "TBD" },
   { param: "Unbonding period", value: "7 days" },
@@ -370,7 +376,7 @@ export default function Economics() {
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Operators run staked relay nodes that execute cross-chain CCTP tasks —
         fetching Circle attestations and submitting relay transactions on-chain.
-        They earn 50 bps (0.5%) of every USDC amount they bridge.
+        They earn 35 bps (0.35%) of every USDC amount they bridge.
       </p>
 
       <h3
@@ -388,13 +394,13 @@ export default function Economics() {
         lines={[
           { content: "# Monthly operator revenue" },
           {
-            content: "$500,000 x 0.5% = $2,500/month",
+            content: "$500,000 x 0.35% = $1,750/month",
             highlighted: true,
           },
           { content: "" },
           { content: "# Per-task average" },
           {
-            content: "$2,500 / 100 tasks = $25/task",
+            content: "$1,750 / 100 tasks = $17.50/task",
           },
         ]}
         showLineNumbers={false}
@@ -520,7 +526,7 @@ export default function Economics() {
         <strong className="text-docs-text-primary font-semibold">
           Loop 1: Cross-chain volume drives protocol revenue.
         </strong>{" "}
-        Every CCTP relay pays 30 bps to the protocol and 50 bps to the operator.
+        Every CCTP relay pays 15 bps to the protocol and 35 bps to the operator. An additional 25 bps escrow settlement fee is collected on redemption.
         More cross-chain settlement volume = more protocol revenue.
       </p>
 

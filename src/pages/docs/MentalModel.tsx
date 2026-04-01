@@ -133,7 +133,7 @@ export default function MentalModel() {
       </p>
 
       <ArchitectureDiagram
-        title="VAULT LIFECYCLE FLOW"
+        title="ESCROW LIFECYCLE FLOW"
         steps={[
           {
             label: "Create",

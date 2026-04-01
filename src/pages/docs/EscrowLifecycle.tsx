@@ -102,7 +102,7 @@ export default function EscrowLifecycle() {
       </p>
 
       <ArchitectureDiagram
-        title="VAULT STATE MACHINE"
+        title="ESCROW STATE MACHINE"
         steps={[
           { label: "Create", sublabel: "Encrypted owner + amount" },
           { label: "Fund", sublabel: "Deposit USDC" },
