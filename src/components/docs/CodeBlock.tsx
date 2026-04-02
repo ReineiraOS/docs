@@ -60,10 +60,7 @@ function tokenize(line: string, language: string): React.ReactNode[] {
       /\b(function|const|let|var|return|if|else|for|while|import|export|from|contract|pragma|address|uint256|uint64|bool|bytes32|public|external|internal|private|override|virtual|mapping|memory|storage|calldata|emit|event|struct|modifier|require|revert|pure|view|payable|constructor|new|delete|this|super|type|interface|library|using|is|extends|async|await|class|extends|implements|throw|try|catch|finally|void|string|number|boolean|null|undefined|true|false)\b/,
       "syntax-keyword font-medium",
     ],
-    [
-      /\b(euint64|euint32|euint128|ebool|eaddress|TFHE|FHE)\b/,
-      "syntax-fhe",
-    ],
+    [/\b(euint64|euint32|euint128|ebool|eaddress|TFHE|FHE)\b/, "syntax-fhe"],
     [/\b\d+(\.\d+)?(n|e\d+)?\b/, "syntax-number"],
     [/[(){}[\];,.]/, "syntax-delimiter"],
   ];
@@ -155,7 +152,10 @@ export default function CodeBlock({
   };
 
   return (
-    <div className="rounded-lg border border-docs-border-default overflow-hidden my-6" style={{ boxShadow: "var(--code-shadow)" }}>
+    <div
+      className="rounded-lg border border-docs-border-default overflow-hidden my-6"
+      style={{ boxShadow: "var(--code-shadow)" }}
+    >
       {/* Header */}
       <div className="bg-docs-bg-code-header border-b border-docs-border-default">
         {isMultiTab ? (

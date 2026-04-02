@@ -62,7 +62,10 @@ const economicsRows = [
     metric: "Protocol relay fee",
     value: "0.15% (15 bps) of bridged USDC (separate from operator fee)",
   },
-  { metric: "Escrow settlement fee", value: "0.25% (25 bps) on escrow redemption" },
+  {
+    metric: "Escrow settlement fee",
+    value: "0.25% (25 bps) on escrow redemption",
+  },
   { metric: "Minimum stake", value: "TBD" },
   {
     metric: "Unbonding period",
@@ -107,7 +110,10 @@ export default function RunOperator() {
           { header: "Value", key: "value" },
         ]}
         rows={[
-          { prop: "Relay fee", value: "35 bps (0.35%) of bridged USDC per relay" },
+          {
+            prop: "Relay fee",
+            value: "35 bps (0.35%) of bridged USDC per relay",
+          },
           {
             prop: "Exclusive window",
             value: "60 seconds for the assigned operator (configurable)",

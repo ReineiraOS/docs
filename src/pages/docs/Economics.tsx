@@ -526,7 +526,8 @@ export default function Economics() {
         <strong className="text-docs-text-primary font-semibold">
           Loop 1: Cross-chain volume drives protocol revenue.
         </strong>{" "}
-        Every CCTP relay pays 15 bps to the protocol and 35 bps to the operator. An additional 25 bps escrow settlement fee is collected on redemption.
+        Every CCTP relay pays 15 bps to the protocol and 35 bps to the operator.
+        An additional 25 bps escrow settlement fee is collected on redemption.
         More cross-chain settlement volume = more protocol revenue.
       </p>
 

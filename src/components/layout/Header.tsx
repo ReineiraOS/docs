@@ -116,7 +116,9 @@ export default function Header({
           <button
             onClick={toggleTheme}
             className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-docs-bg-hover transition-colors text-docs-text-muted hover:text-docs-text-primary"
-            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            aria-label={
+              theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+            }
           >
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
