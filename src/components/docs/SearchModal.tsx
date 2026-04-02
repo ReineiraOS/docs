@@ -78,7 +78,7 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
       <div className="absolute inset-0 bg-black/20 backdrop-blur-sm animate-fade-in" />
 
       {/* Modal */}
-      <div className="relative w-full max-w-[580px] bg-white rounded-xl shadow-xl border border-docs-border-default overflow-hidden animate-fade-in">
+      <div className="relative w-full max-w-[580px] bg-docs-bg-page rounded-xl shadow-xl border border-docs-border-default overflow-hidden animate-fade-in">
         {/* Input row */}
         <div className="flex items-center gap-3 px-4 py-3 border-b border-docs-border-default">
           <Search size={16} className="text-docs-text-muted shrink-0" />

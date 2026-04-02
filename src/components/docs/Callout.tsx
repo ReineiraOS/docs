@@ -83,7 +83,7 @@ export default function Callout({
         <Icon size={13} style={{ color: config.iconColor }} />
         {title ?? config.label}
       </div>
-      <div className="text-[14px] leading-[1.6] text-docs-text-secondary [&_code]:bg-white [&_code]:border [&_code]:border-docs-border-default [&_code]:rounded [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[13px] [&_a]:text-brand-primary [&_a]:font-medium [&_strong]:text-docs-text-primary [&_strong]:font-semibold">
+      <div className="text-[14px] leading-[1.6] text-docs-text-secondary [&_code]:bg-docs-bg-surface [&_code]:border [&_code]:border-docs-border-default [&_code]:rounded [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[13px] [&_a]:text-brand-primary [&_a]:font-medium [&_strong]:text-docs-text-primary [&_strong]:font-semibold">
         {children}
       </div>
     </div>

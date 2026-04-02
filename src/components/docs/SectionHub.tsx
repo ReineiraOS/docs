@@ -21,7 +21,7 @@ export default function SectionHub({ section }: SectionHubProps) {
           <Link
             key={page.href}
             to={page.href}
-            className="group flex items-start justify-between gap-3 border border-docs-border-default rounded-lg p-5 hover:border-brand-primary hover:shadow-sm transition-all duration-200 bg-white"
+            className="group flex items-start justify-between gap-3 border border-docs-border-default rounded-lg p-5 hover:border-brand-primary hover:shadow-sm transition-all duration-200 bg-docs-bg-page"
           >
             <div className="flex-1 min-w-0">
               <h3 className="text-[15px] font-semibold text-docs-text-primary group-hover:text-brand-primary transition-colors mb-1">

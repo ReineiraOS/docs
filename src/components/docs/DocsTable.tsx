@@ -33,7 +33,7 @@ export default function DocsTable({ columns, rows }: DocsTableProps) {
             {rows.map((row, i) => (
               <tr
                 key={i}
-                className="bg-white border-t border-docs-border-subtle hover:bg-docs-bg-hover transition-colors"
+                className="bg-docs-bg-page border-t border-docs-border-subtle hover:bg-docs-bg-hover transition-colors"
               >
                 {columns.map((col) => (
                   <td key={col.key} className="px-4 py-3 leading-snug">
