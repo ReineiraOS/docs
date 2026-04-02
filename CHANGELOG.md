@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.0.1...v1.1.0) (2026-04-02)
+
+
+### Features
+
+* dark mode + WCAG AAA contrast parity ([#4](https://github.com/ReineiraOS/platform-web-docs-app/issues/4)) ([4eaffbc](https://github.com/ReineiraOS/platform-web-docs-app/commit/4eaffbcdcadab02f38da0d6fdf81704957264199))
+
 ## [1.0.1](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.0.0...v1.0.1) (2026-04-01)
 
 
