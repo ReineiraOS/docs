@@ -22,11 +22,11 @@
     --brand-steel: 213 28% 57%;
     --brand-steel-light: 213 28% 57% / 0.1;
 
-    /* ── Text ── */
-    --text-primary: 222 84% 5%;
-    --text-secondary: 215 28% 27%;
-    --text-muted: 215 16% 47%;
-    --text-faint: 215 20% 65%;
+    /* ── Text (contrast-tuned) ── */
+    --text-primary: 222 84% 5%; /* #020817 — 20.0:1 */
+    --text-secondary: 215 28% 27%; /* #324258 — 10.2:1 */
+    --text-muted: 212 16% 34%; /* #485868 — 7.3:1 AAA */
+    --text-faint: 212 16% 41%; /* #5a6878 — 5.7:1 AA */
     --text-on-brand: 0 0% 100%;
 
     /* ── Borders ── */
@@ -41,15 +41,32 @@
 
     --warning-bg: 38 92% 50% / 0.06;
     --warning-border: 38 92% 50%;
-    --warning-text: 32 81% 29%;
+    --warning-text: 32 89% 26%; /* #7c4508 — 7.7:1 AAA */
 
     --tip-bg: 142 71% 45% / 0.06;
     --tip-border: 142 71% 45%;
-    --tip-text: 142 72% 29%;
+    --tip-text: 142 65% 24%; /* #166534 — 7.1:1 AAA */
 
     --danger-bg: 0 84% 60% / 0.06;
     --danger-border: 0 84% 60%;
-    --danger-text: 0 74% 42%;
+    --danger-text: 0 70% 35%; /* #991b1b — 8.3:1 AAA */
+
+    /* ── Syntax Highlighting (contrast-tuned for light code bg) ── */
+    --syntax-keyword: #1a3a9c; /* deep blue — 9.2:1 */
+    --syntax-string: #065f46; /* deep emerald — 7.2:1 AAA */
+    --syntax-number: #783c0e; /* deep amber — 8.0:1 AAA */
+    --syntax-fhe: #5b21b6; /* deep purple — 8.4:1 AAA */
+    --syntax-comment: #4b5563; /* dark gray — 7.0:1 AAA */
+    --syntax-delimiter: #475569; /* slate — 7.1:1 AAA */
+    --syntax-variable: #1e293b; /* near-black — 13.6:1 */
+    --syntax-function: #1e40af; /* indigo — 8.1:1 AAA */
+    --syntax-property: #4b5563; /* slate — 7.0:1 AAA */
+    --syntax-punctuation: #475569; /* slate — 7.1:1 AAA */
+    --syntax-highlight-line: 217 100% 61% / 0.06;
+
+    /* ── Code Block ── */
+    --code-border: var(--border-default);
+    --code-shadow: var(--shadow-sm);
 
     /* ── Shadows ── */
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -100,6 +117,80 @@
     --ring: var(--brand-primary);
 
     --radius: var(--radius-md);
+  }
+
+  .dark {
+    /* ── Backgrounds (from web-landing-app surface scale) ── */
+    --bg-page: 215 30% 7%; /* #0d1117 — surface-base */
+    --bg-surface: 223 20% 13%; /* #1a1e28 — surface-raised */
+    --bg-surface-alt: 220 13% 16%; /* #242830 — surface-panel */
+    --bg-sidebar: 210 40% 4%; /* #060a0e — surface-deep */
+    --bg-code: 223 20% 13%; /* #1a1e28 — surface-raised */
+    --bg-code-header: 213 29% 58% / 0.04; /* steel-4 */
+    --bg-hover: 213 29% 58% / 0.08; /* steel-8 */
+    --bg-active: 217 100% 62% / 0.12; /* blue-12 */
+
+    /* ── Brand (from web-landing-app accent tokens) ── */
+    --brand-primary: 217 100% 62%; /* #3b8bff — accent-blue */
+    --brand-primary-hover: 217 100% 68%; /* #5da3ff — accent-blue-hover */
+    --brand-primary-light: 217 100% 62% / 0.08; /* blue-8 */
+    --brand-primary-ring: 217 100% 62% / 0.25; /* ~blue-25 */
+    --brand-steel: 213 29% 58%; /* #6d8eba — accent-steel */
+    --brand-steel-light: 213 29% 58% / 0.1; /* steel-10 */
+
+    /* ── Text (from web-landing-app text scale, contrast-tuned) ── */
+    --text-primary: 0 0% 91%; /* #e8e8e8 — 15.4:1 */
+    --text-secondary: 0 0% 80%; /* #cccccc — 11.8:1 */
+    --text-muted: 0 0% 71%; /* #b4b4b4 — 9.1:1 */
+    --text-faint: 0 0% 63%; /* #a0a0a0 — 7.2:1 AAA */
+    --text-on-brand: 0 0% 100%;
+
+    /* ── Borders (from web-landing-app steel chrome scale) ── */
+    --border-default: 213 29% 58% / 0.12; /* steel-12 */
+    --border-subtle: 213 29% 58% / 0.07; /* steel-7 */
+    --border-strong: 213 29% 58% / 0.25; /* steel-25 */
+
+    /* ── Semantic — Callouts (contrast-tuned) ── */
+    --info-bg: 217 100% 62% / 0.08;
+    --info-border: 217 100% 62%;
+    --info-text: 214 100% 81%; /* #a0ccff — 11.3:1 */
+
+    --warning-bg: 38 92% 50% / 0.08;
+    --warning-border: 38 92% 50%;
+    --warning-text: 40 82% 71%; /* #f0c878 — 11.9:1 */
+
+    --tip-bg: 142 71% 45% / 0.08;
+    --tip-border: 142 71% 45%;
+    --tip-text: 150 58% 69%; /* #80e0b0 — 11.9:1 */
+
+    --danger-bg: 0 84% 60% / 0.08;
+    --danger-border: 0 84% 60%;
+    --danger-text: 0 80% 83%; /* #f4b4b4 — 10.8:1 */
+
+    /* ── Syntax Highlighting (from web-landing-app, contrast-tuned) ── */
+    --syntax-keyword: #78b8ff; /* saturated blue — 8.0:1 AAA */
+    --syntax-string: #88f0d0; /* mint-160 — 12.2:1 */
+    --syntax-number: #ffffff; /* white   — 16.7:1 */
+    --syntax-fhe: #a0d8ff; /* sky-205  — 10.9:1 */
+    --syntax-comment: #9ab0c4; /* steel solid — 7.4:1 AAA */
+    --syntax-delimiter: #d8e2ec; /* light steel — 12.7:1 */
+    --syntax-variable: #f0f6fc; /* near-white — 15.3:1 */
+    --syntax-function: #78b4f0; /* blue, distinct — 7.6:1 AAA */
+    --syntax-property: #c0d8f0; /* periwinkle — 11.4:1 */
+    --syntax-punctuation: #d8e2ec; /* light steel — 12.7:1 */
+    --syntax-highlight-line: 217 100% 62% / 0.12;
+
+    /* ── Code Block (from web-landing-app) ── */
+    --code-border: 213 29% 58% / 0.2; /* steel-20 */
+    --code-shadow:
+      0 25px 60px -12px rgba(0, 0, 0, 0.5), 0 0 60px rgba(59, 139, 255, 0.06),
+      inset 0 1px 0 rgba(109, 142, 186, 0.1);
+
+    /* ── Shadows (from web-landing-app shadow scale) ── */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 4px 12px -2px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 8px 24px -4px rgba(0, 0, 0, 0.5);
   }
 }
 
@@ -160,5 +251,39 @@
     position: static;
     width: auto;
     height: auto;
+  }
+}
+
+/* ── Syntax token classes ── */
+@layer components {
+  .syntax-keyword {
+    color: var(--syntax-keyword);
+  }
+  .syntax-string {
+    color: var(--syntax-string);
+  }
+  .syntax-number {
+    color: var(--syntax-number);
+  }
+  .syntax-fhe {
+    color: var(--syntax-fhe);
+  }
+  .syntax-comment {
+    color: var(--syntax-comment);
+  }
+  .syntax-delimiter {
+    color: var(--syntax-delimiter);
+  }
+  .syntax-variable {
+    color: var(--syntax-variable);
+  }
+  .syntax-function {
+    color: var(--syntax-function);
+  }
+  .syntax-property {
+    color: var(--syntax-property);
+  }
+  .syntax-punctuation {
+    color: var(--syntax-punctuation);
   }
 }

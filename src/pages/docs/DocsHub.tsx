@@ -58,7 +58,7 @@ export default function DocsHub() {
               <Link
                 key={section.id}
                 to={`/docs/${section.id}`}
-                className="group flex flex-col bg-white border border-docs-border-default rounded-xl p-6 transition-colors duration-200 hover:border-brand-primary"
+                className="group flex flex-col bg-docs-bg-page border border-docs-border-default rounded-xl p-6 transition-colors duration-200 hover:border-brand-primary"
               >
                 <div className={`mb-3 ${colorClass}`}>
                   <IconComp size={26} strokeWidth={1.8} />

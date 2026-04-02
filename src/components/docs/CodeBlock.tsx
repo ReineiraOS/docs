@@ -49,23 +49,20 @@ function tokenize(line: string, language: string): React.ReactNode[] {
     remaining = before;
     const beforeTokens = tokenize(before, language);
     tokens.push(...beforeTokens);
-    push(comment, "text-[hsl(var(--text-faint))] italic");
+    push(comment, "syntax-comment italic");
     return tokens;
   }
 
   // String literals
   const patterns: [RegExp, string][] = [
-    [/"[^"]*"|'[^']*'|`[^`]*`/, "text-[#059669]"],
+    [/"[^"]*"|'[^']*'|`[^`]*`/, "syntax-string"],
     [
       /\b(function|const|let|var|return|if|else|for|while|import|export|from|contract|pragma|address|uint256|uint64|bool|bytes32|public|external|internal|private|override|virtual|mapping|memory|storage|calldata|emit|event|struct|modifier|require|revert|pure|view|payable|constructor|new|delete|this|super|type|interface|library|using|is|extends|async|await|class|extends|implements|throw|try|catch|finally|void|string|number|boolean|null|undefined|true|false)\b/,
-      "text-[hsl(var(--brand-primary))] font-medium",
+      "syntax-keyword font-medium",
     ],
-    [
-      /\b(euint64|euint32|euint128|ebool|eaddress|TFHE|FHE)\b/,
-      "text-[#7C3AED]",
-    ],
-    [/\b\d+(\.\d+)?(n|e\d+)?\b/, "text-[#D97706]"],
-    [/[(){}[\];,.]/, "text-[hsl(var(--text-muted))]"],
+    [/\b(euint64|euint32|euint128|ebool|eaddress|TFHE|FHE)\b/, "syntax-fhe"],
+    [/\b\d+(\.\d+)?(n|e\d+)?\b/, "syntax-number"],
+    [/[(){}[\];,.]/, "syntax-delimiter"],
   ];
 
   while (remaining.length > 0) {
@@ -108,7 +105,7 @@ function CodeContent({
             <tr
               key={i}
               className={
-                line.highlighted ? "bg-[hsl(217_100%_61%_/_0.06)]" : ""
+                line.highlighted ? "bg-[hsl(var(--syntax-highlight-line))]" : ""
               }
             >
               {showLineNumbers && (
@@ -155,7 +152,10 @@ export default function CodeBlock({
   };
 
   return (
-    <div className="rounded-lg border border-docs-border-default overflow-hidden my-6 shadow-sm">
+    <div
+      className="rounded-lg border border-docs-border-default overflow-hidden my-6"
+      style={{ boxShadow: "var(--code-shadow)" }}
+    >
       {/* Header */}
       <div className="bg-docs-bg-code-header border-b border-docs-border-default">
         {isMultiTab ? (
@@ -188,7 +188,7 @@ export default function CodeBlock({
       </div>
 
       {/* Code */}
-      <div className="bg-docs-bg-code py-3">
+      <div className="bg-docs-bg-code py-3 text-[var(--syntax-variable)]">
         <CodeContent
           lines={currentLines}
           language={currentLang}
