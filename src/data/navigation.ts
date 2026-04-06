@@ -51,14 +51,14 @@ export const navigation: NavSection[] = [
           "The end-to-end flow from venture brief to shipped product.",
       },
       {
-        title: "ReineiraOS Atlas",
+        title: "Atlas",
         slug: "atlas",
         href: "/docs/developer-tools/atlas",
         description:
           "Startup operating system — strategy, compliance, fundraising, and app scaffolding.",
       },
       {
-        title: "ReineiraOS Code",
+        title: "Code",
         slug: "reineira-code",
         href: "/docs/developer-tools/reineira-code",
         description:
@@ -124,7 +124,7 @@ export const navigation: NavSection[] = [
     label: "Build",
     icon: "Hammer",
     description:
-      "Escrow lifecycle, Gate plugins, Insurance coverage, and application layer.",
+      "Escrow lifecycle, Gate plugins, Insurance coverage, and cross-chain settlement.",
     pages: [
       {
         title: "Escrow Lifecycle",
@@ -135,13 +135,13 @@ export const navigation: NavSection[] = [
       },
       {
         title: "Gate Plugins",
-        slug: "condition-plugins",
-        href: "/docs/build/condition-plugins",
+        slug: "gate-plugins",
+        href: "/docs/build/gate-plugins",
         description:
           "Custom verification logic that controls when an Escrow releases funds.",
       },
       {
-        title: "Underwriter Policies",
+        title: "Insurance Policies",
         slug: "insurance-policies",
         href: "/docs/build/insurance-policies",
         description:
@@ -176,8 +176,8 @@ export const navigation: NavSection[] = [
     pages: [
       {
         title: "Operator Network",
-        slug: "coordinator-network",
-        href: "/docs/operate/coordinator-network",
+        slug: "operator-network",
+        href: "/docs/operate/operator-network",
         description:
           "The coordinator layer — task distribution and relay routing.",
       },
@@ -211,13 +211,13 @@ export const navigation: NavSection[] = [
         title: "Escrow Module",
         slug: "escrow-module",
         href: "/docs/reference/escrow-module",
-        description: "Complete Escrow (escrow) module API reference.",
+        description: "Complete Escrow module API reference.",
       },
       {
         title: "Insurance Module",
         slug: "insurance-module",
         href: "/docs/reference/insurance-module",
-        description: "Complete Insurance (insurance) module API reference.",
+        description: "Complete Insurance module API reference.",
       },
       {
         title: "MCP Server",

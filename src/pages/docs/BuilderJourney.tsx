@@ -374,14 +374,14 @@ export default function BuilderJourney() {
       <LinkCard
         items={[
           {
-            title: "ReineiraOS Atlas",
+            title: "Atlas",
             description:
               "Start here — write your brief and bootstrap your venture",
             href: "/docs/developer-tools/atlas",
             icon: Wrench,
           },
           {
-            title: "ReineiraOS Code",
+            title: "Code",
             description: "Build custom Gates and Insurance Policies",
             href: "/docs/developer-tools/reineira-code",
             icon: Code2,

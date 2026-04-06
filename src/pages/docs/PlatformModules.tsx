@@ -762,13 +762,13 @@ export default function PlatformModules() {
             icon: Layers,
           },
           {
-            title: "ReineiraOS Atlas",
+            title: "Atlas",
             description: "Start here — bootstrap your venture",
             href: "/docs/developer-tools/atlas",
             icon: Globe,
           },
           {
-            title: "ReineiraOS Code",
+            title: "Code",
             description: "Build custom Gates and Policies",
             href: "/docs/developer-tools/reineira-code",
             icon: Code2,

@@ -271,7 +271,7 @@ export default function ReineiraAtlas() {
       <Breadcrumbs />
 
       <PageHeader
-        title="ReineiraOS Atlas"
+        title="Atlas"
         description="The startup operating system for ventures building on ReineiraOS. Strategy, operations, growth, compliance, fundraising, and team coordination — powered by a 12-agent AI team."
         readingTime="12 min read"
       />

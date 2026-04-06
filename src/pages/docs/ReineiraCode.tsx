@@ -28,7 +28,7 @@ export default function ReineiraCode() {
       <Breadcrumbs />
 
       <PageHeader
-        title="ReineiraOS Code"
+        title="Code"
         description="A preconfigured development environment that pairs Claude Code with the full protocol context. Clone, open, and start building condition resolvers and insurance policies with AI assistance."
         readingTime="4 min read"
       />

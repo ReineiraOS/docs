@@ -91,7 +91,7 @@ const App = () => (
         element={<EscrowLifecycle />}
       />
       <Route
-        path="/docs/build/condition-plugins"
+        path="/docs/build/gate-plugins"
         element={<ConditionPlugins />}
       />
       <Route
@@ -102,12 +102,22 @@ const App = () => (
       <Route path="/docs/build/cross-chain" element={<CrossChain />} />
       <Route path="/docs/build/gas-performance" element={<GasPerformance />} />
 
+      {/* Legacy redirects — Build */}
+      <Route
+        path="/docs/build/condition-plugins"
+        element={<ConditionPlugins />}
+      />
+      <Route path="/docs/operate/cross-chain" element={<CrossChain />} />
+
       {/* Operate */}
-      <Route path="/docs/operate/cross-chain" element={<CrossChain />} /> {/* legacy */}
+      <Route
+        path="/docs/operate/operator-network"
+        element={<CoordinatorNetwork />}
+      />
       <Route
         path="/docs/operate/coordinator-network"
         element={<CoordinatorNetwork />}
-      />
+      /> {/* legacy */}
       <Route path="/docs/operate/run-operator" element={<RunOperator />} />
 
       {/* API Reference */}
