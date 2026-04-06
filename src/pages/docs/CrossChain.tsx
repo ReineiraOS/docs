@@ -18,7 +18,7 @@ const toc: TocItem[] = [
   { id: "fallback", title: "Fallback", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/operate/cross-chain");
+const { prev, next } = getPrevNext("/docs/build/cross-chain");
 
 const chainColumns = [
   { header: "Chain", key: "chain" },

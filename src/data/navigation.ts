@@ -154,6 +154,13 @@ export const navigation: NavSection[] = [
         description: "Liquidity pools backing Insurance coverage.",
       },
       {
+        title: "Cross-Chain Settlement",
+        slug: "cross-chain",
+        href: "/docs/build/cross-chain",
+        description:
+          "Settle Escrows across multiple EVM-compatible chains via Circle CCTP V2.",
+      },
+      {
         title: "Gas & Performance",
         slug: "gas-performance",
         href: "/docs/build/gas-performance",
@@ -165,8 +172,7 @@ export const navigation: NavSection[] = [
     id: "operate",
     label: "Operate",
     icon: "Settings",
-    description:
-      "Operator network, cross-chain settlement, and node operations.",
+    description: "Operator network and node operations.",
     pages: [
       {
         title: "Operator Network",
@@ -174,13 +180,6 @@ export const navigation: NavSection[] = [
         href: "/docs/operate/coordinator-network",
         description:
           "The coordinator layer — task distribution and relay routing.",
-      },
-      {
-        title: "Cross-Chain Settlement",
-        slug: "cross-chain",
-        href: "/docs/operate/cross-chain",
-        description:
-          "Settle Escrows across multiple EVM-compatible chains via Circle CCTP V2.",
       },
       {
         title: "Run an Operator",
@@ -203,7 +202,7 @@ export const navigation: NavSection[] = [
         description: "Deployed contract addresses and ABIs.",
       },
       {
-        title: "ReineiraSDK",
+        title: "SDK",
         slug: "sdk",
         href: "/docs/reference/sdk",
         description: "TypeScript/JavaScript SDK for building on ReineiraOS.",

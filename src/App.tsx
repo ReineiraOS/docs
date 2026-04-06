@@ -99,10 +99,11 @@ const App = () => (
         element={<InsurancePolicies />}
       />
       <Route path="/docs/build/insurance-pools" element={<InsurancePools />} />
+      <Route path="/docs/build/cross-chain" element={<CrossChain />} />
       <Route path="/docs/build/gas-performance" element={<GasPerformance />} />
 
       {/* Operate */}
-      <Route path="/docs/operate/cross-chain" element={<CrossChain />} />
+      <Route path="/docs/operate/cross-chain" element={<CrossChain />} /> {/* legacy */}
       <Route
         path="/docs/operate/coordinator-network"
         element={<CoordinatorNetwork />}

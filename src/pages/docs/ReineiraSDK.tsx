@@ -112,7 +112,7 @@ export default function ReineiraSDK() {
       <Breadcrumbs />
 
       <PageHeader
-        title="ReineiraSDK"
+        title="SDK"
         description="The main entry point for all ReineiraOS operations. Create escrows, manage insurance, bridge cross-chain, and listen to events."
         readingTime="5 min read"
       />
