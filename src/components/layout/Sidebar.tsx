@@ -8,6 +8,7 @@ import {
   Settings,
   Code2,
   FileText,
+  Wrench,
 } from "lucide-react";
 import { navigation, NavSection } from "@/data/navigation";
 import type { LucideIcon } from "lucide-react";
@@ -15,6 +16,7 @@ import type { LucideIcon } from "lucide-react";
 const sectionIconMap: Record<string, LucideIcon> = {
   Rocket,
   BookOpen,
+  Wrench,
   Hammer,
   Settings,
   Code2,

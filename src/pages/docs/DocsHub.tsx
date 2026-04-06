@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import {
   Rocket,
   BookOpen,
+  Wrench,
   Hammer,
   Settings,
   Code2,
@@ -14,6 +15,7 @@ import type { LucideIcon } from "lucide-react";
 const sectionIconMap: Record<string, LucideIcon> = {
   Rocket,
   BookOpen,
+  Wrench,
   Hammer,
   Settings,
   Code2,
@@ -21,6 +23,7 @@ const sectionIconMap: Record<string, LucideIcon> = {
 
 const sectionColors: Record<string, string> = {
   "get-started": "text-brand-primary",
+  "developer-tools": "text-[hsl(var(--tip-text))]",
   learn: "text-[hsl(271_81%_55%)]",
   build: "text-[hsl(var(--warning-text))]",
   operate: "text-[hsl(var(--tip-text))]",

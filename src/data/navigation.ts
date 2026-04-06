@@ -34,19 +34,42 @@ export const navigation: NavSection[] = [
         href: "/docs/get-started/quick-start",
         description: "Deploy your first Escrow in under 5 minutes.",
       },
+    ],
+  },
+  {
+    id: "developer-tools",
+    label: "Developer Tools",
+    icon: "Wrench",
+    description:
+      "Builder acceleration tools — from strategy to smart contracts to shipping.",
+    pages: [
       {
-        title: "ReineiraOS Code",
-        slug: "reineira-code",
-        href: "/docs/get-started/reineira-code",
+        title: "Builder Journey",
+        slug: "builder-journey",
+        href: "/docs/developer-tools/builder-journey",
         description:
-          "AI-assisted development environment for building Gates and Insurances.",
+          "The end-to-end flow from venture brief to shipped product.",
       },
       {
         title: "ReineiraOS Atlas",
         slug: "atlas",
-        href: "/docs/get-started/atlas",
+        href: "/docs/developer-tools/atlas",
         description:
-          "Startup operating system — strategy, compliance, and fundraising.",
+          "Startup operating system — strategy, compliance, fundraising, and app scaffolding.",
+      },
+      {
+        title: "ReineiraOS Code",
+        slug: "reineira-code",
+        href: "/docs/developer-tools/reineira-code",
+        description:
+          "AI-assisted development environment for building Gates and Insurances.",
+      },
+      {
+        title: "Platform Modules",
+        slug: "platform-modules",
+        href: "/docs/developer-tools/platform-modules",
+        description:
+          "Plug-and-play backend and React app starters for ReineiraOS ventures.",
       },
     ],
   },

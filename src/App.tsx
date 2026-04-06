@@ -8,8 +8,12 @@ import NotFound from "./pages/NotFound";
 // Get Started
 import Overview from "./pages/docs/Overview";
 import QuickStart from "./pages/docs/QuickStart";
-import ReineiraCode from "./pages/docs/ReineiraCode";
+
+// Developer Tools
+import BuilderJourney from "./pages/docs/BuilderJourney";
 import ReineiraAtlas from "./pages/docs/ReineiraAtlas";
+import ReineiraCode from "./pages/docs/ReineiraCode";
+import PlatformModules from "./pages/docs/PlatformModules";
 
 // Learn
 import MentalModel from "./pages/docs/MentalModel";
@@ -49,11 +53,28 @@ const App = () => (
       {/* Get Started */}
       <Route path="/docs/get-started/overview" element={<Overview />} />
       <Route path="/docs/get-started/quick-start" element={<QuickStart />} />
+
+      {/* Developer Tools */}
+      <Route
+        path="/docs/developer-tools/builder-journey"
+        element={<BuilderJourney />}
+      />
+      <Route path="/docs/developer-tools/atlas" element={<ReineiraAtlas />} />
+      <Route
+        path="/docs/developer-tools/reineira-code"
+        element={<ReineiraCode />}
+      />
+      <Route
+        path="/docs/developer-tools/platform-modules"
+        element={<PlatformModules />}
+      />
+
+      {/* Legacy redirects */}
+      <Route path="/docs/get-started/atlas" element={<ReineiraAtlas />} />
       <Route
         path="/docs/get-started/reineira-code"
         element={<ReineiraCode />}
       />
-      <Route path="/docs/get-started/atlas" element={<ReineiraAtlas />} />
 
       {/* Learn */}
       <Route path="/docs/learn/mental-model" element={<MentalModel />} />
