@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.1.0...v1.2.0) (2026-04-06)
+
+
+### Features
+
+* add Developer Tools section with Builder Journey ([#5](https://github.com/ReineiraOS/platform-web-docs-app/issues/5)) ([1789bd6](https://github.com/ReineiraOS/platform-web-docs-app/commit/1789bd639ad8f587dd34a4e66f6b6855e254d03b)), closes [#0550ae](https://github.com/ReineiraOS/platform-web-docs-app/issues/0550ae) [#0a3069](https://github.com/ReineiraOS/platform-web-docs-app/issues/0a3069) [#79c0ff](https://github.com/ReineiraOS/platform-web-docs-app/issues/79c0ff) [#a5d6ff](https://github.com/ReineiraOS/platform-web-docs-app/issues/a5d6ff) [#222830](https://github.com/ReineiraOS/platform-web-docs-app/issues/222830) [#0d1117](https://github.com/ReineiraOS/platform-web-docs-app/issues/0d1117) [#ffffff](https://github.com/ReineiraOS/platform-web-docs-app/issues/ffffff) [#f4f6f8](https://github.com/ReineiraOS/platform-web-docs-app/issues/f4f6f8) [#ebeef2](https://github.com/ReineiraOS/platform-web-docs-app/issues/ebeef2)
+
 # [1.1.0](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.0.1...v1.1.0) (2026-04-02)
 
 
