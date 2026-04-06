@@ -5,14 +5,14 @@
 @layer base {
   :root {
     /* ── Backgrounds ── */
-    --bg-page: 0 0% 100%;
-    --bg-surface: 210 40% 98%;
-    --bg-surface-alt: 214 32% 96%;
-    --bg-sidebar: 210 20% 99%;
-    --bg-code: 214 32% 97%;
-    --bg-code-header: 214 27% 94%;
-    --bg-hover: 214 32% 96%;
-    --bg-active: 217 100% 61% / 0.06;
+    --bg-page: 220 20% 97%; /* #f4f6f8 — warm off-white */
+    --bg-surface: 0 0% 100%; /* #ffffff — content floats above page */
+    --bg-surface-alt: 216 20% 95%; /* #eef1f5 — alternate panels */
+    --bg-sidebar: 220 16% 94%; /* #ebeef2 — clearly distinct from page */
+    --bg-code: 220 16% 94%; /* #ebeef2 — matches sidebar tone */
+    --bg-code-header: 218 18% 91%; /* #e2e6ed — visible header */
+    --bg-hover: 217 20% 94%; /* #ebeef3 — hover state */
+    --bg-active: 217 100% 61% / 0.08;
 
     /* ── Brand ── */
     --brand-primary: 217 100% 61%;
@@ -30,9 +30,9 @@
     --text-on-brand: 0 0% 100%;
 
     /* ── Borders ── */
-    --border-default: 214 32% 91%;
-    --border-subtle: 214 32% 95%;
-    --border-strong: 215 25% 80%;
+    --border-default: 216 20% 88%; /* #d8dde5 — visible separation */
+    --border-subtle: 216 20% 92%; /* #e6eaf0 — soft dividers */
+    --border-strong: 215 20% 78%; /* #bcc5d0 — emphasis borders */
 
     /* ── Semantic — Callouts ── */
     --info-bg: 217 100% 61% / 0.06;
@@ -69,10 +69,10 @@
     --code-shadow: var(--shadow-sm);
 
     /* ── Shadows ── */
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
-    --shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.12);
 
     /* ── Layout ── */
     --header-height: 64px;
