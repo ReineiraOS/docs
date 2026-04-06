@@ -57,7 +57,7 @@ export default function ConditionPlugins() {
       <Breadcrumbs />
 
       <PageHeader
-        title="Gate Plugins"
+        title="Condition Resolvers"
         description="Build custom verification contracts that control when an Escrow releases funds — from zkTLS proofs and oracle feeds to prediction markets and time locks."
         readingTime="12 min read"
       />

@@ -196,7 +196,7 @@ export default function InsurancePolicies() {
           href="/docs/build/condition-resolvers"
           className="text-brand-primary font-medium hover:underline"
         >
-          Gate Plugins
+          Condition Resolvers
         </a>{" "}
         page). Insurance covers the case where a buyer disputes a PayPal
         transaction after the seller already redeemed crypto.

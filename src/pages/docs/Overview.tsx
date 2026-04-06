@@ -338,7 +338,7 @@ export default function Overview() {
             icon: Brain,
           },
           {
-            title: "Gate Plugins",
+            title: "Condition Resolvers",
             description:
               "Build custom verification logic for conditional settlement.",
             href: "/docs/build/condition-resolvers",
