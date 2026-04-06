@@ -53,51 +53,33 @@ const App = () => (
     <ScrollToTop />
     <Routes>
       <Route path="/" element={<DocsHub />} />
-
       {/* Get Started */}
       <Route path="/get-started/overview" element={<Overview />} />
       <Route path="/get-started/quick-start" element={<QuickStart />} />
-
       {/* Developer Tools */}
       <Route
         path="/developer-tools/builder-journey"
         element={<BuilderJourney />}
       />
       <Route path="/developer-tools/atlas" element={<ReineiraAtlas />} />
-      <Route
-        path="/developer-tools/reineira-code"
-        element={<ReineiraCode />}
-      />
+      <Route path="/developer-tools/reineira-code" element={<ReineiraCode />} />
       <Route
         path="/developer-tools/platform-modules"
         element={<PlatformModules />}
       />
-
       {/* Legacy redirects */}
       <Route path="/get-started/atlas" element={<ReineiraAtlas />} />
-      <Route
-        path="/get-started/reineira-code"
-        element={<ReineiraCode />}
-      />
-
+      <Route path="/get-started/reineira-code" element={<ReineiraCode />} />
       {/* Learn */}
       <Route path="/learn/mental-model" element={<MentalModel />} />
       <Route path="/learn/architecture" element={<Architecture />} />
       <Route path="/learn/privacy-model" element={<PrivacyModel />} />
       <Route path="/learn/security" element={<Security />} />
       <Route path="/learn/resilience" element={<Resilience />} />
-
       <Route path="/learn/economics" element={<Economics />} />
-
       {/* Build */}
-      <Route
-        path="/build/escrow-lifecycle"
-        element={<EscrowLifecycle />}
-      />
-      <Route
-        path="/build/condition-resolvers"
-        element={<ConditionPlugins />}
-      />
+      <Route path="/build/escrow-lifecycle" element={<EscrowLifecycle />} />
+      <Route path="/build/condition-resolvers" element={<ConditionPlugins />} />
       <Route
         path="/build/underwriter-policies"
         element={<InsurancePolicies />}
@@ -105,18 +87,10 @@ const App = () => (
       <Route path="/build/insurance-pools" element={<InsurancePools />} />
       <Route path="/build/cross-chain" element={<CrossChain />} />
       <Route path="/build/gas-performance" element={<GasPerformance />} />
-
       {/* Legacy redirects — Build */}
-      <Route
-        path="/build/condition-plugins"
-        element={<ConditionPlugins />}
-      />
-      <Route
-        path="/build/insurance-policies"
-        element={<InsurancePolicies />}
-      />
+      <Route path="/build/condition-plugins" element={<ConditionPlugins />} />
+      <Route path="/build/insurance-policies" element={<InsurancePolicies />} />
       <Route path="/operate/cross-chain" element={<CrossChain />} />
-
       {/* Operate */}
       <Route
         path="/operate/operator-network"
@@ -125,27 +99,21 @@ const App = () => (
       <Route
         path="/operate/coordinator-network"
         element={<CoordinatorNetwork />}
-      /> {/* legacy */}
+      />{" "}
+      {/* legacy */}
       <Route path="/operate/run-operator" element={<RunOperator />} />
-
       {/* API Reference */}
       <Route path="/reference/contracts" element={<Contracts />} />
       <Route path="/reference/sdk" element={<ReineiraSDK />} />
       <Route path="/reference/escrow-module" element={<EscrowModule />} />
-      <Route
-        path="/reference/insurance-module"
-        element={<InsuranceModule />}
-      />
+      <Route path="/reference/insurance-module" element={<InsuranceModule />} />
       <Route path="/reference/mcp-server" element={<McpServer />} />
-
       {/* Dynamic fallbacks for section hubs */}
       <Route path="/:section" element={<SectionPage />} />
       <Route path="/:section/:page" element={<SectionPage />} />
-
       {/* Legacy /docs prefix redirect */}
       <Route path="/docs/*" element={<LegacyDocsRedirect />} />
       <Route path="/docs" element={<Navigate to="/" replace />} />
-
       <Route path="*" element={<NotFound />} />
     </Routes>
   </BrowserRouter>

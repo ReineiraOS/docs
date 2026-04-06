@@ -80,9 +80,7 @@ export default function Header({
           aria-label="Documentation sections"
         >
           {navigation.map((section) => {
-            const isActive = location.pathname.startsWith(
-              `/${section.id}`,
-            );
+            const isActive = location.pathname.startsWith(`/${section.id}`);
             return (
               <Link
                 key={section.id}
