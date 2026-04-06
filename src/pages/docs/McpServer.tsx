@@ -21,7 +21,7 @@ const toc: TocItem[] = [
   { id: "combining", title: "Combining with ReineiraOS Code", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/reference/mcp-server");
+const { prev, next } = getPrevNext("/reference/mcp-server");
 
 const toolColumns = [
   { header: "Tool", key: "tool", mono: true, width: "200px" },
@@ -218,7 +218,7 @@ export default function McpServer() {
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         For the best development experience, use the MCP server alongside{" "}
         <a
-          href="/docs/get-started/reineira-code"
+          href="/get-started/reineira-code"
           className="text-brand-primary font-medium hover:underline"
         >
           ReineiraOS Code
@@ -256,13 +256,13 @@ export default function McpServer() {
             title: "ReineiraOS Code",
             description:
               "AI-assisted development environment for building plugins.",
-            href: "/docs/get-started/reineira-code",
+            href: "/get-started/reineira-code",
             icon: Code2,
           },
           {
             title: "Contracts Reference",
             description: "Deployed contract addresses and ABIs.",
-            href: "/docs/reference/contracts",
+            href: "/reference/contracts",
             icon: BookOpen,
           },
         ]}

@@ -28,7 +28,7 @@ const toc: TocItem[] = [
   { id: "circuit-breakers", title: "Circuit breakers", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/learn/resilience");
+const { prev, next } = getPrevNext("/learn/resilience");
 
 const maliciousResolverColumns = [
   { header: "Failure mode", key: "mode", width: "180px" },

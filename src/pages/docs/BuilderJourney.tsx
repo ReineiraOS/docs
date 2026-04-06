@@ -28,7 +28,7 @@ const toc: TocItem[] = [
   { id: "next-steps", title: "Next steps", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/developer-tools/builder-journey");
+const { prev, next } = getPrevNext("/developer-tools/builder-journey");
 
 const repoColumns = [
   { header: "Repo", key: "repo", width: "180px" },
@@ -377,19 +377,19 @@ export default function BuilderJourney() {
             title: "Atlas",
             description:
               "Start here — write your brief and bootstrap your venture",
-            href: "/docs/developer-tools/atlas",
+            href: "/developer-tools/atlas",
             icon: Wrench,
           },
           {
             title: "Code",
             description: "Build custom Gates and Insurance Policies",
-            href: "/docs/developer-tools/reineira-code",
+            href: "/developer-tools/reineira-code",
             icon: Code2,
           },
           {
             title: "Platform Modules",
             description: "Explore the backend and React app starters",
-            href: "/docs/developer-tools/platform-modules",
+            href: "/developer-tools/platform-modules",
             icon: Layers,
           },
         ]}

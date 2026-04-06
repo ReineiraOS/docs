@@ -21,7 +21,7 @@ const toc: TocItem[] = [
   { id: "open-economy", title: "Open economy model", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/learn/mental-model");
+const { prev, next } = getPrevNext("/learn/mental-model");
 
 const buildingBlockColumns = [
   { header: "Primitive", key: "primitive", width: "140px" },

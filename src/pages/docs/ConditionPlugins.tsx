@@ -28,7 +28,7 @@ const toc: TocItem[] = [
   { id: "use-reineira-code", title: "Use ReineiraOS Code", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/build/condition-resolvers");
+const { prev, next } = getPrevNext("/build/condition-resolvers");
 
 const interfaceColumns = [
   { header: "Function", key: "fn", mono: true, width: "200px" },
@@ -1074,7 +1074,7 @@ export default function ConditionPlugins() {
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         The fastest way to build a resolver is with{" "}
         <a
-          href="/docs/developers/reineira-code"
+          href="/developers/reineira-code"
           className="text-brand-primary font-medium hover:underline"
         >
           ReineiraOS Code
@@ -1090,7 +1090,7 @@ export default function ConditionPlugins() {
             title: "ReineiraOS Code",
             description:
               "Generate production-ready resolvers with AI-assisted development",
-            href: "/docs/developers/reineira-code",
+            href: "/developers/reineira-code",
             icon: Code2,
           },
         ]}

@@ -17,7 +17,7 @@ const toc: TocItem[] = [
   { id: "status", title: "Status", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/developer-tools/reineira-code");
+const { prev, next } = getPrevNext("/developer-tools/reineira-code");
 
 export default function ReineiraCode() {
   return (
@@ -267,7 +267,7 @@ export default function ReineiraCode() {
           </code>{" "}
           connects them. See the{" "}
           <a
-            href="/docs/developer-tools/builder-journey"
+            href="/developer-tools/builder-journey"
             className="text-brand-primary hover:underline"
           >
             Builder Journey

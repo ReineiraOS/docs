@@ -20,7 +20,7 @@ const toc: TocItem[] = [
   { id: "next-steps", title: "Next steps", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/get-started/enterprise-checklist");
+const { prev, next } = getPrevNext("/get-started/enterprise-checklist");
 
 // -- Table data ---------------------------------------------------------------
 
@@ -142,28 +142,28 @@ export default function EnterpriseChecklist() {
             <li>
               Read the{" "}
               <a
-                href="/docs/get-started/overview"
+                href="/get-started/overview"
                 className="text-brand-primary font-medium hover:underline"
               >
                 Overview
               </a>
               ,{" "}
               <a
-                href="/docs/learn/mental-model"
+                href="/learn/mental-model"
                 className="text-brand-primary font-medium hover:underline"
               >
                 Mental Model
               </a>
               ,{" "}
               <a
-                href="/docs/learn/architecture"
+                href="/learn/architecture"
                 className="text-brand-primary font-medium hover:underline"
               >
                 Architecture
               </a>
               , and{" "}
               <a
-                href="/docs/learn/privacy-model"
+                href="/learn/privacy-model"
                 className="text-brand-primary font-medium hover:underline"
               >
                 Privacy Model
@@ -195,7 +195,7 @@ export default function EnterpriseChecklist() {
             <li>
               Complete the{" "}
               <a
-                href="/docs/get-started/quick-start"
+                href="/get-started/quick-start"
                 className="text-brand-primary font-medium hover:underline"
               >
                 Quick Start
@@ -205,7 +205,7 @@ export default function EnterpriseChecklist() {
             <li>
               Set up{" "}
               <a
-                href="/docs/developers/reineira-code"
+                href="/developers/reineira-code"
                 className="text-brand-primary font-medium hover:underline"
               >
                 ReineiraOS Code
@@ -222,7 +222,7 @@ export default function EnterpriseChecklist() {
             <li>
               Implement the full{" "}
               <a
-                href="/docs/build/escrow-lifecycle"
+                href="/build/escrow-lifecycle"
                 className="text-brand-primary font-medium hover:underline"
               >
                 escrow lifecycle
@@ -232,7 +232,7 @@ export default function EnterpriseChecklist() {
             <li>
               Integrate{" "}
               <a
-                href="/docs/operate/cross-chain"
+                href="/operate/cross-chain"
                 className="text-brand-primary font-medium hover:underline"
               >
                 cross-chain settlement
@@ -242,7 +242,7 @@ export default function EnterpriseChecklist() {
             <li>
               Configure{" "}
               <a
-                href="/docs/build/insurance-policies"
+                href="/build/insurance-policies"
                 className="text-brand-primary font-medium hover:underline"
               >
                 insurance policies
@@ -294,7 +294,7 @@ export default function EnterpriseChecklist() {
             <li>
               Review the{" "}
               <a
-                href="/docs/learn/privacy-model"
+                href="/learn/privacy-model"
                 className="text-brand-primary font-medium hover:underline"
               >
                 privacy model
@@ -382,7 +382,7 @@ export default function EnterpriseChecklist() {
           A comprehensive third-party audit is planned prior to production
           launch. Follow the{" "}
           <a
-            href="/docs/learn/security"
+            href="/learn/security"
             className="text-brand-primary font-medium hover:underline"
           >
             Security
@@ -422,13 +422,13 @@ export default function EnterpriseChecklist() {
           {
             title: "Overview",
             description: "Understand what ReineiraOS is and how it works.",
-            href: "/docs/get-started/overview",
+            href: "/get-started/overview",
             icon: BookOpen,
           },
           {
             title: "Quick Start",
             description: "Deploy your first Escrow in under 5 minutes.",
-            href: "/docs/get-started/quick-start",
+            href: "/get-started/quick-start",
             icon: Rocket,
           },
         ]}

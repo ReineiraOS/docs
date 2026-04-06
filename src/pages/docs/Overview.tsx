@@ -24,7 +24,7 @@ const toc: TocItem[] = [
   { id: "next-steps", title: "Next steps", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/get-started/overview");
+const { prev, next } = getPrevNext("/get-started/overview");
 
 // -- Table data ---------------------------------------------------------------
 
@@ -328,20 +328,20 @@ export default function Overview() {
           {
             title: "Quick Start",
             description: "Deploy your first Escrow in under 5 minutes.",
-            href: "/docs/get-started/quick-start",
+            href: "/get-started/quick-start",
             icon: Rocket,
           },
           {
             title: "Mental Model",
             description: "Core primitives: Escrow, Gate, Insurance, Operators.",
-            href: "/docs/learn/mental-model",
+            href: "/learn/mental-model",
             icon: Brain,
           },
           {
             title: "Condition Resolvers",
             description:
               "Build custom verification logic for conditional settlement.",
-            href: "/docs/build/condition-resolvers",
+            href: "/build/condition-resolvers",
             icon: Puzzle,
           },
         ]}

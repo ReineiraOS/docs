@@ -28,7 +28,7 @@ const toc: TocItem[] = [
   { id: "sustainability", title: "Sustainability model", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/learn/economics");
+const { prev, next } = getPrevNext("/learn/economics");
 
 /* ---- table data ---- */
 

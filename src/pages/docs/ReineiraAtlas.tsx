@@ -26,7 +26,7 @@ const toc: TocItem[] = [
   { id: "status", title: "Status", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/developer-tools/atlas");
+const { prev, next } = getPrevNext("/developer-tools/atlas");
 
 const agentColumns = [
   { header: "Agent", key: "agent", width: "180px" },

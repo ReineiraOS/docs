@@ -19,7 +19,7 @@ const toc: TocItem[] = [
   { id: "data-flow", title: "Data flow", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/learn/architecture");
+const { prev, next } = getPrevNext("/learn/architecture");
 
 const layerColumns = [
   { header: "Layer", key: "layer", width: "160px" },

@@ -20,7 +20,7 @@ const toc: TocItem[] = [
   },
 ];
 
-const { prev, next } = getPrevNext("/docs/learn/privacy-model");
+const { prev, next } = getPrevNext("/learn/privacy-model");
 
 const encryptedColumns = [
   { header: "Data", key: "data", width: "200px" },

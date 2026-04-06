@@ -16,7 +16,7 @@ const toc: TocItem[] = [
   { id: "known-limitations", title: "Known limitations (testnet)", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/learn/security");
+const { prev, next } = getPrevNext("/learn/security");
 
 const stakingColumns = [
   { header: "Parameter", key: "param", width: "200px" },

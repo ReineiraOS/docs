@@ -5,23 +5,23 @@ import { Home } from "lucide-react";
 export default function Breadcrumbs() {
   const location = useLocation();
   const parts = location.pathname.split("/").filter(Boolean);
-  // parts = ["docs", "section", "page"]
+  // parts = ["section", "page"]
 
   const crumbs: { label: string; href: string }[] = [
-    { label: "Docs", href: "/docs" },
+    { label: "Docs", href: "/" },
   ];
 
-  if (parts.length >= 2) {
-    const sectionId = parts[1];
+  if (parts.length >= 1) {
+    const sectionId = parts[0];
     const section = navigation.find((s) => s.id === sectionId);
     if (section) {
-      crumbs.push({ label: section.label, href: `/docs/${sectionId}` });
+      crumbs.push({ label: section.label, href: `/${sectionId}` });
     }
   }
 
-  if (parts.length >= 3) {
-    const sectionId = parts[1];
-    const pageSlug = parts[2];
+  if (parts.length >= 2) {
+    const sectionId = parts[0];
+    const pageSlug = parts[1];
     const section = navigation.find((s) => s.id === sectionId);
     const page = section?.pages.find((p) => p.slug === pageSlug);
     if (page) {

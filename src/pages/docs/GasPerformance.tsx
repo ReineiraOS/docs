@@ -33,7 +33,7 @@ const toc: TocItem[] = [
   { id: "full-cost-summary", title: "Full transaction cost summary", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/build/gas-performance");
+const { prev, next } = getPrevNext("/build/gas-performance");
 
 /* ---- table data ---- */
 

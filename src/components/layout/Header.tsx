@@ -54,7 +54,7 @@ export default function Header({
 
         {/* Logo */}
         <Link
-          to="/docs"
+          to="/"
           className="flex items-center shrink-0 text-[20px] font-bold tracking-[-0.02em] leading-none"
         >
           <span className="text-docs-text-primary">Reineira</span>
@@ -81,12 +81,12 @@ export default function Header({
         >
           {navigation.map((section) => {
             const isActive = location.pathname.startsWith(
-              `/docs/${section.id}`,
+              `/${section.id}`,
             );
             return (
               <Link
                 key={section.id}
-                to={`/docs/${section.id}`}
+                to={`/${section.id}`}
                 className={`px-3 py-1.5 text-[13px] font-medium rounded-md transition-colors relative whitespace-nowrap ${
                   isActive
                     ? "text-brand-primary"

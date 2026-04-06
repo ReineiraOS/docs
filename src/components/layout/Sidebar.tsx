@@ -104,7 +104,7 @@ export default function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
   const activeSection = navigation.find(
     (s) =>
       s.pages.some((p) => p.href === location.pathname) ||
-      location.pathname.startsWith(`/docs/${s.id}`),
+      location.pathname.startsWith(`/${s.id}`),
   );
 
   return (

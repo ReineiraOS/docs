@@ -19,7 +19,7 @@ const toc: TocItem[] = [
   { id: "error-types", title: "Error types", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/reference/sdk");
+const { prev, next } = getPrevNext("/reference/sdk");
 
 const configProperties = [
   {

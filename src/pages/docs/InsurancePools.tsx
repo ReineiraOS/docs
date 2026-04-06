@@ -22,7 +22,7 @@ const toc: TocItem[] = [
   { id: "privacy", title: "Privacy", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/build/insurance-pools");
+const { prev, next } = getPrevNext("/build/insurance-pools");
 
 const lifecycleColumns = [
   { header: "Step", key: "step", width: "100px" },

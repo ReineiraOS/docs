@@ -231,7 +231,7 @@ const ecosystemRows = [
 ];
 
 export default function PlatformModules() {
-  const { prev, next } = getPrevNext("/docs/developer-tools/platform-modules");
+  const { prev, next } = getPrevNext("/developer-tools/platform-modules");
 
   return (
     <DocsLayout
@@ -758,19 +758,19 @@ export default function PlatformModules() {
           {
             title: "Builder Journey",
             description: "See how Atlas, Code, and Modules fit together",
-            href: "/docs/developer-tools/builder-journey",
+            href: "/developer-tools/builder-journey",
             icon: Layers,
           },
           {
             title: "Atlas",
             description: "Start here — bootstrap your venture",
-            href: "/docs/developer-tools/atlas",
+            href: "/developer-tools/atlas",
             icon: Globe,
           },
           {
             title: "Code",
             description: "Build custom Gates and Policies",
-            href: "/docs/developer-tools/reineira-code",
+            href: "/developer-tools/reineira-code",
             icon: Code2,
           },
         ]}
