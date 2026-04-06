@@ -25,6 +25,7 @@ const toc: TocItem[] = [
   { id: "configuration", title: "Configuration", level: 2 },
   { id: "environment-variables", title: "Environment variables", level: 3 },
   { id: "compatibility", title: "Compatibility", level: 3 },
+  { id: "deployment", title: "Deployment", level: 2 },
   { id: "atlas-integration", title: "Atlas integration", level: 2 },
   { id: "ecosystem", title: "Ecosystem", level: 2 },
 ];
@@ -138,40 +139,52 @@ const envColumns = [
 
 const envRows = [
   {
-    variable: "REINEIRA_SDK_KEY",
-    pkg: "backend",
-    required: "Yes",
-    desc: "ReineiraOS SDK private key",
-  },
-  {
-    variable: "DATABASE_URL",
-    pkg: "backend",
-    required: "Yes",
-    desc: "Database connection (Postgres, etc.)",
-  },
-  {
     variable: "JWT_SECRET",
     pkg: "backend",
     required: "Yes",
-    desc: "JWT signing secret",
+    desc: "JWT signing secret (minimum 32 characters)",
   },
   {
-    variable: "VITE_API_URL",
+    variable: "JWT_ISSUER",
+    pkg: "backend",
+    required: "Yes",
+    desc: "JWT issuer identifier",
+  },
+  {
+    variable: "ESCROW_CONTRACT_ADDRESS",
+    pkg: "backend",
+    required: "Yes",
+    desc: "Deployed ConfidentialEscrow contract address",
+  },
+  {
+    variable: "PUSDC_WRAPPER_ADDRESS",
+    pkg: "backend",
+    required: "Yes",
+    desc: "Deployed confidential USDC wrapper address",
+  },
+  {
+    variable: "VITE_API_BASE_URL",
     pkg: "app",
     required: "Yes",
-    desc: "Backend API endpoint",
+    desc: "Backend API endpoint (default: /api)",
   },
   {
-    variable: "VITE_ZERODEV_PROJECT_ID",
+    variable: "VITE_ZERODEV_BUNDLER_URL",
     pkg: "app",
     required: "Yes",
-    desc: "ZeroDev project ID for smart accounts",
+    desc: "ZeroDev bundler RPC endpoint for smart accounts",
   },
   {
-    variable: "VITE_WALLETCONNECT_PROJECT_ID",
+    variable: "VITE_ZERODEV_PASSKEY_SERVER_URL",
+    pkg: "app",
+    required: "Yes",
+    desc: "ZeroDev passkey server for WebAuthn registration",
+  },
+  {
+    variable: "VITE_COFHE_RPC_URL",
     pkg: "app",
     required: "No",
-    desc: "WalletConnect for external wallets",
+    desc: "CoFHE RPC endpoint (default: Arbitrum Sepolia)",
   },
   {
     variable: "VITE_CHAIN_ID",
@@ -571,6 +584,110 @@ export default function PlatformModules() {
       </h3>
 
       <DocsTable columns={compatColumns} rows={compatRows} />
+
+      {/* ── Deployment ────────────────────────────────────────────────── */}
+      <h2
+        id="deployment"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Deployment
+      </h2>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Both packages include{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          vercel.json
+        </code>{" "}
+        configs optimized for Vercel deployment from a monorepo. Each package
+        deploys as a separate Vercel project pointing to the same repo.
+      </p>
+
+      <Steps>
+        <Step title="Backend — create Vercel project">
+          <p className="text-docs-text-secondary mb-2">
+            Set the root directory to{" "}
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              packages/backend
+            </code>
+            . The included{" "}
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              vercel.json
+            </code>{" "}
+            handles monorepo install, build, API rewrites, and CORS headers
+            automatically.
+          </p>
+          <CodeBlock
+            filename="vercel.json (already included)"
+            language="json"
+            showLineNumbers={false}
+            lines={[
+              { content: "{" },
+              {
+                content:
+                  '  "installCommand": "cd ../.. && pnpm install --frozen-lockfile",',
+              },
+              { content: '  "buildCommand": "pnpm run build",' },
+              {
+                content:
+                  '  "rewrites": [{ "source": "/api/(.*)", "destination": "/api/$1" }]',
+              },
+              { content: "}" },
+            ]}
+          />
+        </Step>
+        <Step title="App — create second Vercel project">
+          <p className="text-docs-text-secondary mb-2">
+            Set the root directory to{" "}
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              packages/app
+            </code>
+            . The config includes SPA rewrites and COOP/COEP headers required
+            for WebAuthn passkey authentication.
+          </p>
+          <CodeBlock
+            filename="vercel.json (already included)"
+            language="json"
+            showLineNumbers={false}
+            lines={[
+              { content: "{" },
+              {
+                content:
+                  '  "installCommand": "cd ../.. && pnpm install --frozen-lockfile",',
+              },
+              { content: '  "buildCommand": "pnpm run build",' },
+              { content: '  "outputDirectory": "dist",' },
+              { content: '  "headers": [{ "source": "/(.*)", "headers": [' },
+              {
+                content:
+                  '    { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" },',
+              },
+              {
+                content:
+                  '    { "key": "Cross-Origin-Embedder-Policy", "value": "require-corp" }',
+              },
+              { content: "  ]}]" },
+              { content: "}" },
+            ]}
+          />
+        </Step>
+        <Step title="Set environment variables">
+          <p className="text-docs-text-secondary">
+            Add the environment variables from the table above to each Vercel
+            project. Backend variables go to the backend project, app variables
+            go to the app project. Contract addresses can be queried from the
+            MCP server or the protocol docs.
+          </p>
+        </Step>
+      </Steps>
+
+      <Callout variant="info" title="Other platforms">
+        <p>
+          The modules work on any platform that supports Node.js. The backend
+          deploys as standard serverless functions (Netlify, AWS Lambda,
+          Railway, Fly.io). The app builds to static files (Cloudflare Pages,
+          AWS Amplify, any CDN).
+        </p>
+      </Callout>
 
       {/* ── Atlas integration ──────────────────────────────────────────── */}
       <h2
