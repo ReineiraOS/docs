@@ -21,7 +21,7 @@ const toc: TocItem[] = [
   { id: "iunderwriterpolicy", title: "IUnderwriterPolicy", level: 3 },
 ];
 
-const { prev, next } = getPrevNext("/docs/reference/contracts");
+const { prev, next } = getPrevNext("/reference/contracts");
 
 const contractColumns = [
   { header: "Contract", key: "name", width: "260px" },

@@ -18,7 +18,7 @@ const toc: TocItem[] = [
   { id: "current-limitations", title: "Current limitations", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/operate/coordinator-network");
+const { prev, next } = getPrevNext("/operate/operator-network");
 
 const apiColumns = [
   { header: "Method", key: "method", mono: true, width: "80px" },

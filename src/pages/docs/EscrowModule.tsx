@@ -21,7 +21,7 @@ const toc: TocItem[] = [
   { id: "events", title: "Events", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/reference/escrow-module");
+const { prev, next } = getPrevNext("/reference/escrow-module");
 
 const createProperties = [
   {

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import {
   Rocket,
   BookOpen,
+  Wrench,
   Hammer,
   Settings,
   Code2,
@@ -14,6 +15,7 @@ import type { LucideIcon } from "lucide-react";
 const sectionIconMap: Record<string, LucideIcon> = {
   Rocket,
   BookOpen,
+  Wrench,
   Hammer,
   Settings,
   Code2,
@@ -21,6 +23,7 @@ const sectionIconMap: Record<string, LucideIcon> = {
 
 const sectionColors: Record<string, string> = {
   "get-started": "text-brand-primary",
+  "developer-tools": "text-[hsl(var(--tip-text))]",
   learn: "text-[hsl(271_81%_55%)]",
   build: "text-[hsl(var(--warning-text))]",
   operate: "text-[hsl(var(--tip-text))]",
@@ -57,7 +60,7 @@ export default function DocsHub() {
             return (
               <Link
                 key={section.id}
-                to={`/docs/${section.id}`}
+                to={`/${section.id}`}
                 className="group flex flex-col bg-docs-bg-page border border-docs-border-default rounded-xl p-6 transition-colors duration-200 hover:border-brand-primary"
               >
                 <div className={`mb-3 ${colorClass}`}>
@@ -86,14 +89,14 @@ export default function DocsHub() {
           </h2>
           <div className="flex flex-wrap gap-2">
             {[
-              { label: "Quick Start", href: "/docs/get-started/quick-start" },
-              { label: "Architecture", href: "/docs/learn/architecture" },
+              { label: "Quick Start", href: "/get-started/quick-start" },
+              { label: "Architecture", href: "/learn/architecture" },
               {
                 label: "Escrow Lifecycle",
-                href: "/docs/build/escrow-lifecycle",
+                href: "/build/escrow-lifecycle",
               },
-              { label: "ReineiraSDK", href: "/docs/reference/sdk" },
-              { label: "Contracts", href: "/docs/reference/contracts" },
+              { label: "ReineiraSDK", href: "/reference/sdk" },
+              { label: "Contracts", href: "/reference/contracts" },
             ].map((link) => (
               <Link
                 key={link.href}

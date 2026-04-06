@@ -21,7 +21,7 @@ const toc: TocItem[] = [
   { id: "unbonding", title: "Unbonding", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/operate/run-operator");
+const { prev, next } = getPrevNext("/operate/run-operator");
 
 const requirementColumns = [
   { header: "Requirement", key: "req", width: "160px" },

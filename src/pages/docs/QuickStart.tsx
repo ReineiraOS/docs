@@ -27,7 +27,7 @@ const toc: TocItem[] = [
   { id: "next-steps", title: "Next steps", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/get-started/quick-start");
+const { prev, next } = getPrevNext("/get-started/quick-start");
 
 // ── Code content ──────────────────────────────────────────────────────────────
 
@@ -473,7 +473,7 @@ export default function QuickStart() {
             operator contracts. Insurance contracts have interfaces defined.
             Third-party audit is planned. See{" "}
             <a
-              href="/docs/learn/security"
+              href="/learn/security"
               className="text-brand-primary font-medium hover:underline"
             >
               Security
@@ -515,30 +515,30 @@ export default function QuickStart() {
       <LinkCard
         items={[
           {
-            title: "Gate Plugins",
+            title: "Condition Resolvers",
             description:
               "Build custom verification logic for conditional settlement.",
-            href: "/docs/build/condition-plugins",
+            href: "/build/condition-resolvers",
             icon: Code2,
           },
           {
             title: "Escrow Lifecycle",
             description: "Full state machine and event reference.",
-            href: "/docs/build/escrow-lifecycle",
+            href: "/build/escrow-lifecycle",
             icon: BookOpen,
           },
           {
             title: "Architecture",
             description:
               "How the FHE, storage, and operator layers fit together.",
-            href: "/docs/learn/architecture",
+            href: "/learn/architecture",
             icon: Rocket,
             badge: "Deep dive",
           },
           {
             title: "ReineiraSDK Reference",
             description: "Complete TypeScript API documentation.",
-            href: "/docs/reference/sdk",
+            href: "/reference/sdk",
             icon: Code2,
           },
         ]}

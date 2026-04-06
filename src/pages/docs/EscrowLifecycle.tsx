@@ -20,7 +20,7 @@ const toc: TocItem[] = [
   { id: "events", title: "Events reference", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/build/escrow-lifecycle");
+const { prev, next } = getPrevNext("/build/escrow-lifecycle");
 
 const stateColumns = [
   { header: "State", key: "state", width: "140px" },

@@ -17,194 +17,233 @@ const toc: TocItem[] = [
   { id: "getting-started", title: "Getting started", level: 2 },
   { id: "backend-module", title: "Backend module", level: 2 },
   { id: "backend-features", title: "Backend features", level: 3 },
-  { id: "backend-deployment", title: "Backend deployment", level: 3 },
+  { id: "backend-layers", title: "Backend layers", level: 3 },
   { id: "app-module", title: "App module", level: 2 },
   { id: "app-features", title: "App features", level: 3 },
   { id: "application-layers", title: "Application layers", level: 3 },
   { id: "auth-flow", title: "Auth flow", level: 3 },
-  { id: "payment-link-module", title: "Payment Link module", level: 2 },
-  { id: "payment-link-features", title: "Payment Link features", level: 3 },
-  { id: "payment-flow", title: "Payment flow", level: 3 },
-  { id: "store-architecture", title: "Store architecture", level: 3 },
   { id: "configuration", title: "Configuration", level: 2 },
-  { id: "reineira-json", title: "reineira.json", level: 3 },
   { id: "environment-variables", title: "Environment variables", level: 3 },
+  { id: "compatibility", title: "Compatibility", level: 3 },
   { id: "deployment", title: "Deployment", level: 2 },
+  { id: "atlas-integration", title: "Atlas integration", level: 2 },
   { id: "ecosystem", title: "Ecosystem", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/build/platform-modules");
-
 const packageColumns = [
-  { header: "Package", key: "package", width: "260px" },
+  { header: "Package", key: "package", width: "160px" },
+  { header: "Name", key: "name", width: "240px" },
   { header: "Stack", key: "stack" },
   { header: "Purpose", key: "purpose" },
 ];
 
 const packageRows = [
   {
-    package: "@reineira-os/modules-backend",
-    stack: "TypeScript, Clean Architecture, Vercel-ready, DB-agnostic",
-    purpose:
-      "Backend API — order management, webhook handlers, SDK orchestration",
+    package: "backend",
+    name: "@reineira-os/modules-backend",
+    stack: "TypeScript + Clean Architecture",
+    purpose: "Backend API (Vercel-ready, DB-agnostic)",
   },
   {
-    package: "@reineira-os/modules-app",
-    stack: "Vue 3, ZeroDev smart accounts, passkey auth",
-    purpose: "Platform app — the dashboard your users interact with",
-  },
-  {
-    package: "@reineira-os/modules-payment-link",
-    stack: "Vue 3, Wagmi, RainbowKit, CCTP v2",
-    purpose:
-      "Shareable payment link — external payers fund escrows cross-chain",
+    package: "app",
+    name: "@reineira-os/modules-app",
+    stack: "React 19 + Vite + ZeroDev",
+    purpose: "Platform dashboard with smart accounts",
   },
 ];
 
-const storeColumns = [
-  { header: "Store", key: "store", mono: true, width: "160px" },
+const backendLayerColumns = [
+  { header: "Layer", key: "layer", width: "160px" },
+  { header: "Directory", key: "directory", mono: true, width: "200px" },
   { header: "Responsibility", key: "responsibility" },
 ];
 
-const storeRows = [
+const backendLayerRows = [
   {
-    store: "invoiceStore",
-    responsibility:
-      "Fetches and holds invoice/escrow metadata from the backend",
+    layer: "Domain",
+    directory: "src/domain/",
+    responsibility: "Business entities, value objects, repository interfaces",
   },
   {
-    store: "paymentStore",
-    responsibility:
-      "Manages payment transaction state — pending, confirming, settled",
+    layer: "Application",
+    directory: "src/application/",
+    responsibility: "Use cases, DTOs, mappers",
   },
   {
-    store: "walletStore",
-    responsibility:
-      "Tracks connected wallet address, chain, and connection status",
+    layer: "Infrastructure",
+    directory: "src/infrastructure/",
+    responsibility: "Database repos, auth services, webhooks, FHE",
   },
   {
-    store: "chainStore",
-    responsibility: "Lists supported chains, handles chain switching",
+    layer: "Interface",
+    directory: "src/interface/",
+    responsibility: "API handlers, request/response DTOs, routing",
   },
   {
-    store: "balanceStore",
-    responsibility: "Reads USDC balance on the connected chain",
+    layer: "Core",
+    directory: "src/core/",
+    responsibility: "Shared utilities, config, error handling",
+  },
+];
+
+const appLayerColumns = [
+  { header: "Layer", key: "layer", width: "160px" },
+  { header: "Directory", key: "directory", mono: true, width: "200px" },
+  { header: "Responsibility", key: "responsibility" },
+];
+
+const appLayerRows = [
+  {
+    layer: "Routes",
+    directory: "src/routes/",
+    responsibility: "Page components (TanStack Router file-based)",
+  },
+  {
+    layer: "Components",
+    directory: "src/components/",
+    responsibility: "UI components (shadcn/ui + feature components)",
+  },
+  {
+    layer: "Stores",
+    directory: "src/stores/",
+    responsibility: "Zustand state management",
+  },
+  {
+    layer: "Services",
+    directory: "src/services/",
+    responsibility: "Business logic (escrow, transaction, withdrawal)",
+  },
+  {
+    layer: "Hooks",
+    directory: "src/hooks/",
+    responsibility: "Custom React hooks (auth, contract calls, flows)",
+  },
+  {
+    layer: "Providers",
+    directory: "src/providers/",
+    responsibility: "Context providers (ZeroDev, wallet)",
+  },
+  {
+    layer: "HTTP Client",
+    directory: "src/http-client/",
+    responsibility: "Axios-based API client with typed endpoints",
   },
 ];
 
 const envColumns = [
   { header: "Variable", key: "variable", mono: true, width: "260px" },
-  { header: "Package", key: "pkg", width: "140px" },
+  { header: "Package", key: "pkg", width: "120px" },
+  { header: "Required", key: "required", width: "80px" },
   { header: "Description", key: "desc" },
 ];
 
 const envRows = [
   {
-    variable: "REINEIRA_SDK_KEY",
-    pkg: "backend",
-    desc: "SDK API key for escrow and insurance operations",
-  },
-  {
-    variable: "DATABASE_URL",
-    pkg: "backend",
-    desc: "Connection string for your database of choice",
-  },
-  {
     variable: "JWT_SECRET",
     pkg: "backend",
-    desc: "Secret for signing authentication tokens",
+    required: "Yes",
+    desc: "JWT signing secret (minimum 32 characters)",
   },
   {
-    variable: "VITE_API_URL",
-    pkg: "app, payment-link",
-    desc: "Backend API base URL",
+    variable: "JWT_ISSUER",
+    pkg: "backend",
+    required: "Yes",
+    desc: "JWT issuer identifier",
   },
   {
-    variable: "VITE_ZERODEV_PROJECT_ID",
+    variable: "ESCROW_CONTRACT_ADDRESS",
+    pkg: "backend",
+    required: "Yes",
+    desc: "Deployed ConfidentialEscrow contract address",
+  },
+  {
+    variable: "PUSDC_WRAPPER_ADDRESS",
+    pkg: "backend",
+    required: "Yes",
+    desc: "Deployed confidential USDC wrapper address",
+  },
+  {
+    variable: "VITE_API_BASE_URL",
     pkg: "app",
-    desc: "ZeroDev project ID for smart account creation",
+    required: "Yes",
+    desc: "Backend API endpoint (default: /api)",
   },
   {
-    variable: "VITE_WALLETCONNECT_PROJECT_ID",
-    pkg: "payment-link",
-    desc: "WalletConnect project ID for RainbowKit",
+    variable: "VITE_ZERODEV_BUNDLER_URL",
+    pkg: "app",
+    required: "Yes",
+    desc: "ZeroDev bundler RPC endpoint for smart accounts",
+  },
+  {
+    variable: "VITE_ZERODEV_PASSKEY_SERVER_URL",
+    pkg: "app",
+    required: "Yes",
+    desc: "ZeroDev passkey server for WebAuthn registration",
+  },
+  {
+    variable: "VITE_COFHE_RPC_URL",
+    pkg: "app",
+    required: "No",
+    desc: "CoFHE RPC endpoint (default: Arbitrum Sepolia)",
   },
   {
     variable: "VITE_CHAIN_ID",
-    pkg: "app, payment-link",
-    desc: "Default chain ID for the escrow network",
-  },
-];
-
-const deployColumns = [
-  { header: "Package", key: "package", width: "200px" },
-  { header: "Recommended", key: "recommended" },
-  { header: "Alternatives", key: "alternatives" },
-];
-
-const deployRows = [
-  {
-    package: "modules-backend",
-    recommended: "Vercel (serverless functions)",
-    alternatives: "AWS Lambda, Railway, Fly.io, any Node.js host",
-  },
-  {
-    package: "modules-app",
-    recommended: "Vercel (static + SSR)",
-    alternatives: "Netlify, Cloudflare Pages, AWS Amplify",
-  },
-  {
-    package: "modules-payment-link",
-    recommended: "Vercel (static)",
-    alternatives: "Netlify, Cloudflare Pages, S3 + CloudFront",
+    pkg: "app",
+    required: "No",
+    desc: "Target chain ID (default: 421614 Arbitrum Sepolia)",
   },
 ];
 
 const compatColumns = [
-  { header: "Component", key: "component", width: "140px" },
-  { header: "Requirement", key: "requirement" },
+  { header: "Requirement", key: "requirement", width: "200px" },
+  { header: "Version", key: "version" },
 ];
 
 const compatRows = [
-  { component: "Platform", requirement: "ReineiraOS 0.1" },
-  { component: "Node.js", requirement: "18+" },
-  { component: "pnpm", requirement: "9+" },
-  { component: "SDK", requirement: "@reineira-os/sdk ^0.1.0" },
+  { requirement: "Node.js", version: ">= 18.0.0" },
+  { requirement: "pnpm", version: ">= 10.0.0" },
+  { requirement: "ReineiraOS SDK", version: "^0.1.0" },
+  { requirement: "Platform version", version: "0.1" },
 ];
 
 const ecosystemColumns = [
-  { header: "Repo", key: "repo", width: "200px" },
+  { header: "Repo", key: "repo", width: "240px" },
   { header: "What you do there", key: "purpose" },
+  { header: "Platform", key: "platform", width: "100px" },
 ];
 
 const ecosystemRows = [
   {
     repo: "reineira-atlas",
-    purpose: "Run the startup — strategy, ops, growth, compliance, pitch decks",
+    purpose: "Plan the venture, bootstrap the app",
+    platform: "0.1",
   },
   {
     repo: "reineira-code",
-    purpose:
-      "Build smart contracts — condition resolvers, insurance policies, tests, deploy",
+    purpose: "Build Gates and Insurance Policies",
+    platform: "0.1",
   },
   {
     repo: "platform-modules (this repo)",
-    purpose: "Ship the product — backend API, platform app, payment link",
+    purpose: "Ship the product — backend + frontend",
+    platform: "0.1",
   },
 ];
 
 export default function PlatformModules() {
+  const { prev, next } = getPrevNext("/developer-tools/platform-modules");
+
   return (
     <DocsLayout
       toc={toc}
-      editHref="https://github.com/reineiraos/docs/edit/main/developers/platform-modules.mdx"
+      editHref="https://github.com/reineiraos/docs/edit/main/developer-tools/platform-modules.mdx"
     >
       <Breadcrumbs />
 
       <PageHeader
         title="Platform Modules"
-        description="A pnpm monorepo of production-ready application starters for ventures building on ReineiraOS. Backend API, platform app, and shareable payment link with cross-chain settlement."
-        readingTime="10 min read"
+        description="Plug-and-play backend and React app starters for ReineiraOS ventures."
+        readingTime="8 min"
       />
 
       {/* ── Architecture ───────────────────────────────────────────────── */}
@@ -216,22 +255,30 @@ export default function PlatformModules() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The monorepo is split into three independent packages that can be
-        deployed together or individually:
+        Platform Modules is a pnpm monorepo with two plug-and-play application
+        starters. Clone them, customize for your vertical, and ship on Vercel.
+        Atlas{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          /bootstrap
+        </code>{" "}
+        can scaffold these automatically from your venture brief.
       </p>
 
-      <CodeBlock
-        filename="project structure"
-        language="bash"
-        showLineNumbers={false}
-        lines={[
-          { content: "platform-modules/" },
-          { content: "  packages/" },
-          { content: "    backend/        @reineira-os/modules-backend" },
-          { content: "    app/            @reineira-os/modules-app" },
-          { content: "    payment-link/   @reineira-os/modules-payment-link" },
-          { content: "  reineira.json     Platform version & ecosystem links" },
-          { content: "  package.json      Workspace root" },
+      <ArchitectureDiagram
+        title="Monorepo structure"
+        steps={[
+          {
+            label: "platform-modules/",
+            sublabel: "pnpm workspace root",
+          },
+          {
+            label: "packages/backend",
+            sublabel: "@reineira-os/modules-backend",
+          },
+          {
+            label: "packages/app",
+            sublabel: "@reineira-os/modules-app",
+          },
         ]}
       />
 
@@ -245,48 +292,61 @@ export default function PlatformModules() {
         Getting started
       </h2>
 
-      <CodeBlock
-        filename="terminal"
-        language="bash"
-        showLineNumbers={false}
-        lines={[
-          {
-            content:
-              "git clone https://github.com/ReineiraOS/platform-modules.git",
-          },
-          { content: "cd platform-modules" },
-          { content: "pnpm install" },
-        ]}
-      />
+      <Steps>
+        <Step title="Clone and install">
+          <CodeBlock
+            filename="terminal"
+            language="bash"
+            showLineNumbers={false}
+            lines={[
+              {
+                content:
+                  "git clone git@github.com:ReineiraOS/platform-modules.git",
+              },
+              { content: "cd platform-modules" },
+              { content: "pnpm install" },
+            ]}
+          />
+        </Step>
 
-      <p className="text-docs-text-secondary leading-relaxed mb-4 mt-6">
-        Run any package in development mode:
-      </p>
+        <Step title="Run locally">
+          <CodeBlock
+            filename="terminal"
+            language="bash"
+            showLineNumbers={false}
+            lines={[
+              { content: "pnpm dev:backend    # Backend API" },
+              { content: "pnpm dev:app        # React app on port 4831" },
+            ]}
+          />
+        </Step>
 
-      <CodeBlock
-        filename="terminal"
-        language="bash"
-        showLineNumbers={false}
-        lines={[
-          { content: "pnpm dev:backend          # Backend dev server" },
-          { content: "pnpm dev:app              # Platform app (port 4831)" },
-          { content: "pnpm dev:payment-link     # Payment link app" },
-        ]}
-      />
+        <Step title="Build and test">
+          <CodeBlock
+            filename="terminal"
+            language="bash"
+            showLineNumbers={false}
+            lines={[
+              { content: "pnpm build          # Build all packages" },
+              { content: "pnpm test           # Run all tests" },
+              { content: "pnpm lint           # TypeScript type check" },
+              { content: "pnpm format:check   # Prettier check" },
+            ]}
+          />
+        </Step>
+      </Steps>
 
-      <p className="text-docs-text-secondary leading-relaxed mb-4 mt-6">
-        Build and test the entire workspace:
-      </p>
-
-      <CodeBlock
-        filename="terminal"
-        language="bash"
-        showLineNumbers={false}
-        lines={[
-          { content: "pnpm build                # Build all packages" },
-          { content: "pnpm test                 # Test all packages" },
-        ]}
-      />
+      <Callout variant="tip" title="Prefer Atlas bootstrap?">
+        <p>
+          If you're starting a new venture, use Atlas{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            /bootstrap
+          </code>{" "}
+          instead of cloning manually. It scaffolds a customized copy of these
+          modules with your venture name, entities, and branding already
+          configured.
+        </p>
+      </Callout>
 
       {/* ── Backend module ─────────────────────────────────────────────── */}
       <h2
@@ -300,40 +360,10 @@ export default function PlatformModules() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           @reineira-os/modules-backend
         </code>{" "}
-        is a TypeScript backend following Clean Architecture (DDD). It is
-        structured in five layers:
+        is a TypeScript backend following Clean Architecture (DDD). It ships as
+        serverless functions on Vercel with a DB-agnostic repository pattern so
+        you can swap data stores without touching business logic.
       </p>
-
-      <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-6">
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            Domain
-          </strong>{" "}
-          — entities, value objects, business rules
-        </li>
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            Application
-          </strong>{" "}
-          — use cases and service orchestration
-        </li>
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            Infrastructure
-          </strong>{" "}
-          — database adapters, SDK client, external integrations
-        </li>
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            Interface
-          </strong>{" "}
-          — HTTP routes, request validation, response serialization
-        </li>
-        <li>
-          <strong className="text-docs-text-primary font-semibold">Core</strong>{" "}
-          — shared utilities, error types, configuration
-        </li>
-      </ul>
 
       <h3
         id="backend-features"
@@ -345,73 +375,67 @@ export default function PlatformModules() {
       <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-6">
         <li>
           <strong className="text-docs-text-primary font-semibold">
-            DB-agnostic
+            Clean Architecture (DDD)
           </strong>{" "}
-          — repository pattern lets you swap Postgres, DynamoDB, Supabase,
-          Turso, or any store without touching business logic
+          — Domain, Application, Infrastructure, Interface, and Core layers with
+          clear separation of concerns
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">
-            SDK integration
+            DB-agnostic
           </strong>{" "}
-          — calls{" "}
+          — Repository pattern with Drizzle ORM. Swap Postgres (Neon), DynamoDB,
+          Supabase, Turso, or any data store
+        </li>
+        <li>
+          <strong className="text-docs-text-primary font-semibold">
+            ReineiraOS SDK integration
+          </strong>{" "}
+          — Escrow creation, funding, redemption, and insurance via{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            escrow.create()
+            @reineira-os/sdk
           </code>
-          ,{" "}
-          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            escrow.fund()
-          </code>
-          ,{" "}
-          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            escrow.redeem()
-          </code>
-          , and{" "}
-          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            insurance
-          </code>{" "}
-          methods through the ReineiraOS SDK
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">
             Webhook handlers
           </strong>{" "}
-          — endpoints for condition resolver callbacks and payment processor
-          notifications
+          — QuickNode blockchain event processing
+        </li>
+        <li>
+          <strong className="text-docs-text-primary font-semibold">
+            SIWE authentication
+          </strong>{" "}
+          — Sign-In with Ethereum for wallet-based auth
+        </li>
+        <li>
+          <strong className="text-docs-text-primary font-semibold">
+            JWT sessions
+          </strong>{" "}
+          — Stateless auth with JOSE
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">
             Vercel-ready
           </strong>{" "}
-          — deploy with{" "}
-          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            vercel deploy
-          </code>{" "}
-          out of the box, or target AWS Lambda, Railway, or any Node.js host
+          — Deploy as serverless functions with zero config
+        </li>
+        <li>
+          <strong className="text-docs-text-primary font-semibold">
+            OpenAPI generation
+          </strong>{" "}
+          — Auto-generated API schema from Zod validators
         </li>
       </ul>
 
       <h3
-        id="backend-deployment"
+        id="backend-layers"
         className="text-[20px] font-semibold tracking-[-0.01em] leading-[1.4] text-docs-text-primary mt-8 mb-3"
       >
-        Backend deployment
+        Backend layers
       </h3>
 
-      <CodeBlock
-        filename="terminal"
-        language="bash"
-        showLineNumbers={false}
-        lines={[
-          { content: "# Vercel (fastest path)" },
-          { content: "cd packages/backend" },
-          { content: "vercel deploy" },
-          { content: "" },
-          { content: "# Any Node.js host" },
-          { content: "pnpm --filter @reineira-os/modules-backend run build" },
-          { content: "node dist/index.js" },
-        ]}
-      />
+      <DocsTable columns={backendLayerColumns} rows={backendLayerRows} />
 
       {/* ── App module ─────────────────────────────────────────────────── */}
       <h2
@@ -425,8 +449,9 @@ export default function PlatformModules() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           @reineira-os/modules-app
         </code>{" "}
-        is a Vue 3 platform app — the dashboard your end users interact with to
-        manage escrows, view transactions, and trigger releases.
+        is a React 19 platform dashboard — the interface your end users interact
+        with to manage escrows, view transactions, and trigger releases. It uses
+        ZeroDev smart accounts for gasless, passwordless authentication.
       </p>
 
       <h3
@@ -439,28 +464,52 @@ export default function PlatformModules() {
       <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-6">
         <li>
           <strong className="text-docs-text-primary font-semibold">
-            ZeroDev ERC-4337 smart accounts
+            React 19
           </strong>{" "}
-          — gasless transactions via account abstraction, no seed phrases
+          — Latest React with TypeScript and Vite 6
+        </li>
+        <li>
+          <strong className="text-docs-text-primary font-semibold">
+            ZeroDev smart accounts
+          </strong>{" "}
+          — ERC-4337 account abstraction with gasless transactions
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">
             Passkey authentication
           </strong>{" "}
-          — WebAuthn passkeys create and sign with the smart account, then SIWE
-          produces a backend JWT
+          — WebAuthn passkeys for passwordless login
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">
-            Vue 3 + Vite + Pinia
+            Zustand state management
           </strong>{" "}
-          — reactive state management with hot module replacement
+          — Lightweight stores for transactions, withdrawals, wallet, chain, and
+          balance
+        </li>
+        <li>
+          <strong className="text-docs-text-primary font-semibold">
+            TanStack Router
+          </strong>{" "}
+          — Type-safe file-based routing
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">
             TailwindCSS
           </strong>{" "}
-          — utility-first styling, fully customizable to your brand
+          — Utility-first styling with shadcn/ui components
+        </li>
+        <li>
+          <strong className="text-docs-text-primary font-semibold">
+            TanStack React Query
+          </strong>{" "}
+          — Data fetching with caching and background refresh
+        </li>
+        <li>
+          <strong className="text-docs-text-primary font-semibold">
+            cofhe SDK
+          </strong>{" "}
+          — FHE encryption/decryption in the browser
         </li>
       </ul>
 
@@ -471,50 +520,7 @@ export default function PlatformModules() {
         Application layers
       </h3>
 
-      <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-6">
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            Views
-          </strong>{" "}
-          — page components mapped to routes
-        </li>
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            Router
-          </strong>{" "}
-          — Vue Router with auth guards
-        </li>
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            Stores
-          </strong>{" "}
-          — Pinia stores for escrow state, user session, wallet
-        </li>
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            Services
-          </strong>{" "}
-          — SDK wrappers and API clients
-        </li>
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            Composables
-          </strong>{" "}
-          — reusable Vue composition functions
-        </li>
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            Components
-          </strong>{" "}
-          — shared UI building blocks
-        </li>
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            Helpers
-          </strong>{" "}
-          — formatting, validation, constants
-        </li>
-      </ul>
+      <DocsTable columns={appLayerColumns} rows={appLayerRows} />
 
       <h3
         id="auth-flow"
@@ -523,119 +529,27 @@ export default function PlatformModules() {
         Auth flow
       </h3>
 
-      <Steps>
-        <Step title="User creates or selects a passkey (WebAuthn)">
-          <p className="text-docs-text-secondary">
-            The browser prompts for biometric or device-level authentication.
-          </p>
-        </Step>
-        <Step title="ZeroDev derives an ERC-4337 smart account from the passkey">
-          <p className="text-docs-text-secondary">
-            A deterministic smart account address is generated from the passkey
-            credential.
-          </p>
-        </Step>
-        <Step title="Smart account signs a SIWE message">
-          <p className="text-docs-text-secondary">
-            Sign-In with Ethereum authenticates the session.
-          </p>
-        </Step>
-        <Step title="Backend verifies the signature and returns a JWT">
-          <p className="text-docs-text-secondary">
-            The JWT is used for all subsequent API calls.
-          </p>
-        </Step>
-        <Step title="Authenticated session">
-          <p className="text-docs-text-secondary">
-            All subsequent API calls use the JWT for authentication.
-          </p>
-        </Step>
-      </Steps>
-
-      {/* ── Payment Link module ────────────────────────────────────────── */}
-      <h2
-        id="payment-link-module"
-        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
-      >
-        Payment Link module
-      </h2>
-
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-          @reineira-os/modules-payment-link
-        </code>{" "}
-        is a standalone Vue 3 app that renders a shareable payment page.
-        External parties — customers, counterparties, anyone with the link —
-        connect their own wallet and pay into an escrow.
-      </p>
-
-      <h3
-        id="payment-link-features"
-        className="text-[20px] font-semibold tracking-[-0.01em] leading-[1.4] text-docs-text-primary mt-8 mb-3"
-      >
-        Payment Link features
-      </h3>
-
-      <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-6">
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            Any wallet via RainbowKit
-          </strong>{" "}
-          — WalletConnect, MetaMask, Coinbase Wallet, and more
-        </li>
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            Wagmi integration
-          </strong>{" "}
-          — type-safe contract reads and writes
-        </li>
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            CCTP v2 cross-chain settlement
-          </strong>{" "}
-          — payers fund from any supported chain and Circle CCTP burns/mints
-          USDC to the escrow chain automatically
-        </li>
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            Invoice display
-          </strong>{" "}
-          — shows amount, currency, merchant details, and escrow conditions
-        </li>
-      </ul>
-
-      <h3
-        id="payment-flow"
-        className="text-[20px] font-semibold tracking-[-0.01em] leading-[1.4] text-docs-text-primary mt-8 mb-3"
-      >
-        Payment flow
-      </h3>
-
       <ArchitectureDiagram
-        title="PAYMENT LINK FLOW"
+        title="Passkey authentication"
         steps={[
-          { label: "Generate Link", sublabel: "Builder creates payment link" },
           {
-            label: "Connect Wallet",
-            sublabel: "Payer connects via RainbowKit",
+            label: "Create passkey",
+            sublabel: "WebAuthn registration",
           },
-          { label: "Detect Chain", sublabel: "App checks chain and balance" },
           {
-            label: "CCTP Bridge",
-            sublabel: "Cross-chain USDC transfer if needed",
+            label: "Derive smart account",
+            sublabel: "ZeroDev ERC-4337",
           },
-          { label: "Fund Escrow", sublabel: "USDC arrives and funds escrow" },
+          {
+            label: "Sign SIWE message",
+            sublabel: "Prove wallet ownership",
+          },
+          {
+            label: "Verify on backend",
+            sublabel: "Issue JWT session",
+          },
         ]}
       />
-
-      <h3
-        id="store-architecture"
-        className="text-[20px] font-semibold tracking-[-0.01em] leading-[1.4] text-docs-text-primary mt-8 mb-3"
-      >
-        Store architecture
-      </h3>
-
-      <DocsTable columns={storeColumns} rows={storeRows} />
 
       {/* ── Configuration ──────────────────────────────────────────────── */}
       <h2
@@ -644,56 +558,6 @@ export default function PlatformModules() {
       >
         Configuration
       </h2>
-
-      <h3
-        id="reineira-json"
-        className="text-[20px] font-semibold tracking-[-0.01em] leading-[1.4] text-docs-text-primary mt-8 mb-3"
-      >
-        reineira.json
-      </h3>
-
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Every platform-modules repo includes a{" "}
-        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-          reineira.json
-        </code>{" "}
-        at the root that declares platform compatibility:
-      </p>
-
-      <CodeBlock
-        filename="reineira.json"
-        language="typescript"
-        lines={[
-          { content: "{" },
-          { content: '  "name": "platform-modules",' },
-          { content: '  "version": "0.1.0",' },
-          { content: '  "platform": "0.1",' },
-          { content: '  "type": "modules",' },
-          { content: '  "packages": {' },
-          { content: '    "backend": "@reineira-os/modules-backend",' },
-          { content: '    "app": "@reineira-os/modules-app",' },
-          {
-            content: '    "payment-link": "@reineira-os/modules-payment-link"',
-          },
-          { content: "  }," },
-          { content: '  "compatibility": {' },
-          { content: '    "sdk": "^0.1.0",' },
-          { content: '    "node": ">=18.0.0"' },
-          { content: "  }" },
-          { content: "}" },
-        ]}
-      />
-
-      <Callout variant="warning" title="Version compatibility">
-        <p>
-          When the platform version bumps, breaking contract interface changes
-          may require upgrading. Check the{" "}
-          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            platform
-          </code>{" "}
-          field against the SDK version you are importing.
-        </p>
-      </Callout>
 
       <h3
         id="environment-variables"
@@ -707,12 +571,21 @@ export default function PlatformModules() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           .env
         </code>{" "}
-        file. Common variables across packages:
+        file. Required and optional variables:
       </p>
 
       <DocsTable columns={envColumns} rows={envRows} />
 
-      {/* ── Deployment ─────────────────────────────────────────────────── */}
+      <h3
+        id="compatibility"
+        className="text-[20px] font-semibold tracking-[-0.01em] leading-[1.4] text-docs-text-primary mt-8 mb-3"
+      >
+        Compatibility
+      </h3>
+
+      <DocsTable columns={compatColumns} rows={compatRows} />
+
+      {/* ── Deployment ────────────────────────────────────────────────── */}
       <h2
         id="deployment"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
@@ -721,16 +594,149 @@ export default function PlatformModules() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Each package deploys independently. Recommended targets:
+        Both packages include{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          vercel.json
+        </code>{" "}
+        configs optimized for Vercel deployment from a monorepo. Each package
+        deploys as a separate Vercel project pointing to the same repo.
       </p>
 
-      <DocsTable columns={deployColumns} rows={deployRows} />
+      <Steps>
+        <Step title="Backend — create Vercel project">
+          <p className="text-docs-text-secondary mb-2">
+            Set the root directory to{" "}
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              packages/backend
+            </code>
+            . The included{" "}
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              vercel.json
+            </code>{" "}
+            handles monorepo install, build, API rewrites, and CORS headers
+            automatically.
+          </p>
+          <CodeBlock
+            filename="vercel.json (already included)"
+            language="json"
+            showLineNumbers={false}
+            lines={[
+              { content: "{" },
+              {
+                content:
+                  '  "installCommand": "cd ../.. && pnpm install --frozen-lockfile",',
+              },
+              { content: '  "buildCommand": "pnpm run build",' },
+              {
+                content:
+                  '  "rewrites": [{ "source": "/api/(.*)", "destination": "/api/$1" }]',
+              },
+              { content: "}" },
+            ]}
+          />
+        </Step>
+        <Step title="App — create second Vercel project">
+          <p className="text-docs-text-secondary mb-2">
+            Set the root directory to{" "}
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              packages/app
+            </code>
+            . The config includes SPA rewrites and COOP/COEP headers required
+            for WebAuthn passkey authentication.
+          </p>
+          <CodeBlock
+            filename="vercel.json (already included)"
+            language="json"
+            showLineNumbers={false}
+            lines={[
+              { content: "{" },
+              {
+                content:
+                  '  "installCommand": "cd ../.. && pnpm install --frozen-lockfile",',
+              },
+              { content: '  "buildCommand": "pnpm run build",' },
+              { content: '  "outputDirectory": "dist",' },
+              { content: '  "headers": [{ "source": "/(.*)", "headers": [' },
+              {
+                content:
+                  '    { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" },',
+              },
+              {
+                content:
+                  '    { "key": "Cross-Origin-Embedder-Policy", "value": "require-corp" }',
+              },
+              { content: "  ]}]" },
+              { content: "}" },
+            ]}
+          />
+        </Step>
+        <Step title="Set environment variables">
+          <p className="text-docs-text-secondary">
+            Add the environment variables from the table above to each Vercel
+            project. Backend variables go to the backend project, app variables
+            go to the app project. Contract addresses can be queried from the
+            MCP server or the protocol docs.
+          </p>
+        </Step>
+      </Steps>
 
-      <h3 className="text-[20px] font-semibold tracking-[-0.01em] leading-[1.4] text-docs-text-primary mt-8 mb-3">
-        Compatibility requirements
-      </h3>
+      <Callout variant="info" title="Other platforms">
+        <p>
+          The modules work on any platform that supports Node.js. The backend
+          deploys as standard serverless functions (Netlify, AWS Lambda,
+          Railway, Fly.io). The app builds to static files (Cloudflare Pages,
+          AWS Amplify, any CDN).
+        </p>
+      </Callout>
 
-      <DocsTable columns={compatColumns} rows={compatRows} />
+      {/* ── Atlas integration ──────────────────────────────────────────── */}
+      <h2
+        id="atlas-integration"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Atlas integration
+      </h2>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Atlas{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          /bootstrap
+        </code>{" "}
+        is the recommended way to start with Platform Modules. When you run the
+        bootstrap command, Atlas reads your venture brief and:
+      </p>
+
+      <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-6">
+        <li>Clones platform-modules into your venture directory</li>
+        <li>Customizes package names and branding</li>
+        <li>
+          Generates data entities from your brief (backend domain models + app
+          stores)
+        </li>
+        <li>Wires API routes and React pages for your entities</li>
+        <li>Sets up environment templates with the right variables</li>
+        <li>
+          Creates the startup OS alongside (strategy docs, agents, slash
+          commands)
+        </li>
+      </ul>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        After bootstrap, run{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          /integrate
+        </code>{" "}
+        to connect your deployed smart contracts from reineira-code to the
+        scaffolded app — SDK calls, webhook handlers, and UI flows.
+      </p>
+
+      <Callout variant="info" title="Standalone usage">
+        <p>
+          You can also use platform-modules without Atlas. Clone the repo,
+          install dependencies, and customize manually. The modules are standard
+          TypeScript/React packages with no Atlas-specific dependencies.
+        </p>
+      </Callout>
 
       {/* ── Ecosystem ──────────────────────────────────────────────────── */}
       <h2
@@ -747,41 +753,25 @@ export default function PlatformModules() {
 
       <DocsTable columns={ecosystemColumns} rows={ecosystemRows} />
 
-      <p className="text-docs-text-secondary leading-relaxed mb-4 mt-6">
-        All repos declare their platform compatibility in{" "}
-        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-          reineira.json
-        </code>
-        . Start with{" "}
-        <a
-          href="/docs/developers/reineira-code"
-          className="text-brand-primary font-medium hover:underline"
-        >
-          ReineiraOS Code
-        </a>{" "}
-        for smart contracts, then use Platform Modules to build the product
-        layer on top.
-      </p>
-
       <LinkCard
         items={[
           {
-            title: "ReineiraOS Code",
-            description: "Build smart contracts with AI-assisted development.",
-            href: "/docs/developers/reineira-code",
-            icon: Code2,
-          },
-          {
-            title: "ReineiraOS Atlas",
-            description: "Run the startup — strategy, ops, growth, compliance.",
-            href: "/docs/developers/atlas",
+            title: "Builder Journey",
+            description: "See how Atlas, Code, and Modules fit together",
+            href: "/developer-tools/builder-journey",
             icon: Layers,
           },
           {
-            title: "ReineiraSDK",
-            description: "TypeScript SDK for escrow and insurance operations.",
-            href: "/docs/developers/sdk",
+            title: "Atlas",
+            description: "Start here — bootstrap your venture",
+            href: "/developer-tools/atlas",
             icon: Globe,
+          },
+          {
+            title: "Code",
+            description: "Build custom Gates and Policies",
+            href: "/developer-tools/reineira-code",
+            icon: Code2,
           },
         ]}
       />

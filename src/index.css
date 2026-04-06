@@ -5,14 +5,14 @@
 @layer base {
   :root {
     /* ── Backgrounds ── */
-    --bg-page: 0 0% 100%;
-    --bg-surface: 210 40% 98%;
-    --bg-surface-alt: 214 32% 96%;
-    --bg-sidebar: 210 20% 99%;
-    --bg-code: 214 32% 97%;
-    --bg-code-header: 214 27% 94%;
-    --bg-hover: 214 32% 96%;
-    --bg-active: 217 100% 61% / 0.06;
+    --bg-page: 220 20% 97%; /* #f4f6f8 — warm off-white */
+    --bg-surface: 0 0% 100%; /* #ffffff — content floats above page */
+    --bg-surface-alt: 216 20% 95%; /* #eef1f5 — alternate panels */
+    --bg-sidebar: 220 16% 94%; /* #ebeef2 — clearly distinct from page */
+    --bg-code: 220 16% 94%; /* #ebeef2 — matches sidebar tone */
+    --bg-code-header: 218 18% 91%; /* #e2e6ed — visible header */
+    --bg-hover: 217 20% 94%; /* #ebeef3 — hover state */
+    --bg-active: 217 100% 61% / 0.08;
 
     /* ── Brand ── */
     --brand-primary: 217 100% 61%;
@@ -30,9 +30,9 @@
     --text-on-brand: 0 0% 100%;
 
     /* ── Borders ── */
-    --border-default: 214 32% 91%;
-    --border-subtle: 214 32% 95%;
-    --border-strong: 215 25% 80%;
+    --border-default: 216 20% 88%; /* #d8dde5 — visible separation */
+    --border-subtle: 216 20% 92%; /* #e6eaf0 — soft dividers */
+    --border-strong: 215 20% 78%; /* #bcc5d0 — emphasis borders */
 
     /* ── Semantic — Callouts ── */
     --info-bg: 217 100% 61% / 0.06;
@@ -51,17 +51,17 @@
     --danger-border: 0 84% 60%;
     --danger-text: 0 70% 35%; /* #991b1b — 8.3:1 AAA */
 
-    /* ── Syntax Highlighting (contrast-tuned for light code bg) ── */
-    --syntax-keyword: #1a3a9c; /* deep blue — 9.2:1 */
-    --syntax-string: #065f46; /* deep emerald — 7.2:1 AAA */
-    --syntax-number: #783c0e; /* deep amber — 8.0:1 AAA */
-    --syntax-fhe: #5b21b6; /* deep purple — 8.4:1 AAA */
-    --syntax-comment: #4b5563; /* dark gray — 7.0:1 AAA */
-    --syntax-delimiter: #475569; /* slate — 7.1:1 AAA */
-    --syntax-variable: #1e293b; /* near-black — 13.6:1 */
-    --syntax-function: #1e40af; /* indigo — 8.1:1 AAA */
-    --syntax-property: #4b5563; /* slate — 7.0:1 AAA */
-    --syntax-punctuation: #475569; /* slate — 7.1:1 AAA */
+    /* ── Syntax Highlighting (vibrant, contrast-tuned for light code bg) ── */
+    --syntax-keyword: #0550ae; /* blue-700 — 7.9:1 */
+    --syntax-string: #0a3069; /* indigo-800 — 10.2:1 */
+    --syntax-number: #953800; /* orange-800 — 7.1:1 AAA */
+    --syntax-fhe: #6639a6; /* purple-700 — 6.3:1 AA */
+    --syntax-comment: #57606a; /* gray-600 — 6.0:1 AA */
+    --syntax-delimiter: #24292f; /* gray-900 — 14.7:1 */
+    --syntax-variable: #24292f; /* gray-900 — 14.7:1 */
+    --syntax-function: #0550ae; /* blue-700 — 7.9:1 */
+    --syntax-property: #0550ae; /* blue-700 — 7.9:1 */
+    --syntax-punctuation: #24292f; /* gray-900 — 14.7:1 */
     --syntax-highlight-line: 217 100% 61% / 0.06;
 
     /* ── Code Block ── */
@@ -69,10 +69,10 @@
     --code-shadow: var(--shadow-sm);
 
     /* ── Shadows ── */
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
-    --shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.12);
 
     /* ── Layout ── */
     --header-height: 64px;
@@ -125,7 +125,7 @@
     --bg-surface: 223 20% 13%; /* #1a1e28 — surface-raised */
     --bg-surface-alt: 220 13% 16%; /* #242830 — surface-panel */
     --bg-sidebar: 210 40% 4%; /* #060a0e — surface-deep */
-    --bg-code: 223 20% 13%; /* #1a1e28 — surface-raised */
+    --bg-code: 220 13% 15%; /* #222830 — slightly lifted from page bg */
     --bg-code-header: 213 29% 58% / 0.04; /* steel-4 */
     --bg-hover: 213 29% 58% / 0.08; /* steel-8 */
     --bg-active: 217 100% 62% / 0.12; /* blue-12 */
@@ -167,17 +167,17 @@
     --danger-border: 0 84% 60%;
     --danger-text: 0 80% 83%; /* #f4b4b4 — 10.8:1 */
 
-    /* ── Syntax Highlighting (from web-landing-app, contrast-tuned) ── */
-    --syntax-keyword: #78b8ff; /* saturated blue — 8.0:1 AAA */
-    --syntax-string: #88f0d0; /* mint-160 — 12.2:1 */
-    --syntax-number: #ffffff; /* white   — 16.7:1 */
-    --syntax-fhe: #a0d8ff; /* sky-205  — 10.9:1 */
-    --syntax-comment: #9ab0c4; /* steel solid — 7.4:1 AAA */
-    --syntax-delimiter: #d8e2ec; /* light steel — 12.7:1 */
-    --syntax-variable: #f0f6fc; /* near-white — 15.3:1 */
-    --syntax-function: #78b4f0; /* blue, distinct — 7.6:1 AAA */
-    --syntax-property: #c0d8f0; /* periwinkle — 11.4:1 */
-    --syntax-punctuation: #d8e2ec; /* light steel — 12.7:1 */
+    /* ── Syntax Highlighting (vibrant, contrast-tuned for dark code bg) ── */
+    --syntax-keyword: #79c0ff; /* blue-300 — 9.1:1 */
+    --syntax-string: #a5d6ff; /* blue-200 — 11.3:1 */
+    --syntax-number: #ffa657; /* orange-300 — 9.4:1 */
+    --syntax-fhe: #d2a8ff; /* purple-300 — 9.2:1 */
+    --syntax-comment: #8b949e; /* gray-400 — 6.5:1 AA */
+    --syntax-delimiter: #c9d1d9; /* gray-300 — 11.0:1 */
+    --syntax-variable: #e6edf3; /* gray-100 — 14.3:1 */
+    --syntax-function: #d2a8ff; /* purple-300 — 9.2:1 */
+    --syntax-property: #79c0ff; /* blue-300 — 9.1:1 */
+    --syntax-punctuation: #c9d1d9; /* gray-300 — 11.0:1 */
     --syntax-highlight-line: 217 100% 62% / 0.12;
 
     /* ── Code Block (from web-landing-app) ── */

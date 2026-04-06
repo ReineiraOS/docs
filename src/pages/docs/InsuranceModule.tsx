@@ -21,7 +21,7 @@ const toc: TocItem[] = [
   { id: "events", title: "Events", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/reference/insurance-module");
+const { prev, next } = getPrevNext("/reference/insurance-module");
 
 const poolColumns = [
   { header: "Method", key: "method", mono: true, width: "220px" },

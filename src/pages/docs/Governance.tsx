@@ -23,7 +23,7 @@ const toc: TocItem[] = [
   { id: "immutable-guarantees", title: "Immutable guarantees", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/learn/governance");
+const { prev, next } = getPrevNext("/learn/governance");
 
 const adminCanColumns = [
   { header: "Action", key: "action", width: "220px" },

@@ -24,7 +24,7 @@ const toc: TocItem[] = [
   { id: "revenue-opportunity", title: "The revenue opportunity", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/build/insurance-policies");
+const { prev, next } = getPrevNext("/build/underwriter-policies");
 
 const interfaceColumns = [
   { header: "Function", key: "fn", mono: true, width: "160px" },
@@ -193,10 +193,10 @@ export default function InsurancePolicies() {
         A real policy for a P2P marketplace where buyers pay sellers via PayPal
         (using the zkTLS resolver from the{" "}
         <a
-          href="/docs/build/condition-plugins"
+          href="/build/condition-resolvers"
           className="text-brand-primary font-medium hover:underline"
         >
-          Gate Plugins
+          Condition Resolvers
         </a>{" "}
         page). Insurance covers the case where a buyer disputes a PayPal
         transaction after the seller already redeemed crypto.

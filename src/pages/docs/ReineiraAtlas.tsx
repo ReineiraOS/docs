@@ -26,7 +26,7 @@ const toc: TocItem[] = [
   { id: "status", title: "Status", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/get-started/atlas");
+const { prev, next } = getPrevNext("/developer-tools/atlas");
 
 const agentColumns = [
   { header: "Agent", key: "agent", width: "180px" },
@@ -53,7 +53,7 @@ const agentRows = [
   {
     agent: "product-frontend",
     domain: "Product",
-    desc: "Vue 3 frontend development using the platform-modules app starter",
+    desc: "React 19 frontend development using the platform-modules app starter",
   },
   {
     agent: "product-backend",
@@ -124,7 +124,7 @@ const protocolCmdRows = [
 const productCmdRows = [
   {
     command: "/dev-frontend",
-    desc: "Frontend development (Vue 3 + ZeroDev)",
+    desc: "Frontend development (React 19 + ZeroDev)",
     agent: "product-frontend",
   },
   {
@@ -257,7 +257,7 @@ const ecosystemRows = [
   },
   {
     repo: "platform-modules",
-    purpose: "Ship the product: backend API, platform app, payment link",
+    purpose: "Ship the product: backend API + React 19 platform app",
     platform: "0.1",
   },
 ];
@@ -271,7 +271,7 @@ export default function ReineiraAtlas() {
       <Breadcrumbs />
 
       <PageHeader
-        title="ReineiraOS Atlas"
+        title="Atlas"
         description="The startup operating system for ventures building on ReineiraOS. Strategy, operations, growth, compliance, fundraising, and team coordination — powered by a 12-agent AI team."
         readingTime="12 min read"
       />
@@ -475,22 +475,30 @@ export default function ReineiraAtlas() {
             business.
           </p>
         </Step>
-        <Step title="Run the starter agent">
+        <Step title="Bootstrap your venture">
           <CodeBlock
             filename="terminal"
             language="bash"
             showLineNumbers={false}
             lines={[
               {
-                content:
-                  'claude "Read .claude/agents/_starter.md then read brief.md and execute the full setup."',
+                content: 'claude "/bootstrap"',
               },
             ]}
           />
           <p className="text-docs-text-secondary mt-3">
-            The starter agent reads your brief, populates all strategy documents
-            with your venture-specific context, configures the agent team, and
-            initializes your sprint log.
+            The{" "}
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              /bootstrap
+            </code>{" "}
+            command reads your brief, generates the full startup OS (strategy
+            docs, agent team, slash commands), and scaffolds a working
+            application from{" "}
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              platform-modules
+            </code>{" "}
+            — a React 19 frontend and TypeScript backend customized with your
+            venture name, entities, and branding. One command, full stack.
           </p>
         </Step>
         <Step title="Start using Atlas">

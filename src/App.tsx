@@ -1,6 +1,5 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import ScrollToTop from "./components/layout/ScrollToTop";
-import Index from "./pages/Index";
 import DocsHub from "./pages/docs/DocsHub";
 import SectionPage from "./pages/docs/SectionPage";
 import NotFound from "./pages/NotFound";
@@ -8,8 +7,12 @@ import NotFound from "./pages/NotFound";
 // Get Started
 import Overview from "./pages/docs/Overview";
 import QuickStart from "./pages/docs/QuickStart";
-import ReineiraCode from "./pages/docs/ReineiraCode";
+
+// Developer Tools
+import BuilderJourney from "./pages/docs/BuilderJourney";
 import ReineiraAtlas from "./pages/docs/ReineiraAtlas";
+import ReineiraCode from "./pages/docs/ReineiraCode";
+import PlatformModules from "./pages/docs/PlatformModules";
 
 // Learn
 import MentalModel from "./pages/docs/MentalModel";
@@ -39,69 +42,78 @@ import EscrowModule from "./pages/docs/EscrowModule";
 import InsuranceModule from "./pages/docs/InsuranceModule";
 import McpServer from "./pages/docs/McpServer";
 
+/** Redirect component for legacy /docs/* URLs */
+function LegacyDocsRedirect() {
+  const newPath = window.location.pathname.replace(/^\/docs/, "") || "/";
+  return <Navigate to={newPath} replace />;
+}
+
 const App = () => (
   <BrowserRouter>
     <ScrollToTop />
     <Routes>
-      <Route path="/" element={<Index />} />
-      <Route path="/docs" element={<DocsHub />} />
-
+      <Route path="/" element={<DocsHub />} />
       {/* Get Started */}
-      <Route path="/docs/get-started/overview" element={<Overview />} />
-      <Route path="/docs/get-started/quick-start" element={<QuickStart />} />
+      <Route path="/get-started/overview" element={<Overview />} />
+      <Route path="/get-started/quick-start" element={<QuickStart />} />
+      {/* Developer Tools */}
       <Route
-        path="/docs/get-started/reineira-code"
-        element={<ReineiraCode />}
+        path="/developer-tools/builder-journey"
+        element={<BuilderJourney />}
       />
-      <Route path="/docs/get-started/atlas" element={<ReineiraAtlas />} />
-
+      <Route path="/developer-tools/atlas" element={<ReineiraAtlas />} />
+      <Route path="/developer-tools/reineira-code" element={<ReineiraCode />} />
+      <Route
+        path="/developer-tools/platform-modules"
+        element={<PlatformModules />}
+      />
+      {/* Legacy redirects */}
+      <Route path="/get-started/atlas" element={<ReineiraAtlas />} />
+      <Route path="/get-started/reineira-code" element={<ReineiraCode />} />
       {/* Learn */}
-      <Route path="/docs/learn/mental-model" element={<MentalModel />} />
-      <Route path="/docs/learn/architecture" element={<Architecture />} />
-      <Route path="/docs/learn/privacy-model" element={<PrivacyModel />} />
-      <Route path="/docs/learn/security" element={<Security />} />
-      <Route path="/docs/learn/resilience" element={<Resilience />} />
-
-      <Route path="/docs/learn/economics" element={<Economics />} />
-
+      <Route path="/learn/mental-model" element={<MentalModel />} />
+      <Route path="/learn/architecture" element={<Architecture />} />
+      <Route path="/learn/privacy-model" element={<PrivacyModel />} />
+      <Route path="/learn/security" element={<Security />} />
+      <Route path="/learn/resilience" element={<Resilience />} />
+      <Route path="/learn/economics" element={<Economics />} />
       {/* Build */}
+      <Route path="/build/escrow-lifecycle" element={<EscrowLifecycle />} />
+      <Route path="/build/condition-resolvers" element={<ConditionPlugins />} />
       <Route
-        path="/docs/build/escrow-lifecycle"
-        element={<EscrowLifecycle />}
-      />
-      <Route
-        path="/docs/build/condition-plugins"
-        element={<ConditionPlugins />}
-      />
-      <Route
-        path="/docs/build/insurance-policies"
+        path="/build/underwriter-policies"
         element={<InsurancePolicies />}
       />
-      <Route path="/docs/build/insurance-pools" element={<InsurancePools />} />
-      <Route path="/docs/build/gas-performance" element={<GasPerformance />} />
-
+      <Route path="/build/insurance-pools" element={<InsurancePools />} />
+      <Route path="/build/cross-chain" element={<CrossChain />} />
+      <Route path="/build/gas-performance" element={<GasPerformance />} />
+      {/* Legacy redirects — Build */}
+      <Route path="/build/condition-plugins" element={<ConditionPlugins />} />
+      <Route path="/build/insurance-policies" element={<InsurancePolicies />} />
+      <Route path="/operate/cross-chain" element={<CrossChain />} />
       {/* Operate */}
-      <Route path="/docs/operate/cross-chain" element={<CrossChain />} />
       <Route
-        path="/docs/operate/coordinator-network"
+        path="/operate/operator-network"
         element={<CoordinatorNetwork />}
       />
-      <Route path="/docs/operate/run-operator" element={<RunOperator />} />
-
-      {/* API Reference */}
-      <Route path="/docs/reference/contracts" element={<Contracts />} />
-      <Route path="/docs/reference/sdk" element={<ReineiraSDK />} />
-      <Route path="/docs/reference/escrow-module" element={<EscrowModule />} />
       <Route
-        path="/docs/reference/insurance-module"
-        element={<InsuranceModule />}
-      />
-      <Route path="/docs/reference/mcp-server" element={<McpServer />} />
-
+        path="/operate/coordinator-network"
+        element={<CoordinatorNetwork />}
+      />{" "}
+      {/* legacy */}
+      <Route path="/operate/run-operator" element={<RunOperator />} />
+      {/* API Reference */}
+      <Route path="/reference/contracts" element={<Contracts />} />
+      <Route path="/reference/sdk" element={<ReineiraSDK />} />
+      <Route path="/reference/escrow-module" element={<EscrowModule />} />
+      <Route path="/reference/insurance-module" element={<InsuranceModule />} />
+      <Route path="/reference/mcp-server" element={<McpServer />} />
       {/* Dynamic fallbacks for section hubs */}
-      <Route path="/docs/:section" element={<SectionPage />} />
-      <Route path="/docs/:section/:page" element={<SectionPage />} />
-
+      <Route path="/:section" element={<SectionPage />} />
+      <Route path="/:section/:page" element={<SectionPage />} />
+      {/* Legacy /docs prefix redirect */}
+      <Route path="/docs/*" element={<LegacyDocsRedirect />} />
+      <Route path="/docs" element={<Navigate to="/" replace />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   </BrowserRouter>

@@ -13,10 +13,11 @@ const toc: TocItem[] = [
   { id: "get-started", title: "Get started", level: 2 },
   { id: "workflow", title: "Workflow", level: 2 },
   { id: "what-you-can-build", title: "What you can build", level: 2 },
+  { id: "after-deploying", title: "After deploying", level: 2 },
   { id: "status", title: "Status", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/get-started/reineira-code");
+const { prev, next } = getPrevNext("/developer-tools/reineira-code");
 
 export default function ReineiraCode() {
   return (
@@ -27,7 +28,7 @@ export default function ReineiraCode() {
       <Breadcrumbs />
 
       <PageHeader
-        title="ReineiraOS Code"
+        title="Code"
         description="A preconfigured development environment that pairs Claude Code with the full protocol context. Clone, open, and start building condition resolvers and insurance policies with AI assistance."
         readingTime="4 min read"
       />
@@ -234,6 +235,46 @@ export default function ReineiraCode() {
           — define risk scoring and dispute resolution for any domain
         </li>
       </ul>
+
+      {/* ── After deploying ─────────────────────────────────────────────── */}
+      <h2
+        id="after-deploying"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        After deploying
+      </h2>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Once your Gate or Policy is deployed to Arbitrum Sepolia, head back to
+        Atlas and run{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          /integrate
+        </code>
+        . This wires your deployed contract into the scaffolded app from
+        platform-modules — SDK calls in the backend, webhook handlers for
+        on-chain events, and UI flows in the React frontend.
+      </p>
+
+      <Callout variant="tip" title="Full builder flow">
+        <p>
+          Atlas{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            /bootstrap
+          </code>{" "}
+          scaffolds the app, Code builds the on-chain logic,{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            /integrate
+          </code>{" "}
+          connects them. See the{" "}
+          <a
+            href="/developer-tools/builder-journey"
+            className="text-brand-primary hover:underline"
+          >
+            Builder Journey
+          </a>{" "}
+          for the full picture.
+        </p>
+      </Callout>
 
       {/* ── Status ─────────────────────────────────────────────────────── */}
       <h2

@@ -24,29 +24,52 @@ export const navigation: NavSection[] = [
       {
         title: "Overview",
         slug: "overview",
-        href: "/docs/get-started/overview",
+        href: "/get-started/overview",
         description:
           "Conditional settlement infrastructure — what it is, who it's for, and why it matters.",
       },
       {
         title: "Quick Start",
         slug: "quick-start",
-        href: "/docs/get-started/quick-start",
+        href: "/get-started/quick-start",
         description: "Deploy your first Escrow in under 5 minutes.",
       },
+    ],
+  },
+  {
+    id: "developer-tools",
+    label: "Developer Tools",
+    icon: "Wrench",
+    description:
+      "Builder acceleration tools — from strategy to smart contracts to shipping.",
+    pages: [
       {
-        title: "ReineiraOS Code",
+        title: "Builder Journey",
+        slug: "builder-journey",
+        href: "/developer-tools/builder-journey",
+        description:
+          "The end-to-end flow from venture brief to shipped product.",
+      },
+      {
+        title: "Atlas",
+        slug: "atlas",
+        href: "/developer-tools/atlas",
+        description:
+          "Startup operating system — strategy, compliance, fundraising, and app scaffolding.",
+      },
+      {
+        title: "Code",
         slug: "reineira-code",
-        href: "/docs/get-started/reineira-code",
+        href: "/developer-tools/reineira-code",
         description:
           "AI-assisted development environment for building Gates and Insurances.",
       },
       {
-        title: "ReineiraOS Atlas",
-        slug: "atlas",
-        href: "/docs/get-started/atlas",
+        title: "Platform Modules",
+        slug: "platform-modules",
+        href: "/developer-tools/platform-modules",
         description:
-          "Startup operating system — strategy, compliance, and fundraising.",
+          "Plug-and-play backend and React app starters for ReineiraOS ventures.",
       },
     ],
   },
@@ -60,38 +83,38 @@ export const navigation: NavSection[] = [
       {
         title: "Mental Model",
         slug: "mental-model",
-        href: "/docs/learn/mental-model",
+        href: "/learn/mental-model",
         description: "Four primitives: Escrow, Gate, Insurance, Operator.",
       },
       {
         title: "Architecture",
         slug: "architecture",
-        href: "/docs/learn/architecture",
+        href: "/learn/architecture",
         description: "System architecture and component overview.",
       },
       {
         title: "Privacy Model",
         slug: "privacy-model",
-        href: "/docs/learn/privacy-model",
+        href: "/learn/privacy-model",
         description: "How FHE encryption protects user data on-chain.",
       },
       {
         title: "Security",
         slug: "security",
-        href: "/docs/learn/security",
+        href: "/learn/security",
         description: "Security assumptions, threat model, and audit results.",
       },
       {
         title: "Resilience & Recovery",
         slug: "resilience",
-        href: "/docs/learn/resilience",
+        href: "/learn/resilience",
         description:
           "Fault tolerance, recovery mechanisms, and disaster scenarios.",
       },
       {
         title: "Economics & Incentives",
         slug: "economics",
-        href: "/docs/learn/economics",
+        href: "/learn/economics",
         description: "Fee structures, rewards, and protocol economics.",
       },
     ],
@@ -101,39 +124,46 @@ export const navigation: NavSection[] = [
     label: "Build",
     icon: "Hammer",
     description:
-      "Escrow lifecycle, Gate plugins, Insurance coverage, and application layer.",
+      "Escrow lifecycle, Condition resolvers, Underwriter policies, and cross-chain settlement.",
     pages: [
       {
         title: "Escrow Lifecycle",
         slug: "escrow-lifecycle",
-        href: "/docs/build/escrow-lifecycle",
+        href: "/build/escrow-lifecycle",
         description:
           "Create, fund, verify, and settle an Escrow — the full state machine.",
       },
       {
-        title: "Gate Plugins",
-        slug: "condition-plugins",
-        href: "/docs/build/condition-plugins",
+        title: "Condition Resolvers",
+        slug: "condition-resolvers",
+        href: "/build/condition-resolvers",
         description:
           "Custom verification logic that controls when an Escrow releases funds.",
       },
       {
         title: "Underwriter Policies",
-        slug: "insurance-policies",
-        href: "/docs/build/insurance-policies",
+        slug: "underwriter-policies",
+        href: "/build/underwriter-policies",
         description:
           "Define and deploy risk evaluation and dispute resolution policies.",
       },
       {
         title: "Insurance Pools",
         slug: "insurance-pools",
-        href: "/docs/build/insurance-pools",
+        href: "/build/insurance-pools",
         description: "Liquidity pools backing Insurance coverage.",
+      },
+      {
+        title: "Cross-Chain Settlement",
+        slug: "cross-chain",
+        href: "/build/cross-chain",
+        description:
+          "Settle Escrows across multiple EVM-compatible chains via Circle CCTP V2.",
       },
       {
         title: "Gas & Performance",
         slug: "gas-performance",
-        href: "/docs/build/gas-performance",
+        href: "/build/gas-performance",
         description: "Optimization strategies for FHE-heavy operations.",
       },
     ],
@@ -142,27 +172,19 @@ export const navigation: NavSection[] = [
     id: "operate",
     label: "Operate",
     icon: "Settings",
-    description:
-      "Operator network, cross-chain settlement, and node operations.",
+    description: "Operator network and node operations.",
     pages: [
       {
         title: "Operator Network",
-        slug: "coordinator-network",
-        href: "/docs/operate/coordinator-network",
+        slug: "operator-network",
+        href: "/operate/operator-network",
         description:
           "The coordinator layer — task distribution and relay routing.",
       },
       {
-        title: "Cross-Chain Settlement",
-        slug: "cross-chain",
-        href: "/docs/operate/cross-chain",
-        description:
-          "Settle Escrows across multiple EVM-compatible chains via Circle CCTP V2.",
-      },
-      {
         title: "Run an Operator",
         slug: "run-operator",
-        href: "/docs/operate/run-operator",
+        href: "/operate/run-operator",
         description: "Set up and run an operator node.",
       },
     ],
@@ -176,31 +198,31 @@ export const navigation: NavSection[] = [
       {
         title: "Contracts",
         slug: "contracts",
-        href: "/docs/reference/contracts",
+        href: "/reference/contracts",
         description: "Deployed contract addresses and ABIs.",
       },
       {
-        title: "ReineiraSDK",
+        title: "SDK",
         slug: "sdk",
-        href: "/docs/reference/sdk",
+        href: "/reference/sdk",
         description: "TypeScript/JavaScript SDK for building on ReineiraOS.",
       },
       {
         title: "Escrow Module",
         slug: "escrow-module",
-        href: "/docs/reference/escrow-module",
-        description: "Complete Escrow (escrow) module API reference.",
+        href: "/reference/escrow-module",
+        description: "Complete Escrow module API reference.",
       },
       {
         title: "Insurance Module",
         slug: "insurance-module",
-        href: "/docs/reference/insurance-module",
-        description: "Complete Insurance (insurance) module API reference.",
+        href: "/reference/insurance-module",
+        description: "Complete Insurance module API reference.",
       },
       {
         title: "MCP Server",
         slug: "mcp-server",
-        href: "/docs/reference/mcp-server",
+        href: "/reference/mcp-server",
         description:
           "AI assistant access to docs, contracts, and interfaces via MCP.",
       },
