@@ -193,7 +193,7 @@ export default function InsurancePolicies() {
         A real policy for a P2P marketplace where buyers pay sellers via PayPal
         (using the zkTLS resolver from the{" "}
         <a
-          href="/docs/build/condition-plugins"
+          href="/docs/build/condition-resolvers"
           className="text-brand-primary font-medium hover:underline"
         >
           Gate Plugins

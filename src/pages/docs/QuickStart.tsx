@@ -518,7 +518,7 @@ export default function QuickStart() {
             title: "Gate Plugins",
             description:
               "Build custom verification logic for conditional settlement.",
-            href: "/docs/build/condition-plugins",
+            href: "/docs/build/condition-resolvers",
             icon: Code2,
           },
           {

@@ -124,7 +124,7 @@ export const navigation: NavSection[] = [
     label: "Build",
     icon: "Hammer",
     description:
-      "Escrow lifecycle, Condition plugins, Underwriter policies, and cross-chain settlement.",
+      "Escrow lifecycle, Condition resolvers, Underwriter policies, and cross-chain settlement.",
     pages: [
       {
         title: "Escrow Lifecycle",
@@ -134,9 +134,9 @@ export const navigation: NavSection[] = [
           "Create, fund, verify, and settle an Escrow — the full state machine.",
       },
       {
-        title: "Condition Plugins",
-        slug: "condition-plugins",
-        href: "/docs/build/condition-plugins",
+        title: "Condition Resolvers",
+        slug: "condition-resolvers",
+        href: "/docs/build/condition-resolvers",
         description:
           "Custom verification logic that controls when an Escrow releases funds.",
       },
