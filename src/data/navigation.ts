@@ -124,7 +124,7 @@ export const navigation: NavSection[] = [
     label: "Build",
     icon: "Hammer",
     description:
-      "Escrow lifecycle, Gate plugins, Insurance coverage, and cross-chain settlement.",
+      "Escrow lifecycle, Condition plugins, Underwriter policies, and cross-chain settlement.",
     pages: [
       {
         title: "Escrow Lifecycle",
@@ -134,16 +134,16 @@ export const navigation: NavSection[] = [
           "Create, fund, verify, and settle an Escrow — the full state machine.",
       },
       {
-        title: "Gate Plugins",
-        slug: "gate-plugins",
-        href: "/docs/build/gate-plugins",
+        title: "Condition Plugins",
+        slug: "condition-plugins",
+        href: "/docs/build/condition-plugins",
         description:
           "Custom verification logic that controls when an Escrow releases funds.",
       },
       {
-        title: "Insurance Policies",
-        slug: "insurance-policies",
-        href: "/docs/build/insurance-policies",
+        title: "Underwriter Policies",
+        slug: "underwriter-policies",
+        href: "/docs/build/underwriter-policies",
         description:
           "Define and deploy risk evaluation and dispute resolution policies.",
       },

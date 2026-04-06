@@ -28,7 +28,7 @@ const toc: TocItem[] = [
   { id: "use-reineira-code", title: "Use ReineiraOS Code", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/docs/build/gate-plugins");
+const { prev, next } = getPrevNext("/docs/build/condition-plugins");
 
 const interfaceColumns = [
   { header: "Function", key: "fn", mono: true, width: "200px" },

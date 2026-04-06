@@ -91,11 +91,11 @@ const App = () => (
         element={<EscrowLifecycle />}
       />
       <Route
-        path="/docs/build/gate-plugins"
+        path="/docs/build/condition-plugins"
         element={<ConditionPlugins />}
       />
       <Route
-        path="/docs/build/insurance-policies"
+        path="/docs/build/underwriter-policies"
         element={<InsurancePolicies />}
       />
       <Route path="/docs/build/insurance-pools" element={<InsurancePools />} />
@@ -104,8 +104,8 @@ const App = () => (
 
       {/* Legacy redirects — Build */}
       <Route
-        path="/docs/build/condition-plugins"
-        element={<ConditionPlugins />}
+        path="/docs/build/insurance-policies"
+        element={<InsurancePolicies />}
       />
       <Route path="/docs/operate/cross-chain" element={<CrossChain />} />
 

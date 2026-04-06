@@ -341,7 +341,7 @@ export default function Overview() {
             title: "Gate Plugins",
             description:
               "Build custom verification logic for conditional settlement.",
-            href: "/docs/build/gate-plugins",
+            href: "/docs/build/condition-plugins",
             icon: Puzzle,
           },
         ]}
