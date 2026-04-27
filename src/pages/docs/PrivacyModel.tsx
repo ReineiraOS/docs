@@ -220,8 +220,7 @@ export default function PrivacyModel() {
               "// 2. Encrypt client-side using the network's public FHE key",
           },
           {
-            content:
-              "const [encOwner, encAmount] = await client",
+            content: "const [encOwner, encAmount] = await client",
             highlighted: true,
           },
           {

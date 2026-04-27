@@ -159,17 +159,22 @@ export default function EscrowLifecycle() {
         language="typescript"
         lines={[
           { content: "import { Encryptable } from '@cofhe/sdk';" },
-          { content: "import { createCofheConfig, createCofheClient } from '@cofhe/sdk/node';" },
+          {
+            content:
+              "import { createCofheConfig, createCofheClient } from '@cofhe/sdk/node';",
+          },
           { content: "import { arbSepolia } from '@cofhe/sdk/chains';" },
           { content: "" },
           { content: "// 1. Initialize the FHE client" },
-          { content: "const client = createCofheClient(createCofheConfig({ supportedChains: [arbSepolia] }));" },
+          {
+            content:
+              "const client = createCofheClient(createCofheConfig({ supportedChains: [arbSepolia] }));",
+          },
           { content: "await client.connect(publicClient, walletClient);" },
           { content: "" },
           { content: "// 2. Encrypt owner and amount client-side" },
           {
-            content:
-              "const [encOwner, encAmount] = await client",
+            content: "const [encOwner, encAmount] = await client",
           },
           {
             content:

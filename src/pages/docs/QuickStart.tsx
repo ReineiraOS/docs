@@ -101,24 +101,23 @@ const hardhatTestLines = [
       "  it('should create an Escrow with encrypted amount', async () => {",
   },
   { content: "    const [deployer] = await hre.viem.getWalletClients();" },
-  { content: "    const client = await hre.cofhe.initializeWithHardhatSigner(deployer);" },
+  {
+    content:
+      "    const client = await hre.cofhe.initializeWithHardhatSigner(deployer);",
+  },
   { content: "" },
   { content: "    // Encrypt using @cofhe/sdk mocks" },
   {
-    content:
-      "    const [encOwner, encAmount] = await client",
+    content: "    const [encOwner, encAmount] = await client",
   },
   {
-    content:
-      "      .encryptInputs([",
+    content: "      .encryptInputs([",
   },
   {
-    content:
-      "        Encryptable.address(deployer.account.address),",
+    content: "        Encryptable.address(deployer.account.address),",
   },
   {
-    content:
-      "        Encryptable.uint64(500_000000n),",
+    content: "        Encryptable.uint64(500_000000n),",
   },
   { content: "      ]).execute();" },
   { content: "" },
