@@ -93,7 +93,7 @@ const typescriptLines = [
 const hardhatTestLines = [
   { content: 'import { expect } from "chai";' },
   { content: 'import hre from "hardhat";' },
-  { content: 'import { cofhejs, Encryptable } from "cofhejs/node";' },
+  { content: 'import { Encryptable } from "@cofhe/sdk";' },
   { content: "" },
   { content: "describe('Escrow Integration', () => {" },
   {
@@ -101,17 +101,25 @@ const hardhatTestLines = [
       "  it('should create an Escrow with encrypted amount', async () => {",
   },
   { content: "    const [deployer] = await hre.viem.getWalletClients();" },
-  { content: "    await hre.cofhe.initializeWithHardhatSigner(deployer);" },
+  {
+    content:
+      "    const client = await hre.cofhe.initializeWithHardhatSigner(deployer);",
+  },
   { content: "" },
-  { content: "    // Encrypt using cofhejs mocks" },
+  { content: "    // Encrypt using @cofhe/sdk mocks" },
   {
-    content:
-      "    const [encOwner] = await cofhejs.encrypt([Encryptable.address(deployer.account.address)]);",
+    content: "    const [encOwner, encAmount] = await client",
   },
   {
-    content:
-      "    const [encAmount] = await cofhejs.encrypt([Encryptable.uint64(500_000000n)]);",
+    content: "      .encryptInputs([",
   },
+  {
+    content: "        Encryptable.address(deployer.account.address),",
+  },
+  {
+    content: "        Encryptable.uint64(500_000000n),",
+  },
+  { content: "      ]).execute();" },
   { content: "" },
   { content: "    const tx = await escrow.write.create([" },
   { content: "      encOwner," },
@@ -217,7 +225,7 @@ export default function QuickStart() {
           <li>Node.js 20+ and npm / yarn / pnpm</li>
           <li>A Hardhat development environment</li>
           <li>
-            A local Hardhat node with cofhejs mocks (or access to the FHE
+            A local Hardhat node with @cofhe/sdk mocks (or access to the FHE
             coprocessor testnet)
           </li>
           <li>A funded wallet on Arbitrum Sepolia</li>
@@ -373,7 +381,7 @@ export default function QuickStart() {
           with an FHE coprocessor. Gas costs are subsidized on testnet. For
           local development, run Hardhat with{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            cofhejs
+            @cofhe/sdk
           </code>{" "}
           mocks — no external node required.
         </p>

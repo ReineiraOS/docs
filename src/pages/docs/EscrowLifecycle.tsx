@@ -158,17 +158,29 @@ export default function EscrowLifecycle() {
         filename="create-vault.ts"
         language="typescript"
         lines={[
-          { content: "import { cofhejs, Encryptable } from 'cofhejs/node';" },
+          { content: "import { Encryptable } from '@cofhe/sdk';" },
+          {
+            content:
+              "import { createCofheConfig, createCofheClient } from '@cofhe/sdk/node';",
+          },
+          { content: "import { arbSepolia } from '@cofhe/sdk/chains';" },
           { content: "" },
-          { content: "// 1. Encrypt owner and amount client-side" },
+          { content: "// 1. Initialize the FHE client" },
           {
             content:
-              "const [encOwner] = await cofhejs.encrypt([Encryptable.address(beneficiary)]);",
+              "const client = createCofheClient(createCofheConfig({ supportedChains: [arbSepolia] }));",
+          },
+          { content: "await client.connect(publicClient, walletClient);" },
+          { content: "" },
+          { content: "// 2. Encrypt owner and amount client-side" },
+          {
+            content: "const [encOwner, encAmount] = await client",
           },
           {
             content:
-              "const [encAmount] = await cofhejs.encrypt([Encryptable.uint64(amount)]);",
+              "  .encryptInputs([Encryptable.address(beneficiary), Encryptable.uint64(amount)])",
           },
+          { content: "  .execute();" },
           { content: "" },
           { content: "// 2. Create the Escrow on-chain", highlighted: true },
           { content: "const tx = await escrow.create(", highlighted: true },
