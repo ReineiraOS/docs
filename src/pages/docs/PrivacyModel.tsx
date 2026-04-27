@@ -202,7 +202,8 @@ export default function PrivacyModel() {
         filename="encrypt-client.ts"
         language="typescript"
         lines={[
-          { content: "import { cofhejs, Encryptable } from 'cofhejs';" },
+          { content: "import { Encryptable } from '@cofhe/sdk';" },
+          { content: "// client is a connected createCofheClient() instance" },
           { content: "" },
           {
             content:
@@ -220,12 +221,16 @@ export default function PrivacyModel() {
           },
           {
             content:
-              "const [encOwner] = await cofhejs.encrypt([Encryptable.address(owner)]);",
+              "const [encOwner, encAmount] = await client",
             highlighted: true,
           },
           {
             content:
-              "const [encAmount] = await cofhejs.encrypt([Encryptable.uint64(amount)]);",
+              "  .encryptInputs([Encryptable.address(owner), Encryptable.uint64(amount)])",
+            highlighted: true,
+          },
+          {
+            content: "  .execute();",
             highlighted: true,
           },
           { content: "" },
