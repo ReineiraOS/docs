@@ -31,30 +31,30 @@ const contractColumns = [
 const escrowRows = [
   {
     name: "ConfidentialEscrow",
-    address: "0xC4333F84F5034D8691CB95f068def2e3B6DC60Fa",
+    address: "0xbe1eEB78504B71beEE1b33D3E3D367A2F9a549A6",
   },
   {
-    name: "CCTPV2EscrowReceiver",
-    address: "0x48F2Ad7B9895683b865eaA5dfb852CB144895Eb7",
+    name: "CCTPV2ConfidentialEscrowReceiver",
+    address: "0x67AE0C5fE86716441B38b73A66F21c6aC8e338d0",
   },
   {
     name: "SimpleCondition",
-    address: "0x9817DA50DB5CE4316D2f0fF6bb6DBfe252C29593",
+    address: "0xA0f6F26de1D3289425aA8A7fDDb769c61CD38e97",
   },
 ];
 
 const insuranceRows = [
   {
-    name: "PolicyRegistry",
-    address: "0xf421363B642315BD3555dE2d9BD566b7f9213c8E",
+    name: "ConfidentialPolicyRegistry",
+    address: "0x962A6c7Be4fC765B0E8B601ab4BB210938660190",
   },
   {
     name: "ConfidentialCoverageManager",
-    address: "0x766e9508BD41BCE0e788F16Da86B3615386Ff6f6",
+    address: "0x40A3A53d54D25cF079Bc9C2033224159d4EA3A67",
   },
   {
-    name: "PoolFactory",
-    address: "0x03bAc36d45fA6f5aD8661b95D73452b3BedcaBFD",
+    name: "ConfidentialPoolFactory",
+    address: "0xCBD3815244ee96a92B3Ca3C71B6eD9acB3661e80",
   },
 ];
 
@@ -77,7 +77,7 @@ const orchestrationRows = [
 const tokenRows = [
   {
     name: "ConfidentialUSDC (cUSDC)",
-    address: "0x6b6e6479b8b3237933c3ab9d8be969862d4ed89f",
+    address: "0x42E47f9bA89712C317f60A72C81A610A2b68c48a",
   },
   { name: "USDC", address: "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d" },
   {
