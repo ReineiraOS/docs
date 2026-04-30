@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.2.0...v1.3.0) (2026-04-30)
+
+
+### Features
+
+* add rounded favicon set and update header logo ([#7](https://github.com/ReineiraOS/platform-web-docs-app/issues/7)) ([384f98b](https://github.com/ReineiraOS/platform-web-docs-app/commit/384f98bf67d45d6c3b5d47c7efda8b7bcf490e5e))
+
 # [1.2.0](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.1.0...v1.2.0) (2026-04-06)
 
 
