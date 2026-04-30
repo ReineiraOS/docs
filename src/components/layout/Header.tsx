@@ -53,13 +53,17 @@ export default function Header({
         </button>
 
         {/* Logo */}
-        <Link to="/" className="flex items-center shrink-0" aria-label="ReineiraOS Home">
+        <Link
+          to="/"
+          className="flex items-center shrink-0"
+          aria-label="ReineiraOS Home"
+        >
           <img
             src="/logos/reineira-logo.png"
             alt="ReineiraOS"
             width={Math.round((2839 / 474) * 28)}
             height={28}
-            style={{ height: 28, width: 'auto' }}
+            style={{ height: 28, width: "auto" }}
           />
         </Link>
 
