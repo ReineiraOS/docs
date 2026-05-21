@@ -37,6 +37,48 @@ export const navigation: NavSection[] = [
     ],
   },
   {
+    id: "settlement-standard",
+    label: "Settlement Standard (RSS)",
+    icon: "BookOpen",
+    description:
+      "The Reineira Settlement Standard — the open conformance spec, separate from any one deployment.",
+    pages: [
+      {
+        title: "What is RSS",
+        slug: "what-is-rss",
+        href: "/settlement-standard/what-is-rss",
+        description:
+          "The conformance spec, separate from any deployment; the standards-fork rationale.",
+      },
+      {
+        title: "Conformance",
+        slug: "conformance",
+        href: "/settlement-standard/conformance",
+        description: "The six clauses + the conformance test surface.",
+      },
+      {
+        title: "Interface Surface",
+        slug: "interface-surface",
+        href: "/settlement-standard/interface-surface",
+        description:
+          "The four-primitive interfaces — v0.1 mandatory and v0.2 spec'd.",
+      },
+      {
+        title: "Versioning & RIPs",
+        slug: "versioning",
+        href: "/settlement-standard/versioning",
+        description: "v0.1 → v0.2 → v1.0 and the RIP process (the EIP analog).",
+      },
+      {
+        title: "Implement RSS Yourself",
+        slug: "implement-rss",
+        href: "/settlement-standard/implement-rss",
+        description:
+          "The invitation + the license split (OSI-aligned standard vs. BUSL core).",
+      },
+    ],
+  },
+  {
     id: "developer-tools",
     label: "Developer Tools",
     icon: "Wrench",
