@@ -5,14 +5,21 @@ import CodeBlock from "@/components/docs/CodeBlock";
 import Callout from "@/components/docs/Callout";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
+import DocsBadge from "@/components/docs/DocsBadge";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
 const toc: TocItem[] = [
-  { id: "encrypted-vs-public", title: "Encrypted vs. public", level: 2 },
+  { id: "dual-mode", title: "Dual-mode design", level: 2 },
+  { id: "encrypted-vs-public", title: "Encrypted vs. public state", level: 2 },
   { id: "how-fhe-works", title: "How FHE works", level: 2 },
   { id: "client-side-encryption", title: "Client-side encryption", level: 3 },
   { id: "event-privacy", title: "Event privacy", level: 2 },
+  {
+    id: "selective-disclosure",
+    title: "Selective disclosure & compliance",
+    level: 2,
+  },
   {
     id: "implications-for-builders",
     title: "Implications for builders",
@@ -139,35 +146,93 @@ export default function PrivacyModel() {
 
       <PageHeader
         title="Privacy Model"
-        description="How FHE encryption protects user data on-chain."
-        readingTime="5 min read"
+        description="ReineiraOS ships in two modes: a public mode live at chaos-net, and an FHE-encrypted mode that activates at v1.0 mainnet."
+        readingTime="6 min read"
       />
+
+      <h2
+        id="dual-mode"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Dual-mode design
+      </h2>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        ReineiraOS is designed as two separate, immutable deployments that share
+        identical external interfaces (§4):
+      </p>
+
+      <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
+        <li>
+          <strong className="text-docs-text-primary font-semibold">
+            Public mode
+          </strong>{" "}
+          <DocsBadge variant="blue">Chaos-net</DocsBadge> — all state is stored
+          in plaintext. This is the mode that runs at chaos-net (Jul 2026) on
+          Arbitrum L2 (§3.6).
+        </li>
+        <li>
+          <strong className="text-docs-text-primary font-semibold">
+            Encrypted mode
+          </strong>{" "}
+          <DocsBadge variant="amber">Spec'd · v1.0 mainnet</DocsBadge> —
+          sensitive state is held as FHE ciphertexts. This mode activates at the
+          v1.0 mainnet release (Q4 2026) and is gated on Fhenix CoFHE reaching
+          mainnet (§3.6, §10.4).
+        </li>
+      </ul>
+
+      <Callout
+        variant="warning"
+        title="Encrypted state is not live at chaos-net"
+      >
+        <p>
+          Chaos-net runs <strong>public mode only</strong>: every value is
+          plaintext on-chain. Encrypted state does <strong>not</strong> exist
+          on-chain until the v1.0 mainnet deployment. The encrypted contracts
+          described below are a <strong>separate immutable deployment</strong>{" "}
+          at separate addresses; migration from the public deployment is{" "}
+          <strong>opt-in</strong> per user (§4).
+        </p>
+      </Callout>
 
       <h2
         id="encrypted-vs-public"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Encrypted vs. public
+        Encrypted vs. public state
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        ReineiraOS divides all on-chain data into two categories:{" "}
+        In{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          encrypted mode
+        </strong>{" "}
+        <DocsBadge variant="amber">Spec'd · v1.0 mainnet</DocsBadge>, on-chain
+        data falls into two categories:{" "}
         <strong className="text-docs-text-primary font-semibold">
           encrypted
         </strong>{" "}
-        (stored as FHE ciphertext handles, never readable on-chain) and{" "}
+        (stored as FHE ciphertext handles, readable only by addresses granted
+        permission via{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          FHE.allow
+        </code>
+        ) and{" "}
         <strong className="text-docs-text-primary font-semibold">public</strong>{" "}
-        (visible to anyone inspecting the chain). The protocol defaults to
-        encrypted for all financial and identity data.
+        (visible to anyone inspecting the chain). The table below describes the
+        encrypted-mode state layout — at chaos-net these same fields are
+        plaintext.
       </p>
 
       <DocsTable columns={encryptedColumns} rows={encryptedRows} />
 
-      <Callout variant="info" title="Default encrypted">
+      <Callout variant="info" title="Encrypted by design at mainnet">
         <p>
-          The protocol encrypts by default. You must explicitly opt data into
-          public visibility — not the other way around. This prevents accidental
-          data leakage from smart contract bugs or misconfiguration.
+          In the encrypted-mode deployment, sensitive financial and identity
+          fields are encrypted as part of the contract design — there is no
+          per-field opt-out. The public-mode deployment that runs at chaos-net
+          stores these same fields in plaintext (§4).
         </p>
       </Callout>
 
@@ -180,9 +245,12 @@ export default function PrivacyModel() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Fully Homomorphic Encryption (FHE) allows computation on encrypted data
-        without decrypting it first. In ReineiraOS, this means the smart
-        contracts can add escrow amounts, compare balances, and evaluate
-        conditions — all while the underlying values remain ciphertext.
+        without decrypting it first. In the encrypted-mode deployment{" "}
+        <DocsBadge variant="amber">Spec'd · v1.0 mainnet</DocsBadge>, this means
+        the smart contracts can add escrow amounts, compare balances, and
+        evaluate conditions — all while the underlying values remain ciphertext.
+        FHE state is gated on Fhenix CoFHE reaching mainnet (§3.6, §10.4); the
+        flows below describe that deployment, not the public chaos-net one.
       </p>
 
       <h3
@@ -272,8 +340,11 @@ export default function PrivacyModel() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Solidity events are public by design — any indexer or block explorer can
-        read them. ReineiraOS carefully limits what data is emitted in events to
-        prevent metadata leakage.
+        read them. In the encrypted-mode deployment{" "}
+        <DocsBadge variant="amber">Spec'd · v1.0 mainnet</DocsBadge>, ReineiraOS
+        limits what data is emitted in events to prevent metadata leakage. The
+        "hidden data" column below describes encrypted mode; at chaos-net these
+        values are emitted or otherwise readable in plaintext.
       </p>
 
       <DocsTable columns={eventColumns} rows={eventRows} />
@@ -283,6 +354,63 @@ export default function PrivacyModel() {
         an escrow exists and <em>when</em> it transitions, but never learn{" "}
         <em>how much</em> is at stake or <em>who</em> the parties are.
       </p>
+
+      <h2
+        id="selective-disclosure"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Selective disclosure &amp; compliance{" "}
+        <DocsBadge variant="amber">Spec'd · v1.0 mainnet</DocsBadge>
+      </h2>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Encrypted mode supports auditable disclosure without weakening the
+        ciphertext for everyone else. Granting FHE{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          allow
+        </code>{" "}
+        to a designated{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          complianceOwner
+        </code>{" "}
+        role lets <em>that</em> role — and no other observer — request
+        decryption. The on-chain ciphertext is left untouched and every other
+        observer's view is unchanged (§11.7).
+      </p>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        The{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          complianceOwner
+        </code>{" "}
+        role holds Decryption Authority for audit, sanctions-screening, and
+        supervised-disclosure flows (§11.7).
+      </p>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        On top of this, a{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          Travel-Rule bridge
+        </strong>{" "}
+        is specified: a KYB-pinned forwarder grants{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          complianceOwner
+        </code>{" "}
+        Decryption Authority to the originating VASP, satisfying Travel Rule
+        reporting from off-chain records bound to the on-chain ciphertext handle
+        (§11.7).
+      </p>
+
+      <Callout
+        variant="warning"
+        title="A mechanism, not a compliance guarantee"
+      >
+        <p>
+          The Travel-Rule bridge is presented as a technical mechanism.
+          Regulatory <em>applicability</em> remains unresolved per jurisdiction
+          (Open Problem 11.1) — do not treat it as a compliance guarantee.
+        </p>
+      </Callout>
 
       <h2
         id="implications-for-builders"
@@ -334,26 +462,41 @@ export default function PrivacyModel() {
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">
-            Access is explicit via FHE.allow()
+            Access is explicit and gated
           </strong>{" "}
-          — The contract grants encrypted value access to specific addresses
-          using{" "}
+          — In encrypted mode, ciphertexts are readable only by addresses
+          granted permission via{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            FHE.allow()
+            FHE.allow
+          </code>{" "}
+          or{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            FHE.allowTransient
           </code>
           . Only authorized parties (owner, insurance manager) can read specific
-          encrypted fields.
+          encrypted fields (§10.4, §10.5).
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">
             Selective disclosure for compliance
           </strong>{" "}
-          —{" "}
+          — Granting{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            FHE.allow()
+            allow
           </code>{" "}
-          supports granting access to specific fields for specific addresses,
-          enabling compliance without exposing the entire Escrow state.
+          to the{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            complianceOwner
+          </code>{" "}
+          role enables audit and supervised disclosure without touching the
+          ciphertext or changing other observers' view — see{" "}
+          <a
+            href="#selective-disclosure"
+            className="text-brand-primary hover:underline"
+          >
+            Selective disclosure &amp; compliance
+          </a>{" "}
+          (§11.7).
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">

@@ -8,6 +8,17 @@ import NotFound from "./pages/NotFound";
 import Overview from "./pages/docs/Overview";
 import QuickStart from "./pages/docs/QuickStart";
 
+// Project Status
+import Status from "./pages/docs/Status";
+import Risk from "./pages/docs/Risk";
+
+// Settlement Standard (RSS)
+import RssWhatIs from "./pages/docs/rss/RssWhatIs";
+import RssConformance from "./pages/docs/rss/RssConformance";
+import RssInterfaceSurface from "./pages/docs/rss/RssInterfaceSurface";
+import RssVersioning from "./pages/docs/rss/RssVersioning";
+import RssImplement from "./pages/docs/rss/RssImplement";
+
 // Developer Tools
 import BuilderJourney from "./pages/docs/BuilderJourney";
 import ReineiraAtlas from "./pages/docs/ReineiraAtlas";
@@ -57,6 +68,27 @@ const App = () => (
       {/* Get Started */}
       <Route path="/get-started/overview" element={<Overview />} />
       <Route path="/get-started/quick-start" element={<QuickStart />} />
+      {/* Project Status */}
+      <Route path="/status" element={<Status />} />
+      <Route path="/risk" element={<Risk />} />
+      {/* Settlement Standard (RSS) */}
+      <Route path="/settlement-standard/what-is-rss" element={<RssWhatIs />} />
+      <Route
+        path="/settlement-standard/conformance"
+        element={<RssConformance />}
+      />
+      <Route
+        path="/settlement-standard/interface-surface"
+        element={<RssInterfaceSurface />}
+      />
+      <Route
+        path="/settlement-standard/versioning"
+        element={<RssVersioning />}
+      />
+      <Route
+        path="/settlement-standard/implement-rss"
+        element={<RssImplement />}
+      />
       {/* Developer Tools */}
       <Route
         path="/developer-tools/builder-journey"
