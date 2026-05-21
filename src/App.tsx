@@ -29,6 +29,7 @@ import ConditionPlugins from "./pages/docs/ConditionPlugins";
 import InsurancePolicies from "./pages/docs/InsurancePolicies";
 import InsurancePools from "./pages/docs/InsurancePools";
 import GasPerformance from "./pages/docs/GasPerformance";
+import L3Deployments from "./pages/docs/L3Deployments";
 
 // Operate
 import CrossChain from "./pages/docs/CrossChain";
@@ -86,6 +87,7 @@ const App = () => (
       />
       <Route path="/build/insurance-pools" element={<InsurancePools />} />
       <Route path="/build/cross-chain" element={<CrossChain />} />
+      <Route path="/build/atlas-l3" element={<L3Deployments />} />
       <Route path="/build/gas-performance" element={<GasPerformance />} />
       {/* Legacy redirects — Build */}
       <Route path="/build/condition-plugins" element={<ConditionPlugins />} />
