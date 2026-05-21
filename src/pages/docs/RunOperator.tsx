@@ -2,6 +2,7 @@ import DocsLayout from "@/components/layout/DocsLayout";
 import Breadcrumbs from "@/components/docs/Breadcrumbs";
 import PageHeader from "@/components/docs/PageHeader";
 import Callout from "@/components/docs/Callout";
+import RiskCallout from "@/components/docs/RiskCallout";
 import CodeBlock from "@/components/docs/CodeBlock";
 import ArchitectureDiagram from "@/components/docs/ArchitectureDiagram";
 import PageNav from "@/components/docs/PageNav";
@@ -88,6 +89,8 @@ export default function RunOperator() {
         description="Operators are staked relay nodes that execute cross-chain CCTP v2 settlement tasks. They relay burn-and-mint messages between chains and earn fees on every operation."
         readingTime="8 min read"
       />
+
+      <RiskCallout />
 
       {/* Overview */}
       <h2

@@ -37,6 +37,29 @@ export const navigation: NavSection[] = [
     ],
   },
   {
+    id: "status",
+    label: "Project Status",
+    icon: "Activity",
+    description:
+      "Honest status of every protocol component, plus risk and audit disclosure.",
+    pages: [
+      {
+        title: "Status & Roadmap",
+        slug: "status",
+        href: "/status",
+        description:
+          "Every protocol component × status × milestone, derived from the whitepaper Implementation Notes and Open Problems.",
+      },
+      {
+        title: "Risk & Audit Status",
+        slug: "risk",
+        href: "/risk",
+        description:
+          "Audit posture, compliance targets, and the limits of the security model — full disclosure.",
+      },
+    ],
+  },
+  {
     id: "developer-tools",
     label: "Developer Tools",
     icon: "Wrench",

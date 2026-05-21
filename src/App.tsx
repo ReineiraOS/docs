@@ -8,6 +8,10 @@ import NotFound from "./pages/NotFound";
 import Overview from "./pages/docs/Overview";
 import QuickStart from "./pages/docs/QuickStart";
 
+// Project Status
+import Status from "./pages/docs/Status";
+import Risk from "./pages/docs/Risk";
+
 // Developer Tools
 import BuilderJourney from "./pages/docs/BuilderJourney";
 import ReineiraAtlas from "./pages/docs/ReineiraAtlas";
@@ -56,6 +60,9 @@ const App = () => (
       {/* Get Started */}
       <Route path="/get-started/overview" element={<Overview />} />
       <Route path="/get-started/quick-start" element={<QuickStart />} />
+      {/* Project Status */}
+      <Route path="/status" element={<Status />} />
+      <Route path="/risk" element={<Risk />} />
       {/* Developer Tools */}
       <Route
         path="/developer-tools/builder-journey"
