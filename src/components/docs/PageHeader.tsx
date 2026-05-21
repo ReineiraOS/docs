@@ -1,18 +1,30 @@
 import { Clock } from "lucide-react";
+import StatusBadge, { type PageStatus } from "./StatusBadge";
 
 interface PageHeaderProps {
   title: string;
   description?: string;
   readingTime?: string;
+  /** Honest component status, rendered as a chip beside the title (§2 taxonomy). */
+  status?: PageStatus;
+  /** Optional milestone detail appended to the status chip. */
+  statusDetail?: string;
 }
 
 export default function PageHeader({
   title,
   description,
   readingTime,
+  status,
+  statusDetail,
 }: PageHeaderProps) {
   return (
     <div className="mb-8">
+      {status && (
+        <div className="mb-3">
+          <StatusBadge status={status} detail={statusDetail} />
+        </div>
+      )}
       <h1 className="text-[32px] font-bold tracking-[-0.03em] leading-[1.2] text-docs-text-primary mb-3">
         {title}
       </h1>

@@ -2,8 +2,10 @@ import DocsLayout from "@/components/layout/DocsLayout";
 import Breadcrumbs from "@/components/docs/Breadcrumbs";
 import PageHeader from "@/components/docs/PageHeader";
 import Callout from "@/components/docs/Callout";
+import RiskCallout from "@/components/docs/RiskCallout";
 import CodeBlock from "@/components/docs/CodeBlock";
 import DocsTable from "@/components/docs/DocsTable";
+import DocsBadge from "@/components/docs/DocsBadge";
 import ArchitectureDiagram from "@/components/docs/ArchitectureDiagram";
 import PageNav from "@/components/docs/PageNav";
 import LinkCard from "@/components/docs/LinkCard";
@@ -14,6 +16,8 @@ import { Rocket, Brain, Puzzle } from "lucide-react";
 const toc: TocItem[] = [
   { id: "the-problem", title: "The problem", level: 2 },
   { id: "what-is-reineira", title: "What is ReineiraOS?", level: 2 },
+  { id: "three-pillars", title: "Three pillars", level: 2 },
+  { id: "public-infrastructure", title: "Public infrastructure", level: 2 },
   { id: "core-properties", title: "Core properties", level: 2 },
   { id: "confidential-by-default", title: "Confidential by default", level: 3 },
   { id: "pluggable-verification", title: "Pluggable verification", level: 3 },
@@ -58,6 +62,31 @@ const whatYouGetRows = [
     capability: "Cross-Chain Settlement",
     description:
       "Native USDC settlement across EVM chains via Circle CCTP V2. Fund Escrows from any supported chain.",
+  },
+];
+
+// -- Three pillars data -------------------------------------------------------
+
+const pillarColumns = [
+  { header: "Pillar", key: "pillar", width: "240px" },
+  { header: "What it is", key: "description" },
+];
+
+const pillarRows = [
+  {
+    pillar: "Reineira Settlement Protocol",
+    description:
+      "The on-chain immutable contracts: confidential escrow, pluggable Gates, encrypted-state insurance, and operator-secured cross-chain settlement (§1).",
+  },
+  {
+    pillar: "Reineira Settlement Standard (RSS)",
+    description:
+      "The open conformance specification — semver-versioned and evolved through the RIP process, separate from any single deployment (§1, §3.6).",
+  },
+  {
+    pillar: "Builder Stack",
+    description:
+      "Reineira Atlas (the startup operating system) plus Reineira Code (the resolver/policy authoring environment) (§1).",
   },
 ];
 
@@ -119,6 +148,8 @@ export default function Overview() {
         readingTime="5 min read"
       />
 
+      <RiskCallout />
+
       {/* -- The problem -------------------------------------------------------- */}
       <h2
         id="the-problem"
@@ -150,11 +181,11 @@ export default function Overview() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         ReineiraOS is conditional settlement infrastructure. Money only moves
-        when cryptographic conditions are met, and the entire state is
-        encrypted. Install the SDK, define how money moves, and ship
-        non-custodial payment products — marketplaces, agent wallets, payroll,
-        cargo settlement — without building escrow, compliance, or cross-chain
-        plumbing yourself.
+        when cryptographic conditions are met, and — in encrypted mode (the v1.0
+        mainnet design) — the entire state is private. Install the SDK, define
+        how money moves, and ship non-custodial payment products — marketplaces,
+        agent wallets, payroll, cargo settlement — without building escrow,
+        compliance, or cross-chain plumbing yourself.
       </p>
 
       <Callout variant="info" title="What ReineiraOS is not">
@@ -176,6 +207,63 @@ export default function Overview() {
         ]}
       />
 
+      {/* -- Three pillars ----------------------------------------------------- */}
+      <h2
+        id="three-pillars"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Three pillars
+      </h2>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        "ReineiraOS" names three distinct things working together. The protocol
+        is the deployed code; the standard is the spec it conforms to; the
+        builder stack is how you ship products on top (§1).
+      </p>
+
+      <DocsTable columns={pillarColumns} rows={pillarRows} />
+
+      {/* -- Public infrastructure --------------------------------------------- */}
+      <h2
+        id="public-infrastructure"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Public infrastructure
+      </h2>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        ReineiraOS is built as public settlement infrastructure, not a
+        rent-seeking platform. The contracts are immutable with no upgrade
+        authority (§11.8), and the protocol charges zero fees during chaos-net,
+        block-locked at the contract level (§8.8).
+      </p>
+
+      <Callout variant="info" title="Public-infrastructure posture">
+        <ul className="space-y-2 list-disc list-inside">
+          <li>
+            <strong>Immutable contracts.</strong> No upgrade authority — code is
+            fixed once deployed (§11.8).
+          </li>
+          <li>
+            <strong>Zero protocol fees during chaos-net.</strong> Fee switches
+            are block-locked off (§8.8).
+          </li>
+          <li>
+            <strong>Operators bond cUSDC, not a token.</strong> Security comes
+            from collateral, not emissions (§8).
+          </li>
+          <li>
+            <strong>No token yet.</strong> The REINEIRA token{" "}
+            <strong>does not exist</strong> and is conditional on the §12.11
+            triggers (§12).
+          </li>
+          <li>
+            <strong>Deployed by Reineira Labs Limited</strong> (RAK DAO Free
+            Zone, UAE) acting as a Software Vendor (§11).
+          </li>
+        </ul>
+      </Callout>
+
       {/* -- Core properties --------------------------------------------------- */}
       <h2
         id="core-properties"
@@ -193,16 +281,31 @@ export default function Overview() {
         id="confidential-by-default"
         className="text-[20px] font-semibold tracking-[-0.01em] leading-[1.4] text-docs-text-primary mt-8 mb-3"
       >
-        1. Confidential by default (Escrows)
+        1. Confidential by default (Escrows){" "}
+        <DocsBadge variant="amber">Encrypted mode: v1.0 mainnet</DocsBadge>
       </h3>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Every Escrow is encrypted end-to-end using Fully Homomorphic Encryption
-        (FHE). Amounts, parties, and conditions remain private on-chain. No one
-        — not even node operators — can see the contents of an Escrow without
-        explicit decryption authorization. Encrypted state means competitors
-        can't front-run your settlement and chain analysts can't
-        reverse-engineer your margins.
+        The v1.0-mainnet design encrypts every Escrow end-to-end using Fully
+        Homomorphic Encryption (FHE): amounts, parties, and conditions remain
+        private on-chain, and no one — not even node operators — can see the
+        contents of an Escrow without explicit decryption authorization.
+        Encrypted state means competitors can't front-run your settlement and
+        chain analysts can't reverse-engineer your margins.
       </p>
+
+      <Callout
+        variant="warning"
+        title="Encrypted mode is not live on chaos-net"
+      >
+        <p>
+          ReineiraOS runs in two modes. Chaos-net (launching{" "}
+          <strong>Jul 2026</strong>) runs <strong>public mode</strong> — state
+          is plaintext so the network can be exercised in the open. Encrypted
+          (FHE) mode activates at <strong>v1.0 mainnet (Q4 2026)</strong>. The
+          confidentiality described above is the v1.0 design target, not a
+          guarantee that is live today.
+        </p>
+      </Callout>
 
       <h3
         id="pluggable-verification"

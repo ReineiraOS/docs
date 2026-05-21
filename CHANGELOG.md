@@ -1,3 +1,17 @@
+# [1.5.0](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.4.0...v1.5.0) (2026-05-21)
+
+
+### Features
+
+* **docs:** add Settlement Standard (RSS) section ([87921d2](https://github.com/ReineiraOS/platform-web-docs-app/commit/87921d28a5d8c266e804c46b4daa33bd69fed8be))
+
+# [1.4.0](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.3.1...v1.4.0) (2026-05-21)
+
+
+### Features
+
+* **docs:** add honesty layer — status badges, /status, /risk, banners ([36cd1b0](https://github.com/ReineiraOS/platform-web-docs-app/commit/36cd1b0912fc02233df39f3a3ab1b8b238e26cb4))
+
 # [1.3.0](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.2.0...v1.3.0) (2026-04-30)
 
 

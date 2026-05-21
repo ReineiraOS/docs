@@ -8,6 +8,17 @@ import NotFound from "./pages/NotFound";
 import Overview from "./pages/docs/Overview";
 import QuickStart from "./pages/docs/QuickStart";
 
+// Project Status
+import Status from "./pages/docs/Status";
+import Risk from "./pages/docs/Risk";
+
+// Settlement Standard (RSS)
+import RssWhatIs from "./pages/docs/rss/RssWhatIs";
+import RssConformance from "./pages/docs/rss/RssConformance";
+import RssInterfaceSurface from "./pages/docs/rss/RssInterfaceSurface";
+import RssVersioning from "./pages/docs/rss/RssVersioning";
+import RssImplement from "./pages/docs/rss/RssImplement";
+
 // Developer Tools
 import BuilderJourney from "./pages/docs/BuilderJourney";
 import ReineiraAtlas from "./pages/docs/ReineiraAtlas";
@@ -29,11 +40,18 @@ import ConditionPlugins from "./pages/docs/ConditionPlugins";
 import InsurancePolicies from "./pages/docs/InsurancePolicies";
 import InsurancePools from "./pages/docs/InsurancePools";
 import GasPerformance from "./pages/docs/GasPerformance";
+import L3Deployments from "./pages/docs/L3Deployments";
 
 // Operate
 import CrossChain from "./pages/docs/CrossChain";
 import CoordinatorNetwork from "./pages/docs/CoordinatorNetwork";
 import RunOperator from "./pages/docs/RunOperator";
+
+// Research & R&D
+import CryptographicFoundations from "./pages/docs/research/CryptographicFoundations";
+import OpenProblems from "./pages/docs/research/OpenProblems";
+import ResearchPreviews from "./pages/docs/research/ResearchPreviews";
+import AgenticComposition from "./pages/docs/research/AgenticComposition";
 
 // API Reference
 import Contracts from "./pages/docs/Contracts";
@@ -56,6 +74,27 @@ const App = () => (
       {/* Get Started */}
       <Route path="/get-started/overview" element={<Overview />} />
       <Route path="/get-started/quick-start" element={<QuickStart />} />
+      {/* Project Status */}
+      <Route path="/status" element={<Status />} />
+      <Route path="/risk" element={<Risk />} />
+      {/* Settlement Standard (RSS) */}
+      <Route path="/settlement-standard/what-is-rss" element={<RssWhatIs />} />
+      <Route
+        path="/settlement-standard/conformance"
+        element={<RssConformance />}
+      />
+      <Route
+        path="/settlement-standard/interface-surface"
+        element={<RssInterfaceSurface />}
+      />
+      <Route
+        path="/settlement-standard/versioning"
+        element={<RssVersioning />}
+      />
+      <Route
+        path="/settlement-standard/implement-rss"
+        element={<RssImplement />}
+      />
       {/* Developer Tools */}
       <Route
         path="/developer-tools/builder-journey"
@@ -86,6 +125,7 @@ const App = () => (
       />
       <Route path="/build/insurance-pools" element={<InsurancePools />} />
       <Route path="/build/cross-chain" element={<CrossChain />} />
+      <Route path="/build/atlas-l3" element={<L3Deployments />} />
       <Route path="/build/gas-performance" element={<GasPerformance />} />
       {/* Legacy redirects — Build */}
       <Route path="/build/condition-plugins" element={<ConditionPlugins />} />
@@ -102,6 +142,20 @@ const App = () => (
       />{" "}
       {/* legacy */}
       <Route path="/operate/run-operator" element={<RunOperator />} />
+      {/* Research & R&D */}
+      <Route
+        path="/research/cryptographic-foundations"
+        element={<CryptographicFoundations />}
+      />
+      <Route path="/research/open-problems" element={<OpenProblems />} />
+      <Route
+        path="/research/research-previews"
+        element={<ResearchPreviews />}
+      />
+      <Route
+        path="/research/agentic-composition"
+        element={<AgenticComposition />}
+      />
       {/* API Reference */}
       <Route path="/reference/contracts" element={<Contracts />} />
       <Route path="/reference/sdk" element={<ReineiraSDK />} />
