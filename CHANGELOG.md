@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.4.0...v1.5.0) (2026-05-21)
+
+
+### Features
+
+* **docs:** add Settlement Standard (RSS) section ([87921d2](https://github.com/ReineiraOS/platform-web-docs-app/commit/87921d28a5d8c266e804c46b4daa33bd69fed8be))
+
 # [1.4.0](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.3.1...v1.4.0) (2026-05-21)
 
 
