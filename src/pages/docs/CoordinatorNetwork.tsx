@@ -6,15 +6,18 @@ import CodeBlock from "@/components/docs/CodeBlock";
 import ArchitectureDiagram from "@/components/docs/ArchitectureDiagram";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
+import DocsBadge from "@/components/docs/DocsBadge";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
 const toc: TocItem[] = [
   { id: "overview", title: "Overview", level: 2 },
+  { id: "registration", title: "Operator registration", level: 2 },
   { id: "architecture", title: "Architecture", level: 2 },
   { id: "task-flow", title: "Task flow", level: 2 },
   { id: "api-endpoints", title: "API endpoints", level: 2 },
   { id: "operator-assignment", title: "Operator assignment", level: 2 },
+  { id: "slashing", title: "Slashing", level: 2 },
   { id: "current-limitations", title: "Current limitations", level: 2 },
 ];
 
@@ -50,16 +53,18 @@ const limitationColumns = [
 ];
 const limitationRows = [
   {
-    limitation: "Single coordinator",
+    limitation: "Single coordinator in production",
     impact:
-      "Single point of failure for task dispatch. If the coordinator goes down, relay tasks queue until it recovers.",
-    resolution: "Redundant coordinator instances with failover.",
+      "Only the Foundation's canonical coordinator runs in chaos-net, so if it goes down, relay tasks queue until it recovers. Third parties may already run independent coordinators against the same on-chain contracts (§8.12).",
+    resolution:
+      "On-chain coordinator registration (CoordinatorRegistry) and cross-graph slashing land on the v1.0 track (Spec'd).",
   },
   {
-    limitation: "No stake verification",
+    limitation: "Coordinator does not pre-verify stake",
     impact:
-      "The coordinator does not verify operator stake on-chain. Any address can subscribe.",
-    resolution: "On-chain stake check before accepting subscriptions.",
+      "The off-chain coordinator does not pre-check operator bond before accepting an SSE subscription. Bonding and eligibility are still enforced on-chain by the OperatorRegistry and TaskExecutor at execution time (§8.4).",
+    resolution:
+      "Optional coordinator-side stake check to reduce wasted dispatch to unbonded subscribers.",
   },
   {
     limitation: "Round-robin only",
@@ -94,8 +99,8 @@ export default function CoordinatorNetwork() {
 
       <PageHeader
         title="Operator Network"
-        description="The task-dispatch and coordination layer of ReineiraOS. The coordinator distributes CCTP relay tasks to staked operators via round-robin assignment."
-        readingTime="5 min read"
+        description="The task-dispatch and coordination layer of ReineiraOS. Operators bond cUSDC on-chain and claim relay tasks; off-chain coordinators dispatch those tasks. Registration is permissionless from chaos-net Day 1."
+        readingTime="6 min read"
       />
 
       {/* Overview */}
@@ -107,19 +112,93 @@ export default function CoordinatorNetwork() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The coordinator is a lightweight service that distributes cross-chain
-        relay tasks to operators. It receives CCTP burn transaction submissions
-        via HTTP and pushes them to subscribed operators via Server-Sent Events
-        (SSE).
+        The Operator Network has two layers (§8.12). On-chain, operators bond{" "}
+        <strong className="text-docs-text-primary font-semibold">cUSDC</strong>{" "}
+        — the immutable ERC-7984 confidential USDC wrapper, not a protocol token
+        — into the OperatorRegistry, then claim and execute relay tasks via the
+        TaskExecutor. Off-chain, a{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          coordinator service
+        </strong>{" "}
+        monitors source chains, dispatches tasks, and pushes them to subscribed{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          operator nodes
+        </strong>{" "}
+        via Server-Sent Events (SSE). The operator node and CLI are open-source
+        (§8.12).
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The coordinator does{" "}
-        <strong className="text-docs-text-primary font-semibold">not</strong>{" "}
-        watch chains for events, verify on-chain stake, or score operators. It
-        is a message distribution layer — the actual relay execution and staking
-        enforcement happens on-chain via the OperatorRegistry and TaskExecutor
-        contracts.
+        The coordinator is a{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          dispatch layer only
+        </strong>
+        : it does not custody funds or enforce eligibility. The Foundation
+        operates a canonical coordinator at a published URL, but any third party
+        may run an independent coordinator against the same on-chain
+        OperatorRegistry and TaskExecutor contracts (§8.12). All security
+        enforcement — bonding, exclusive windows, permissionless fallback, fee
+        collection — happens on-chain.
+      </p>
+
+      {/* Operator registration */}
+      <h2
+        id="registration"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Operator registration
+      </h2>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Registration is{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          permissionless from chaos-net Day 1
+        </strong>{" "}
+        at the contract layer. There is no Foundation invitation or admin
+        whitelist. Any address that meets the on-chain criteria may register and
+        begin claiming tasks (§8.4):
+      </p>
+
+      <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
+        <li>
+          Posts the required{" "}
+          <strong className="text-docs-text-primary font-semibold">
+            cUSDC bond
+          </strong>{" "}
+          to the OperatorRegistry
+        </li>
+        <li>
+          Passes sanctions screening via the optional{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            ISanctionsOracle
+          </code>{" "}
+          configured on the OperatorRegistry (§8.5, §10.5)
+        </li>
+        <li>Has not been previously slashed (§8.4)</li>
+      </ul>
+
+      <Callout
+        variant="info"
+        title="Recommended-operators list is a signal, not a gate"
+      >
+        <p>
+          The Foundation maintains an{" "}
+          <strong>off-chain, KYB-attested "recommended-operators" list</strong>{" "}
+          used only for the subsidy programme. It is a curation signal — it is{" "}
+          <strong>not</strong> a permission gate. Operators that are not on the
+          list can still register, claim, and execute tasks permissionlessly
+          (§8.11).
+        </p>
+      </Callout>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        During chaos-net, the{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          OperatorSubsidyManager
+        </code>{" "}
+        pays operators from a Foundation-funded cUSDC pool to bootstrap
+        liquidity. The subsidy programme runs during chaos-net only and becomes
+        inert post-activation (§8.9).
       </p>
 
       {/* Architecture */}
@@ -131,13 +210,14 @@ export default function CoordinatorNetwork() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The coordinator is a single hosted service operated by the ReineiraOS
-        team at{" "}
+        The Foundation operates the canonical coordinator at a published URL (
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           dswtxw6k9mker.cloudfront.net
         </code>
-        . This is intentionally centralized during testnet to simplify debugging
-        and iteration.
+        ). Coordinators are not privileged: any third party may run an
+        independent coordinator against the same on-chain OperatorRegistry and
+        TaskExecutor (§8.12). During chaos-net the canonical instance is the
+        only one in production, which keeps debugging and iteration simple.
       </p>
 
       <DocsTable
@@ -289,6 +369,55 @@ export default function CoordinatorNetwork() {
         </li>
       </ul>
 
+      {/* Slashing */}
+      <h2
+        id="slashing"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Slashing
+      </h2>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        The shipped{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          OperatorSlashingManager
+        </code>{" "}
+        slashes a misbehaving operator's cUSDC bond via a{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          single stake-weighted quorum
+        </strong>{" "}
+        across the active operator set (§8.10).
+      </p>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Two related mechanisms are specified for the v1.0 track but are{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          not yet shipped
+        </strong>{" "}
+        (§8.10):
+      </p>
+
+      <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
+        <li>
+          On-chain coordinator registration and subscription via a{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            CoordinatorRegistry
+          </code>{" "}
+          <DocsBadge variant="amber" className="ml-1">
+            Spec'd
+          </DocsBadge>
+        </li>
+        <li>
+          Cross-graph slashing — slashing votes spanning{" "}
+          <strong className="text-docs-text-primary font-semibold">
+            three or more independent coordinator–operator graphs
+          </strong>{" "}
+          <DocsBadge variant="amber" className="ml-1">
+            Spec'd
+          </DocsBadge>
+        </li>
+      </ul>
+
       {/* Current Limitations */}
       <h2
         id="current-limitations"
@@ -298,8 +427,16 @@ export default function CoordinatorNetwork() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        These limitations apply to the testnet coordinator and will be addressed
-        as the network matures.
+        These limitations apply to the chaos-net coordinator and will be
+        addressed as the network matures. chaos-net runs in{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          public mode
+        </strong>{" "}
+        and is{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          unaudited
+        </strong>
+        .
       </p>
 
       <DocsTable columns={limitationColumns} rows={limitationRows} />

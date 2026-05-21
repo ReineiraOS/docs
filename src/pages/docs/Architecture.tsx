@@ -6,6 +6,7 @@ import CodeBlock from "@/components/docs/CodeBlock";
 import ArchitectureDiagram from "@/components/docs/ArchitectureDiagram";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
+import DocsBadge from "@/components/docs/DocsBadge";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
@@ -40,7 +41,7 @@ const layerRows = [
   {
     layer: "Storage",
     tech: "ERC-7201",
-    desc: "Encrypted state variables stored via namespaced storage. UUPS upgradeable contracts with ERC-2771 meta-transaction support.",
+    desc: "Encrypted state variables stored via namespaced storage. Contracts are immutable singletons; ERC-7201 + __gap[50] preserve layout across deployment versions (§11.8). ERC-2771 meta-transaction support.",
   },
   {
     layer: "Orchestration",
@@ -74,9 +75,16 @@ export default function Architecture() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         ReineiraOS is conditional settlement infrastructure built on the
-        Ethereum Virtual Machine with an FHE coprocessor for fully homomorphic
-        encryption. Settlement logic executes entirely in ciphertext — neither
-        the chain nor operators see cleartext amounts.
+        Ethereum Virtual Machine. It runs in two modes (§9): a{" "}
+        <strong className="text-docs-text-primary">public mode</strong> with
+        plaintext amounts — the mode running on chaos-net today — and an{" "}
+        <strong className="text-docs-text-primary">encrypted mode</strong> that
+        uses an FHE coprocessor so settlement logic executes entirely in
+        ciphertext. Encrypted mode activates at the v1.0 mainnet launch (Q4
+        2026) as a separate immutable deployment{" "}
+        <DocsBadge variant="amber">Spec'd</DocsBadge>; until then the chaos-net
+        deployment operates in public mode{" "}
+        <DocsBadge variant="blue">Chaos-net</DocsBadge>.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -93,10 +101,13 @@ export default function Architecture() {
       </p>
 
       <Callout variant="info" title="Design principle">
-        Privacy is a first-class constraint, not a post-hoc addition. Every
-        storage write and every computation operates on FHE-encrypted values.
-        Plaintext is only used for public metadata like timestamps and escrow
-        existence flags.
+        Privacy is a first-class constraint, not a post-hoc addition. In
+        encrypted mode every storage write and every computation operates on
+        FHE-encrypted values, with plaintext used only for public metadata like
+        timestamps and escrow existence flags. The encrypted-state design and
+        types described below ship at the v1.0 mainnet launch (Q4 2026); the
+        live chaos-net deployment currently runs in public (plaintext) mode
+        (§9).
       </Callout>
 
       <h2
@@ -187,13 +198,36 @@ export default function Architecture() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           escrowId
         </code>
-        . Contracts use ERC-7201 namespaced storage for upgrade safety and are
-        UUPS upgradeable with ERC-2771 meta-transaction support via a base
-        contract (
+        . Every protocol contract is deployed as an{" "}
+        <strong className="text-docs-text-primary">immutable singleton</strong>{" "}
+        at a fixed address (§11.8) — there is no UUPS proxy, no{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          _authorizeUpgrade
+        </code>{" "}
+        hook, and no owner or admin upgrade key. Contracts still use ERC-7201
+        namespaced storage with{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          __gap[50]
+        </code>
+        , but for layout compatibility across deployment versions rather than
+        in-place upgrades. ERC-2771 meta-transaction support is provided via a
+        base contract (
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           TestnetCoreBase
         </code>
         ).
+      </p>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Because contracts are immutable, functional evolution ships as{" "}
+        <strong className="text-docs-text-primary">
+          new contract deployments at new addresses
+        </strong>{" "}
+        that users opt into by migration — never as in-place upgrades. The{" "}
+        canonical-deployment registry (§3.4) is a documentation surface, not an
+        on-chain contract, that lists the v1.0 deployment addresses across host
+        chains; users remain free to interact with any other bytecode deployment
+        at their own choice.
       </p>
 
       <h3
@@ -204,10 +238,22 @@ export default function Architecture() {
       </h3>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Cross-chain settlement uses Circle CCTP V2. A coordinator service
-        distributes relay tasks to staked operators via round-robin assignment.
-        Operators burn USDC on the source chain and trigger minting on Arbitrum
-        Sepolia, where the escrow contract receives the funds.
+        Public mode can deploy on any EVM chain; the current chaos-net
+        deployment runs on Arbitrum L2 (§9). Cross-chain funding arrives over
+        two rails — Circle CCTP V2 for USDC, and LayerZero OFT / USDT0 for USDT
+        (available to non-U.S. and non-EU users) — both of which funnel into{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          ConfidentialEscrow.fundFrom
+        </code>
+        . A coordinator service distributes relay tasks to staked operators via
+        round-robin assignment; operators relay the burn-and-mint (or OFT)
+        attestations so the escrow contract receives the funds.
+      </p>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Atlas-deployed third-party L3s are defined as a model for hosting
+        protocol deployments (§9.10){" "}
+        <DocsBadge variant="amber">Spec'd</DocsBadge>.
       </p>
 
       <h2
