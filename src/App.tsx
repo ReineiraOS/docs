@@ -35,6 +35,12 @@ import CrossChain from "./pages/docs/CrossChain";
 import CoordinatorNetwork from "./pages/docs/CoordinatorNetwork";
 import RunOperator from "./pages/docs/RunOperator";
 
+// Research & R&D
+import CryptographicFoundations from "./pages/docs/research/CryptographicFoundations";
+import OpenProblems from "./pages/docs/research/OpenProblems";
+import ResearchPreviews from "./pages/docs/research/ResearchPreviews";
+import AgenticComposition from "./pages/docs/research/AgenticComposition";
+
 // API Reference
 import Contracts from "./pages/docs/Contracts";
 import ReineiraSDK from "./pages/docs/ReineiraSDK";
@@ -102,6 +108,20 @@ const App = () => (
       />{" "}
       {/* legacy */}
       <Route path="/operate/run-operator" element={<RunOperator />} />
+      {/* Research & R&D */}
+      <Route
+        path="/research/cryptographic-foundations"
+        element={<CryptographicFoundations />}
+      />
+      <Route path="/research/open-problems" element={<OpenProblems />} />
+      <Route
+        path="/research/research-previews"
+        element={<ResearchPreviews />}
+      />
+      <Route
+        path="/research/agentic-composition"
+        element={<AgenticComposition />}
+      />
       {/* API Reference */}
       <Route path="/reference/contracts" element={<Contracts />} />
       <Route path="/reference/sdk" element={<ReineiraSDK />} />
