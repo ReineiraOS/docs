@@ -8,6 +8,10 @@ import NotFound from "./pages/NotFound";
 import Overview from "./pages/docs/Overview";
 import QuickStart from "./pages/docs/QuickStart";
 
+// Project Status
+import Status from "./pages/docs/Status";
+import Risk from "./pages/docs/Risk";
+
 // Settlement Standard (RSS)
 import RssWhatIs from "./pages/docs/rss/RssWhatIs";
 import RssConformance from "./pages/docs/rss/RssConformance";
@@ -63,6 +67,9 @@ const App = () => (
       {/* Get Started */}
       <Route path="/get-started/overview" element={<Overview />} />
       <Route path="/get-started/quick-start" element={<QuickStart />} />
+      {/* Project Status */}
+      <Route path="/status" element={<Status />} />
+      <Route path="/risk" element={<Risk />} />
       {/* Settlement Standard (RSS) */}
       <Route path="/settlement-standard/what-is-rss" element={<RssWhatIs />} />
       <Route

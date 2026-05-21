@@ -2,6 +2,7 @@ import DocsLayout from "@/components/layout/DocsLayout";
 import Breadcrumbs from "@/components/docs/Breadcrumbs";
 import PageHeader from "@/components/docs/PageHeader";
 import Callout from "@/components/docs/Callout";
+import RiskCallout from "@/components/docs/RiskCallout";
 import CodeBlock from "@/components/docs/CodeBlock";
 import ArchitectureDiagram from "@/components/docs/ArchitectureDiagram";
 import PageNav from "@/components/docs/PageNav";
@@ -82,6 +83,8 @@ export default function EscrowLifecycle() {
         description="The full state machine for Escrows — from creation through funding, Gate verification, and redemption."
         readingTime="7 min read"
       />
+
+      <RiskCallout />
 
       <h2
         id="overview"
