@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import TableOfContents, { TocItem } from "./TableOfContents";
+import DocsFooter from "./DocsFooter";
 
 interface DocsLayoutProps {
   children: React.ReactNode;
@@ -38,6 +39,7 @@ export default function DocsLayout({
               <main id="main-content" tabIndex={-1} className="outline-none">
                 {children}
               </main>
+              <DocsFooter />
             </div>
           </div>
 
