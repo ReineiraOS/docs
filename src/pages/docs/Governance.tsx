@@ -1,461 +1,261 @@
 import DocsLayout from "@/components/layout/DocsLayout";
 import Breadcrumbs from "@/components/docs/Breadcrumbs";
 import PageHeader from "@/components/docs/PageHeader";
-import CodeBlock from "@/components/docs/CodeBlock";
 import Callout from "@/components/docs/Callout";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
+import DocsBadge from "@/components/docs/DocsBadge";
 import Steps, { Step } from "@/components/docs/Steps";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
 const toc: TocItem[] = [
-  { id: "current-model", title: "Current model", level: 2 },
-  { id: "admin-permissions", title: "Admin permissions", level: 2 },
-  { id: "uups-proxy", title: "UUPS proxy pattern", level: 2 },
-  { id: "erc-7201-storage", title: "ERC-7201 storage safety", level: 2 },
-  { id: "upgrade-lifecycle", title: "Upgrade lifecycle", level: 2 },
-  {
-    id: "path-to-decentralization",
-    title: "Path to decentralization",
-    level: 2,
-  },
-  { id: "immutable-guarantees", title: "Immutable guarantees", level: 2 },
+  { id: "posture", title: "Public-Infrastructure posture", level: 2 },
+  { id: "entity-stack", title: "Three-entity stack", level: 2 },
+  { id: "immutable", title: "Immutable contracts", level: 2 },
+  { id: "authorities", title: "What the privileged roles can do", level: 2 },
+  { id: "participation", title: "Participation Policy & bond", level: 2 },
+  { id: "conditional-tge", title: "Conditional TGE & the DAO", level: 2 },
+  { id: "phases", title: "Phases", level: 2 },
 ];
 
 const { prev, next } = getPrevNext("/learn/governance");
 
-const adminCanColumns = [
-  { header: "Action", key: "action", width: "220px" },
-  { header: "Permission", key: "permission", width: "100px" },
-  { header: "Details", key: "details" },
+const entityColumns = [
+  { header: "Entity", key: "entity", width: "200px" },
+  { header: "Jurisdiction", key: "juris", width: "130px" },
+  { header: "Role", key: "role" },
 ];
-const adminCanRows = [
+
+const entityRows = [
   {
-    action: "Upgrade implementation",
-    permission: "Can",
-    details:
-      "Deploy a new implementation contract and point the UUPS proxy to it. All state is preserved.",
+    entity: "Reineira Labs Limited (DevCo)",
+    juris: "RAK DAO Free Zone, UAE",
+    role: "Software Vendor — authors the contracts, publishes the RSS standard, maintains docs, deploys the canonical reference implementation, coordinates audits. Does not operate the protocol, custody funds, or provide financial services.",
   },
   {
-    action: "Pause / unpause",
-    permission: "Can",
-    details:
-      "Pause all escrow operations in an emergency. Existing escrows are frozen but not lost.",
+    entity: "Reineira HoldCo",
+    juris: "British Virgin Islands",
+    role: "Parent entity; counterparty to Convertible Note / SAFE instruments (Reg S, non-U.S. investors). Holds equity in DevCo. Does not custody protocol IP.",
   },
   {
-    action: "Add / remove operators",
-    permission: "Can",
-    details: "Whitelist or delist operators from the relay network.",
-  },
-  {
-    action: "Set fee parameters",
-    permission: "Can",
-    details: "Adjust relay fees, protocol fees, and insurance pool parameters.",
-  },
-  {
-    action: "Access escrow funds",
-    permission: "Cannot",
-    details:
-      "Funds are held by the contract, not the admin. No admin function can withdraw or redirect escrowed funds.",
-  },
-  {
-    action: "Modify escrow terms",
-    permission: "Cannot",
-    details:
-      "Once created, an escrow's amount, beneficiary, resolver, and expiry are immutable.",
-  },
-  {
-    action: "Bypass resolvers",
-    permission: "Cannot",
-    details:
-      "The admin cannot force-resolve an escrow. Only the attached resolver can trigger release.",
-  },
-  {
-    action: "Redirect payouts",
-    permission: "Cannot",
-    details:
-      "Payout destination is set at creation time and cannot be changed by any party.",
-  },
-  {
-    action: "Decrypt FHE data",
-    permission: "Cannot",
-    details:
-      "Decryption requires coordinator threshold signatures. The admin key is not an FHE decryption key.",
-  },
-  {
-    action: "Mint or burn tokens",
-    permission: "Cannot",
-    details:
-      "The protocol uses existing tokens (USDC). No mint/burn capability exists in the contracts.",
+    entity: "Reineira Foundation",
+    juris: "Cayman Islands",
+    role: "IP assignee from Phase 2; conditional token issuance (if §12.11 triggers met); DAO custody; ParticipationBond custody; grant-programme and Foundation-operated-services administrator.",
   },
 ];
 
-const storageComparisonColumns = [
-  { header: "Approach", key: "approach", width: "180px" },
-  { header: "Storage location", key: "location" },
-  { header: "Collision risk", key: "risk", width: "120px" },
-];
-const storageComparisonRows = [
-  {
-    approach: "Traditional (slot 0, 1, 2...)",
-    location:
-      "Sequential slots starting at 0. New variables in upgrades must be appended.",
-    risk: "High",
-  },
-  {
-    approach: "ERC-7201 namespaced",
-    location:
-      "Deterministic slot derived from keccak256(namespace). Each module gets a unique, non-overlapping region.",
-    risk: "None",
-  },
+const authorityColumns = [
+  { header: "Authority", key: "auth", width: "210px" },
+  { header: "Can", key: "can" },
 ];
 
-const upgradeLifecycleColumns = [
-  { header: "Phase", key: "phase", width: "120px" },
-  { header: "Current (testnet)", key: "testnet" },
-];
-const upgradeLifecycleRows = [
-  { phase: "Proposal", testnet: "Admin deploys new implementation directly." },
-  { phase: "Review", testnet: "No review period — immediate execution." },
-  { phase: "Execution", testnet: "Admin calls upgradeTo() on the proxy." },
-  { phase: "Verification", testnet: "Manual testing on testnet." },
+const authorityRows = [
   {
-    phase: "Rollback",
-    testnet: "Deploy previous implementation and upgrade again.",
+    auth: "Upgrade authority",
+    can: "None. Contracts are immutable singletons — no UUPS proxy, no _authorizeUpgrade hook, no admin upgrade key on any contract (§11.8).",
+  },
+  {
+    auth: "slashingManager",
+    can: "Execute OperatorRegistry.slash and route slashed stake, via OperatorSlashingManager (with owner as backstop). (§10.5)",
+  },
+  {
+    auth: "Coverage Manager admin",
+    can: "Admin setters (setEscrow, setPoolFactory) and policy registration. Cannot upgrade or migrate state-bearing contracts. DevCo (Phase 1) → Foundation multisig (Phase 2). (§10.5)",
+  },
+  {
+    auth: "Fee governance (post-activation)",
+    can: "Set fee bps into storage within an immutable bytecode ceiling. Cannot raise the ceiling (requires a new immutable FeeManager) and cannot collect any fee before MAINNET_ACTIVATION_BLOCK. (§8.8)",
+  },
+  {
+    auth: "Trusted Forwarder (ERC-2771)",
+    can: "Attribute the original signer for sponsored gas. Foundation-published, KYB-pinned allowlist. (§10.5)",
   },
 ];
 
 export default function Governance() {
   return (
-    <DocsLayout
-      toc={toc}
-      editHref="https://github.com/reineiraos/docs/edit/main/learn/governance.mdx"
-    >
+    <DocsLayout toc={toc} editHref="">
       <Breadcrumbs />
 
       <PageHeader
-        title="Governance & Upgrades"
-        description="Protocol governance, upgrade process, and timelock controls."
-        readingTime="10 min read"
+        title="Governance & Entity Stack"
+        description="ReineiraOS is Public Infrastructure: immutable contracts deployed by a Software Vendor, with no upgrade authority and no token at launch."
+        readingTime="9 min read"
       />
 
       <h2
-        id="current-model"
+        id="posture"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Current model
+        Public-Infrastructure posture
       </h2>
-
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        ReineiraOS is currently in testnet with an{" "}
-        <strong className="text-docs-text-primary font-semibold">
-          owner-controlled
-        </strong>{" "}
-        governance model. A single admin address (planned to be a multisig)
-        controls upgrades, operator management, and fee parameters. This is
-        intentional for the testnet phase — rapid iteration requires fast
-        upgrades without governance overhead.
+        ReineiraOS launches as Public Infrastructure. Every protocol contract is
+        deployed as an <strong>immutable singleton</strong> with no upgrade
+        authority (§11.8); protocol fees are pinned at zero through chaos-net by
+        a block-locked activation constant (§8.8); operators bond{" "}
+        <strong>cUSDC</strong>, not a token (§8); and a{" "}
+        <strong>REINEIRA token does not exist yet</strong> — any issuance is
+        conditional on the §12.11 trigger conditions. The contracts are deployed
+        by Reineira Labs Limited (RAK DAO Free Zone, UAE) acting as a{" "}
+        <strong>Software Vendor</strong>, not as an operator of the protocol.
       </p>
 
-      <Callout variant="info" title="Testnet governance">
+      <Callout variant="info" title="Governance does not vote on upgrades">
         <p>
-          The current owner-controlled model is a temporary measure for testnet.
-          The protocol will progressively decentralize through the phases
-          described below. The admin's powers are already limited by design —
-          see the permissions table.
+          Because the contracts are immutable, there is no upgrade to govern. No
+          entity — DevCo, HoldCo, Foundation, or any future DAO — holds upgrade
+          authority. Functional evolution ships through{" "}
+          <strong>new contract deployments at new addresses</strong>, which
+          users opt into. (§11.8.)
         </p>
       </Callout>
 
       <h2
-        id="admin-permissions"
+        id="entity-stack"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Admin permissions
+        Three-entity stack
       </h2>
-
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The admin has operational control but cannot access or redirect user
-        funds. This separation is enforced at the smart contract level — there
-        are no admin functions that touch escrow balances.
+        Governance is structured across three entities (§11.2). The full
+        three-entity stack is reached at Phase 2.{" "}
+        <DocsBadge variant="amber">Spec'd · Phase 2 (Q1–Q2 2027)</DocsBadge>
       </p>
-
-      <DocsTable columns={adminCanColumns} rows={adminCanRows} />
+      <DocsTable columns={entityColumns} rows={entityRows} />
 
       <h2
-        id="uups-proxy"
+        id="immutable"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        UUPS proxy pattern
+        Immutable contracts
       </h2>
-
+      <blockquote className="border-l-4 border-docs-border-strong pl-4 my-6 text-docs-text-secondary leading-relaxed italic">
+        <p>
+          Every protocol contract is deployed as an immutable singleton at a
+          fixed address. No entity holds upgrade authority over the deployed
+          contracts. There is no UUPS proxy, no{" "}
+          <code className="not-italic">_authorizeUpgrade</code> hook, no Owner
+          role with upgrade privileges, no admin key on any escrow, coverage
+          manager, operator registry, fee manager, or token wrapper. The storage
+          layout is frozen at deployment; the logic is frozen at deployment.
+          (§11.8.)
+        </p>
+      </blockquote>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        All core contracts use the UUPS (Universal Upgradeable Proxy Standard)
-        pattern. Unlike transparent proxies, UUPS places the upgrade logic in
-        the <em>implementation</em> contract, not the proxy. This means the
-        implementation can remove its own upgradeability — a key requirement for
-        the immutability phase.
+        Contracts still use ERC-7201 namespaced storage and carry a{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          __gap[50]
+        </code>{" "}
+        reserve — not for in-place upgrades (there are none) but for
+        cross-deployment-version compatibility, so a future immutable
+        redeployment can share storage conventions.
       </p>
 
-      <CodeBlock
-        filename="TestnetCoreBase.sol"
-        language="solidity"
-        lines={[
-          { content: "// SPDX-License-Identifier: MIT" },
-          { content: "pragma solidity ^0.8.24;" },
-          { content: "" },
-          {
-            content:
-              'import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";',
-          },
-          {
-            content:
-              'import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";',
-          },
-          {
-            content:
-              'import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";',
-          },
-          {
-            content:
-              'import {ReentrancyGuardUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";',
-          },
-          { content: "" },
-          {
-            content: "abstract contract TestnetCoreBase is",
-            highlighted: true,
-          },
-          { content: "    Initializable,", highlighted: true },
-          { content: "    UUPSUpgradeable,", highlighted: true },
-          { content: "    OwnableUpgradeable,", highlighted: true },
-          { content: "    ReentrancyGuardUpgradeable", highlighted: true },
-          { content: "{", highlighted: true },
-          { content: "    /// @notice Only the owner can authorize upgrades" },
-          {
-            content:
-              "    function _authorizeUpgrade(address newImplementation)",
-          },
-          { content: "        internal" },
-          { content: "        override" },
-          { content: "        onlyOwner" },
-          { content: "    {}" },
-          { content: "" },
-          { content: "    // ... module-specific logic" },
-          { content: "}" },
-        ]}
-        showLineNumbers={true}
-      />
+      <h2
+        id="authorities"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        What the privileged roles can do
+      </h2>
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Five authorities partition the protocol's privileged surface (§10.5).
+        None can upgrade a contract, withdraw escrowed funds, modify escrow
+        terms, force-resolve a gate, or decrypt FHE state without explicit
+        permission.
+      </p>
+      <DocsTable columns={authorityColumns} rows={authorityRows} />
 
-      <Callout variant="tip" title="Why UUPS over transparent proxy?">
+      <h2
+        id="participation"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Participation Policy &amp; bond
+      </h2>
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        The Foundation commits to <strong>not</strong> participate as operator,
+        pool creator, pool manager, or curator on any role-collapsed venue — the
+        Participation Policy (§11.5). The commitment is collateralised by a{" "}
+        <strong>$1M-equivalent ParticipationBond denominated in cUSDC</strong>{" "}
+        (§11.6), deployed empty at chaos-net and funded from Phase 2 capital if
+        and when SAFT/QF rounds execute. Any Foundation key that participates on
+        a role-collapsed venue forfeits the bond; quarterly{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          NonParticipationAttestation
+        </code>{" "}
+        events build an immutable record.
+      </p>
+      <Callout variant="info" title="Three sequenced commitments">
         <p>
-          UUPS is more gas-efficient (no admin slot check on every call) and
-          gives the implementation contract control over its own upgradeability.
-          This allows a future implementation to remove{" "}
-          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            _authorizeUpgrade()
-          </code>
-          , making the contract permanently immutable.
+          Phase 1 — DevCo publishes Participation Policy v0.1 as a bylaws-draft
+          commitment. Phase 2 — Foundation adopts v1.0 as a board-level
+          commitment (modifiable only by board 2/3 supermajority). Phase 3
+          (conditional, post-TGE) — Foundation deploys v1.1 to an immutable
+          contract for 3 years, modifiable only by token-holder 2/3
+          supermajority under a 30-day timelock. (§11.5.)
         </p>
       </Callout>
 
       <h2
-        id="erc-7201-storage"
+        id="conditional-tge"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        ERC-7201 storage safety
+        Conditional TGE &amp; the DAO
       </h2>
-
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Upgradeable contracts are notoriously fragile because new storage
-        variables can collide with existing ones. ERC-7201 solves this by giving
-        each module a unique, deterministic storage namespace.
-      </p>
-
-      <DocsTable
-        columns={storageComparisonColumns}
-        rows={storageComparisonRows}
-      />
-
-      <CodeBlock
-        filename="NamespacedStorage.sol"
-        language="solidity"
-        lines={[
-          { content: "// ERC-7201: Namespaced storage pattern" },
-          { content: "" },
-          {
-            content:
-              "/// @custom:storage-location erc7201:reineira.escrow.storage",
-            highlighted: true,
-          },
-          { content: "struct EscrowStorage {" },
-          { content: "    mapping(uint256 => Escrow) escrows;" },
-          { content: "    uint256 nextEscrowId;" },
-          { content: "}" },
-          { content: "" },
-          {
-            content:
-              '// Storage slot = keccak256("reineira.escrow.storage") - 1',
-          },
-          { content: "bytes32 private constant ESCROW_STORAGE_SLOT =" },
-          {
-            content: "    0x...; // deterministic, collision-resistant",
-            highlighted: true,
-          },
-          { content: "" },
-          {
-            content:
-              "function _getEscrowStorage() private pure returns (EscrowStorage storage $) {",
-          },
-          { content: "    assembly { $.slot := ESCROW_STORAGE_SLOT }" },
-          { content: "}" },
-        ]}
-        showLineNumbers={true}
-      />
-
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Each module — escrow, insurance, settlement — has its own namespace. You
-        can add new fields to a module's storage struct without affecting other
-        modules, and new modules can be added without risk of overwriting
-        existing state.
+        <DocsBadge variant="amber">Research · conditional (§12.11)</DocsBadge>{" "}
+        There is no REINEIRA token and no DAO today. A Token Generation Event is
+        executed by the Foundation only if <strong>all four</strong> §12.11
+        triggers are met: (1) a basin condition sustained ≥12 months (≥30
+        operator entities, cumulative GMV ≥$5B, LP TVL ≥$10M, ≥50 integrated
+        applications, across 4 consecutive quarters); (2) external-counsel
+        sign-off on digital-commodity classification OR a permanent U.S.
+        geo-fence; (3) a Foundation board 2/3 supermajority attestation; and (4)
+        a completed independent governance-design review. If a TGE occurs, the
+        DAO governs grant/treasury and Participation-Policy parameters — never
+        contract upgrades, which do not exist.
       </p>
 
       <h2
-        id="upgrade-lifecycle"
+        id="phases"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Upgrade lifecycle
+        Phases
       </h2>
-
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The current testnet upgrade process prioritizes speed and iteration.
-      </p>
-
-      <DocsTable
-        columns={upgradeLifecycleColumns}
-        rows={upgradeLifecycleRows}
-      />
-
-      <h2
-        id="path-to-decentralization"
-        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
-      >
-        Path to decentralization
-      </h2>
-
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        ReineiraOS follows a four-phase decentralization roadmap. Each phase
-        reduces admin power and increases community control.
-      </p>
-
       <Steps>
-        <Step title="Phase 1: Guarded Launch (current)">
+        <Step title="Phase 1 — DevCo as Software Vendor (chaos-net, from Jul 2026)">
           <p className="text-docs-text-secondary leading-relaxed">
-            Single owner address with full admin control. Rapid iteration on
-            testnet. No timelock, no governance overhead. The admin can upgrade,
-            pause, and configure all parameters instantly. This phase is
-            necessary for finding and fixing bugs quickly.
+            Reineira Labs Limited operates as Software Vendor: authors and
+            deploys the immutable contracts, publishes RSS, coordinates audits.
+            IP held under BUSL-1.1. Capital via the BVI HoldCo Convertible Note
+            (Reg S). No token, no SAFT, no DAO. (§11.3.)
           </p>
         </Step>
-        <Step title="Phase 2: Governed Upgrades">
+        <Step title="Phase 2 — Foundation operational (Q1–Q2 2027)">
           <p className="text-docs-text-secondary leading-relaxed">
-            Admin transitions to a{" "}
-            <strong className="text-docs-text-primary font-semibold">
-              3-of-5 multisig
-            </strong>{" "}
-            with a{" "}
-            <strong className="text-docs-text-primary font-semibold">
-              48-hour timelock
-            </strong>
-            . All upgrades are publicly visible before execution. Emergency
-            path: 2-of-3 subset can bypass timelock for critical fixes.
-            Community can monitor and exit before upgrades take effect.
+            The Cayman Foundation becomes operational; IP transfers from DevCo
+            to Foundation via the CLA assignment chain; DevCo continues as
+            Software Vendor under a maintenance contract. Token issuance is{" "}
+            <strong>not</strong> a Phase 2 milestone. (§11.3, §11.4.)
           </p>
         </Step>
-        <Step title="Phase 3: Full Decentralization">
+        <Step title="Phase 3 — Conditional, post-TGE (only if §12.11 triggers met)">
           <p className="text-docs-text-secondary leading-relaxed">
-            Governance token holders vote on upgrades. Proposals require quorum
-            and supermajority. Timelock extended to 7 days. The multisig retains
-            emergency powers only — normal upgrades go through on-chain
-            governance. Operator set is fully permissionless.
-          </p>
-        </Step>
-        <Step title="Phase 4: Immutability Option">
-          <p className="text-docs-text-secondary leading-relaxed">
-            Governance can vote to{" "}
-            <strong className="text-docs-text-primary font-semibold">
-              remove upgradeability entirely
-            </strong>{" "}
-            from any module. Once removed, the module's logic is frozen forever.
-            This is a one-way door — there is no way to re-enable upgrades.
-            Individual modules can be frozen independently.
+            If and only if the §12.11 triggers are satisfied, a TGE issues the
+            REINEIRA token, the DAO activates, and Participation Policy v1.1 is
+            deployed immutable. The protocol operates fully without ever
+            reaching this phase. (§12.11.)
           </p>
         </Step>
       </Steps>
 
-      <Callout variant="warning" title="Phase 4 is irreversible">
+      <Callout variant="tip" title="Trust minimization holds from day one">
         <p>
-          Removing upgradeability is permanent. A frozen module cannot be
-          patched, even for critical vulnerabilities. This trade-off makes sense
-          only for mature, battle-tested modules where immutability is more
-          valuable than flexibility.
-        </p>
-      </Callout>
-
-      <h2
-        id="immutable-guarantees"
-        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
-      >
-        Immutable guarantees
-      </h2>
-
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Regardless of the governance phase, certain properties are enforced at
-        the smart contract level and cannot be changed by any admin, multisig,
-        or governance vote:
-      </p>
-
-      <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside">
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            Non-custodial
-          </strong>{" "}
-          — Funds are held by the contract, never by an admin or operator. No
-          function exists to withdraw escrowed funds to an arbitrary address.
-        </li>
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            Encrypted by default
-          </strong>{" "}
-          — All financial data is FHE-encrypted. There is no admin function to
-          store values in plaintext or bypass encryption.
-        </li>
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            Immutable terms
-          </strong>{" "}
-          — Once an escrow is created, its amount, beneficiary, resolver, and
-          expiry cannot be modified. Not by the creator, not by the admin, not
-          by governance.
-        </li>
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            Deterministic resolution
-          </strong>{" "}
-          — Escrow release is determined solely by the attached resolver's{" "}
-          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            isConditionMet()
-          </code>{" "}
-          return value. No override mechanism exists.
-        </li>
-      </ul>
-
-      <Callout variant="tip" title="Trust minimization">
-        <p>
-          These guarantees mean you do not need to trust the admin to use the
-          protocol safely. Even in Phase 1, the admin cannot steal funds, change
-          escrow terms, or bypass resolution logic. The governance roadmap
-          reduces trust further — but the core safety properties hold from day
-          one.
+          Because contracts are immutable and non-custodial, you do not need to
+          trust any entity to use the protocol safely: no admin can steal funds,
+          change escrow terms, bypass a gate, or decrypt your state. The entity
+          stack governs grants, audits, and the standard — not your money.
         </p>
       </Callout>
 

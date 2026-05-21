@@ -6,10 +6,12 @@ import CodeBlock from "@/components/docs/CodeBlock";
 import ArchitectureDiagram from "@/components/docs/ArchitectureDiagram";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
+import DocsBadge from "@/components/docs/DocsBadge";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
 const toc: TocItem[] = [
+  { id: "transport-rails", title: "Transport rails", level: 2 },
   { id: "flow", title: "Flow", level: 2 },
   { id: "supported-chains", title: "Supported chains", level: 2 },
   { id: "sdk-usage", title: "SDK usage", level: 2 },
@@ -70,9 +72,50 @@ export default function CrossChain() {
 
       <PageHeader
         title="Cross-Chain Settlement"
-        description="ReineiraOS uses Circle CCTP V2 for native USDC transfers across chains. No bridges. No wrapped tokens. Real USDC is burned on the source chain and minted on the destination chain."
-        readingTime="5 min read"
+        description="ReineiraOS ships two transport rails at v1.0: Circle CCTP V2 for native USDC and LayerZero OFT / USDT0 for USDT. Both funnel into a single escrow sink, so additional bridges integrate without touching the escrow engine."
+        readingTime="6 min read"
       />
+
+      {/* Transport rails */}
+      <h2
+        id="transport-rails"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Transport rails
+      </h2>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Two transport rails ship at v1.0 (§9.2):
+      </p>
+
+      <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
+        <li>
+          <strong className="text-docs-text-primary font-semibold">
+            Circle CCTP V2
+          </strong>{" "}
+          for USDC — native burn-mint with attestation via the Circle Iris
+          network. No wrapped tokens.
+        </li>
+        <li>
+          <strong className="text-docs-text-primary font-semibold">
+            LayerZero OFT / USDT0
+          </strong>{" "}
+          for USDT — shipped at v1.0 and available to non-U.S. / non-EU users.{" "}
+          <DocsBadge variant="green" className="ml-1">
+            Live
+          </DocsBadge>
+        </li>
+      </ul>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Both rails are handled by their own transport handler, and both funnel
+        into a single{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          ConfidentialEscrow.fundFrom
+        </code>{" "}
+        sink. Additional bridges integrate via handler registration without
+        modifying the escrow engine (§9.2).
+      </p>
 
       <h2
         id="flow"
@@ -93,6 +136,16 @@ export default function CrossChain() {
           { label: "Settle", sublabel: "USDC minted on destination chain" },
         ]}
       />
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        The diagram below traces the USDC / CCTP V2 rail. The USDT rail follows
+        an analogous burn-attest-execute path over LayerZero OFT / USDT0 but
+        terminates at the same{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          ConfidentialEscrow.fundFrom
+        </code>{" "}
+        sink (§9.2).
+      </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         The full sequence begins when the SDK calls{" "}
@@ -122,8 +175,17 @@ export default function CrossChain() {
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Arbitrum Sepolia is the destination chain where all escrows and
         insurance contracts are deployed. Source chains are where buyers can
-        fund from.
+        fund from. The CCTP Domain column applies to the USDC rail; the USDT
+        rail routes over LayerZero OFT / USDT0 instead of CCTP domains (§9.2).
       </p>
+
+      <Callout variant="warning" title="chaos-net is public and unaudited">
+        <p>
+          chaos-net runs in <strong>public mode</strong> and is{" "}
+          <strong>unaudited</strong>. Do not move value you are not prepared to
+          lose.
+        </p>
+      </Callout>
 
       <h2
         id="sdk-usage"

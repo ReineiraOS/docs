@@ -5,15 +5,18 @@ import Callout from "@/components/docs/Callout";
 import CodeBlock from "@/components/docs/CodeBlock";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
+import DocsBadge from "@/components/docs/DocsBadge";
 import Steps, { Step } from "@/components/docs/Steps";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
 const toc: TocItem[] = [
   { id: "overview", title: "Overview", level: 2 },
-  { id: "fee-structure", title: "Fee structure", level: 2 },
+  { id: "zero-fees", title: "Zero fees during chaos-net", level: 2 },
+  { id: "fee-structure", title: "Post-activation fee structure", level: 2 },
   { id: "protocol-level-fees", title: "Protocol-level fees", level: 3 },
   { id: "insurance-level-fees", title: "Insurance-level fees", level: 3 },
+  { id: "operator-subsidy", title: "Operator subsidy programme", level: 2 },
   { id: "policy-builders", title: "Earning: Policy Builders", level: 2 },
   { id: "pool-underwriters", title: "Earning: Pool Underwriters", level: 2 },
   { id: "pool-economics-example", title: "Pool economics example", level: 3 },
@@ -25,6 +28,8 @@ const toc: TocItem[] = [
   },
   { id: "premium-calculation", title: "Premium calculation", level: 2 },
   { id: "dispute-resolution", title: "Dispute resolution", level: 2 },
+  { id: "points", title: "Points & contributor tracks", level: 2 },
+  { id: "token", title: "Conditional token (REINEIRA)", level: 2 },
   { id: "sustainability", title: "Sustainability model", level: 2 },
 ];
 
@@ -50,8 +55,8 @@ const overviewRows = [
   },
   {
     role: "Operators",
-    what: "Run staked relay nodes that execute cross-chain CCTP tasks",
-    how: "Earn 35 bps on every USDC amount they bridge",
+    what: "Run cUSDC-bonded relay nodes that execute cross-chain CCTP tasks",
+    how: "Subsidised from a Foundation cUSDC pool during chaos-net; earn 35 bps per bridge after mainnet activation",
   },
 ];
 
@@ -63,22 +68,34 @@ const protocolFeeColumns = [
 ];
 const protocolFeeRows = [
   {
-    fee: "Escrow settlement fee",
+    fee: "Base escrow settlement fee",
     rate: "25 bps (0.25%)",
-    trigger: "Escrow redemption",
-    recipient: "Protocol treasury",
+    trigger: "Escrow settlement (post-activation only)",
+    recipient: "Foundation treasury",
   },
   {
-    fee: "Protocol relay fee",
+    fee: "Cross-chain protocol fee",
     rate: "15 bps (0.15%)",
-    trigger: "Cross-chain task execution",
-    recipient: "Protocol (accumulated in FeeManager)",
+    trigger: "Cross-chain task execution (post-activation only)",
+    recipient: "Foundation treasury",
   },
   {
-    fee: "Operator relay fee",
+    fee: "Cross-chain operator fee",
     rate: "35 bps (0.35%)",
-    trigger: "Cross-chain task execution",
-    recipient: "Relay operator who executed the task",
+    trigger: "Cross-chain task execution (post-activation only)",
+    recipient: "Operator who executed the task",
+  },
+  {
+    fee: "Quorum voting fee",
+    rate: "50 bps (0.50%)",
+    trigger: "Dispute quorum vote (post-activation only)",
+    recipient: "Quorum voters",
+  },
+  {
+    fee: "Slasher reward",
+    rate: "10% of slashed stake",
+    trigger: "Successful slashing (all blocks)",
+    recipient: "Slasher (paid in cUSDC)",
   },
 ];
 
@@ -117,7 +134,7 @@ const operatorParamRows = [
   { param: "Monthly relay volume", value: "500,000 USDC" },
   { param: "Operator fee rate", value: "35 bps (0.35%)" },
   { param: "Number of relay tasks", value: "100" },
-  { param: "Minimum stake", value: "TBD" },
+  { param: "Bond asset", value: "cUSDC (ERC-7984 USDC wrapper)" },
   { param: "Unbonding period", value: "7 days" },
 ];
 
@@ -166,6 +183,17 @@ export default function Economics() {
         numerical examples for each role.
       </p>
 
+      <Callout variant="warning" title="No protocol fees today">
+        <p>
+          During the current chaos-net window the protocol charges{" "}
+          <strong>zero protocol fees</strong>. The post-activation fee schedule
+          below applies only after the immutable mainnet activation block is
+          reached (§8.8). There is no live REINEIRA token: operators bond cUSDC,
+          not a token, and any token remains conditional on the §12.11 trigger
+          conditions with no committed date.
+        </p>
+      </Callout>
+
       {/* ------------------------------------------------------------------ */}
       <h2
         id="overview"
@@ -182,23 +210,63 @@ export default function Economics() {
 
       {/* ------------------------------------------------------------------ */}
       <h2
-        id="fee-structure"
+        id="zero-fees"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Fee structure
+        Zero fees during chaos-net
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Fees are charged on cross-chain task execution. The{" "}
+        The{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           FeeManager
         </code>{" "}
-        calculates fees on the USDC amount being relayed. Both rates are
-        configurable via{" "}
+        carries an immutable{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-          setFeeConfig()
+          MAINNET_ACTIVATION_BLOCK
+        </code>{" "}
+        constant baked into its bytecode. While{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          block.number
+        </code>{" "}
+        is below that block,{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          collectFee()
+        </code>{" "}
+        returns zero — for every protocol fee. There is no governance toggle and
+        no admin override; the only way fees turn on is the chain reaching the
+        activation block (§8.8).
+      </p>
+
+      <Callout variant="info" title="Immutable, not configurable">
+        <p>
+          The fee schedule cannot be changed by any party while chaos-net is
+          live. Activation is purely a function of block height encoded at
+          deployment, so the &ldquo;zero fee&rdquo; guarantee holds without
+          trust in an operator or the Foundation (§8.8).
+        </p>
+      </Callout>
+
+      {/* ------------------------------------------------------------------ */}
+      <h2
+        id="fee-structure"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Post-activation fee structure{" "}
+        <DocsBadge variant="amber">Spec&apos;d</DocsBadge>
+      </h2>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        The fees below apply only after{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          MAINNET_ACTIVATION_BLOCK
         </code>
-        .
+        . Until then every rate below evaluates to zero. After activation the{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          FeeManager
+        </code>{" "}
+        calculates fees on the USDC amount being relayed or settled (§8.8). The
+        slasher reward is the one exception — it applies on all blocks.
       </p>
 
       <h3
@@ -212,9 +280,10 @@ export default function Economics() {
 
       <Callout variant="info" title="No escrow creation fee">
         <p>
-          Escrow creation itself has no fee. Protocol and operator fees are only
-          charged on cross-chain CCTP relay execution — when funds move between
-          chains.
+          Escrow creation itself has no fee. After activation, the cross-chain
+          protocol and operator fees are only charged on cross-chain CCTP relay
+          execution — when funds move between chains — while the base settlement
+          fee applies on escrow settlement (§8.8).
         </p>
       </Callout>
 
@@ -236,6 +305,35 @@ export default function Economics() {
           </code>{" "}
           runs on encrypted values — neither the coverage amount, risk score,
           nor resulting premium are ever visible on-chain.
+        </p>
+      </Callout>
+
+      {/* ------------------------------------------------------------------ */}
+      <h2
+        id="operator-subsidy"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Operator subsidy programme{" "}
+        <DocsBadge variant="amber">Spec&apos;d</DocsBadge>
+      </h2>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Because protocol fees are zero during chaos-net, operators are
+        compensated through the{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          OperatorSubsidyManager
+        </code>
+        , which pays operators from a Foundation-funded cUSDC pool. The subsidy
+        is active only during the chaos-net window and becomes inert once the
+        mainnet activation block is reached and standard fees take over (§8.9).
+      </p>
+
+      <Callout variant="info" title="No committed pool size">
+        <p>
+          The Foundation does not commit to a specific subsidy pool size or
+          per-task rate. The programme exists to bootstrap operator coverage
+          while fees are zero, and is structured to wind down at activation
+          (§8.9).
         </p>
       </Callout>
 
@@ -374,9 +472,13 @@ export default function Economics() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Operators run staked relay nodes that execute cross-chain CCTP tasks —
-        fetching Circle attestations and submitting relay transactions on-chain.
-        They earn 35 bps (0.35%) of every USDC amount they bridge.
+        Operators bond cUSDC — an immutable ERC-7984 USDC wrapper, not a token —
+        and run relay nodes that execute cross-chain CCTP tasks: fetching Circle
+        attestations and submitting relay transactions on-chain (§8). During
+        chaos-net they are paid from the Foundation subsidy pool (§8.9). After
+        the mainnet activation block, they earn the 35 bps (0.35%) cross-chain
+        operator fee on every USDC amount they bridge (§8.8). The worked example
+        below reflects the post-activation fee.
       </p>
 
       <h3
@@ -392,7 +494,7 @@ export default function Economics() {
         filename="operator-math"
         language="bash"
         lines={[
-          { content: "# Monthly operator revenue" },
+          { content: "# Monthly operator revenue (post-activation)" },
           {
             content: "$500,000 x 0.35% = $1,750/month",
             highlighted: true,
@@ -512,6 +614,93 @@ export default function Economics() {
 
       {/* ------------------------------------------------------------------ */}
       <h2
+        id="points"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Points &amp; contributor tracks
+      </h2>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Contributor engagement runs on a three-track framework (§12.0, §12.10):
+      </p>
+
+      <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
+        <li>
+          <strong className="text-docs-text-primary font-semibold">
+            Cash track
+          </strong>{" "}
+          <DocsBadge variant="green">Committed</DocsBadge> — accepted work is
+          paid in stablecoin.
+        </li>
+        <li>
+          <strong className="text-docs-text-primary font-semibold">
+            Conditional token-allocation track
+          </strong>{" "}
+          <DocsBadge variant="amber">Conditional</DocsBadge> — non-transferable,
+          non-redeemable &ldquo;Points&rdquo; that convert to a REINEIRA
+          allocation <em>only if</em> a TGE occurs. Three accrual streams:
+          operator-task points, LP-duration points, and builder-adoption points.
+        </li>
+        <li>
+          <strong className="text-docs-text-primary font-semibold">
+            Public recognition
+          </strong>{" "}
+          <DocsBadge variant="green">Committed</DocsBadge> — credit for accepted
+          contributions.
+        </li>
+      </ul>
+
+      <Callout
+        variant="warning"
+        title="Points have no economic value without a TGE"
+      >
+        <p>
+          Points are non-transferable and non-redeemable. They carry no economic
+          value unless and until a TGE occurs, at which point they may convert
+          to a REINEIRA allocation. No TGE is committed and there is no date
+          (§12.10).
+        </p>
+      </Callout>
+
+      {/* ------------------------------------------------------------------ */}
+      <h2
+        id="token"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Conditional token (REINEIRA){" "}
+        <DocsBadge variant="amber">Research</DocsBadge>
+      </h2>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        There is <strong>no REINEIRA token today</strong>. Any token is
+        conditional on the §12.11 trigger conditions, with no committed date.
+        The figures below describe the supply design <em>if</em> a TGE were to
+        happen — they are not live parameters.
+      </p>
+
+      <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
+        <li>
+          Conditional total supply: <strong>1,000,000,000 REINEIRA</strong>{" "}
+          (§12).
+        </li>
+        <li>
+          Operator-emissions allocation: <strong>13% of supply</strong>,
+          declining <strong>50 / 30 / 15 / 5</strong> across Y1–Y4. It activates
+          only post-TGE (§8.11).
+        </li>
+      </ul>
+
+      <Callout variant="warning" title="Conditional, not live">
+        <p>
+          No emissions, staking-rewards-in-token, or token-based fees exist
+          today. Operators bond cUSDC and are subsidised in cUSDC (§8, §8.9).
+          The supply schedule above only applies after a TGE that may never
+          occur (§12, §12.11).
+        </p>
+      </Callout>
+
+      {/* ------------------------------------------------------------------ */}
+      <h2
         id="sustainability"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
@@ -519,16 +708,20 @@ export default function Economics() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The protocol sustains itself through two compounding loops:
+        Once the protocol activates fees (post mainnet activation block, §8.8),
+        it is designed to sustain itself through two compounding loops. During
+        chaos-net, both loops run fee-free and operators are bridged by the
+        Foundation subsidy (§8.9).
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         <strong className="text-docs-text-primary font-semibold">
-          Loop 1: Cross-chain volume drives protocol revenue.
+          Loop 1: Cross-chain volume drives Foundation treasury revenue.
         </strong>{" "}
-        Every CCTP relay pays 15 bps to the protocol and 35 bps to the operator.
-        An additional 25 bps escrow settlement fee is collected on redemption.
-        More cross-chain settlement volume = more protocol revenue.
+        After activation, every CCTP relay pays 15 bps to the Foundation
+        treasury and 35 bps to the operator, plus a 25 bps base settlement fee
+        on escrow settlement (§8.8). More cross-chain settlement volume = more
+        treasury revenue.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -542,10 +735,12 @@ export default function Economics() {
 
       <Callout variant="info" title="Aligned incentives">
         <p>
-          The protocol takes no cut of insurance premiums. Premiums flow to the
-          pool. The protocol earns only from cross-chain relay fees — aligning
-          incentives so the protocol succeeds when builders and operators
-          succeed.
+          The protocol takes no cut of insurance premiums — premiums flow to the
+          pool. Even after activation, the Foundation treasury earns only from
+          cross-chain and settlement fees (§8.8), aligning incentives so the
+          protocol succeeds when builders and operators succeed. Today, with
+          fees at zero, that alignment is enforced by the immutable activation
+          block.
         </p>
       </Callout>
 

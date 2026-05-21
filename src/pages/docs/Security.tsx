@@ -5,6 +5,7 @@ import Callout from "@/components/docs/Callout";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
 import Steps, { Step } from "@/components/docs/Steps";
+import DocsBadge from "@/components/docs/DocsBadge";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
@@ -25,14 +26,14 @@ const stakingColumns = [
 ];
 const stakingRows = [
   {
-    param: "Staking token",
-    value: "TBD",
-    desc: "Will be the REINEIRA governance token. On testnet a mock ERC-20 is used. The OperatorRegistry accepts any ERC-20 configured at deployment.",
+    param: "Bond asset",
+    value: "cUSDC",
+    desc: "Operators bond cUSDC, an immutable ERC-7984 USDC wrapper — not a governance token. The OperatorRegistry accepts the configured bond asset (§8, §8.4).",
   },
   {
-    param: "Minimum stake",
-    value: "TBD",
-    desc: "Configurable via setConfig() on the OperatorRegistry. Final amount will be set with the REINEIRA token launch.",
+    param: "Minimum bond",
+    value: "Config",
+    desc: "Configurable via setConfig() on the OperatorRegistry. Denominated in cUSDC. The REINEIRA token does not exist yet; it is conditional on the §12.11 triggers with no date (§8.4, §12).",
   },
   {
     param: "Unbonding period",
@@ -88,9 +89,9 @@ const slashingRows = [
     desc: "Both the proposer and challenger must post a 5% bond (500 bps) to participate.",
   },
   {
-    param: "Slash reward",
+    param: "Slasher reward",
     value: "10%",
-    desc: "The challenger receives 10% of the slashed amount (1000 bps).",
+    desc: "The slasher receives 10% of the slashed cUSDC stake (1000 bps) (§8.7).",
   },
 ];
 
@@ -157,10 +158,10 @@ const limitationRows = [
     plan: "Persistent state store with automatic recovery.",
   },
   {
-    limitation: "No slashing enforcement",
+    limitation: "Single-quorum slashing only",
     impact:
-      "Slash parameters are defined in contracts but not enforced on testnet. Malicious operators face no penalty.",
-    plan: "Full slashing contract with on-chain challenge/vote/execute flow.",
+      "OperatorSlashingManager enforces a single stake-weighted quorum across the active set. Cross-graph slashing (votes spanning ≥3 independent coordinator–operator graphs) is spec'd but not yet shipped.",
+    plan: "CoordinatorRegistry with cross-graph slashing on the v1.0 track (§8.10).",
   },
   {
     limitation: "Testnet FHE",
@@ -195,12 +196,33 @@ export default function Security() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Operators must post collateral to participate in the relay network.
-        Staking creates economic alignment — operators lose money if they
-        misbehave, and earn fees when they relay honestly.
+        Operators must post a cUSDC bond to participate in the relay network.
+        Bonding creates economic alignment — operators lose money if they
+        misbehave, and earn fees when they relay honestly. Registration is
+        permissionless from chaos-net day 1: any address meeting the bond,
+        sanctions-clean, and not-previously-slashed criteria can register at the
+        contract layer without Foundation invitation (§8.4, §8.11).
       </p>
 
       <DocsTable columns={stakingColumns} rows={stakingRows} />
+
+      <Callout
+        variant="info"
+        title="Permissionless registration and sanctions screening"
+      >
+        <p>
+          The OperatorRegistry is permissionless at the contract layer. An
+          optional ISanctionsOracle, when wired in, blocks registration of
+          listed addresses (§8.5/§10.5). A separate Foundation-funded subsidy
+          programme (OperatorSubsidyManager) pays operators from a cUSDC pool
+          during chaos-net only, against an off-chain eligibility list
+          (typically KYB-attested). Operators absent from that list still
+          participate normally — they only forgo the subsidy (§8.9). The
+          operator set grows organically: N∈[5,10] at chaos-net (Jul 2026) →
+          N=20 by end-2026 → N≥30 by Q1 2028, bounded by market emergence rather
+          than gating (§8.11).
+        </p>
+      </Callout>
 
       <h2
         id="slashing"
@@ -212,17 +234,28 @@ export default function Security() {
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Slashing is the penalty for operator misbehavior — submitting invalid
         proofs, censoring messages, or failing to relay within the designated
-        window. The mechanism uses a challenge-vote-execute pattern.
+        window. The OperatorSlashingManager enforces a single stake-weighted
+        quorum across the active operator set, using a challenge-vote-execute
+        pattern. The slasher reward is 10% of the slashed cUSDC stake (§8.7,
+        §8.10).
+      </p>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        The protocol specification calls for a CoordinatorRegistry with
+        cross-graph slashing — requiring votes spanning at least three
+        independent coordinator–operator graphs — but this is not yet shipped.{" "}
+        <DocsBadge variant="amber">Spec&apos;d</DocsBadge> CoordinatorRegistry /
+        cross-graph slashing is on the v1.0 track (§8.10).
       </p>
 
       <DocsTable columns={slashingColumns} rows={slashingRows} />
 
-      <Callout variant="warning" title="Testnet caveat">
+      <Callout variant="warning" title="chaos-net caveat">
         <p>
-          Slashing parameters are defined in the protocol specification but are
-          not enforced on testnet. Operators can misbehave without penalty
-          during the testnet phase. Do not rely on slashing for security
-          guarantees at this stage.
+          chaos-net runs in public mode and is unaudited. Single-quorum slashing
+          via OperatorSlashingManager is enforced, but the cross-graph slashing
+          model is not yet shipped. Do not rely on the full slashing security
+          model for production guarantees at this stage.
         </p>
       </Callout>
 
@@ -320,9 +353,9 @@ export default function Security() {
 
       <Callout variant="danger" title="Not production-ready">
         <p>
-          ReineiraOS is in active testnet. Do not use it for real funds or
-          production applications. The security model will be audited and
-          hardened before production launch.
+          ReineiraOS runs chaos-net in public mode and is unaudited. Do not use
+          it for real funds or production applications. The security model will
+          be audited and hardened before production launch.
         </p>
       </Callout>
 
