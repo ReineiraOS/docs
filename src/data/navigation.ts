@@ -226,6 +226,13 @@ export const navigation: NavSection[] = [
           "Settle Escrows across multiple EVM-compatible chains via Circle CCTP V2.",
       },
       {
+        title: "Atlas-Deployed L3s",
+        slug: "atlas-l3",
+        href: "/build/atlas-l3",
+        description:
+          "Self-deploy ReineiraOS on your own L3 via Atlas; operator-routed liquidity over the native rollup bridge.",
+      },
+      {
         title: "Gas & Performance",
         slug: "gas-performance",
         href: "/build/gas-performance",

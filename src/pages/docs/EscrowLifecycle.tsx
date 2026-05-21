@@ -8,16 +8,19 @@ import ArchitectureDiagram from "@/components/docs/ArchitectureDiagram";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
 import DocsBadge from "@/components/docs/DocsBadge";
+import ModeToggle from "@/components/docs/ModeToggle";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
 const toc: TocItem[] = [
   { id: "overview", title: "Overview", level: 2 },
+  { id: "modes", title: "Public vs encrypted mode", level: 2 },
   { id: "states", title: "Escrow states", level: 2 },
   { id: "creating", title: "Creating an Escrow", level: 2 },
   { id: "funding", title: "Funding an Escrow", level: 2 },
   { id: "redeeming", title: "Redeeming an Escrow", level: 2 },
   { id: "silent-failure", title: "Silent failure pattern", level: 2 },
+  { id: "virtual-escrows", title: "Virtual escrows", level: 2 },
   { id: "events", title: "Events reference", level: 2 },
 ];
 
@@ -111,6 +114,45 @@ export default function EscrowLifecycle() {
           { label: "Fund", sublabel: "Deposit USDC" },
           { label: "Redeem", sublabel: "Gate check → funds released" },
         ]}
+      />
+
+      <h2
+        id="modes"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Public vs encrypted mode
+      </h2>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        The Escrow primitive ships in two modes with identical interfaces
+        (§3.6). Chaos-net runs <strong>public mode</strong>; encrypted mode is a
+        separate immutable deployment that activates at v1.0 mainnet.
+      </p>
+
+      <ModeToggle
+        publicMode={
+          <div>
+            <p>
+              State is stored in plaintext: the owner, amount, paid amount, and
+              redemption flag are readable on-chain. The lifecycle (create →
+              fund → redeem) and the silent-failure pattern behave identically
+              to encrypted mode — only the visibility of state differs. This is
+              what runs at chaos-net today.
+            </p>
+          </div>
+        }
+        encryptedMode={
+          <div>
+            <p>
+              The owner, amount, paid amount, and redemption flag are held as
+              FHE ciphertexts (<code>eaddress</code>, <code>euint64</code>,{" "}
+              <code>ebool</code>). Redemption uses <code>FHE.select()</code> so
+              success and failure are indistinguishable on-chain. Encrypted
+              state does not exist until v1.0 mainnet (Q4 2026), gated on Fhenix
+              CoFHE.
+            </p>
+          </div>
+        }
       />
 
       <h2
@@ -338,6 +380,54 @@ export default function EscrowLifecycle() {
           failed — wrong caller, already redeemed, or condition not met. By
           always transferring (potentially zero), the contract hides the failure
           reason from on-chain observers.
+        </p>
+      </Callout>
+
+      <h2
+        id="virtual-escrows"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Virtual escrows
+      </h2>
+
+      <div className="mb-3">
+        <DocsBadge variant="amber">Spec'd · chaos-net v1.0</DocsBadge>
+      </div>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        The v1.0 specification lists{" "}
+        <strong>virtual escrow (event-triggered without pre-funding)</strong>{" "}
+        alongside batch and conditional escrow as a supported mode. The shipped{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          ConfidentialEscrow
+        </code>{" "}
+        does not yet expose a dedicated virtual-escrow code path: an unfunded
+        record is indistinguishable from a created-but-not-yet-funded record,
+        and any cross-chain receiver can call{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          fundFrom
+        </code>{" "}
+        against an existing{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          escrowId
+        </code>{" "}
+        to satisfy the event-triggered semantics. (§6.6.)
+      </p>
+
+      <Callout variant="info" title="Convergence tracked for chaos-net v1.0">
+        <p>
+          Whether a separate virtual-escrow surface is needed — or whether the
+          existing{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            create
+          </code>{" "}
+          /{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            fundFrom
+          </code>{" "}
+          pair is the canonical realisation — is an open Implementation Note,
+          tracked for chaos-net v1.0. Do not build against a dedicated
+          virtual-escrow API until it ships.
         </p>
       </Callout>
 
