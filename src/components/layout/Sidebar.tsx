@@ -9,6 +9,9 @@ import {
   Code2,
   FileText,
   Wrench,
+  Activity,
+  FlaskConical,
+  Layers,
 } from "lucide-react";
 import { navigation, NavSection } from "@/data/navigation";
 import type { LucideIcon } from "lucide-react";
@@ -21,6 +24,9 @@ const sectionIconMap: Record<string, LucideIcon> = {
   Settings,
   Code2,
   FileText,
+  Activity,
+  FlaskConical,
+  Layers,
 };
 
 interface SidebarProps {

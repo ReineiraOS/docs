@@ -2,6 +2,7 @@ import DocsLayout from "@/components/layout/DocsLayout";
 import Breadcrumbs from "@/components/docs/Breadcrumbs";
 import PageHeader from "@/components/docs/PageHeader";
 import Callout from "@/components/docs/Callout";
+import RiskCallout from "@/components/docs/RiskCallout";
 import CodeBlock from "@/components/docs/CodeBlock";
 import DocsTable from "@/components/docs/DocsTable";
 import ArchitectureDiagram from "@/components/docs/ArchitectureDiagram";
@@ -207,6 +208,8 @@ export default function QuickStart() {
         description="Deploy your first Escrow in under 5 minutes."
         readingTime="5 min read"
       />
+
+      <RiskCallout />
 
       {/* ── Prerequisites ─────────────────────────────────────────────────── */}
       <h2

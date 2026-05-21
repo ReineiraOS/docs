@@ -2,11 +2,13 @@ import DocsLayout from "@/components/layout/DocsLayout";
 import Breadcrumbs from "@/components/docs/Breadcrumbs";
 import PageHeader from "@/components/docs/PageHeader";
 import Callout from "@/components/docs/Callout";
+import RiskCallout from "@/components/docs/RiskCallout";
 import CodeBlock from "@/components/docs/CodeBlock";
 import ArchitectureDiagram from "@/components/docs/ArchitectureDiagram";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
 import Steps, { Step } from "@/components/docs/Steps";
+import DocsBadge from "@/components/docs/DocsBadge";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
@@ -29,9 +31,9 @@ const requirementColumns = [
 ];
 const requirementRows = [
   {
-    req: "Staking token",
+    req: "Bond asset",
     details:
-      "TBD — mock governance token on testnet. Amount configurable via OperatorRegistry.",
+      "cUSDC — an immutable ERC-7984 USDC wrapper. The OperatorRegistry accepts the configured bond asset; amount is configurable via OperatorRegistry (§8, §8.4).",
   },
   {
     req: "ETH",
@@ -66,7 +68,10 @@ const economicsRows = [
     metric: "Escrow settlement fee",
     value: "0.25% (25 bps) on escrow redemption",
   },
-  { metric: "Minimum stake", value: "TBD" },
+  {
+    metric: "Minimum bond",
+    value: "Configurable via OperatorRegistry (cUSDC)",
+  },
   {
     metric: "Unbonding period",
     value: "7 days (hardcoded in OperatorRegistry)",
@@ -89,6 +94,8 @@ export default function RunOperator() {
         readingTime="8 min read"
       />
 
+      <RiskCallout />
+
       {/* Overview */}
       <h2
         id="overview"
@@ -98,10 +105,14 @@ export default function RunOperator() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Operators stake tokens on-chain, connect to the coordinator via SSE, and
+        Operators bond cUSDC on-chain, connect to the coordinator via SSE, and
         execute cross-chain CCTP relay tasks. The coordinator distributes tasks
         via round-robin. On-chain contracts (OperatorRegistry, TaskExecutor)
-        enforce staking requirements, exclusive windows, and fee collection.
+        enforce bonding requirements, exclusive windows, and fee collection.
+        Registration is permissionless from chaos-net day 1: any address that
+        meets the bond requirement, is sanctions-clean, and has not been
+        previously slashed can register without Foundation invitation (§8.4,
+        §8.11).
       </p>
 
       <DocsTable
@@ -241,10 +252,31 @@ export default function RunOperator() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Operators stake tokens on-chain via the OperatorRegistry contract. The
-        stake acts as collateral — it is slashable for misbehavior. The staking
-        token and minimum amount are configurable (TBD for production, mock
-        governance token on testnet). Unbonding period is 7 days (hardcoded).
+        Operators bond cUSDC on-chain via the OperatorRegistry contract. cUSDC
+        is an immutable ERC-7984 USDC wrapper, and it is the configured bond
+        asset — not a governance token. The bond acts as collateral and is
+        slashable for misbehavior. The minimum bond amount is configurable via
+        the OperatorRegistry. Unbonding period is 7 days (hardcoded) (§8, §8.4).
+      </p>
+
+      <Callout variant="info" title="No REINEIRA token yet">
+        <p>
+          The operator bond is denominated in cUSDC, not in a REINEIRA token.{" "}
+          <DocsBadge variant="amber">Spec&apos;d</DocsBadge> The REINEIRA token
+          does not exist yet — it is conditional on the §12.11 triggers and has
+          no launch date. Do not treat the bond as a governance-token stake
+          (§8.4, §12).
+        </p>
+      </Callout>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        An optional ISanctionsOracle can be wired into the OperatorRegistry;
+        when configured, it blocks registration of listed addresses
+        (§8.5/§10.5). A separate Foundation-funded operator subsidy programme
+        (OperatorSubsidyManager) pays operators from a cUSDC pool during
+        chaos-net only, against an off-chain eligibility list (typically
+        KYB-attested). Operators not on the list still participate normally at
+        the protocol layer — they simply receive no subsidy (§8.9).
       </p>
 
       <CodeBlock

@@ -6,10 +6,12 @@ import ArchitectureDiagram from "@/components/docs/ArchitectureDiagram";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
 import Callout from "@/components/docs/Callout";
+import DocsBadge from "@/components/docs/DocsBadge";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
 const toc: TocItem[] = [
+  { id: "where-this-fits", title: "Where this fits", level: 2 },
   { id: "four-primitives", title: "Four primitives", level: 2 },
   { id: "how-they-connect", title: "How they connect", level: 2 },
   {
@@ -96,6 +98,44 @@ export default function MentalModel() {
       />
 
       <h2
+        id="where-this-fits"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Where this fits
+      </h2>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        ReineiraOS is three pillars (§1): the{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          Reineira Settlement Protocol
+        </strong>{" "}
+        (the on-chain immutable contracts), the{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          Reineira Settlement Standard (RSS)
+        </strong>{" "}
+        (the open, semver-versioned conformance spec evolved via the RIP
+        process, §3.6), and the{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          Builder Stack
+        </strong>{" "}
+        (Reineira Atlas + Reineira Code). The four primitives below are the
+        mental model for the <em>protocol</em> pillar — the layer your
+        application composes against.
+      </p>
+
+      <Callout variant="info" title="Public infrastructure, no token yet">
+        <p>
+          The protocol contracts are immutable with no upgrade authority (§11.8)
+          and charge zero protocol fees during chaos-net, block-locked at the
+          contract level (§8.8). Operators bond cUSDC rather than a token (§8),
+          and the REINEIRA token <strong>does not exist yet</strong> — it is
+          conditional on the §12.11 triggers (§12). The contracts are deployed
+          by Reineira Labs Limited (RAK DAO Free Zone, UAE) as a Software Vendor
+          (§11).
+        </p>
+      </Callout>
+
+      <h2
         id="four-primitives"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
@@ -117,6 +157,21 @@ export default function MentalModel() {
           Gates and Underwriter Policies are plugins. You deploy your own, the
           protocol calls them at the right time. This means you never touch
           encryption, settlement, or cross-chain logic directly.
+        </p>
+      </Callout>
+
+      <Callout
+        variant="warning"
+        title="Two modes: public on chaos-net, encrypted at v1.0 mainnet"
+      >
+        <p>
+          The FHE-encrypted behavior described for Escrow and Insurance is the{" "}
+          <DocsBadge variant="amber">v1.0 mainnet</DocsBadge> design (Q4 2026).
+          Chaos-net (<DocsBadge variant="blue">Jul 2026</DocsBadge>) runs{" "}
+          <strong>public mode</strong> with plaintext state so the network can
+          be exercised in the open — end-to-end encryption is not live on
+          chaos-net. The interfaces and primitives are identical across both
+          modes; only the state visibility changes.
         </p>
       </Callout>
 

@@ -6,11 +6,13 @@ import CodeBlock from "@/components/docs/CodeBlock";
 import ArchitectureDiagram from "@/components/docs/ArchitectureDiagram";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
+import ModeToggle from "@/components/docs/ModeToggle";
 import Steps, { Step } from "@/components/docs/Steps";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
 const toc: TocItem[] = [
+  { id: "modes", title: "Public vs encrypted mode", level: 2 },
   { id: "the-interface", title: "The interface", level: 2 },
   {
     id: "example-p2p-policy",
@@ -112,6 +114,53 @@ export default function InsurancePolicies() {
         Build a great policy, attach it to a pool, and earn premiums from every
         coverage purchase.
       </p>
+
+      {/* ------------------------------------------------------------------ */}
+      <h2
+        id="modes"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Public vs encrypted mode
+      </h2>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Like Escrow, the Insurance primitive ships in two modes with identical
+        interfaces (§3.6). The plaintext{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          IUnderwriterPolicy
+        </code>{" "}
+        and the encrypted{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          IConfidentialUnderwriterPolicy
+        </code>{" "}
+        share function names and ordering.
+      </p>
+
+      <ModeToggle
+        publicMode={
+          <div>
+            <p>
+              Risk scores, premiums, and dispute verdicts are plaintext
+              on-chain. Coverage holder and amount are visible. The policy logic
+              (evaluateRisk → premium, judge → payout) is identical to encrypted
+              mode — only visibility differs. This is what runs at chaos-net
+              today via <code>IUnderwriterPolicy</code>.
+            </p>
+          </div>
+        }
+        encryptedMode={
+          <div>
+            <p>
+              <code>IConfidentialUnderwriterPolicy.evaluateRisk</code> and{" "}
+              <code>judge</code> return FHE ciphertexts, so competing
+              underwriters cannot reverse-engineer pricing or verdict reasoning
+              from on-chain traces. Coverage holder, amount, risk score,
+              premium, and payout are encrypted. Activates at v1.0 mainnet (Q4
+              2026), gated on Fhenix CoFHE.
+            </p>
+          </div>
+        }
+      />
 
       {/* ------------------------------------------------------------------ */}
       <h2
