@@ -1,3 +1,12 @@
+# [1.6.0](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.5.0...v1.6.0) (2026-05-21)
+
+
+### Features
+
+* **docs:** add L3 deployments, virtual escrow, and mode switcher ([01dc157](https://github.com/ReineiraOS/platform-web-docs-app/commit/01dc15737c0caffd4b4204fc35e6b5bdf0045531))
+* **docs:** add Research & R&D section + Agentic Composition preview ([f919db4](https://github.com/ReineiraOS/platform-web-docs-app/commit/f919db4f12f400ca5a84b5c8a1b7b953064a003d))
+* **docs:** align content to Public-Infrastructure posture ([5503dbe](https://github.com/ReineiraOS/platform-web-docs-app/commit/5503dbebc8123fc2765543b560cc00cfcc4048db))
+
 # [1.5.0](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.4.0...v1.5.0) (2026-05-21)
 
 
