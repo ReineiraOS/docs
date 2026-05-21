@@ -2,6 +2,7 @@ import DocsLayout from "@/components/layout/DocsLayout";
 import Breadcrumbs from "@/components/docs/Breadcrumbs";
 import PageHeader from "@/components/docs/PageHeader";
 import Callout from "@/components/docs/Callout";
+import RiskCallout from "@/components/docs/RiskCallout";
 import CodeBlock from "@/components/docs/CodeBlock";
 import DocsTable from "@/components/docs/DocsTable";
 import DocsBadge from "@/components/docs/DocsBadge";
@@ -146,6 +147,8 @@ export default function Overview() {
         description="Conditional settlement infrastructure — money that only moves when cryptographic conditions are met, and nobody sees the state."
         readingTime="5 min read"
       />
+
+      <RiskCallout />
 
       {/* -- The problem -------------------------------------------------------- */}
       <h2
