@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.6.0...v1.7.0) (2026-05-21)
+
+
+### Features
+
+* **docs:** add docs footer/contact surface + UX polish ([17a2ab1](https://github.com/ReineiraOS/platform-web-docs-app/commit/17a2ab17c850f4386660fc6b66a1f08083d60cd9))
+
 # [1.6.0](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.5.0...v1.6.0) (2026-05-21)
 
 
