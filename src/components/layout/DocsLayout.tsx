@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import TableOfContents, { TocItem } from "./TableOfContents";
+import DocsBanner from "@/components/docs/DocsBanner";
 
 interface DocsLayoutProps {
   children: React.ReactNode;
@@ -22,6 +23,8 @@ export default function DocsLayout({
         onMobileMenuToggle={() => setMobileMenuOpen((v) => !v)}
         mobileMenuOpen={mobileMenuOpen}
       />
+
+      <DocsBanner />
 
       <div className="flex">
         {/* Sidebar — fixed on desktop, drawer on mobile */}
