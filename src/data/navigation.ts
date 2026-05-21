@@ -262,6 +262,42 @@ export const navigation: NavSection[] = [
     ],
   },
   {
+    id: "research",
+    label: "Research & R&D",
+    icon: "FileText",
+    description:
+      "Cryptographic foundations, the Open Problems table, research previews, and the deferred agentic-composition layer.",
+    pages: [
+      {
+        title: "Cryptographic Foundations",
+        slug: "cryptographic-foundations",
+        href: "/research/cryptographic-foundations",
+        description:
+          "TFHE/CoFHE substrate, encrypted types, homomorphic costs, and the silent-failure pattern.",
+      },
+      {
+        title: "Open Problems",
+        slug: "open-problems",
+        href: "/research/open-problems",
+        description: "Every numbered Open Problem from the whitepaper (§14.3).",
+      },
+      {
+        title: "Research Previews",
+        slug: "research-previews",
+        href: "/research/research-previews",
+        description:
+          "Exploratory directions — including encrypted inference — with no committed scope.",
+      },
+      {
+        title: "Agentic Composition (Preview)",
+        slug: "agentic-composition",
+        href: "/research/agentic-composition",
+        description:
+          "The deferred agentic / AI-execution layer — not part of v1.0 RSS conformance.",
+      },
+    ],
+  },
+  {
     id: "reference",
     label: "API Reference",
     icon: "Code2",
