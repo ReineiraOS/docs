@@ -19,7 +19,7 @@ export default function DocsBanner() {
 
   return (
     <div className="border-b border-docs-border-default bg-docs-bg-surface">
-      <div className="flex items-center gap-3 px-4 py-2 text-[12.5px] text-docs-text-muted">
+      <div className="flex items-center gap-3 px-4 py-2 text-[12.5px] text-docs-text-muted lg:pl-[284px]">
         <p className="flex-1 leading-snug">
           These docs track an actively-evolving protocol — deployed contracts
           may differ from the spec. See per-page status; latest updates in{" "}
