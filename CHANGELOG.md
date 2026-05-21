@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.7.0...v1.7.1) (2026-05-21)
+
+
+### Bug Fixes
+
+* **docs:** keep spec-drift banner text clear of the fixed sidebar ([27a76c4](https://github.com/ReineiraOS/platform-web-docs-app/commit/27a76c4230272ca58e821c518b4527b299851c38))
+
 # [1.7.0](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.6.0...v1.7.0) (2026-05-21)
 
 
