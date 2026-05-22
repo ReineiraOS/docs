@@ -11,7 +11,7 @@ interface ModeToggleProps {
 /**
  * Dual-mode viewer for primitive pages (Escrow, Insurance).
  *
- * Honesty contract (§3.6): chaos-net runs PUBLIC mode. Encrypted mode is a
+ * Honesty contract: chaos-net runs PUBLIC mode. Encrypted mode is a
  * SEPARATE immutable deployment that activates at v1.0 mainnet (Q4 2026,
  * gated on Fhenix CoFHE). The toggle defaults to public mode and badges
  * encrypted mode as not-yet-live.

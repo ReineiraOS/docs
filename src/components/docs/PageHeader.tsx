@@ -5,7 +5,7 @@ interface PageHeaderProps {
   title: string;
   description?: string;
   readingTime?: string;
-  /** Honest component status, rendered as a chip beside the title (§2 taxonomy). */
+  /** Honest component status, rendered as a chip beside the title. */
   status?: PageStatus;
   /** Optional milestone detail appended to the status chip. */
   statusDetail?: string;

@@ -2,56 +2,51 @@ import DocsLayout from "@/components/layout/DocsLayout";
 import Breadcrumbs from "@/components/docs/Breadcrumbs";
 import PageHeader from "@/components/docs/PageHeader";
 import Callout from "@/components/docs/Callout";
+import CodeBlock from "@/components/docs/CodeBlock";
 import DocsTable from "@/components/docs/DocsTable";
 import PageNav from "@/components/docs/PageNav";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
 const toc: TocItem[] = [
-  { id: "invitation", title: "An explicit invitation", level: 2 },
-  { id: "license-split", title: "The license split", level: 2 },
-  { id: "layer-vector", title: "Layer-asymmetric license vector", level: 2 },
-  { id: "change-date", title: "Change Date & acceleration", level: 2 },
+  { id: "what-you-build", title: "What you build", level: 2 },
+  { id: "skeleton", title: "A conformant contract", level: 2 },
+  { id: "license", title: "Licensing", level: 2 },
 ];
 
 const { prev, next } = getPrevNext("/settlement-standard/implement-rss");
 
 const layerColumns = [
-  { header: "Layer", key: "layer", width: "260px" },
-  { header: "License at publication", key: "now", width: "180px" },
+  { header: "Layer", key: "layer", width: "280px" },
+  { header: "License", key: "now", width: "150px" },
   { header: "After 2029-06-01", key: "after" },
 ];
 
 const layerRows = [
   {
-    layer: "Core protocol (escrow, insurance, orchestration on-chain core)",
+    layer: "Interfaces, libraries, base contracts",
+    now: "Apache 2.0",
+    after: "Apache 2.0",
+  },
+  {
+    layer: "SDK, plugin templates, cofhejs glue",
+    now: "MIT",
+    after: "MIT",
+  },
+  {
+    layer: "Token wrappers (cUSDC, cUSDT)",
+    now: "MIT",
+    after: "MIT",
+  },
+  {
+    layer: "Operator services (orchestrator, coordinator, CLI)",
+    now: "Apache 2.0",
+    after: "Apache 2.0",
+  },
+  {
+    layer: "Core protocol (escrow, insurance, orchestration)",
     now: "BUSL-1.1",
-    after: "Apache License 2.0",
-  },
-  {
-    layer: "Shared interfaces, libraries, base contracts",
-    now: "Apache License 2.0",
-    after: "Apache License 2.0",
-  },
-  {
-    layer: "Confidential token wrappers (cUSDC, cUSDT)",
-    now: "MIT",
-    after: "MIT",
-  },
-  {
-    layer: "SDK, integration libraries, plugin templates, cofhejs glue",
-    now: "MIT",
-    after: "MIT",
-  },
-  {
-    layer: "Operator services (off-chain orchestrator, coordinator, CLI)",
-    now: "Apache License 2.0",
-    after: "Apache License 2.0",
-  },
-  {
-    layer: "Documentation (whitepaper, lightpaper, architecture specs)",
-    now: "CC-BY-4.0",
-    after: "CC-BY-4.0",
+    after: "Apache 2.0",
   },
 ];
 
@@ -62,110 +57,176 @@ export default function RssImplement() {
 
       <PageHeader
         title="Implement RSS Yourself"
-        description="You can build your own RSS-conformant settlement venue. The standard is OSI-aligned and free to implement; only the reference implementation's defensive core carries BUSL-1.1."
+        description="Build your own conformant settlement venue against your own contracts. The standard is free to implement; only the reference core carries a time-limited license."
         readingTime="5 min read"
       />
 
-      <h2
-        id="invitation"
-        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
-      >
-        An explicit invitation
-      </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        RSS is designed to be implemented by third parties. Any deployment that
-        satisfies the{" "}
+        RSS is built to be implemented by third parties. Satisfy the{" "}
         <a href="/settlement-standard/conformance">conformance criteria</a> and
-        passes the test suite can host the same plugins, accept the same bridge
-        handlers, be observed by the same indexers and slashing oracles, and
-        present the same SDK surface — independently of who maintains its
-        contracts (§5.9). Builder-facing layers are permissively licensed at
-        publication specifically so any third party can implement an
-        RSS-conformant venue without a commercial license.
+        your deployment hosts the same plugins, accepts the same bridge
+        handlers, is read by the same indexers, and presents the same SDK
+        surface — no matter who maintains the contracts.
       </p>
 
+      {/* What you build */}
       <h2
-        id="license-split"
+        id="what-you-build"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        The license split
+        What you build
       </h2>
-      <Callout
-        variant="info"
-        title="Standard: free. Reference implementation core: BUSL-1.1."
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        A conformant deployment implements the{" "}
+        <a href="/settlement-standard/interface-surface">interface surface</a>{" "}
+        and follows five conventions:
+      </p>
+      <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
+        <li>
+          Implement the mandatory interfaces for your mode (public or
+          encrypted).
+        </li>
+        <li>
+          Store settlement state as encrypted types in encrypted mode; run the
+          same contracts with plaintext types in public mode.
+        </li>
+        <li>
+          Route every condition-checked redemption through the silent-failure
+          pattern, so success and failure look identical on-chain.
+        </li>
+        <li>
+          Use{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            ERC-7201
+          </code>{" "}
+          namespaced storage with a{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            __gap[50]
+          </code>{" "}
+          reserve, and accept{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            ERC-2771
+          </code>{" "}
+          meta-transactions.
+        </li>
+        <li>
+          Emit the canonical events so cross-implementation tooling can follow
+          state.
+        </li>
+      </ul>
+
+      {/* Skeleton */}
+      <h2
+        id="skeleton"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
+        A conformant contract
+      </h2>
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Inherit the shared base, implement the interface, and declare ERC-165.
+        The base wires namespaced storage, the meta-tx forwarder, and the
+        canonical events for you.
+      </p>
+      <CodeBlock
+        filename="MyEscrow.sol"
+        language="solidity"
+        lines={[
+          { content: "// SPDX-License-Identifier: MIT" },
+          { content: "pragma solidity ^0.8.24;" },
+          { content: "" },
+          {
+            content:
+              'import { IConfidentialEscrow } from "@reineira-os/shared/contracts/interfaces/core/IConfidentialEscrow.sol";',
+          },
+          {
+            content:
+              'import { TestnetCoreBase } from "@reineira-os/shared/contracts/common/TestnetCoreBase.sol";',
+          },
+          { content: "" },
+          {
+            content:
+              "contract MyEscrow is TestnetCoreBase, IConfidentialEscrow {",
+            highlighted: true,
+          },
+          {
+            content:
+              "    /// @custom:storage-location erc7201:myvenue.storage.MyEscrow",
+          },
+          { content: "    struct Layout {" },
+          { content: "        mapping(uint256 => Escrow) escrows;" },
+          { content: "        uint256 nextId;" },
+          {
+            content:
+              "        uint256[50] __gap; // reserve for cross-version compatibility",
+            highlighted: true,
+          },
+          { content: "    }" },
+          { content: "" },
+          { content: "    function create(" },
+          { content: "        InEaddress calldata encryptedOwner," },
+          { content: "        InEuint64 calldata encryptedAmount," },
+          { content: "        address resolver," },
+          { content: "        bytes calldata resolverData" },
+          { content: "    ) external returns (uint256 escrowId) {" },
+          {
+            content:
+              "        // _msgSender() resolves through the ERC-2771 forwarder",
+          },
+          {
+            content:
+              "        // ... store encrypted state, call resolver.onConditionSet ...",
+          },
+          {
+            content: "        emit EscrowCreated(escrowId); // canonical event",
+            highlighted: true,
+          },
+          { content: "    }" },
+          { content: "" },
+          { content: "    // ... fund / redeem (silent-failure) / views ..." },
+          { content: "}" },
+        ]}
+        showLineNumbers={true}
+      />
+
+      <Callout variant="tip" title="Start from the templates">
         <p>
-          The <strong>RSS specification</strong> — the interfaces, the
-          conformance criteria, the RIP process — is published under an
-          OSI-aligned licence and is unencumbered for any party to implement
-          against. The{" "}
-          <strong>reference implementation's defensive core</strong> (escrow,
-          insurance, orchestration) carries BUSL-1.1 during the contestability
-          window and converts to Apache License 2.0 on the irrevocable Change
-          Date <strong>2029-06-01</strong>. (§13.1, §13.2, §5.9.)
-        </p>
-      </Callout>
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        BUSL-1.1 permits copy, modify, derivative works, redistribution, and
-        non-production use — academic review, audit, security research, and
-        non-production integration require no commercial license. It restricts{" "}
-        <strong>production use</strong> of the core during the BUSL window; the
-        Additional Use Grant is "None", so production deployment of the core
-        requires a commercial license from the Licensor until the Change Date.
-        This is framed as a contestability-window defense against hard-fork
-        attacks, not a long-run posture. (§13.3.)
-      </p>
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Building your own conforming implementation against your own contract
-        code, against the OSI-aligned standard, is unaffected by the core's BUSL
-        term.
-      </p>
-
-      <h2
-        id="layer-vector"
-        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
-      >
-        Layer-asymmetric license vector
-      </h2>
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Different reference-implementation layers carry different licenses at
-        publication (§13.2):
-      </p>
-      <DocsTable columns={layerColumns} rows={layerRows} />
-
-      <h2
-        id="change-date"
-        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
-      >
-        Change Date &amp; acceleration
-      </h2>
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The Change Date <strong>2029-06-01</strong> is irrevocable and
-        pre-announced. On that date the BUSL-licensed corpus converts to Apache
-        License 2.0 by operation of the Change License clause, without further
-        act of the Licensor. Five pre-announced triggers (§13.5) can each{" "}
-        <strong>accelerate</strong> conversion — a GMV/operator-set/no-fork
-        threshold, CoFHE access non-exclusivity, rolling per-release
-        auto-relicense (18 months + 2 audits), OpenR-class fork dissolution, and
-        a supermajority override — but none can delay it. Pre-announcement
-        forecloses any later mid-life license tightening.
-      </p>
-
-      <Callout variant="tip" title="Where the code lives">
-        <p>
-          Plugin authors compile against the published interfaces in{" "}
+          Compile against the published interfaces in{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             @reineira-os/shared
           </code>{" "}
-          and deploy independently. The{" "}
+          and start from the{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             plugin-examples/
           </code>{" "}
-          workspace ships a reference template. Questions:{" "}
+          workspace. Questions:{" "}
           <a href="mailto:engineering@reineira.xyz">engineering@reineira.xyz</a>
           .
         </p>
       </Callout>
+
+      {/* License */}
+      <h2
+        id="license"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Licensing
+      </h2>
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        The standard itself — interfaces, conformance criteria, the RIP process
+        — is OSI-aligned and free to implement against. Building your own venue
+        from your own contracts is unencumbered. Only the reference
+        implementation's defensive core is licensed under BUSL-1.1, which
+        converts to Apache 2.0 on the irrevocable Change Date{" "}
+        <strong>2029-06-01</strong> (sooner if any acceleration trigger fires,
+        never later).
+      </p>
+      <DocsTable columns={layerColumns} rows={layerRows} />
+      <p className="text-docs-text-secondary leading-relaxed mt-4">
+        BUSL-1.1 allows copying, modification, and non-production use today —
+        only production use of the core needs a commercial license until the
+        Change Date. The builder-facing layers above are permissive from day
+        one, so nothing blocks you from shipping a conformant venue.
+      </p>
 
       <PageNav prev={prev} next={next} />
     </DocsLayout>

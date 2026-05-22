@@ -74,9 +74,8 @@ export default function CryptographicFoundations() {
           cryptographic substrate below powers <strong>encrypted mode</strong>,
           which activates at v1.0 mainnet (Q4 2026), gated on the Fhenix CoFHE
           deployment. Chaos-net (Jul 2026) runs <strong>public mode</strong>{" "}
-          (plaintext). The substrate's coprocessor is treated as a separately-
-          administered execution counterparty outside the EVM trust boundary
-          (§4.1, §4.8, §10).
+          (plaintext). Treat the substrate's coprocessor as a separately
+          administered execution counterparty outside the EVM trust boundary.
         </p>
       </Callout>
 
@@ -87,15 +86,15 @@ export default function CryptographicFoundations() {
         Cryptographic substrate (TFHE/CoFHE)
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The protocol's confidentiality guarantees rest on <strong>TFHE</strong>{" "}
-        (Fully Homomorphic Encryption over the Torus), instantiated through
-        Fhenix's coprocessor-based FHE (<strong>CoFHE</strong>) — a service
-        co-located with the EVM that holds the substrate secret key, evaluates
-        homomorphic circuits on submitted ciphertexts, and returns attested
-        results to the calling contract. TFHE security reduces to the Learning
-        With Errors (LWE) hardness assumption; CoFHE exposes homomorphic
-        operations as Solidity precompiles, and full decryption requires a
-        coprocessor round-trip outside the EVM execution context. (§4.1.)
+        Confidentiality rests on <strong>TFHE</strong> (Fully Homomorphic
+        Encryption over the Torus), instantiated through Fhenix's
+        coprocessor-based FHE (<strong>CoFHE</strong>) — a service co-located
+        with the EVM that holds the substrate secret key, evaluates homomorphic
+        circuits on your ciphertexts, and returns attested results to the
+        calling contract. TFHE security reduces to the Learning With Errors
+        (LWE) hardness assumption. CoFHE exposes homomorphic operations as
+        Solidity precompiles, and full decryption requires a coprocessor
+        round-trip outside the EVM execution context.
       </p>
 
       <h2
@@ -108,8 +107,8 @@ export default function CryptographicFoundations() {
         The per-escrow record carries five ciphertext fields: encrypted owner
         and caller (each <code>eaddress</code>), encrypted target amount and
         cumulative paid amount (each <code>euint64</code>), and an encrypted
-        redemption flag (<code>ebool</code>). No settlement-bearing field is
-        stored in plaintext in encrypted mode. (§4.2.)
+        redemption flag (<code>ebool</code>). In encrypted mode, no
+        settlement-bearing field is stored in plaintext.
       </p>
       <DocsTable columns={typeColumns} rows={typeRows} />
 
@@ -124,8 +123,8 @@ export default function CryptographicFoundations() {
         comparisons are cheapest; ordered comparisons and add/sub are mid-tier;
         multiplication and the conditional-select gate compose multiple
         programmable bootstraps; decryption is latency-bound on the coprocessor.
-        <strong> Property 4.1</strong>: any homomorphic op on ciphertexts is
-        monotonically more expensive than its plaintext analogue. (§4.3.)
+        Every homomorphic op on ciphertexts costs more than its plaintext
+        analogue — budget accordingly.
       </p>
       <DocsTable columns={costColumns} rows={costRows} />
 
@@ -142,8 +141,8 @@ export default function CryptographicFoundations() {
         predicate homomorphically, combines the per-condition <code>ebool</code>{" "}
         handles into a single encrypted Boolean <code>eValid</code>, and routes
         the state change through a homomorphic <code>select</code> between the
-        intended effect and a no-op — so the on-chain trace is identical across
-        success and failure. (§4.5.)
+        intended effect and a no-op — so the on-chain trace looks identical
+        whether the call succeeds or fails.
       </p>
       <CodeBlock
         filename="silent-failure.sol"

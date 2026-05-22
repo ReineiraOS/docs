@@ -2,89 +2,21 @@ import DocsLayout from "@/components/layout/DocsLayout";
 import Breadcrumbs from "@/components/docs/Breadcrumbs";
 import PageHeader from "@/components/docs/PageHeader";
 import Callout from "@/components/docs/Callout";
-import DocsTable from "@/components/docs/DocsTable";
+import CodeBlock from "@/components/docs/CodeBlock";
 import DocsBadge from "@/components/docs/DocsBadge";
 import PageNav from "@/components/docs/PageNav";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
 const toc: TocItem[] = [
-  { id: "tiers", title: "Interface tiers", level: 2 },
-  { id: "core", title: "Core (mandatory v0.1)", level: 2 },
-  { id: "plugin", title: "Plugin extension points (v0.1)", level: 2 },
-  { id: "async-agentic", title: "Async + agentic (mandatory v0.2)", level: 2 },
+  { id: "escrow", title: "Escrow lifecycle", level: 2 },
+  { id: "gates", title: "Release gates", level: 2 },
+  { id: "underwriting", title: "Underwriting", level: 2 },
+  { id: "fees", title: "Fee modules", level: 2 },
+  { id: "v02", title: "Async & agentic (v0.2)", level: 2 },
 ];
 
 const { prev, next } = getPrevNext("/settlement-standard/interface-surface");
-
-const v01 = <DocsBadge variant="green">Live · v0.1</DocsBadge>;
-const v02 = <DocsBadge variant="amber">Spec'd · v0.2</DocsBadge>;
-
-const tierColumns = [
-  { header: "Interface", key: "iface", mono: true, width: "240px" },
-  { header: "Status", key: "status", width: "130px" },
-  { header: "Responsibility", key: "resp" },
-];
-
-const coreRows = [
-  { iface: "ICore", status: v01, resp: "Base events surface." },
-  {
-    iface: "IEscrow / IConfidentialEscrow",
-    status: v01,
-    resp: "Escrow lifecycle — create, fund, redeem, query. Encrypted variant substitutes eaddress/euint64 with the same function names and ordering.",
-  },
-  {
-    iface: "IEscrowEvents",
-    status: v01,
-    resp: "Canonical event surface for cross-implementation indexers.",
-  },
-  {
-    iface: "IFeeModule / IProtocolFeeModule",
-    status: v01,
-    resp: "Stamp-time fee modules (create / condition-set / coverage-purchase) — never on the redeem hot path. bps governance-settable within an immutable bytecode ceiling (MAX_PROTOCOL_FEE_BPS = 50).",
-  },
-];
-
-const pluginRows = [
-  {
-    iface: "IConditionResolver",
-    status: v01,
-    resp: "Pluggable release gates. isConditionMet (view), onConditionSet (binds per-escrow config), getConditionFee (view). Inherits ERC-165.",
-  },
-  {
-    iface: "IUnderwriterPolicy",
-    status: v01,
-    resp: "Plaintext coverage pricing + dispute: evaluateRisk, judge.",
-  },
-  {
-    iface: "IConfidentialUnderwriterPolicy",
-    status: v01,
-    resp: "FHE variant: onPolicySet, evaluateRisk (encrypted score), judge (encrypted verdict).",
-  },
-];
-
-const asyncRows = [
-  {
-    iface: "IAsyncConditionResolver",
-    status: v02,
-    resp: "Extends IConditionResolver with Unresolved → Pending → Resolved | Rejected for gates whose verdict requires off-chain work. Release blocks on Resolved.",
-  },
-  {
-    iface: "IAsyncUnderwriterPolicy",
-    status: v02,
-    resp: "Pending-state dispute judgment via requestJudge / verdict.",
-  },
-  {
-    iface: "IAgenticJob",
-    status: v02,
-    resp: "Neutral agent-job lifecycle (Open → Accepted → Submitted → Evaluated → Settled → Refunded) implemented by adapters.",
-  },
-  {
-    iface: "IExecution",
-    status: v02,
-    resp: "Pure-transformation / attested-execution plugin: executionType, execute.",
-  },
-];
 
 export default function RssInterfaceSurface() {
   return (
@@ -93,57 +25,285 @@ export default function RssInterfaceSurface() {
 
       <PageHeader
         title="Interface Surface"
-        description="The four-primitive interface surface. Three tiers are mandatory at RSS v0.1; the async + agentic tier becomes mandatory at v0.2."
+        description="The Solidity interfaces a conformant deployment implements — the escrow lifecycle, pluggable gates, underwriting, and fee modules."
         readingTime="6 min read"
       />
 
-      <Callout variant="info" title="A standard may specify ahead of code">
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        RSS is defined by interfaces, not by any one contract. Implement these
+        and your deployment is conformant; plugins, indexers, and the SDK work
+        against it unchanged. Every interface inherits{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          ERC-165
+        </code>{" "}
+        so registries can detect support before binding.
+      </p>
+
+      <Callout variant="info" title="Two modes, one shape">
         <p>
-          The v0.1 mandatory subset is shipped to disk. The async and agentic
-          interfaces below are specified in the technical reference and become
-          mandatory at <strong>RSS v0.2 (Q4 2026)</strong> — they are{" "}
-          <strong>Spec'd</strong>, not yet shipped. Conformance clauses
-          §5.4(a)–(f) bind only over the v0.1 mandatory subset until then. (§5.5
-          Implementation Note.)
+          Each primitive has a plaintext and an encrypted variant that share
+          function names and ordering — the encrypted variant swaps{" "}
+          <code>address</code>/<code>uint64</code> for <code>eaddress</code>/
+          <code>euint64</code>. Code written against the abstract surface
+          compiles for both, so public mode today and encrypted mode at mainnet
+          are binary-compatible.
         </p>
       </Callout>
 
+      {/* Escrow */}
       <h2
-        id="tiers"
+        id="escrow"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Interface tiers
+        Escrow lifecycle
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Fig. 5.1 groups the interfaces by responsibility tier. Core lifecycle,
-        plugin extension points, and the protocol-fee module are mandatory at
-        v0.1; async resolution semantics and the agentic-composition layer
-        arrive at v0.2.
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          IEscrow
+        </code>{" "}
+        is create, fund, redeem, and the view accessors. The confidential
+        variant takes encrypted inputs and adds{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          fundFrom
+        </code>{" "}
+        for the cross-chain funding sink.
       </p>
+      <CodeBlock
+        filename="IConfidentialEscrow.sol"
+        language="solidity"
+        lines={[
+          { content: "interface IConfidentialEscrow {" },
+          { content: "    function create(" },
+          {
+            content: "        InEaddress calldata encryptedOwner,",
+            highlighted: true,
+          },
+          {
+            content: "        InEuint64 calldata encryptedAmount,",
+            highlighted: true,
+          },
+          { content: "        address resolver," },
+          { content: "        bytes calldata resolverData" },
+          { content: "    ) external returns (uint256 escrowId);" },
+          { content: "" },
+          {
+            content:
+              "    function fund(uint256 escrowId, InEuint64 calldata encryptedPayment) external;",
+          },
+          {
+            content:
+              "    function fundFrom(uint256 escrowId, euint64 amount) external; // cross-chain sink",
+          },
+          { content: "    function redeem(uint256 escrowId) external;" },
+          {
+            content:
+              "    function redeemMultiple(uint256[] calldata escrowIds) external;",
+          },
+          { content: "" },
+          {
+            content:
+              "    function getRedeemedStatus(uint256 escrowId) external view returns (bool);",
+          },
+          {
+            content:
+              "    function exists(uint256 escrowId) external view returns (bool);",
+          },
+          { content: "    function total() external view returns (uint256);" },
+          { content: "}" },
+        ]}
+        showLineNumbers={true}
+      />
 
+      {/* Gates */}
       <h2
-        id="core"
+        id="gates"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Core (mandatory v0.1)
+        Release gates
       </h2>
-      <DocsTable columns={tierColumns} rows={coreRows} />
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          IConditionResolver
+        </code>{" "}
+        controls when an escrow may release. The escrow calls{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          onConditionSet
+        </code>{" "}
+        once at creation and checks{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          isConditionMet
+        </code>{" "}
+        on every redeem. See{" "}
+        <a href="/build/condition-resolvers">Condition Resolvers</a> for full
+        implementations.
+      </p>
+      <CodeBlock
+        filename="IConditionResolver.sol"
+        language="solidity"
+        lines={[
+          { content: "interface IConditionResolver is IERC165 {" },
+          {
+            content:
+              "    function isConditionMet(uint256 escrowId) external view returns (bool);",
+            highlighted: true,
+          },
+          {
+            content:
+              "    function onConditionSet(uint256 escrowId, bytes calldata data) external;",
+          },
+          { content: "    function getConditionFee(uint256 escrowId)" },
+          {
+            content:
+              "        external view returns (uint16 bps, address recipient);",
+          },
+          { content: "}" },
+        ]}
+        showLineNumbers={true}
+      />
 
+      {/* Underwriting */}
       <h2
-        id="plugin"
+        id="underwriting"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Plugin extension points (mandatory v0.1)
+        Underwriting
       </h2>
-      <DocsTable columns={tierColumns} rows={pluginRows} />
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        An underwriter policy prices risk and judges disputes. The plaintext
+        variant returns plain values; the confidential variant returns FHE
+        ciphertexts so competing underwriters can't read pricing or verdicts
+        off-chain.
+      </p>
+      <CodeBlock
+        filename="IUnderwriterPolicy.sol"
+        language="solidity"
+        lines={[
+          { content: "interface IUnderwriterPolicy is IERC165 {" },
+          {
+            content:
+              "    function onPolicySet(uint256 coverageId, bytes calldata data) external;",
+          },
+          {
+            content:
+              "    function evaluateRisk(uint256 escrowId, bytes calldata riskProof)",
+          },
+          { content: "        external returns (uint256 riskScore);" },
+          {
+            content:
+              "    function judge(uint256 coverageId, bytes calldata disputeProof)",
+          },
+          { content: "        external returns (bool valid);" },
+          { content: "}" },
+          { content: "" },
+          { content: "interface IConfidentialUnderwriterPolicy is IERC165 {" },
+          {
+            content:
+              "    function onPolicySet(uint256 coverageId, bytes calldata data) external;",
+          },
+          {
+            content:
+              "    function evaluateRisk(uint256 escrowId, bytes calldata riskProof)",
+          },
+          {
+            content: "        external returns (euint64 riskScore);",
+            highlighted: true,
+          },
+          {
+            content:
+              "    function judge(uint256 coverageId, bytes calldata disputeProof)",
+          },
+          {
+            content: "        external returns (ebool valid);",
+            highlighted: true,
+          },
+          { content: "}" },
+        ]}
+        showLineNumbers={true}
+      />
 
+      {/* Fees */}
       <h2
-        id="async-agentic"
+        id="fees"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Async + agentic (mandatory v0.2)
+        Fee modules
       </h2>
-      <DocsTable columns={tierColumns} rows={asyncRows} />
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Fee modules are read at lifecycle stamp time — create, condition-set,
+        coverage-purchase — never on the redeem hot path. The protocol fee bps
+        is governance-settable within an immutable bytecode ceiling (
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          MAX_PROTOCOL_FEE_BPS = 50
+        </code>
+        ).
+      </p>
+      <CodeBlock
+        filename="IProtocolFeeModule.sol"
+        language="solidity"
+        lines={[
+          { content: "interface IProtocolFeeModule {" },
+          { content: "    function getProtocolFee()" },
+          {
+            content:
+              "        external view returns (uint16 bps, address recipient);",
+          },
+          { content: "}" },
+        ]}
+        showLineNumbers={true}
+      />
+
+      {/* v0.2 */}
+      <h2
+        id="v02"
+        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
+      >
+        Async &amp; agentic{" "}
+        <DocsBadge variant="amber">Spec&apos;d · v0.2</DocsBadge>
+      </h2>
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        A standard can specify ahead of code. These interfaces are designed and
+        become mandatory at RSS v0.2 (Q4 2026); they are not yet shipped, so
+        v0.1 conformance is judged only against the interfaces above.{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          IAsyncConditionResolver
+        </code>{" "}
+        adds a Pending state for gates that need off-chain work;{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          IAgenticJob
+        </code>{" "}
+        and{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          IExecution
+        </code>{" "}
+        cover the agentic layer (see{" "}
+        <a href="/research/agentic-composition">Agentic Composition</a>).
+      </p>
+      <CodeBlock
+        filename="IAsyncConditionResolver.sol"
+        language="solidity"
+        lines={[
+          {
+            content:
+              "interface IAsyncConditionResolver is IConditionResolver {",
+          },
+          {
+            content:
+              "    enum Status { Unresolved, Pending, Resolved, Rejected }",
+            highlighted: true,
+          },
+          { content: "" },
+          {
+            content:
+              "    function requestResolution(uint256 escrowId) external;",
+          },
+          {
+            content:
+              "    function status(uint256 escrowId) external view returns (Status);",
+          },
+          { content: "}" },
+        ]}
+        showLineNumbers={true}
+      />
 
       <PageNav prev={prev} next={next} />
     </DocsLayout>

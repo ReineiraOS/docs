@@ -158,8 +158,8 @@ export default function PrivacyModel() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        ReineiraOS is designed as two separate, immutable deployments that share
-        identical external interfaces (§4):
+        ReineiraOS runs as two separate, immutable deployments that share
+        identical external interfaces:
       </p>
 
       <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
@@ -169,7 +169,7 @@ export default function PrivacyModel() {
           </strong>{" "}
           <DocsBadge variant="blue">Chaos-net</DocsBadge> — all state is stored
           in plaintext. This is the mode that runs at chaos-net (Jul 2026) on
-          Arbitrum L2 (§3.6).
+          Arbitrum L2.
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">
@@ -178,7 +178,7 @@ export default function PrivacyModel() {
           <DocsBadge variant="amber">Spec'd · v1.0 mainnet</DocsBadge> —
           sensitive state is held as FHE ciphertexts. This mode activates at the
           v1.0 mainnet release (Q4 2026) and is gated on Fhenix CoFHE reaching
-          mainnet (§3.6, §10.4).
+          mainnet.
         </li>
       </ul>
 
@@ -192,7 +192,7 @@ export default function PrivacyModel() {
           on-chain until the v1.0 mainnet deployment. The encrypted contracts
           described below are a <strong>separate immutable deployment</strong>{" "}
           at separate addresses; migration from the public deployment is{" "}
-          <strong>opt-in</strong> per user (§4).
+          <strong>opt-in</strong> per user.
         </p>
       </Callout>
 
@@ -232,7 +232,7 @@ export default function PrivacyModel() {
           In the encrypted-mode deployment, sensitive financial and identity
           fields are encrypted as part of the contract design — there is no
           per-field opt-out. The public-mode deployment that runs at chaos-net
-          stores these same fields in plaintext (§4).
+          stores these same fields in plaintext.
         </p>
       </Callout>
 
@@ -249,8 +249,8 @@ export default function PrivacyModel() {
         <DocsBadge variant="amber">Spec'd · v1.0 mainnet</DocsBadge>, this means
         the smart contracts can add escrow amounts, compare balances, and
         evaluate conditions — all while the underlying values remain ciphertext.
-        FHE state is gated on Fhenix CoFHE reaching mainnet (§3.6, §10.4); the
-        flows below describe that deployment, not the public chaos-net one.
+        FHE state is gated on Fhenix CoFHE reaching mainnet; the flows below
+        describe that deployment, not the public chaos-net one.
       </p>
 
       <h3
@@ -374,17 +374,9 @@ export default function PrivacyModel() {
           complianceOwner
         </code>{" "}
         role lets <em>that</em> role — and no other observer — request
-        decryption. The on-chain ciphertext is left untouched and every other
-        observer's view is unchanged (§11.7).
-      </p>
-
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The{" "}
-        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-          complianceOwner
-        </code>{" "}
-        role holds Decryption Authority for audit, sanctions-screening, and
-        supervised-disclosure flows (§11.7).
+        decryption. The on-chain ciphertext stays untouched, and every other
+        observer's view is unchanged. This role holds Decryption Authority for
+        audit, sanctions-screening, and supervised-disclosure flows.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -392,13 +384,9 @@ export default function PrivacyModel() {
         <strong className="text-docs-text-primary font-semibold">
           Travel-Rule bridge
         </strong>{" "}
-        is specified: a KYB-pinned forwarder grants{" "}
-        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-          complianceOwner
-        </code>{" "}
-        Decryption Authority to the originating VASP, satisfying Travel Rule
-        reporting from off-chain records bound to the on-chain ciphertext handle
-        (§11.7).
+        is specified: a KYB-pinned forwarder grants the originating VASP
+        Decryption Authority, satisfying Travel Rule reporting from off-chain
+        records bound to the on-chain ciphertext handle.
       </p>
 
       <Callout
@@ -406,9 +394,9 @@ export default function PrivacyModel() {
         title="A mechanism, not a compliance guarantee"
       >
         <p>
-          The Travel-Rule bridge is presented as a technical mechanism.
-          Regulatory <em>applicability</em> remains unresolved per jurisdiction
-          (Open Problem 11.1) — do not treat it as a compliance guarantee.
+          The Travel-Rule bridge is a technical mechanism. Whether it satisfies
+          regulation is an open question that varies by jurisdiction — do not
+          treat it as a compliance guarantee.
         </p>
       </Callout>
 
@@ -474,7 +462,7 @@ export default function PrivacyModel() {
             FHE.allowTransient
           </code>
           . Only authorized parties (owner, insurance manager) can read specific
-          encrypted fields (§10.4, §10.5).
+          encrypted fields.
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">
@@ -495,8 +483,8 @@ export default function PrivacyModel() {
             className="text-brand-primary hover:underline"
           >
             Selective disclosure &amp; compliance
-          </a>{" "}
-          (§11.7).
+          </a>
+          .
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">

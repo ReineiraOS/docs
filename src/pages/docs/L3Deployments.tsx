@@ -58,7 +58,7 @@ export default function L3Deployments() {
       />
 
       <div className="mb-2">
-        <DocsBadge variant="amber">Spec'd · §9.10</DocsBadge>
+        <DocsBadge variant="amber">Spec'd</DocsBadge>
       </div>
 
       <Callout
@@ -66,11 +66,11 @@ export default function L3Deployments() {
         title="Self-deployment is a specified model, not a live product"
       >
         <p>
-          The Atlas-deployed L3 model is specified in §9.10 and{" "}
-          <strong>open</strong> — not gated on external protocol maturity — but
-          it is not a shipped, turnkey product on v1.0. The Atlas deployment
-          skills and the L3-owner maintenance posture are described here as
-          designed; treat dates and tooling as roadmap, not availability.
+          The Atlas-deployed L3 model is specified and <strong>open</strong> —
+          not gated on external protocol maturity — but it is not a shipped,
+          turnkey product on v1.0. The Atlas deployment skills and the L3-owner
+          maintenance posture are described here as designed; treat dates and
+          tooling as roadmap, not availability.
         </p>
       </Callout>
 
@@ -93,7 +93,7 @@ export default function L3Deployments() {
         standard with a working reference implementation, any rollup that wants
         the four primitives can run them on its own chain{" "}
         <strong>without entering a commercial relationship</strong> with
-        Reineira Labs. (§9.10.)
+        Reineira Labs.
       </p>
 
       <h2
@@ -110,7 +110,6 @@ export default function L3Deployments() {
         </strong>
         . Reineira Labs does not operate or upgrade those deployments. This
         L3-owner maintenance posture is what makes self-deployment scalable.
-        (§9.10.)
       </p>
 
       <h2
@@ -134,7 +133,7 @@ export default function L3Deployments() {
           Self-deployed L3s do <strong>not</strong> ship their own CCTP V2 or
           LayerZero OFT handlers — those bridge transports operate at the L1/L2
           layer, not L3. The native rollup bridge is the only required
-          transport. (§9.10.)
+          transport.
         </p>
       </Callout>
 
@@ -146,7 +145,7 @@ export default function L3Deployments() {
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         The protocol is not migrated off Arbitrum L2 — additional hosts run in
-        parallel (§9.10, Fig. 9.1).
+        parallel.
       </p>
       <DocsTable columns={hostColumns} rows={hostRows} />
 

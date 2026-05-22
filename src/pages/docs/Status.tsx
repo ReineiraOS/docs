@@ -43,7 +43,7 @@ const taxonomyRows = [
   },
 ];
 
-// Component status table — derived from whitepaper §8.8–§8.11 and §14.4.
+// Component status table.
 const componentColumns = [
   { header: "Component", key: "component", width: "230px" },
   { header: "Status", key: "status", width: "150px" },
@@ -57,137 +57,132 @@ const componentRows = [
     status: <StatusBadge status="chaos-net" />,
     milestone: "chaos-net v1.0 (Jul 2026)",
     notes:
-      "Runs in public mode at chaos-net; encrypted state activates at v1.0 mainnet. (§6, §8.11)",
+      "Runs in public mode at chaos-net; encrypted state activates at v1.0 mainnet.",
   },
   {
     component: "Pluggable release gates (IConditionResolver)",
     status: <StatusBadge status="chaos-net" />,
     milestone: "chaos-net v1.0",
     notes:
-      "Core interface ships; reference resolvers are spec'd separately below. (§6)",
+      "Core interface ships; reference resolvers are spec'd separately below.",
   },
   {
     component: "Encrypted-state Insurance",
     status: <StatusBadge status="chaos-net" />,
     milestone: "chaos-net v1.0",
-    notes:
-      "Coverage manager + IUnderwriterPolicy. Public mode at chaos-net. (§7)",
+    notes: "Coverage manager + IUnderwriterPolicy. Public mode at chaos-net.",
   },
   {
     component: "Operator set (OperatorRegistry, TaskExecutor)",
     status: <StatusBadge status="chaos-net" />,
     milestone: "chaos-net v1.0",
-    notes: "Permissionless registration from Day 1; cUSDC bond. (§8.4, §8.11)",
+    notes: "Permissionless registration from Day 1; cUSDC bond.",
   },
   {
     component: "FeeManager (zero-fee posture)",
     status: <StatusBadge status="chaos-net" />,
     milestone: "chaos-net v1.0",
     notes:
-      "Zero fees through chaos-net, block-locked by MAINNET_ACTIVATION_BLOCK — no governance toggle. (§8.8)",
+      "Zero fees through chaos-net, block-locked by MAINNET_ACTIVATION_BLOCK — no governance toggle.",
   },
   {
     component: "OperatorSubsidyManager",
     status: <StatusBadge status="chaos-net" />,
     milestone: "chaos-net window only",
-    notes:
-      "Foundation-funded cUSDC subsidies; inert after mainnet activation. (§8.9)",
+    notes: "Foundation-funded cUSDC subsidies; inert after mainnet activation.",
   },
   {
     component: "OperatorSlashingManager",
     status: <StatusBadge status="chaos-net" />,
     milestone: "chaos-net v1.0",
     notes:
-      "Single stake-weighted quorum across the active set (see CoordinatorRegistry below). (§8.7, §8.10)",
+      "Single stake-weighted quorum across the active set (see CoordinatorRegistry below).",
   },
   {
     component: "CCTPHandler (Circle CCTP V2 relay)",
     status: <StatusBadge status="chaos-net" />,
     milestone: "chaos-net v1.0",
-    notes: "Cross-chain USDC settlement task handler. (§9.2)",
+    notes: "Cross-chain USDC settlement task handler.",
   },
   {
     component: "LayerZero OFT Handlers (USDT0 rail)",
     status: <StatusBadge status="chaos-net" />,
     milestone: "v1.0 (alongside CCTP V2)",
-    notes: "Shipped at v1.0 for non-U.S./non-EU users. (§9, §14.4)",
+    notes: "Shipped at v1.0 for non-U.S./non-EU users.",
   },
   {
     component: "Encrypted mode (Fhenix CoFHE)",
     status: <StatusBadge status="spec" detail="v1.0 mainnet" />,
     milestone: "Q4 2026 mainnet hardening",
     notes:
-      "Encrypted state does not exist on-chain until v1.0 mainnet; separate immutable deployment. Gated on CoFHE. (§8.11)",
+      "Encrypted state does not exist on-chain until v1.0 mainnet; separate immutable deployment. Gated on CoFHE.",
   },
   {
     component: "Virtual Escrow surface",
     status: <StatusBadge status="spec" detail="chaos-net v1.0" />,
     milestone: "chaos-net v1.0",
-    notes: "Implementation Note — specified, not yet shipped. (§6, §14.4)",
+    notes: "Specified, not yet shipped.",
   },
   {
     component: "QuorumAttestedPolicy (async underwriter base)",
     status: <StatusBadge status="spec" detail="chaos-net v1.0" />,
     milestone: "chaos-net v1.0",
-    notes: "Implementation Note. (§7, §14.4)",
+    notes: "Specified, not yet shipped.",
   },
   {
     component: "PoolFactory v1.0 (full routing / unstake)",
     status: <StatusBadge status="spec" detail="chaos-net v1.0" />,
     milestone: "chaos-net v1.0",
-    notes: "Implementation Note. (§7, §14.4)",
+    notes: "Specified, not yet shipped.",
   },
   {
     component: "CoordinatorRegistry (cross-graph slashing)",
     status: <StatusBadge status="spec" detail="v1.0-track" />,
     milestone: "v1.0-track",
     notes:
-      "Shipped slashing uses a single quorum; coordinator-partitioned slashing is not yet shipped. (§8.10, §14.4)",
+      "Shipped slashing uses a single quorum; coordinator-partitioned slashing is not yet shipped.",
   },
   {
     component:
       "Reference resolvers (zkTLS / oracle / prediction-market / multisig)",
     status: <StatusBadge status="spec" />,
     milestone: "plugin-examples package",
-    notes: "Implementation Note. (§6, §14.4)",
+    notes: "Specified, not yet shipped.",
   },
   {
     component: "Plugin surface (async variants, IAgenticJob, IExecution)",
     status: <StatusBadge status="spec" detail="RSS v0.2" />,
     milestone: "RSS v0.2 (Q4 2026)",
-    notes:
-      "Implementation Note — standard specifies ahead of code. (§5, §14.4)",
+    notes: "Standard specifies ahead of code.",
   },
   {
     component: "Three-entity stack (Entity Stack)",
     status: <StatusBadge status="spec" detail="Phase 2" />,
     milestone: "Phase 2 (Q1–Q2 2027)",
-    notes:
-      "Cover-page entity today vs target three-entity stack. (§0, §11, §14.4)",
+    notes: "Cover-page entity today vs target three-entity stack.",
   },
   {
     component: "Agentic handlers (AgentCall / VerdictSubmit / PoolRouting)",
     status: <StatusBadge status="spec" detail="post-v1.0" />,
     milestone: "out of scope for v1.0 RSS",
     notes:
-      "Only CCTPHandler ships in v1.0. TASK_AGENT_CALL reserved, no handler. (§8.10, §14.4)",
+      "Only CCTPHandler ships in v1.0. TASK_AGENT_CALL reserved, no handler.",
   },
   {
     component: "Agent identity / quorum registries",
     status: <StatusBadge status="research" />,
     milestone: "deferred from v1.0 RSS",
-    notes:
-      "AgentIdentityRegistry, QuorumRegistry, etc. — none shipped. (§8.10, §14.4)",
+    notes: "AgentIdentityRegistry, QuorumRegistry, etc. — none shipped.",
   },
   {
     component: "RiskScoreAttestor / @reineira-os/identity",
     status: <StatusBadge status="research" />,
     milestone: "not on roadmap",
-    notes: "Risk-input is policy-internal. (§7, §14.4)",
+    notes: "Risk-input is policy-internal.",
   },
 ];
 
-// Open Problems — lifted from §14.3.
+// Open Problems.
 const openColumns = [
   { header: "Open Problem", key: "id", width: "230px" },
   { header: "Status", key: "status", width: "130px" },
@@ -253,7 +248,7 @@ const openRows = [
   {
     id: "12.1 / 12.2 REINEIRA token decimals / TGE trigger calibration",
     status: <StatusBadge status="research" />,
-    target: "prior to any TGE event under §12.11 trigger conditions",
+    target: "prior to any TGE event",
   },
 ];
 
@@ -264,7 +259,7 @@ export default function Status() {
 
       <PageHeader
         title="Status & Roadmap"
-        description="An honest, component-by-component view of what ships when. Derived directly from the whitepaper Implementation Notes (§14.4) and Open Problems (§14.3)."
+        description="An honest, component-by-component view of what ships when. Built from the protocol's implementation notes and open problems."
         readingTime="6 min read"
       />
 
@@ -306,11 +301,11 @@ export default function Status() {
         Spec-vs-code deltas
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Implementation Notes (§14.4) mark items where the v1.0 RSS specification
-        describes a surface that is not yet shipped in the reference
-        implementation. They are the binding next-decision surface for the v1.0
-        edition and appear inline in the component table above with a{" "}
-        <StatusBadge status="spec" /> badge.
+        These are the surfaces where the v1.0 RSS specification describes
+        something that is not yet shipped in the reference implementation. They
+        are the binding next-decision items for the v1.0 edition and appear
+        inline in the component table above with a <StatusBadge status="spec" />{" "}
+        badge.
       </p>
 
       <h2
@@ -320,9 +315,8 @@ export default function Status() {
         Open Problems (Research)
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The collated list of every numbered Open Problem from the whitepaper
-        (§14.3). Each decision target is taken verbatim from its source callout.
-        None carries a committed delivery date.
+        Every numbered open problem we're still deciding on, with its decision
+        target. None carries a committed delivery date.
       </p>
       <DocsTable columns={openColumns} rows={openRows} />
 

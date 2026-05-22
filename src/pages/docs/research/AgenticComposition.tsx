@@ -95,10 +95,9 @@ export default function AgenticComposition() {
           agentic-composition layer is{" "}
           <strong>out of scope for v1.0 RSS</strong> and deferred from the v1.0
           reference implementation. None of the registries below are shipped in
-          any package. Treatment of the agentic layer is explicitly not part of
-          v1.0 RSS conformance (§8.10/§8.11, §14.4). This page documents the
-          designed surface so builders can track it — not because any of it is
-          live.
+          any package, and the agentic layer is explicitly not part of v1.0 RSS
+          conformance. This page documents the designed surface so you can track
+          it — not because any of it is live.
         </p>
       </Callout>
 
@@ -110,10 +109,9 @@ export default function AgenticComposition() {
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         ReineiraOS specifies an agentic / AI-execution composition layer above
-        the protocol perimeter, tracked as Implementation Notes. Of the task
-        handlers the specification calls for,{" "}
+        the protocol perimeter. Of the task handlers it calls for,{" "}
         <strong>only CCTPHandler ships in v1.0</strong>. The agentic handlers
-        and the agent/quorum registries are deferred. (§8.10, §14.4.)
+        and the agent/quorum registries are deferred.
       </p>
 
       <h2
@@ -133,8 +131,8 @@ export default function AgenticComposition() {
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         The specification calls for the following contracts;{" "}
         <strong>none are shipped</strong> in the orchestration package or any
-        sibling package as of the snapshot. The agentic-composition layer is
-        deferred from v1.0 RSS until they ship. (§8.10.)
+        sibling package. The agentic-composition layer stays deferred from v1.0
+        RSS until they ship.
       </p>
       <DocsTable columns={registryColumns} rows={registryRows} />
 
@@ -147,10 +145,9 @@ export default function AgenticComposition() {
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         The agentic interfaces — <code>IAgenticJob</code> (neutral agent-job
         lifecycle) and <code>IExecution</code> (pure-transformation plugin) —
-        are specified in the technical reference and become mandatory at{" "}
-        <strong>RSS v0.2 (Q4 2026)</strong>, alongside the async resolver and
-        underwriter variants. They are not part of the v0.1 mandatory subset.
-        (§5.5.) See{" "}
+        become mandatory at <strong>RSS v0.2 (Q4 2026)</strong>, alongside the
+        async resolver and underwriter variants. They are not part of the v0.1
+        mandatory subset. See{" "}
         <a href="/settlement-standard/interface-surface">Interface Surface</a>.
       </p>
 

@@ -28,12 +28,12 @@ const stakingRows = [
   {
     param: "Bond asset",
     value: "cUSDC",
-    desc: "Operators bond cUSDC, an immutable ERC-7984 USDC wrapper — not a governance token. The OperatorRegistry accepts the configured bond asset (§8, §8.4).",
+    desc: "Operators bond cUSDC, an immutable ERC-7984 USDC wrapper — not a governance token. The OperatorRegistry accepts the configured bond asset.",
   },
   {
     param: "Minimum bond",
     value: "Config",
-    desc: "Configurable via setConfig() on the OperatorRegistry. Denominated in cUSDC. The REINEIRA token does not exist yet; it is conditional on the §12.11 triggers with no date (§8.4, §12).",
+    desc: "Configurable via setConfig() on the OperatorRegistry. Denominated in cUSDC. The REINEIRA token does not exist yet — it is conditional on future triggers with no date.",
   },
   {
     param: "Unbonding period",
@@ -91,7 +91,7 @@ const slashingRows = [
   {
     param: "Slasher reward",
     value: "10%",
-    desc: "The slasher receives 10% of the slashed cUSDC stake (1000 bps) (§8.7).",
+    desc: "The slasher receives 10% of the slashed cUSDC stake (1000 bps).",
   },
 ];
 
@@ -161,7 +161,7 @@ const limitationRows = [
     limitation: "Single-quorum slashing only",
     impact:
       "OperatorSlashingManager enforces a single stake-weighted quorum across the active set. Cross-graph slashing (votes spanning ≥3 independent coordinator–operator graphs) is spec'd but not yet shipped.",
-    plan: "CoordinatorRegistry with cross-graph slashing on the v1.0 track (§8.10).",
+    plan: "CoordinatorRegistry with cross-graph slashing on the v1.0 track.",
   },
   {
     limitation: "Testnet FHE",
@@ -196,12 +196,12 @@ export default function Security() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Operators must post a cUSDC bond to participate in the relay network.
-        Bonding creates economic alignment — operators lose money if they
-        misbehave, and earn fees when they relay honestly. Registration is
-        permissionless from chaos-net day 1: any address meeting the bond,
-        sanctions-clean, and not-previously-slashed criteria can register at the
-        contract layer without Foundation invitation (§8.4, §8.11).
+        You post a cUSDC bond to join the relay network. Bonding aligns
+        incentives — you lose money if you misbehave, and earn fees when you
+        relay honestly. Registration is permissionless from chaos-net day 1: any
+        address that meets the bond, is sanctions-clean, and has not been
+        previously slashed can register at the contract layer, no Foundation
+        invitation needed.
       </p>
 
       <DocsTable columns={stakingColumns} rows={stakingRows} />
@@ -213,14 +213,13 @@ export default function Security() {
         <p>
           The OperatorRegistry is permissionless at the contract layer. An
           optional ISanctionsOracle, when wired in, blocks registration of
-          listed addresses (§8.5/§10.5). A separate Foundation-funded subsidy
-          programme (OperatorSubsidyManager) pays operators from a cUSDC pool
-          during chaos-net only, against an off-chain eligibility list
-          (typically KYB-attested). Operators absent from that list still
-          participate normally — they only forgo the subsidy (§8.9). The
-          operator set grows organically: N∈[5,10] at chaos-net (Jul 2026) →
-          N=20 by end-2026 → N≥30 by Q1 2028, bounded by market emergence rather
-          than gating (§8.11).
+          listed addresses. A separate Foundation-funded subsidy programme
+          (OperatorSubsidyManager) pays operators from a cUSDC pool during
+          chaos-net only, against an off-chain eligibility list (typically
+          KYB-attested). If you're not on that list you still participate
+          normally — you just forgo the subsidy. The operator set grows
+          organically: N∈[5,10] at chaos-net (Jul 2026) → N=20 by end-2026 →
+          N≥30 by Q1 2028, bounded by market demand rather than gating.
         </p>
       </Callout>
 
@@ -236,16 +235,15 @@ export default function Security() {
         proofs, censoring messages, or failing to relay within the designated
         window. The OperatorSlashingManager enforces a single stake-weighted
         quorum across the active operator set, using a challenge-vote-execute
-        pattern. The slasher reward is 10% of the slashed cUSDC stake (§8.7,
-        §8.10).
+        pattern. The slasher reward is 10% of the slashed cUSDC stake.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The protocol specification calls for a CoordinatorRegistry with
-        cross-graph slashing — requiring votes spanning at least three
-        independent coordinator–operator graphs — but this is not yet shipped.{" "}
+        A CoordinatorRegistry with cross-graph slashing — requiring votes
+        spanning at least three independent coordinator–operator graphs — is
+        planned but not yet shipped.{" "}
         <DocsBadge variant="amber">Spec&apos;d</DocsBadge> CoordinatorRegistry /
-        cross-graph slashing is on the v1.0 track (§8.10).
+        cross-graph slashing is on the v1.0 track.
       </p>
 
       <DocsTable columns={slashingColumns} rows={slashingRows} />

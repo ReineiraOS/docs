@@ -47,21 +47,20 @@ export default function RssWhatIs() {
           packages/
         </code>{" "}
         are <strong>one reference implementation</strong>, maintained by
-        Reineira Labs Limited (RAK DAO Free Zone). Other parties may publish
-        conforming implementations against their own contract code; conformance
-        is established by the criteria in the Conformance page and the test
-        surface that ships with the standard. (Whitepaper §5.1.)
+        Reineira Labs Limited (RAK DAO Free Zone). Anyone can publish a
+        conforming implementation against their own contract code — conformance
+        comes from meeting the criteria on the Conformance page and passing the
+        test surface that ships with the standard.
       </p>
 
       <Callout variant="info" title="Two layers, two licenses">
         <p>
           The RSS specification — the interfaces, the conformance criteria, the
-          RIP process — is published under an OSI-aligned licence, unencumbered
-          for any party to implement against. The reference implementation
-          maintained by Reineira Labs Limited ships under BUSL-1.1 with a Change
-          Date of 2029-06-01 (Change License Apache 2.0). The two licenses
-          address different layers and are designed to be coherent jointly.
-          (§5.9, §13.) See{" "}
+          RIP process — is published under an OSI-aligned licence, free for
+          anyone to implement against. The reference implementation maintained
+          by Reineira Labs Limited ships under BUSL-1.1 with a Change Date of
+          2029-06-01, converting to Apache 2.0. The two licenses cover different
+          layers and are designed to work together. See{" "}
           <a href="/settlement-standard/implement-rss">
             Implement RSS yourself
           </a>
@@ -76,10 +75,10 @@ export default function RssWhatIs() {
         What RSS covers
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Per §5.2, RSS covers: (a) the four-primitive interface surface and the
-        canonical interfaces; (b) the encrypted-type contract conventions and
-        the silent-failure pattern; (c) the storage conventions (ERC-7201
-        namespacing under{" "}
+        RSS covers: the four-primitive interface surface and the canonical
+        interfaces; the encrypted-type contract conventions and the
+        silent-failure pattern; the storage conventions (ERC-7201 namespacing
+        under{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           reineira.storage.&lt;ContractName&gt;
         </code>
@@ -87,16 +86,15 @@ export default function RssWhatIs() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           __gap[50]
         </code>{" "}
-        reserves) and ERC-2771 meta-transaction support; and (d) the cross-chain
-        transport-binding contract by which any bridge funnels into the escrow
-        funding sink.
+        reserves) and ERC-2771 meta-transactions; and the cross-chain transport
+        binding by which any bridge funnels into the escrow funding sink.
       </p>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         RSS does <strong>not</strong> mandate upgradeability — conforming
         implementations may be upgradeable, immutable, or hybrid (the v1.0
-        reference implementation is immutable per §11.8). RSS does not cover
-        token economics, fee policy, DAO governance, the execution stack for
-        third-party self-hosted deployments, or the builder stack (Atlas, Code).
+        reference implementation is immutable). RSS does not cover token
+        economics, fee policy, DAO governance, the execution stack for
+        self-hosted deployments, or the builder stack (Atlas, Code).
       </p>
 
       <h2
@@ -107,12 +105,11 @@ export default function RssWhatIs() {
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Publishing the standard as a layer separate from the implementation is
-        the protocol's load-bearing commitment (§5.9). The split forces any
-        competing settlement contract to choose between two outcomes:{" "}
-        <strong>implement RSS</strong> — legitimising the standard and
-        inheriting its plugin ecosystem — or <strong>fork it</strong>,
-        fragmenting the addressable plugin and operator surface against the
-        conforming majority.
+        the protocol's load-bearing commitment. The split leaves any competing
+        settlement contract two choices: <strong>implement RSS</strong> —
+        legitimising the standard and inheriting its plugin ecosystem — or{" "}
+        <strong>fork it</strong>, fragmenting its plugin and operator surface
+        against the conforming majority.
       </p>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         An RSS-conformant alternative implementation reduces vendor lock-in for

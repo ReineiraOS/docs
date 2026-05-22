@@ -76,17 +76,17 @@ const pillarRows = [
   {
     pillar: "Reineira Settlement Protocol",
     description:
-      "The on-chain immutable contracts: confidential escrow, pluggable Gates, encrypted-state insurance, and operator-secured cross-chain settlement (§1).",
+      "The on-chain immutable contracts: confidential escrow, pluggable Gates, encrypted-state insurance, and operator-secured cross-chain settlement.",
   },
   {
     pillar: "Reineira Settlement Standard (RSS)",
     description:
-      "The open conformance specification — semver-versioned and evolved through the RIP process, separate from any single deployment (§1, §3.6).",
+      "The open conformance spec — semver-versioned, evolved through the RIP process, and separate from any single deployment.",
   },
   {
     pillar: "Builder Stack",
     description:
-      "Reineira Atlas (the startup operating system) plus Reineira Code (the resolver/policy authoring environment) (§1).",
+      "Reineira Atlas (the startup operating system) plus Reineira Code (the resolver and policy authoring environment).",
   },
 ];
 
@@ -216,9 +216,9 @@ export default function Overview() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        "ReineiraOS" names three distinct things working together. The protocol
-        is the deployed code; the standard is the spec it conforms to; the
-        builder stack is how you ship products on top (§1).
+        "ReineiraOS" names three things working together. The protocol is the
+        deployed code, the standard is the spec it conforms to, and the builder
+        stack is how you ship products on top.
       </p>
 
       <DocsTable columns={pillarColumns} rows={pillarRows} />
@@ -232,34 +232,34 @@ export default function Overview() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        ReineiraOS is built as public settlement infrastructure, not a
-        rent-seeking platform. The contracts are immutable with no upgrade
-        authority (§11.8), and the protocol charges zero fees during chaos-net,
-        block-locked at the contract level (§8.8).
+        ReineiraOS is public settlement infrastructure, not a rent-seeking
+        platform. The contracts are immutable with no upgrade authority, and the
+        protocol charges zero fees during chaos-net — block-locked at the
+        contract level.
       </p>
 
       <Callout variant="info" title="Public-infrastructure posture">
         <ul className="space-y-2 list-disc list-inside">
           <li>
             <strong>Immutable contracts.</strong> No upgrade authority — code is
-            fixed once deployed (§11.8).
+            fixed once deployed.
           </li>
           <li>
             <strong>Zero protocol fees during chaos-net.</strong> Fee switches
-            are block-locked off (§8.8).
+            are block-locked off.
           </li>
           <li>
             <strong>Operators bond cUSDC, not a token.</strong> Security comes
-            from collateral, not emissions (§8).
+            from collateral, not emissions.
           </li>
           <li>
             <strong>No token yet.</strong> The REINEIRA token{" "}
-            <strong>does not exist</strong> and is conditional on the §12.11
-            triggers (§12).
+            <strong>does not exist</strong> and is conditional on future
+            triggers.
           </li>
           <li>
             <strong>Deployed by Reineira Labs Limited</strong> (RAK DAO Free
-            Zone, UAE) acting as a Software Vendor (§11).
+            Zone, UAE) acting as a Software Vendor.
           </li>
         </ul>
       </Callout>
@@ -285,12 +285,12 @@ export default function Overview() {
         <DocsBadge variant="amber">Encrypted mode: v1.0 mainnet</DocsBadge>
       </h3>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The v1.0-mainnet design encrypts every Escrow end-to-end using Fully
-        Homomorphic Encryption (FHE): amounts, parties, and conditions remain
-        private on-chain, and no one — not even node operators — can see the
-        contents of an Escrow without explicit decryption authorization.
-        Encrypted state means competitors can't front-run your settlement and
-        chain analysts can't reverse-engineer your margins.
+        The v1.0-mainnet design encrypts every Escrow end-to-end with Fully
+        Homomorphic Encryption (FHE). Amounts, parties, and conditions stay
+        private on-chain — no one, not even node operators, sees an Escrow's
+        contents without explicit decryption authorization. So competitors can't
+        front-run your settlement and chain analysts can't reverse-engineer your
+        margins.
       </p>
 
       <Callout

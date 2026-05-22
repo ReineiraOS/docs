@@ -85,7 +85,7 @@ export default function CrossChain() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Two transport rails ship at v1.0 (§9.2):
+        Two transport rails ship at v1.0:
       </p>
 
       <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
@@ -114,7 +114,7 @@ export default function CrossChain() {
           ConfidentialEscrow.fundFrom
         </code>{" "}
         sink. Additional bridges integrate via handler registration without
-        modifying the escrow engine (§9.2).
+        modifying the escrow engine.
       </p>
 
       <h2
@@ -144,23 +144,22 @@ export default function CrossChain() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           ConfidentialEscrow.fundFrom
         </code>{" "}
-        sink (§9.2).
+        sink.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The full sequence begins when the SDK calls{" "}
+        The SDK calls{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           depositForBurnWithHook()
         </code>{" "}
-        on the source chain. The Circle Iris attestation network signs the burn
-        message, which triggers the coordinator to dispatch a relay task to an
-        eligible operator. The operator fetches the signed attestation, then
-        submits the message and attestation on-chain via{" "}
+        on the source chain. Circle Iris signs the burn message, the coordinator
+        dispatches a relay task, and an operator submits the message and
+        attestation on-chain via{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           TaskExecutor &rarr; MessageTransmitter.receiveMessage()
         </code>
-        . Finally, USDC is minted on the destination chain and routed to the
-        escrow via hook data.
+        . USDC is then minted on the destination chain and routed to the escrow
+        via hook data.
       </p>
 
       <h2
@@ -174,9 +173,9 @@ export default function CrossChain() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Arbitrum Sepolia is the destination chain where all escrows and
-        insurance contracts are deployed. Source chains are where buyers can
-        fund from. The CCTP Domain column applies to the USDC rail; the USDT
-        rail routes over LayerZero OFT / USDT0 instead of CCTP domains (§9.2).
+        insurance contracts are deployed; source chains are where buyers fund
+        from. The CCTP Domain column applies to the USDC rail — the USDT rail
+        routes over LayerZero OFT / USDT0 instead of CCTP domains.
       </p>
 
       <Callout variant="warning" title="chaos-net is public and unaudited">
