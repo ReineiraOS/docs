@@ -93,11 +93,11 @@ export const navigation: NavSection[] = [
         description: "v0.1 → v0.2 → v1.0 and the RIP process (the EIP analog).",
       },
       {
-        title: "Implement RSS Yourself",
-        slug: "implement-rss",
-        href: "/settlement-standard/implement-rss",
+        title: "Licensing",
+        slug: "licensing",
+        href: "/settlement-standard/licensing",
         description:
-          "The invitation + the license split (OSI-aligned standard vs. BUSL core).",
+          "The license split — OSI-aligned standard vs. the BUSL core that converts to Apache 2.0.",
       },
     ],
   },

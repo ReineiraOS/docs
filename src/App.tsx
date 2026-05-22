@@ -17,7 +17,7 @@ import RssWhatIs from "./pages/docs/rss/RssWhatIs";
 import RssConformance from "./pages/docs/rss/RssConformance";
 import RssInterfaceSurface from "./pages/docs/rss/RssInterfaceSurface";
 import RssVersioning from "./pages/docs/rss/RssVersioning";
-import RssImplement from "./pages/docs/rss/RssImplement";
+import RssLicensing from "./pages/docs/rss/RssLicensing";
 
 // Developer Tools
 import BuilderJourney from "./pages/docs/BuilderJourney";
@@ -91,9 +91,11 @@ const App = () => (
         path="/settlement-standard/versioning"
         element={<RssVersioning />}
       />
+      <Route path="/settlement-standard/licensing" element={<RssLicensing />} />
+      {/* legacy redirect */}
       <Route
         path="/settlement-standard/implement-rss"
-        element={<RssImplement />}
+        element={<Navigate to="/settlement-standard/licensing" replace />}
       />
       {/* Developer Tools */}
       <Route
