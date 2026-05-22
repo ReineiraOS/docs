@@ -125,7 +125,7 @@ export default function InsurancePolicies() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Like Escrow, the Insurance primitive ships in two modes with identical
-        interfaces (§3.6). The plaintext{" "}
+        interfaces. The plaintext{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           IUnderwriterPolicy
         </code>{" "}

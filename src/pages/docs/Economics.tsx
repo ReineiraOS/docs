@@ -177,10 +177,9 @@ export default function Economics() {
       />
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        ReineiraOS is designed so that participants — policy builders, stakers,
-        and operators — earn revenue proportional to the value they contribute.
-        This page covers the fee structure, earning mechanics, and worked
-        numerical examples for each role.
+        Participants earn in proportion to the value they contribute. This page
+        covers the fee structure, earning mechanics, and worked examples for
+        each role.
       </p>
 
       <Callout variant="warning" title="No protocol fees today">
@@ -188,8 +187,8 @@ export default function Economics() {
           During the current chaos-net window the protocol charges{" "}
           <strong>zero protocol fees</strong>. The post-activation fee schedule
           below applies only after the immutable mainnet activation block is
-          reached (§8.8). There is no live REINEIRA token: operators bond cUSDC,
-          not a token, and any token remains conditional on the §12.11 trigger
+          reached. There is no live REINEIRA token: operators bond cUSDC, not a
+          token, and any token remains conditional on the token-launch trigger
           conditions with no committed date.
         </p>
       </Callout>
@@ -234,16 +233,16 @@ export default function Economics() {
           collectFee()
         </code>{" "}
         returns zero — for every protocol fee. There is no governance toggle and
-        no admin override; the only way fees turn on is the chain reaching the
-        activation block (§8.8).
+        no admin override; fees turn on only when the chain reaches the
+        activation block.
       </p>
 
       <Callout variant="info" title="Immutable, not configurable">
         <p>
-          The fee schedule cannot be changed by any party while chaos-net is
-          live. Activation is purely a function of block height encoded at
-          deployment, so the &ldquo;zero fee&rdquo; guarantee holds without
-          trust in an operator or the Foundation (§8.8).
+          No party can change the fee schedule while chaos-net is live.
+          Activation is purely a function of block height encoded at deployment,
+          so the &ldquo;zero fee&rdquo; guarantee holds without trusting an
+          operator or the Foundation.
         </p>
       </Callout>
 
@@ -265,8 +264,8 @@ export default function Economics() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           FeeManager
         </code>{" "}
-        calculates fees on the USDC amount being relayed or settled (§8.8). The
-        slasher reward is the one exception — it applies on all blocks.
+        calculates fees on the USDC amount being relayed or settled. The slasher
+        reward is the one exception — it applies on all blocks.
       </p>
 
       <h3
@@ -280,10 +279,10 @@ export default function Economics() {
 
       <Callout variant="info" title="No escrow creation fee">
         <p>
-          Escrow creation itself has no fee. After activation, the cross-chain
-          protocol and operator fees are only charged on cross-chain CCTP relay
-          execution — when funds move between chains — while the base settlement
-          fee applies on escrow settlement (§8.8).
+          Escrow creation has no fee. After activation, the cross-chain protocol
+          and operator fees apply only on CCTP relay execution — when funds move
+          between chains — while the base settlement fee applies on escrow
+          settlement.
         </p>
       </Callout>
 
@@ -324,16 +323,15 @@ export default function Economics() {
           OperatorSubsidyManager
         </code>
         , which pays operators from a Foundation-funded cUSDC pool. The subsidy
-        is active only during the chaos-net window and becomes inert once the
-        mainnet activation block is reached and standard fees take over (§8.9).
+        runs only during chaos-net and becomes inert once the mainnet activation
+        block is reached and standard fees take over.
       </p>
 
       <Callout variant="info" title="No committed pool size">
         <p>
           The Foundation does not commit to a specific subsidy pool size or
-          per-task rate. The programme exists to bootstrap operator coverage
-          while fees are zero, and is structured to wind down at activation
-          (§8.9).
+          per-task rate. The programme bootstraps operator coverage while fees
+          are zero, and is structured to wind down at activation.
         </p>
       </Callout>
 
@@ -474,11 +472,11 @@ export default function Economics() {
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Operators bond cUSDC — an immutable ERC-7984 USDC wrapper, not a token —
         and run relay nodes that execute cross-chain CCTP tasks: fetching Circle
-        attestations and submitting relay transactions on-chain (§8). During
-        chaos-net they are paid from the Foundation subsidy pool (§8.9). After
-        the mainnet activation block, they earn the 35 bps (0.35%) cross-chain
-        operator fee on every USDC amount they bridge (§8.8). The worked example
-        below reflects the post-activation fee.
+        attestations and submitting relay transactions on-chain. During
+        chaos-net they are paid from the Foundation subsidy pool. After the
+        mainnet activation block, they earn the 35 bps (0.35%) cross-chain
+        operator fee on every USDC amount they bridge. The worked example below
+        reflects the post-activation fee.
       </p>
 
       <h3
@@ -621,7 +619,7 @@ export default function Economics() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Contributor engagement runs on a three-track framework (§12.0, §12.10):
+        Contributor engagement runs on a three-track framework:
       </p>
 
       <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
@@ -657,8 +655,7 @@ export default function Economics() {
         <p>
           Points are non-transferable and non-redeemable. They carry no economic
           value unless and until a TGE occurs, at which point they may convert
-          to a REINEIRA allocation. No TGE is committed and there is no date
-          (§12.10).
+          to a REINEIRA allocation. No TGE is committed and there is no date.
         </p>
       </Callout>
 
@@ -673,29 +670,27 @@ export default function Economics() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         There is <strong>no REINEIRA token today</strong>. Any token is
-        conditional on the §12.11 trigger conditions, with no committed date.
-        The figures below describe the supply design <em>if</em> a TGE were to
-        happen — they are not live parameters.
+        conditional on the token-launch trigger conditions, with no committed
+        date. The figures below describe the supply design <em>if</em> a TGE
+        were to happen — they are not live parameters.
       </p>
 
       <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
         <li>
-          Conditional total supply: <strong>1,000,000,000 REINEIRA</strong>{" "}
-          (§12).
+          Conditional total supply: <strong>1,000,000,000 REINEIRA</strong>.
         </li>
         <li>
           Operator-emissions allocation: <strong>13% of supply</strong>,
           declining <strong>50 / 30 / 15 / 5</strong> across Y1–Y4. It activates
-          only post-TGE (§8.11).
+          only post-TGE.
         </li>
       </ul>
 
       <Callout variant="warning" title="Conditional, not live">
         <p>
           No emissions, staking-rewards-in-token, or token-based fees exist
-          today. Operators bond cUSDC and are subsidised in cUSDC (§8, §8.9).
-          The supply schedule above only applies after a TGE that may never
-          occur (§12, §12.11).
+          today. Operators bond cUSDC and are subsidised in cUSDC. The supply
+          schedule above only applies after a TGE that may never occur.
         </p>
       </Callout>
 
@@ -708,10 +703,9 @@ export default function Economics() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Once the protocol activates fees (post mainnet activation block, §8.8),
-        it is designed to sustain itself through two compounding loops. During
-        chaos-net, both loops run fee-free and operators are bridged by the
-        Foundation subsidy (§8.9).
+        Once fees activate at the mainnet activation block, the protocol
+        sustains itself through two compounding loops. During chaos-net both
+        loops run fee-free and operators are bridged by the Foundation subsidy.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -720,8 +714,8 @@ export default function Economics() {
         </strong>{" "}
         After activation, every CCTP relay pays 15 bps to the Foundation
         treasury and 35 bps to the operator, plus a 25 bps base settlement fee
-        on escrow settlement (§8.8). More cross-chain settlement volume = more
-        treasury revenue.
+        on escrow settlement. More cross-chain settlement volume = more treasury
+        revenue.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -737,10 +731,9 @@ export default function Economics() {
         <p>
           The protocol takes no cut of insurance premiums — premiums flow to the
           pool. Even after activation, the Foundation treasury earns only from
-          cross-chain and settlement fees (§8.8), aligning incentives so the
-          protocol succeeds when builders and operators succeed. Today, with
-          fees at zero, that alignment is enforced by the immutable activation
-          block.
+          cross-chain and settlement fees, so the protocol succeeds when
+          builders and operators succeed. Today, with fees at zero, that
+          alignment is enforced by the immutable activation block.
         </p>
       </Callout>
 

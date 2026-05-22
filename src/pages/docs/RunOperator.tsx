@@ -33,7 +33,7 @@ const requirementRows = [
   {
     req: "Bond asset",
     details:
-      "cUSDC — an immutable ERC-7984 USDC wrapper. The OperatorRegistry accepts the configured bond asset; amount is configurable via OperatorRegistry (§8, §8.4).",
+      "cUSDC — an immutable ERC-7984 USDC wrapper. The OperatorRegistry accepts the configured bond asset; amount is configurable via OperatorRegistry.",
   },
   {
     req: "ETH",
@@ -105,14 +105,13 @@ export default function RunOperator() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Operators bond cUSDC on-chain, connect to the coordinator via SSE, and
-        execute cross-chain CCTP relay tasks. The coordinator distributes tasks
-        via round-robin. On-chain contracts (OperatorRegistry, TaskExecutor)
-        enforce bonding requirements, exclusive windows, and fee collection.
+        You bond cUSDC on-chain, connect to the coordinator via SSE, and execute
+        cross-chain CCTP relay tasks. The coordinator distributes tasks via
+        round-robin. On-chain contracts (OperatorRegistry, TaskExecutor) enforce
+        bonding requirements, exclusive windows, and fee collection.
         Registration is permissionless from chaos-net day 1: any address that
         meets the bond requirement, is sanctions-clean, and has not been
-        previously slashed can register without Foundation invitation (§8.4,
-        §8.11).
+        previously slashed can register without Foundation invitation.
       </p>
 
       <DocsTable
@@ -252,31 +251,29 @@ export default function RunOperator() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Operators bond cUSDC on-chain via the OperatorRegistry contract. cUSDC
-        is an immutable ERC-7984 USDC wrapper, and it is the configured bond
-        asset — not a governance token. The bond acts as collateral and is
-        slashable for misbehavior. The minimum bond amount is configurable via
-        the OperatorRegistry. Unbonding period is 7 days (hardcoded) (§8, §8.4).
+        You bond cUSDC on-chain via the OperatorRegistry contract. cUSDC is an
+        immutable ERC-7984 USDC wrapper, and it is the configured bond asset —
+        not a governance token. The bond acts as collateral and is slashable for
+        misbehavior. The minimum bond amount is configurable via the
+        OperatorRegistry. Unbonding period is 7 days (hardcoded).
       </p>
 
       <Callout variant="info" title="No REINEIRA token yet">
         <p>
           The operator bond is denominated in cUSDC, not in a REINEIRA token.{" "}
           <DocsBadge variant="amber">Spec&apos;d</DocsBadge> The REINEIRA token
-          does not exist yet — it is conditional on the §12.11 triggers and has
-          no launch date. Do not treat the bond as a governance-token stake
-          (§8.4, §12).
+          does not exist yet — it is conditional on future triggers and has no
+          launch date. Do not treat the bond as a governance-token stake.
         </p>
       </Callout>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         An optional ISanctionsOracle can be wired into the OperatorRegistry;
-        when configured, it blocks registration of listed addresses
-        (§8.5/§10.5). A separate Foundation-funded operator subsidy programme
-        (OperatorSubsidyManager) pays operators from a cUSDC pool during
-        chaos-net only, against an off-chain eligibility list (typically
-        KYB-attested). Operators not on the list still participate normally at
-        the protocol layer — they simply receive no subsidy (§8.9).
+        when configured, it blocks registration of listed addresses. A separate
+        Foundation-funded subsidy programme (OperatorSubsidyManager) pays
+        operators from a cUSDC pool during chaos-net only, against an off-chain
+        eligibility list (typically KYB-attested). If you're not on the list you
+        still participate normally — you simply receive no subsidy.
       </p>
 
       <CodeBlock

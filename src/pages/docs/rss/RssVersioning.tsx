@@ -64,7 +64,7 @@ export default function RssVersioning() {
         Semver release line
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        RSS is semver-versioned per the §0 manifest. (§5.3.)
+        RSS is semver-versioned per the release manifest.
       </p>
       <DocsTable columns={releaseColumns} rows={releaseRows} />
 
@@ -104,12 +104,12 @@ export default function RssVersioning() {
         title="RIP governance details are not fully specified"
       >
         <p>
-          <DocsBadge variant="amber">Spec'd</DocsBadge> The whitepaper commits
-          to the RIP process as the change-admission mechanism and pins the
-          first five RIPs to RSS v0.2, but the exact RIP authoring, review, and
-          ratification governance is not enumerated in the v1.0 edition. We will
-          document the concrete process when it is published; nothing here
-          should be read as a finalised governance specification.
+          <DocsBadge variant="amber">Spec'd</DocsBadge> The RIP process is
+          committed as the change-admission mechanism, with the first five RIPs
+          pinned to RSS v0.2 — but the exact authoring, review, and ratification
+          governance is not yet finalised. We will document the concrete process
+          once it is published; nothing here should be read as a finalised
+          governance specification.
         </p>
       </Callout>
 

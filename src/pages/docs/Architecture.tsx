@@ -41,7 +41,7 @@ const layerRows = [
   {
     layer: "Storage",
     tech: "ERC-7201",
-    desc: "Encrypted state variables stored via namespaced storage. Contracts are immutable singletons; ERC-7201 + __gap[50] preserve layout across deployment versions (§11.8). ERC-2771 meta-transaction support.",
+    desc: "Encrypted state variables stored via namespaced storage. Contracts are immutable singletons; ERC-7201 + __gap[50] preserve layout across deployment versions. ERC-2771 meta-transaction support.",
   },
   {
     layer: "Orchestration",
@@ -75,7 +75,7 @@ export default function Architecture() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         ReineiraOS is conditional settlement infrastructure built on the
-        Ethereum Virtual Machine. It runs in two modes (§9): a{" "}
+        Ethereum Virtual Machine. It runs in two modes: a{" "}
         <strong className="text-docs-text-primary">public mode</strong> with
         plaintext amounts — the mode running on chaos-net today — and an{" "}
         <strong className="text-docs-text-primary">encrypted mode</strong> that
@@ -106,8 +106,7 @@ export default function Architecture() {
         FHE-encrypted values, with plaintext used only for public metadata like
         timestamps and escrow existence flags. The encrypted-state design and
         types described below ship at the v1.0 mainnet launch (Q4 2026); the
-        live chaos-net deployment currently runs in public (plaintext) mode
-        (§9).
+        live chaos-net deployment currently runs in public (plaintext) mode.
       </Callout>
 
       <h2
@@ -200,7 +199,7 @@ export default function Architecture() {
         </code>
         . Every protocol contract is deployed as an{" "}
         <strong className="text-docs-text-primary">immutable singleton</strong>{" "}
-        at a fixed address (§11.8) — there is no UUPS proxy, no{" "}
+        at a fixed address — there is no UUPS proxy, no{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           _authorizeUpgrade
         </code>{" "}
@@ -224,10 +223,9 @@ export default function Architecture() {
           new contract deployments at new addresses
         </strong>{" "}
         that users opt into by migration — never as in-place upgrades. The{" "}
-        canonical-deployment registry (§3.4) is a documentation surface, not an
-        on-chain contract, that lists the v1.0 deployment addresses across host
-        chains; users remain free to interact with any other bytecode deployment
-        at their own choice.
+        canonical-deployment registry is a documentation surface, not an
+        on-chain contract; it lists the v1.0 deployment addresses across host
+        chains. You remain free to interact with any other bytecode deployment.
       </p>
 
       <h3
@@ -239,8 +237,8 @@ export default function Architecture() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Public mode can deploy on any EVM chain; the current chaos-net
-        deployment runs on Arbitrum L2 (§9). Cross-chain funding arrives over
-        two rails — Circle CCTP V2 for USDC, and LayerZero OFT / USDT0 for USDT
+        deployment runs on Arbitrum L2. Cross-chain funding arrives over two
+        rails — Circle CCTP V2 for USDC, and LayerZero OFT / USDT0 for USDT
         (available to non-U.S. and non-EU users) — both of which funnel into{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           ConfidentialEscrow.fundFrom
@@ -252,8 +250,7 @@ export default function Architecture() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Atlas-deployed third-party L3s are defined as a model for hosting
-        protocol deployments (§9.10){" "}
-        <DocsBadge variant="amber">Spec'd</DocsBadge>.
+        protocol deployments <DocsBadge variant="amber">Spec'd</DocsBadge>.
       </p>
 
       <h2

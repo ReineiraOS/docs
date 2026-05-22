@@ -10,7 +10,7 @@ import type { TocItem } from "@/components/layout/TableOfContents";
 
 const toc: TocItem[] = [
   { id: "criteria", title: "Conformance criteria", level: 2 },
-  { id: "definition", title: "Definition 5.1", level: 2 },
+  { id: "definition", title: "Definition", level: 2 },
   { id: "test-surface", title: "Conformance test surface", level: 2 },
 ];
 
@@ -24,7 +24,7 @@ const criteriaColumns = [
 const criteriaRows = [
   {
     clause: "(a) Interface coverage",
-    req: "Implements every interface declared mandatory for the deployment's mode (public or encrypted), per the canonical surface of §5.5.",
+    req: "Implements every interface declared mandatory for the deployment's mode (public or encrypted), per the canonical surface.",
   },
   {
     clause: "(b) Encrypted state",
@@ -32,7 +32,7 @@ const criteriaRows = [
   },
   {
     clause: "(c) Silent-failure pattern",
-    req: "Every redemption path that evaluates an encrypted condition conforms to Proposition 4.3 — success and failure transcripts are computationally indistinguishable to a PPT adversary without decryption authority.",
+    req: "Every redemption path that evaluates an encrypted condition produces success and failure transcripts that are computationally indistinguishable to an adversary without decryption authority.",
   },
   {
     clause: "(d) Namespaced storage",
@@ -55,7 +55,7 @@ export default function RssConformance() {
 
       <PageHeader
         title="Conformance"
-        description="A deployment is RSS-conformant if and only if it satisfies clauses (a)–(f) and passes the conformance test suite at the RSS version it claims."
+        description="A deployment is RSS-conformant if it satisfies all six conformance clauses and passes the conformance test suite at the RSS version it claims."
         readingTime="5 min read"
       />
 
@@ -67,7 +67,7 @@ export default function RssConformance() {
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         The test suite is necessary for conformance, but the criteria below are
-        the authoritative definition (§5.4). All six clauses must hold.
+        the authoritative definition. All six clauses must hold.
       </p>
       <DocsTable columns={criteriaColumns} rows={criteriaRows} />
 
@@ -75,13 +75,12 @@ export default function RssConformance() {
         id="definition"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Definition 5.1 — RSS-Conformant Implementation
+        Definition: a conformant implementation
       </h2>
       <blockquote className="border-l-4 border-docs-border-strong pl-4 my-6 text-docs-text-secondary leading-relaxed italic">
         <p>
-          A deployment of contracts that satisfies clauses (a)–(f) of §5.4 and
-          passes the conformance test suite of §5.7 at the version of RSS it
-          claims to implement.
+          A deployment that satisfies the conformance criteria and passes the
+          conformance test suite at the RSS version it claims to implement.
         </p>
       </blockquote>
 
@@ -99,10 +98,9 @@ export default function RssConformance() {
         . The current Foundry surface counts roughly 36 unit-test contracts
         across escrow, insurance, orchestration, and tokens — FHE and plaintext
         unit tests, integration tests, and invariant tests. The RSS v0.1
-        conformance suite freezes a binding subset of these for Definition 5.1.
-        The intent is platform-agnostic: the suite should run against any
-        conforming deployment by pointing Foundry at its deployed addresses.
-        (§5.7.)
+        conformance suite freezes a binding subset of these. The intent is
+        platform-agnostic: the suite should run against any conforming
+        deployment by pointing Foundry at its deployed addresses.
       </p>
 
       <Callout
@@ -110,10 +108,9 @@ export default function RssConformance() {
         title="The exact binding subset is not yet frozen"
       >
         <p>
-          <DocsBadge variant="amber">Research · Open Problem 5.1</DocsBadge> The
-          exact set of test files that constitute the binding RSS v0.1
-          conformance suite is unselected as of v1.0 publication. Selection
-          criteria are enumerated in Open Problem 5.1; decision target is{" "}
+          <DocsBadge variant="amber">Research</DocsBadge> Which test files make
+          up the binding RSS v0.1 conformance suite is still an open question as
+          of v1.0 publication. The decision target is{" "}
           <strong>RSS v0.2 (Q4 2026)</strong>, bundled with the first RIPs.
           Until then, conformance clauses bind only over the v0.1 mandatory
           subset.

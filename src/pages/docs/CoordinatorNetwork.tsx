@@ -55,14 +55,14 @@ const limitationRows = [
   {
     limitation: "Single coordinator in production",
     impact:
-      "Only the Foundation's canonical coordinator runs in chaos-net, so if it goes down, relay tasks queue until it recovers. Third parties may already run independent coordinators against the same on-chain contracts (§8.12).",
+      "Only the Foundation's canonical coordinator runs in chaos-net, so if it goes down, relay tasks queue until it recovers. Third parties may already run independent coordinators against the same on-chain contracts.",
     resolution:
       "On-chain coordinator registration (CoordinatorRegistry) and cross-graph slashing land on the v1.0 track (Spec'd).",
   },
   {
     limitation: "Coordinator does not pre-verify stake",
     impact:
-      "The off-chain coordinator does not pre-check operator bond before accepting an SSE subscription. Bonding and eligibility are still enforced on-chain by the OperatorRegistry and TaskExecutor at execution time (§8.4).",
+      "The off-chain coordinator does not pre-check operator bond before accepting an SSE subscription. Bonding and eligibility are still enforced on-chain by the OperatorRegistry and TaskExecutor at execution time.",
     resolution:
       "Optional coordinator-side stake check to reduce wasted dispatch to unbonded subscribers.",
   },
@@ -112,7 +112,7 @@ export default function CoordinatorNetwork() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The Operator Network has two layers (§8.12). On-chain, operators bond{" "}
+        The Operator Network has two layers. On-chain, operators bond{" "}
         <strong className="text-docs-text-primary font-semibold">cUSDC</strong>{" "}
         — the immutable ERC-7984 confidential USDC wrapper, not a protocol token
         — into the OperatorRegistry, then claim and execute relay tasks via the
@@ -124,8 +124,7 @@ export default function CoordinatorNetwork() {
         <strong className="text-docs-text-primary font-semibold">
           operator nodes
         </strong>{" "}
-        via Server-Sent Events (SSE). The operator node and CLI are open-source
-        (§8.12).
+        via Server-Sent Events (SSE). The operator node and CLI are open-source.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -136,9 +135,9 @@ export default function CoordinatorNetwork() {
         : it does not custody funds or enforce eligibility. The Foundation
         operates a canonical coordinator at a published URL, but any third party
         may run an independent coordinator against the same on-chain
-        OperatorRegistry and TaskExecutor contracts (§8.12). All security
-        enforcement — bonding, exclusive windows, permissionless fallback, fee
-        collection — happens on-chain.
+        OperatorRegistry and TaskExecutor contracts. All security enforcement —
+        bonding, exclusive windows, permissionless fallback, fee collection —
+        happens on-chain.
       </p>
 
       {/* Operator registration */}
@@ -156,7 +155,7 @@ export default function CoordinatorNetwork() {
         </strong>{" "}
         at the contract layer. There is no Foundation invitation or admin
         whitelist. Any address that meets the on-chain criteria may register and
-        begin claiming tasks (§8.4):
+        begin claiming tasks:
       </p>
 
       <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
@@ -172,9 +171,9 @@ export default function CoordinatorNetwork() {
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             ISanctionsOracle
           </code>{" "}
-          configured on the OperatorRegistry (§8.5, §10.5)
+          configured on the OperatorRegistry
         </li>
-        <li>Has not been previously slashed (§8.4)</li>
+        <li>Has not been previously slashed</li>
       </ul>
 
       <Callout
@@ -186,8 +185,7 @@ export default function CoordinatorNetwork() {
           <strong>off-chain, KYB-attested "recommended-operators" list</strong>{" "}
           used only for the subsidy programme. It is a curation signal — it is{" "}
           <strong>not</strong> a permission gate. Operators that are not on the
-          list can still register, claim, and execute tasks permissionlessly
-          (§8.11).
+          list can still register, claim, and execute tasks permissionlessly.
         </p>
       </Callout>
 
@@ -198,7 +196,7 @@ export default function CoordinatorNetwork() {
         </code>{" "}
         pays operators from a Foundation-funded cUSDC pool to bootstrap
         liquidity. The subsidy programme runs during chaos-net only and becomes
-        inert post-activation (§8.9).
+        inert post-activation.
       </p>
 
       {/* Architecture */}
@@ -216,8 +214,8 @@ export default function CoordinatorNetwork() {
         </code>
         ). Coordinators are not privileged: any third party may run an
         independent coordinator against the same on-chain OperatorRegistry and
-        TaskExecutor (§8.12). During chaos-net the canonical instance is the
-        only one in production, which keeps debugging and iteration simple.
+        TaskExecutor. During chaos-net the canonical instance is the only one in
+        production, which keeps debugging and iteration simple.
       </p>
 
       <DocsTable
@@ -386,15 +384,15 @@ export default function CoordinatorNetwork() {
         <strong className="text-docs-text-primary font-semibold">
           single stake-weighted quorum
         </strong>{" "}
-        across the active operator set (§8.10).
+        across the active operator set.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Two related mechanisms are specified for the v1.0 track but are{" "}
         <strong className="text-docs-text-primary font-semibold">
           not yet shipped
-        </strong>{" "}
-        (§8.10):
+        </strong>
+        :
       </p>
 
       <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">

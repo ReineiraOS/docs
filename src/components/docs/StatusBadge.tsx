@@ -7,7 +7,7 @@ interface StatusConfig {
 }
 
 /**
- * Honest status taxonomy (EXECUTION-DOCS §2):
+ * Honest status taxonomy:
  *  - live      → shipped and in production
  *  - chaos-net → ships at the chaos-net milestone (unaudited, public mode)
  *  - spec      → designed, not yet shipped — build against the interface

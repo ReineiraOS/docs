@@ -105,7 +105,7 @@ export default function MentalModel() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        ReineiraOS is three pillars (§1): the{" "}
+        ReineiraOS is three pillars: the{" "}
         <strong className="text-docs-text-primary font-semibold">
           Reineira Settlement Protocol
         </strong>{" "}
@@ -114,24 +114,23 @@ export default function MentalModel() {
           Reineira Settlement Standard (RSS)
         </strong>{" "}
         (the open, semver-versioned conformance spec evolved via the RIP
-        process, §3.6), and the{" "}
+        process), and the{" "}
         <strong className="text-docs-text-primary font-semibold">
           Builder Stack
         </strong>{" "}
         (Reineira Atlas + Reineira Code). The four primitives below are the
-        mental model for the <em>protocol</em> pillar — the layer your
-        application composes against.
+        mental model for the <em>protocol</em> pillar — the layer your app
+        composes against.
       </p>
 
       <Callout variant="info" title="Public infrastructure, no token yet">
         <p>
-          The protocol contracts are immutable with no upgrade authority (§11.8)
-          and charge zero protocol fees during chaos-net, block-locked at the
-          contract level (§8.8). Operators bond cUSDC rather than a token (§8),
-          and the REINEIRA token <strong>does not exist yet</strong> — it is
-          conditional on the §12.11 triggers (§12). The contracts are deployed
-          by Reineira Labs Limited (RAK DAO Free Zone, UAE) as a Software Vendor
-          (§11).
+          The protocol contracts are immutable with no upgrade authority and
+          charge zero protocol fees during chaos-net, block-locked at the
+          contract level. Operators bond cUSDC rather than a token, and the
+          REINEIRA token <strong>does not exist yet</strong> — it is conditional
+          on future triggers. The contracts are deployed by Reineira Labs
+          Limited (RAK DAO Free Zone, UAE) as a Software Vendor.
         </p>
       </Callout>
 
@@ -143,11 +142,10 @@ export default function MentalModel() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        ReineiraOS is built around four composable building blocks. Every
-        application on the protocol is a combination of these primitives — there
-        is nothing else to learn at the conceptual level. Escrow holds the
-        money, Gate verifies the condition, Insurance covers the outcome.
-        Operators coordinate it all.
+        Four composable building blocks — there's nothing else to learn at the
+        conceptual level. Escrow holds the money, Gate verifies the condition,
+        Insurance covers the outcome, Operators coordinate it all. Every app on
+        the protocol is some combination of these.
       </p>
 
       <DocsTable columns={buildingBlockColumns} rows={buildingBlockRows} />

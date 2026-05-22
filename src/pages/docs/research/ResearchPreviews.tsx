@@ -31,8 +31,8 @@ export default function ResearchPreviews() {
           <DocsBadge variant="amber">Research</DocsBadge> Everything on this
           page is exploratory. It is <strong>not</strong> part of the v1.0
           specification, the RSS conformance surface, or any shipped contract.
-          The encrypted-inference note below was removed from the whitepaper and
-          is reconstructed here purely as a research preview — there is{" "}
+          The encrypted-inference note below is a research preview only — there
+          is{" "}
           <strong>no delivery promise, no date, and no committed design</strong>
           . Do not build against it.
         </p>

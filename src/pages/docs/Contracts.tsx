@@ -147,23 +147,22 @@ export default function Contracts() {
       <Callout variant="warning" title="Immutable singletons">
         <p>
           Every contract below is an <strong>immutable singleton</strong>{" "}
-          deployed at a fixed address (§11.8). There is no UUPS proxy, no{" "}
+          deployed at a fixed address. There is no UUPS proxy, no{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             _authorizeUpgrade
           </code>{" "}
           hook, and no owner or admin upgrade key — these addresses cannot be
           upgraded in place. Functional changes ship as new contract deployments
-          at new addresses that you opt into by migration. The address tables on
-          this page form the canonical-deployment registry (§3.4): a
-          documentation surface, not an on-chain contract, listing the v1.0
-          deployment addresses across host chains. You may interact with any
-          other bytecode deployment at your own choice. ERC-7201 namespaced
-          storage with{" "}
+          at new addresses that you opt into by migration. The tables on this
+          page form the canonical-deployment registry: a documentation surface,
+          not an on-chain contract, listing the v1.0 addresses across host
+          chains. You may interact with any other bytecode deployment. ERC-7201
+          namespaced storage with{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             __gap[50]
           </code>{" "}
-          is retained for layout compatibility across deployment versions, not
-          for in-place upgrades.
+          is kept for layout compatibility across deployment versions, not for
+          in-place upgrades.
         </p>
       </Callout>
 

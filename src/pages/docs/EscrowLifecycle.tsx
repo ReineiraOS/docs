@@ -124,8 +124,8 @@ export default function EscrowLifecycle() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The Escrow primitive ships in two modes with identical interfaces
-        (§3.6). Chaos-net runs <strong>public mode</strong>; encrypted mode is a
+        The Escrow primitive ships in two modes with identical interfaces.
+        Chaos-net runs <strong>public mode</strong>; encrypted mode is a
         separate immutable deployment that activates at v1.0 mainnet.
       </p>
 
@@ -411,7 +411,7 @@ export default function EscrowLifecycle() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           escrowId
         </code>{" "}
-        to satisfy the event-triggered semantics. (§6.6.)
+        to satisfy the event-triggered semantics.
       </p>
 
       <Callout variant="info" title="Convergence tracked for chaos-net v1.0">
