@@ -153,8 +153,9 @@ export default function CoordinatorNetwork() {
         <strong className="text-docs-text-primary font-semibold">
           permissionless from chaos-net Day 1
         </strong>{" "}
-        at the contract layer. There is no Foundation invitation or admin
-        whitelist. Any address that meets the on-chain criteria may register and
+        at the contract layer — there is no Foundation invitation and no
+        allowlist (a pre-approved set of addresses that would gate who may
+        join). Any address that meets the on-chain criteria may register and
         begin claiming tasks:
       </p>
 

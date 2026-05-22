@@ -7,7 +7,7 @@ import PageNav from "@/components/docs/PageNav";
 import LinkCard from "@/components/docs/LinkCard";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
-import { CheckCircle2, GitFork, FileCode2 } from "lucide-react";
+import { CheckCircle2, Scale, FileCode2 } from "lucide-react";
 
 const toc: TocItem[] = [
   { id: "definition", title: "Standard vs. implementation", level: 2 },
@@ -61,10 +61,7 @@ export default function RssWhatIs() {
           by Reineira Labs Limited ships under BUSL-1.1 with a Change Date of
           2029-06-01, converting to Apache 2.0. The two licenses cover different
           layers and are designed to work together. See{" "}
-          <a href="/settlement-standard/implement-rss">
-            Implement RSS yourself
-          </a>
-          .
+          <a href="/settlement-standard/licensing">Licensing</a>.
         </p>
       </Callout>
 
@@ -144,11 +141,11 @@ export default function RssWhatIs() {
             icon: FileCode2,
           },
           {
-            title: "Implement RSS yourself",
+            title: "Licensing",
             description:
-              "The license split and the invitation to build a conforming venue.",
-            href: "/settlement-standard/implement-rss",
-            icon: GitFork,
+              "The license split — OSI-aligned standard vs. the BUSL core.",
+            href: "/settlement-standard/licensing",
+            icon: Scale,
           },
         ]}
       />

@@ -45,9 +45,8 @@ const taxonomyRows = [
 
 // Component status table.
 const componentColumns = [
-  { header: "Component", key: "component", width: "230px" },
+  { header: "Component", key: "component", width: "240px" },
   { header: "Status", key: "status", width: "150px" },
-  { header: "Milestone", key: "milestone" },
   { header: "Notes", key: "notes" },
 ];
 
@@ -55,90 +54,77 @@ const componentRows = [
   {
     component: "Confidential Escrow",
     status: <StatusBadge status="chaos-net" />,
-    milestone: "chaos-net v1.0 (Jul 2026)",
     notes:
-      "Runs in public mode at chaos-net; encrypted state activates at v1.0 mainnet.",
+      "Runs in public mode at chaos-net (July 2026); encrypted state activates at v1.0 mainnet.",
   },
   {
     component: "Pluggable release gates (IConditionResolver)",
     status: <StatusBadge status="chaos-net" />,
-    milestone: "chaos-net v1.0",
     notes:
       "Core interface ships; reference resolvers are spec'd separately below.",
   },
   {
     component: "Encrypted-state Insurance",
     status: <StatusBadge status="chaos-net" />,
-    milestone: "chaos-net v1.0",
     notes: "Coverage manager + IUnderwriterPolicy. Public mode at chaos-net.",
   },
   {
     component: "Operator set (OperatorRegistry, TaskExecutor)",
     status: <StatusBadge status="chaos-net" />,
-    milestone: "chaos-net v1.0",
     notes: "Permissionless registration from Day 1; cUSDC bond.",
   },
   {
     component: "FeeManager (zero-fee posture)",
     status: <StatusBadge status="chaos-net" />,
-    milestone: "chaos-net v1.0",
     notes:
       "Zero fees through chaos-net, block-locked by MAINNET_ACTIVATION_BLOCK — no governance toggle.",
   },
   {
     component: "OperatorSubsidyManager",
     status: <StatusBadge status="chaos-net" />,
-    milestone: "chaos-net window only",
-    notes: "Foundation-funded cUSDC subsidies; inert after mainnet activation.",
+    notes:
+      "Active during the chaos-net window only — Foundation-funded cUSDC subsidies; inert after mainnet activation.",
   },
   {
     component: "OperatorSlashingManager",
     status: <StatusBadge status="chaos-net" />,
-    milestone: "chaos-net v1.0",
     notes:
       "Single stake-weighted quorum across the active set (see CoordinatorRegistry below).",
   },
   {
     component: "CCTPHandler (Circle CCTP V2 relay)",
     status: <StatusBadge status="chaos-net" />,
-    milestone: "chaos-net v1.0",
     notes: "Cross-chain USDC settlement task handler.",
   },
   {
     component: "LayerZero OFT Handlers (USDT0 rail)",
     status: <StatusBadge status="chaos-net" />,
-    milestone: "v1.0 (alongside CCTP V2)",
-    notes: "Shipped at v1.0 for non-U.S./non-EU users.",
+    notes: "Shipped at v1.0 alongside CCTP V2, for non-U.S./non-EU users.",
   },
   {
     component: "Encrypted mode (Fhenix CoFHE)",
     status: <StatusBadge status="spec" detail="v1.0 mainnet" />,
-    milestone: "Q4 2026 mainnet hardening",
     notes:
-      "Encrypted state does not exist on-chain until v1.0 mainnet; separate immutable deployment. Gated on CoFHE.",
+      "Encrypted state does not exist on-chain until v1.0 mainnet (Q4 2026 hardening); a separate immutable deployment, gated on CoFHE.",
   },
   {
     component: "Virtual Escrow surface",
     status: <StatusBadge status="spec" detail="chaos-net v1.0" />,
-    milestone: "chaos-net v1.0",
     notes: "Specified, not yet shipped.",
   },
   {
     component: "QuorumAttestedPolicy (async underwriter base)",
     status: <StatusBadge status="spec" detail="chaos-net v1.0" />,
-    milestone: "chaos-net v1.0",
     notes: "Specified, not yet shipped.",
   },
   {
     component: "PoolFactory v1.0 (full routing / unstake)",
     status: <StatusBadge status="spec" detail="chaos-net v1.0" />,
-    milestone: "chaos-net v1.0",
     notes: "Specified, not yet shipped.",
   },
   {
     component: "CoordinatorRegistry (cross-graph slashing)",
     status: <StatusBadge status="spec" detail="v1.0-track" />,
-    milestone: "v1.0-track",
     notes:
       "Shipped slashing uses a single quorum; coordinator-partitioned slashing is not yet shipped.",
   },
@@ -146,39 +132,35 @@ const componentRows = [
     component:
       "Reference resolvers (zkTLS / oracle / prediction-market / multisig)",
     status: <StatusBadge status="spec" />,
-    milestone: "plugin-examples package",
-    notes: "Specified, not yet shipped.",
+    notes: "Ship in the plugin-examples package; specified, not yet shipped.",
   },
   {
     component: "Plugin surface (async variants, IAgenticJob, IExecution)",
     status: <StatusBadge status="spec" detail="RSS v0.2" />,
-    milestone: "RSS v0.2 (Q4 2026)",
-    notes: "Standard specifies ahead of code.",
+    notes: "Standard specifies ahead of code; lands at RSS v0.2 (Q4 2026).",
   },
   {
     component: "Three-entity stack (Entity Stack)",
     status: <StatusBadge status="spec" detail="Phase 2" />,
-    milestone: "Phase 2 (Q1–Q2 2027)",
-    notes: "Cover-page entity today vs target three-entity stack.",
+    notes:
+      "Single entity today; full three-entity stack at Phase 2 (Q1–Q2 2027).",
   },
   {
     component: "Agentic handlers (AgentCall / VerdictSubmit / PoolRouting)",
     status: <StatusBadge status="spec" detail="post-v1.0" />,
-    milestone: "out of scope for v1.0 RSS",
     notes:
-      "Only CCTPHandler ships in v1.0. TASK_AGENT_CALL reserved, no handler.",
+      "Out of scope for v1.0 — only CCTPHandler ships. TASK_AGENT_CALL reserved, no handler.",
   },
   {
     component: "Agent identity / quorum registries",
     status: <StatusBadge status="research" />,
-    milestone: "deferred from v1.0 RSS",
-    notes: "AgentIdentityRegistry, QuorumRegistry, etc. — none shipped.",
+    notes:
+      "Deferred from v1.0 — AgentIdentityRegistry, QuorumRegistry, etc.; none shipped.",
   },
   {
     component: "RiskScoreAttestor / @reineira-os/identity",
     status: <StatusBadge status="research" />,
-    milestone: "not on roadmap",
-    notes: "Risk-input is policy-internal.",
+    notes: "Not on the roadmap; risk-input is policy-internal.",
   },
 ];
 
