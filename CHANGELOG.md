@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.7.1...v1.8.0) (2026-05-24)
+
+
+### Features
+
+* per-route SEO with build-time HTML stubs, llms.txt, enriched JSON-LD ([905a126](https://github.com/ReineiraOS/platform-web-docs-app/commit/905a126b9e3738ebf9882fb03754c1108202c1ed))
+
 ## [1.7.1](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.7.0...v1.7.1) (2026-05-21)
 
 
