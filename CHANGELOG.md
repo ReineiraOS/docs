@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.8.0...v1.8.1) (2026-05-24)
+
+
+### Bug Fixes
+
+* **docs:** use trailing slashes in sitemap URLs ([9d1bd31](https://github.com/ReineiraOS/platform-web-docs-app/commit/9d1bd31a9313c8708846b890451906e19bb45e08))
+
 # [1.8.0](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.7.1...v1.8.0) (2026-05-24)
 
 
