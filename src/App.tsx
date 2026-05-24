@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import ScrollToTop from "./components/layout/ScrollToTop";
+import SEO from "./components/SEO";
 import DocsHub from "./pages/docs/DocsHub";
 import SectionPage from "./pages/docs/SectionPage";
 import NotFound from "./pages/NotFound";
@@ -69,6 +70,7 @@ function LegacyDocsRedirect() {
 const App = () => (
   <BrowserRouter>
     <ScrollToTop />
+    <SEO />
     <Routes>
       <Route path="/" element={<DocsHub />} />
       {/* Get Started */}

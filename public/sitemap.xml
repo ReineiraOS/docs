@@ -1,137 +1,192 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://docs.reineira.xyz/docs</loc>
+    <loc>https://docs.reineira.xyz/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/get-started/overview</loc>
+    <loc>https://docs.reineira.xyz/get-started/overview</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/get-started/quick-start</loc>
+    <loc>https://docs.reineira.xyz/get-started/quick-start</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/get-started/reineira-code</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://docs.reineira.xyz/status</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/get-started/atlas</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://docs.reineira.xyz/risk</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/get-started/enterprise-checklist</loc>
+    <loc>https://docs.reineira.xyz/settlement-standard/what-is-rss</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/learn/mental-model</loc>
+    <loc>https://docs.reineira.xyz/settlement-standard/conformance</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/learn/architecture</loc>
+    <loc>https://docs.reineira.xyz/settlement-standard/interface-surface</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/learn/privacy-model</loc>
+    <loc>https://docs.reineira.xyz/settlement-standard/versioning</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docs.reineira.xyz/settlement-standard/licensing</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docs.reineira.xyz/developer-tools/builder-journey</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/learn/security</loc>
+    <loc>https://docs.reineira.xyz/developer-tools/atlas</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/learn/resilience</loc>
+    <loc>https://docs.reineira.xyz/developer-tools/reineira-code</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://docs.reineira.xyz/developer-tools/platform-modules</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/learn/governance</loc>
+    <loc>https://docs.reineira.xyz/learn/mental-model</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://docs.reineira.xyz/learn/architecture</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://docs.reineira.xyz/learn/privacy-model</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://docs.reineira.xyz/learn/security</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://docs.reineira.xyz/learn/resilience</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/learn/economics</loc>
+    <loc>https://docs.reineira.xyz/learn/economics</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/build/escrow-lifecycle</loc>
+    <loc>https://docs.reineira.xyz/build/escrow-lifecycle</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/build/condition-plugins</loc>
+    <loc>https://docs.reineira.xyz/build/condition-resolvers</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/build/insurance-policies</loc>
+    <loc>https://docs.reineira.xyz/build/underwriter-policies</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/build/insurance-pools</loc>
+    <loc>https://docs.reineira.xyz/build/insurance-pools</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/build/gas-performance</loc>
+    <loc>https://docs.reineira.xyz/build/cross-chain</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docs.reineira.xyz/build/atlas-l3</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docs.reineira.xyz/build/gas-performance</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/build/platform-modules</loc>
+    <loc>https://docs.reineira.xyz/operate/operator-network</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/operate/coordinator-network</loc>
+    <loc>https://docs.reineira.xyz/operate/run-operator</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/operate/cross-chain</loc>
+    <loc>https://docs.reineira.xyz/research/cryptographic-foundations</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/operate/run-operator</loc>
+    <loc>https://docs.reineira.xyz/research/open-problems</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/reference/contracts</loc>
+    <loc>https://docs.reineira.xyz/research/research-previews</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://docs.reineira.xyz/research/agentic-composition</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://docs.reineira.xyz/reference/contracts</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/reference/sdk</loc>
+    <loc>https://docs.reineira.xyz/reference/sdk</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/reference/escrow-module</loc>
+    <loc>https://docs.reineira.xyz/reference/escrow-module</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/reference/insurance-module</loc>
+    <loc>https://docs.reineira.xyz/reference/insurance-module</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://docs.reineira.xyz/docs/reference/mcp-server</loc>
+    <loc>https://docs.reineira.xyz/reference/mcp-server</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
