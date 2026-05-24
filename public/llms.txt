@@ -1,0 +1,79 @@
+# ReineiraOS Docs
+
+> Developer documentation for ReineiraOS — conditional settlement infrastructure with FHE-encrypted Escrows, pluggable Gates, protocol-native Insurance, cross-chain USDC settlement via Circle CCTP, and an operator network. Operated by Reineira Labs Limited (Ras Al Khaimah Digital Assets Oasis, UAE). Currently testnet-only (Arbitrum Sepolia + Fhenix); no mainnet, no token, no real-money custody.
+
+The protocol is fully decentralized open-source software once deployed. Reineira Labs does not operate, control, or administer the protocol. Encryption is performed client-side; decryption keys are held only by the transacting parties.
+
+## Get Started
+
+- [Overview](https://docs.reineira.xyz/get-started/overview): Conditional settlement infrastructure — what it is, who it's for, and why it matters.
+- [Quick Start](https://docs.reineira.xyz/get-started/quick-start): Deploy your first Escrow in under 5 minutes.
+
+## Project Status
+
+- [Status & Roadmap](https://docs.reineira.xyz/status): Every protocol component × status × milestone (Live / Chaos-net / Spec'd / Research), derived from the whitepaper Implementation Notes and Open Problems.
+- [Risk & Audit Status](https://docs.reineira.xyz/risk): Audit posture, compliance targets, and the limits of the security model — full disclosure.
+
+## Settlement Standard (RSS)
+
+The Reineira Settlement Standard — the open, OSI-aligned conformance spec, separate from any deployment.
+
+- [What is RSS](https://docs.reineira.xyz/settlement-standard/what-is-rss): The conformance spec; the standards-fork rationale.
+- [Conformance](https://docs.reineira.xyz/settlement-standard/conformance): The six clauses + the conformance test surface.
+- [Interface Surface](https://docs.reineira.xyz/settlement-standard/interface-surface): The four-primitive interfaces — v0.1 mandatory and v0.2 spec'd.
+- [Versioning & RIPs](https://docs.reineira.xyz/settlement-standard/versioning): v0.1 → v0.2 → v1.0 and the RIP process (the EIP analog).
+- [Licensing](https://docs.reineira.xyz/settlement-standard/licensing): The license split — OSI-aligned standard vs. the BUSL core that converts to Apache 2.0.
+
+## Developer Tools
+
+- [Builder Journey](https://docs.reineira.xyz/developer-tools/builder-journey): The end-to-end flow from venture brief to shipped product.
+- [Atlas](https://docs.reineira.xyz/developer-tools/atlas): Startup operating system — strategy, compliance, fundraising, and app scaffolding via 12 collaborating AI agents.
+- [Reineira Code](https://docs.reineira.xyz/developer-tools/reineira-code): AI-assisted development environment for building Gates and Insurances; drops into VS Code, Cursor, Claude Code, JetBrains, Zed.
+- [Platform Modules](https://docs.reineira.xyz/developer-tools/platform-modules): Plug-and-play backend and React app starters for ReineiraOS ventures.
+
+## Learn
+
+- [Mental Model](https://docs.reineira.xyz/learn/mental-model): Four primitives — Escrow, Gate, Insurance, Operator.
+- [Architecture](https://docs.reineira.xyz/learn/architecture): System architecture and component overview.
+- [Privacy Model](https://docs.reineira.xyz/learn/privacy-model): How FHE encryption protects user data on-chain.
+- [Security](https://docs.reineira.xyz/learn/security): Security assumptions, threat model, and audit results.
+- [Resilience & Recovery](https://docs.reineira.xyz/learn/resilience): Fault tolerance, recovery mechanisms, and disaster scenarios.
+- [Economics & Incentives](https://docs.reineira.xyz/learn/economics): Fee structures, rewards, and protocol economics.
+
+## Build
+
+- [Escrow Lifecycle](https://docs.reineira.xyz/build/escrow-lifecycle): Create, fund, verify, and settle an Escrow — the full state machine.
+- [Condition Resolvers](https://docs.reineira.xyz/build/condition-resolvers): Custom verification logic that controls when an Escrow releases funds.
+- [Underwriter Policies](https://docs.reineira.xyz/build/underwriter-policies): Define and deploy risk evaluation and dispute resolution policies.
+- [Insurance Pools](https://docs.reineira.xyz/build/insurance-pools): Liquidity pools backing Insurance coverage.
+- [Cross-Chain Settlement](https://docs.reineira.xyz/build/cross-chain): Settle Escrows across EVM-compatible chains via Circle CCTP V2.
+- [Atlas-Deployed L3s](https://docs.reineira.xyz/build/atlas-l3): Self-deploy ReineiraOS on your own L3 via Atlas; operator-routed liquidity over the native rollup bridge.
+- [Gas & Performance](https://docs.reineira.xyz/build/gas-performance): Optimization strategies for FHE-heavy operations.
+
+## Operate
+
+- [Operator Network](https://docs.reineira.xyz/operate/operator-network): The coordinator layer — task distribution and relay routing.
+- [Run an Operator](https://docs.reineira.xyz/operate/run-operator): Set up and run an operator node.
+
+## Research & R&D
+
+- [Cryptographic Foundations](https://docs.reineira.xyz/research/cryptographic-foundations): TFHE/CoFHE substrate, encrypted types, homomorphic costs, and the silent-failure pattern.
+- [Open Problems](https://docs.reineira.xyz/research/open-problems): Every numbered Open Problem from the whitepaper (§14.3).
+- [Research Previews](https://docs.reineira.xyz/research/research-previews): Exploratory directions — including encrypted inference — with no committed scope.
+- [Agentic Composition (Preview)](https://docs.reineira.xyz/research/agentic-composition): The deferred agentic / AI-execution layer — not part of v1.0 RSS conformance.
+
+## API Reference
+
+- [Contracts](https://docs.reineira.xyz/reference/contracts): Deployed contract addresses and ABIs.
+- [SDK](https://docs.reineira.xyz/reference/sdk): TypeScript/JavaScript SDK for building on ReineiraOS — `@reineira-os/sdk`.
+- [Escrow Module](https://docs.reineira.xyz/reference/escrow-module): Complete Escrow module API reference.
+- [Insurance Module](https://docs.reineira.xyz/reference/insurance-module): Complete Insurance module API reference.
+- [MCP Server](https://docs.reineira.xyz/reference/mcp-server): AI assistant access to docs, contracts, and interfaces via the Model Context Protocol.
+
+## Optional
+
+- [Landing](https://reineira.xyz): Product overview, posture, and ecosystem.
+- [GitHub](https://github.com/ReineiraOS): SDK + protocol source.
+- [Whitepaper PDF](https://reineira.xyz/ReineiraOS-Whitepaper.pdf)
+- [Litepaper PDF](https://reineira.xyz/ReineiraOS-Litepaper.pdf)
+- Contact: engineering@reineira.xyz · [Telegram](https://t.me/ReineiraOS) · [X](https://x.com/ReineiraOS)
