@@ -31,7 +31,7 @@ const toolColumns = [
 const toolRows = [
   {
     tool: "get_docs",
-    desc: "Browse documentation by section and topic. Sections: overview, guides, protocol, reference, whitepaper, litepaper.",
+    desc: "Browse documentation by section and topic. Sections: overview, guides, protocol, reference, whitepaper, root.",
   },
   {
     tool: "search_docs",
@@ -218,7 +218,7 @@ export default function McpServer() {
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         For the best development experience, use the MCP server alongside{" "}
         <a
-          href="/get-started/reineira-code"
+          href="/developer-tools/reineira-code"
           className="text-brand-primary font-medium hover:underline"
         >
           ReineiraOS Code
@@ -256,7 +256,7 @@ export default function McpServer() {
             title: "ReineiraOS Code",
             description:
               "AI-assisted development environment for building plugins.",
-            href: "/get-started/reineira-code",
+            href: "/developer-tools/reineira-code",
             icon: Code2,
           },
           {

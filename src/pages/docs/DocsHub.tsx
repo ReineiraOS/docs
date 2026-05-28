@@ -45,8 +45,9 @@ export default function DocsHub() {
           <span className="text-brand-primary">OS</span> Documentation
         </h1>
         <p className="text-[17px] text-docs-text-muted leading-relaxed max-w-[600px] mb-10">
-          Conditional settlement infrastructure — encrypted Escrows, pluggable
-          Gates, protocol-native Shields. Everything you need to make money
+          Conditional settlement infrastructure — confidential Escrows,
+          pluggable Gates, protocol-native Insurance, and an operator-secured
+          cross-chain settlement layer. Everything you need to make money
           conditional and private.
         </p>
 

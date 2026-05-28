@@ -39,9 +39,9 @@ const maliciousResolverRows = [
   {
     mode: "Always returns true",
     behavior:
-      "Escrow is redeemable immediately regardless of actual condition.",
+      "The condition gate passes regardless of state, so the resolver cannot block redemption.",
     response:
-      "No protocol-level defense — escrow creator chose this resolver. Escrow terms are immutable once created.",
+      "Ownership and balance checks still hold: the encrypted predicate is owner == msg.sender ∧ paidAmount ≥ amount ∧ ¬isRedeemed ∧ conditionMet. Funds can only release to the encrypted owner, never to an arbitrary caller — so a buggy/malicious always-true resolver weakens the conditionality, but cannot redirect or steal funds.",
   },
   {
     mode: "Always returns false",
@@ -94,10 +94,10 @@ const trustRows = [
       "Users cannot send gasless transactions. Users must send transactions directly — no fund risk.",
   },
   {
-    component: "Proxy admin",
-    trust: "Owner-controlled",
+    component: "Proxy admin (testnet only)",
+    trust: "Owner + TimelockController",
     impact:
-      "Malicious upgrade could change contract logic. Mitigated by planned timelock and eventual decentralization.",
+      "On chaos-net testnet a UUPS upgrade could change contract logic; the Safe + TimelockController deploy posture rate-limits it. Risk is structurally eliminated at v1.0 mainnet: contracts are immutable singletons with no upgrade authority (Whitepaper §11.8).",
   },
   {
     component: "Solidity compiler",

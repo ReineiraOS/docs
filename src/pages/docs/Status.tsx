@@ -89,7 +89,7 @@ const componentRows = [
     component: "OperatorSlashingManager",
     status: <StatusBadge status="chaos-net" />,
     notes:
-      "Single stake-weighted quorum across the active set (see CoordinatorRegistry below).",
+      "Four-stage dispute pipeline (5% proposer bond → 3-day challenge → 4-day vote → 14-day expiry, QUORUM_BPS = 1000). See CoordinatorRegistry below for the planned cross-graph extension.",
   },
   {
     component: "CCTPHandler (Circle CCTP V2 relay)",
@@ -98,8 +98,9 @@ const componentRows = [
   },
   {
     component: "LayerZero OFT Handlers (USDT0 rail)",
-    status: <StatusBadge status="chaos-net" />,
-    notes: "Shipped at v1.0 alongside CCTP V2, for non-U.S./non-EU users.",
+    status: <StatusBadge status="spec" detail="v1.0-track" />,
+    notes:
+      "LZOFTHandler / LZOFTEscrowReceiver / LZOFTForwarder family is specified in Whitepaper §9.2; not yet in the repo. Targets non-U.S./non-EU users at v1.0.",
   },
   {
     component: "Encrypted mode (Fhenix CoFHE)",
@@ -126,7 +127,7 @@ const componentRows = [
     component: "CoordinatorRegistry (cross-graph slashing)",
     status: <StatusBadge status="spec" detail="v1.0-track" />,
     notes:
-      "Shipped slashing uses a single quorum; coordinator-partitioned slashing is not yet shipped.",
+      "Shipped slashing uses a single stake-weighted quorum within one operator graph. Cross-graph slashing — votes spanning ≥3 independent coordinator–operator graphs — is not yet shipped.",
   },
   {
     component:

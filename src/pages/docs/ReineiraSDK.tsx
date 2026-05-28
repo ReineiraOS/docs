@@ -24,9 +24,10 @@ const { prev, next } = getPrevNext("/reference/sdk");
 const configProperties = [
   {
     name: "network",
-    type: '"testnet"',
+    type: '"testnet" | "mainnet"',
     required: true,
-    description: "Target network. Currently only testnet is available.",
+    description:
+      "Target network. Only testnet is wired into the address book today; mainnet support activates at chaos-net launch.",
   },
   {
     name: "privateKey",
@@ -200,7 +201,10 @@ export default function ReineiraSDK() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The SDK exposes four modules accessible as properties:
+        The SDK exposes six modules accessible as properties. <code>escrow</code>{" "}
+        and <code>insurance</code> hit the confidential (FHE) deployment;{" "}
+        <code>escrowPlain</code> and <code>insurancePlain</code> hit the
+        mainnet-launch plaintext deployment.
       </p>
 
       <CodeBlock
@@ -209,22 +213,40 @@ export default function ReineiraSDK() {
         lines={[
           {
             content:
-              "sdk.escrow     // EscrowModule — create, fund, redeem escrows",
+              "sdk.escrow          // EscrowModule (FHE) — create, fund, redeem confidential escrows",
           },
           {
             content:
-              "sdk.insurance  // InsuranceModule — pools, policies, coverage",
+              "sdk.escrowPlain     // PlainEscrowModule — same surface for plaintext mainnet path",
           },
           {
             content:
-              "sdk.bridge     // BridgeModule — CCTP health check, coordinator submit",
+              "sdk.insurance       // InsuranceModule (FHE) — pools, policies, coverage",
           },
           {
             content:
-              "sdk.events     // EventsModule — real-time event listeners",
+              "sdk.insurancePlain  // PlainInsuranceModule — plaintext mainnet path",
+          },
+          {
+            content:
+              "sdk.bridge          // BridgeModule — CCTP health check, coordinator submit",
+          },
+          {
+            content:
+              "sdk.events          // EventsModule — real-time event listeners",
           },
         ]}
       />
+
+      <p className="text-docs-text-secondary text-[14px] leading-relaxed mt-4">
+        Modules return <em>instance</em> objects (<code>EscrowInstance</code>,{" "}
+        <code>PoolInstance</code>, <code>CoverageInstance</code>, and their
+        plain variants) representing a single on-chain artifact —{" "}
+        <code>escrow.fund()</code>, <code>pool.stake()</code>,{" "}
+        <code>coverage.dispute()</code> etc. all live on the returned
+        instances. See the individual module pages for the full method
+        surface.
+      </p>
 
       {/* ── Utilities ──────────────────────────────────────────────────── */}
       <h2
@@ -284,7 +306,11 @@ export default function ReineiraSDK() {
               "import { walletClientToSigner, publicClientToProvider } from '@reineira-os/sdk'",
           },
           { content: "" },
-          { content: "const signer = walletClientToSigner(viemWalletClient)" },
+          {
+            content:
+              "const signer = await walletClientToSigner(viemWalletClient)",
+            highlighted: true,
+          },
           {
             content:
               "const provider = publicClientToProvider(viemPublicClient)",

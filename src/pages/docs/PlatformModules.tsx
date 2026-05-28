@@ -48,7 +48,13 @@ const packageRows = [
     package: "app",
     name: "@reineira-os/modules-app",
     stack: "React 19 + Vite + ZeroDev",
-    purpose: "Platform dashboard with smart accounts",
+    purpose: "Platform dashboard with smart accounts and passkey auth",
+  },
+  {
+    package: "landing",
+    name: "@reineira-os/modules-landing",
+    stack: "Next.js + React 19",
+    purpose: "Marketing landing page starter for the venture",
   },
 ];
 

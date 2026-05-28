@@ -72,7 +72,7 @@ export default function CrossChain() {
 
       <PageHeader
         title="Cross-Chain Settlement"
-        description="ReineiraOS ships two transport rails at v1.0: Circle CCTP V2 for native USDC and LayerZero OFT / USDT0 for USDT. Both funnel into a single escrow sink, so additional bridges integrate without touching the escrow engine."
+        description="ReineiraOS settles via Circle CCTP V2 for native USDC today; the LayerZero OFT / USDT0 rail for USDT is specified and tracked toward v1.0 for non-U.S./non-EU users. Both rails terminate at a single escrow sink, so additional bridges integrate without touching the escrow engine."
         readingTime="6 min read"
       />
 
@@ -85,7 +85,8 @@ export default function CrossChain() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Two transport rails ship at v1.0:
+        Two transport rails are designed into the system; only one is shipped
+        today:
       </p>
 
       <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
@@ -94,15 +95,22 @@ export default function CrossChain() {
             Circle CCTP V2
           </strong>{" "}
           for USDC — native burn-mint with attestation via the Circle Iris
-          network. No wrapped tokens.
+          network. No wrapped tokens.{" "}
+          <DocsBadge variant="green" className="ml-1">
+            Live
+          </DocsBadge>
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">
             LayerZero OFT / USDT0
           </strong>{" "}
-          for USDT — shipped at v1.0 and available to non-U.S. / non-EU users.{" "}
-          <DocsBadge variant="green" className="ml-1">
-            Live
+          for USDT — handler family{" "}
+          (<code>LZOFTHandler</code>, <code>LZOFTEscrowReceiver</code>,{" "}
+          <code>LZOFTForwarder</code>) is specified in Whitepaper §9.2; the{" "}
+          <code>ConfidentialUSDT</code> wrapper is also tracked for v1.0.
+          Non-U.S./non-EU-only on launch.{" "}
+          <DocsBadge variant="amber" className="ml-1">
+            Spec'd
           </DocsBadge>
         </li>
       </ul>
@@ -256,10 +264,29 @@ export default function CrossChain() {
 
       <DocsTable columns={feeColumns} rows={feeRows} />
 
+      <Callout variant="warning" title="Zero fees during chaos-net (block-locked)">
+        <p>
+          The schedule above is the <strong>activated</strong> rate.{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            FeeManager
+          </code>{" "}
+          is pinned to zero in bytecode while{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            block.number &lt; MAINNET_ACTIVATION_BLOCK
+          </code>{" "}
+          — <code>collectFee()</code> returns 0 for every relay until
+          activation (Whitepaper §8.8). During chaos-net, operators receive
+          per-task cUSDC subsidies from the Foundation-funded{" "}
+          <code>OperatorSubsidyManager</code> instead of bridged-amount
+          deductions.
+        </p>
+      </Callout>
+
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Fees are deducted from the bridged amount before settlement. For a
-        10,000 USDC transfer, 50 USDC goes to the operator, 30 USDC to the
-        protocol (FeeManager), and 9,920 USDC reaches the destination escrow.
+        Post-activation: fees are deducted from the bridged amount before
+        settlement. For a 10,000 USDC transfer, 35 USDC goes to the operator,
+        15 USDC to the protocol (FeeManager), and 9,950 USDC reaches the
+        destination escrow.
       </p>
 
       <h2

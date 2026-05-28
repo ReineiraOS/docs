@@ -429,11 +429,19 @@ export default function GasPerformance() {
         you design resolvers and integrations that stay fast and affordable.
       </p>
 
-      <Callout variant="warning" title="Testnet estimates">
+      <Callout variant="warning" title="Testnet estimates, confidential-mode focus">
         <p>
           All numbers below are testnet estimates measured on Arbitrum Sepolia
-          with FHE coprocessor devnet. Mainnet costs will vary with network
-          congestion, L1 calldata pricing, and CoFHE operator fees.
+          with the FHE coprocessor devnet and apply to the{" "}
+          <strong>confidential-mode</strong> contracts. Mainnet costs will
+          vary with network congestion, L1 calldata pricing, and CoFHE
+          operator fees.
+        </p>
+        <p className="mt-2">
+          <strong>Plain mode</strong> (the chaos-net launch path) uses no FHE
+          operations; expect roughly 40–60% of the gas figures below, because
+          the encryption / decryption / select calls drop out entirely.
+          Lifecycle, events, and ABI surface are the same.
         </p>
       </Callout>
 

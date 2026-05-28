@@ -134,9 +134,9 @@ const instanceRows = [
     desc: "funded + condition met + not redeemed",
   },
   {
-    prop: "waitForFunded(timeout?)",
-    type: "Promise<void>",
-    desc: "Wait for funding event",
+    prop: "waitForFunded(timeoutMs?)",
+    type: "Promise<SettlementResult>",
+    desc: "Wait for funding event (default timeout 600_000 ms)",
   },
   {
     prop: "waitForRedeemable(opts?)",
@@ -189,7 +189,7 @@ export default function EscrowModule() {
 
       <PageHeader
         title="Escrow Module"
-        description="sdk.escrow — create, fund, and settle Escrows (confidential escrows)."
+        description="sdk.escrow — create, fund, and settle confidential (FHE) escrows. For the plaintext mainnet-launch path use sdk.escrowPlain, which exposes the same surface against the plain-mode deployment."
         readingTime="6 min read"
       />
 
@@ -408,11 +408,17 @@ export default function EscrowModule() {
         filename="static-methods.ts"
         language="typescript"
         lines={[
-          { content: "sdk.escrow.get(42n)   // get EscrowInstance by ID" },
+          { content: "sdk.escrow.get(42n)              // synchronous — get EscrowInstance by ID" },
+          { content: "sdk.escrow.exists(42n)           // Promise<boolean> — verify on-chain" },
           {
             content:
-              "sdk.escrow.total()    // total escrows created (Promise<bigint>)",
+              "sdk.escrow.total()               // Promise<bigint> — total escrows created",
           },
+          {
+            content:
+              "sdk.escrow.redeemMultiple([0n,1n]) // Promise<TransactionResult> — batch redeem, cap 20",
+          },
+          { content: "sdk.escrow.build()               // EscrowBuilder — fluent builder" },
         ]}
       />
 

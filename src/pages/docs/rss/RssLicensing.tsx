@@ -27,7 +27,7 @@ const layerRows = [
     now: "Apache 2.0",
     after: "Apache 2.0",
   },
-  { layer: "SDK, plugin templates, cofhejs glue", now: "MIT", after: "MIT" },
+  { layer: "SDK, plugin examples, @cofhe/sdk integration", now: "MIT", after: "MIT" },
   { layer: "Token wrappers (cUSDC, cUSDT)", now: "MIT", after: "MIT" },
   {
     layer: "Operator services (orchestrator, coordinator, CLI)",

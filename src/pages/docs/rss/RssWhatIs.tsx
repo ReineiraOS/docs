@@ -86,6 +86,20 @@ export default function RssWhatIs() {
         reserves) and ERC-2771 meta-transactions; and the cross-chain transport
         binding by which any bridge funnels into the escrow funding sink.
       </p>
+
+      <p className="text-docs-text-secondary text-[14px] leading-relaxed mb-4">
+        Implementation note: chaos-net deployments retain the legacy{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          privara.storage.*
+        </code>{" "}
+        slot prefix for cross-deployment-version compatibility (Whitepaper
+        §6.2). The{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          reineira.storage.*
+        </code>{" "}
+        prefix is canonical from v1.0 mainnet onwards; the migration is a new
+        immutable deployment, not an in-place rename.
+      </p>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         RSS does <strong>not</strong> mandate upgradeability — conforming
         implementations may be upgradeable, immutable, or hybrid (the v1.0

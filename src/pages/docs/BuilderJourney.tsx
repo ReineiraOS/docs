@@ -45,7 +45,7 @@ const repoRows = [
   {
     repo: "reineira-code",
     purpose: "Build on-chain plugins (Gates, Policies)",
-    stack: "Hardhat + Solidity + cofhejs",
+    stack: "Foundry/Hardhat + Solidity + @cofhe/sdk",
   },
   {
     repo: "platform-modules",
