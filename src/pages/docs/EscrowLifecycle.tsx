@@ -59,20 +59,32 @@ const eventRows = [
     when: "A new Escrow is successfully created via create().",
   },
   {
+    event: "ConditionSet(escrowId, resolver)",
+    when: "A Gate is bound to the Escrow at creation time (skipped when resolver is address(0)).",
+  },
+  {
     event: "EscrowFunded(escrowId, payer)",
     when: "USDC is deposited into the Escrow via fund() or fundFrom().",
   },
   {
     event: "EscrowRedeemed(escrowId)",
-    when: "The Escrow is redeemed via redeem(). Funds transferred to owner.",
+    when: "The Escrow is redeemed via redeem(). Funds transferred to owner (zero on silent failure).",
   },
   {
     event: "EscrowBatchRedeemed(escrowIds)",
-    when: "Multiple Escrows redeemed in a single call via redeemMultiple().",
+    when: "Multiple Escrows redeemed in a single call via redeemMultiple() (cap MAX_BATCH_SIZE = 20).",
   },
   {
-    event: "FeeSet(escrowId)",
-    when: "An insurance fee is attached to the Escrow by the insurance manager.",
+    event: "FeeStamped(escrowId, kind, bps, recipient)",
+    when: "A fee slot is stamped on the Escrow — Protocol (slot 0), Condition (1), Underwriter (2), or Reserved (3). For confidential escrows, bps is emitted as 0 (encrypted state cannot live in events).",
+  },
+  {
+    event: "FeeDistributed(escrowId, kind, amount, recipient)",
+    when: "Emitted per fee slot during redemption. For confidential escrows, amount is emitted as 0.",
+  },
+  {
+    event: "CoverageManagerSet(coverageManager)",
+    when: "The coverage manager address is set or rotated on the escrow contract.",
   },
 ];
 
@@ -268,14 +280,19 @@ export default function EscrowLifecycle() {
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Deposit USDC into the Escrow via{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
-          fund(escrowId, amount)
+          fund(escrowId, encryptedPayment)
         </code>{" "}
-        or{" "}
+        — the SDK encrypts the payment amount client-side as{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
-          fundFrom(escrowId, amount, payer)
-        </code>
-        . The contract wraps the USDC into ConfidentialUSDC and updates the
-        encrypted{" "}
+          InEuint64
+        </code>{" "}
+        before submission. Cross-chain receivers call{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          fundFrom(escrowId, euint64 amount)
+        </code>{" "}
+        with a pre-existing encrypted-amount handle that the CCTP receiver
+        derives from the attested mint delta. The contract wraps USDC into
+        ConfidentialUSDC and updates the encrypted{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           paidAmount
         </code>
@@ -313,6 +330,17 @@ export default function EscrowLifecycle() {
           flag)
         </li>
         <li>
+          Encrypted{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            paidAmount
+          </code>{" "}
+          is at least the target{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            amount
+          </code>{" "}
+          (homomorphic ≥)
+        </li>
+        <li>
           If a Gate is attached,{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             IConditionResolver.isConditionMet(escrowId)
@@ -335,7 +363,13 @@ export default function EscrowLifecycle() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           redeemMultiple(escrowIds)
         </code>{" "}
-        to settle multiple Escrows in a single transaction.
+        to settle up to{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          MAX_BATCH_SIZE = 20
+        </code>{" "}
+        Escrows in a single transaction. Per-id failures are silent: an
+        ineligible Escrow contributes zero to the accumulated transfer instead
+        of reverting the batch.
       </p>
 
       <h2

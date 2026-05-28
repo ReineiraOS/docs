@@ -46,8 +46,8 @@ const handlerRows = [
   },
   {
     handler: "LZOFTHandler",
-    role: "LayerZero OFT relay for USDT0 (the rail itself ships at v1.0).",
-    status: <DocsBadge variant="amber">Spec'd · post-v1.0</DocsBadge>,
+    role: "LayerZero OFT relay for USDT0; not in the repo today. The handler family (LZOFTHandler / LZOFTEscrowReceiver / LZOFTForwarder) is specified in Whitepaper §9.2 and tracked toward v1.0 for non-U.S./non-EU users.",
+    status: <DocsBadge variant="amber">Spec'd · v1.0-track</DocsBadge>,
   },
 ];
 

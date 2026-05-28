@@ -252,10 +252,10 @@ export default function MentalModel() {
         filename="IConditionResolver.sol"
         language="solidity"
         lines={[
-          { content: "// SPDX-License-Identifier: MIT" },
+          { content: "// SPDX-License-Identifier: Apache-2.0" },
           { content: "pragma solidity ^0.8.24;" },
           { content: "" },
-          { content: "interface IConditionResolver {" },
+          { content: "interface IConditionResolver is IERC165 {" },
           {
             content: "    /// @notice Check if the release condition is met",
             highlighted: true,
@@ -274,23 +274,36 @@ export default function MentalModel() {
             content:
               "    function onConditionSet(uint256 escrowId, bytes calldata data) external;",
           },
+          { content: "" },
+          {
+            content:
+              "    /// @notice Resolver-author fee in basis points (0–10000)",
+            highlighted: true,
+          },
+          {
+            content: "    function getConditionFee(uint256 escrowId)",
+          },
+          {
+            content:
+              "        external view returns (uint16 bps, address recipient);",
+          },
           { content: "}" },
         ]}
         showLineNumbers={true}
       />
 
       <CodeBlock
-        filename="IUnderwriterPolicy.sol"
+        filename="IConfidentialUnderwriterPolicy.sol"
         language="solidity"
         lines={[
-          { content: "// SPDX-License-Identifier: MIT" },
+          { content: "// SPDX-License-Identifier: Apache-2.0" },
           { content: "pragma solidity ^0.8.24;" },
           {
             content:
               'import { euint64, ebool } from "@fhenixprotocol/cofhe-contracts/FHE.sol";',
           },
           { content: "" },
-          { content: "interface IUnderwriterPolicy {" },
+          { content: "interface IConfidentialUnderwriterPolicy is IERC165 {" },
           {
             content:
               "    /// @notice Hook called when a policy is attached to coverage",
@@ -333,21 +346,27 @@ export default function MentalModel() {
         showLineNumbers={true}
       />
 
-      <Callout variant="info" title="Encrypted return values">
+      <Callout variant="info" title="Two variants of the policy interface">
         <p>
+          The example above is{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            IConfidentialUnderwriterPolicy
+          </code>{" "}
+          — the FHE-mode variant where{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            evaluateRisk
+          </code>{" "}
+          and{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            judge
+          </code>{" "}
+          return <code>euint64</code> / <code>ebool</code>. The plaintext{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             IUnderwriterPolicy
           </code>{" "}
-          methods return FHE-encrypted types (
-          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            euint64
-          </code>
-          ,{" "}
-          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            ebool
-          </code>
-          ). The protocol never exposes risk scores or verdicts in cleartext
-          on-chain.
+          variant has the same shape but returns <code>uint256</code> /{" "}
+          <code>bool</code> and powers the chaos-net launch path. Both extend
+          ERC-165 so the policy registry can validate at registration time.
         </p>
       </Callout>
 

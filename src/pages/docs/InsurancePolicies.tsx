@@ -170,11 +170,15 @@ export default function InsurancePolicies() {
         The interface
       </h2>
 
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        The encrypted-mode interface — used by the example below:
+      </p>
+
       <CodeBlock
-        filename="IUnderwriterPolicy.sol"
+        filename="IConfidentialUnderwriterPolicy.sol"
         language="solidity"
         lines={[
-          { content: "interface IUnderwriterPolicy {" },
+          { content: "interface IConfidentialUnderwriterPolicy is IERC165 {" },
           {
             content:
               "  function onPolicySet(uint256 coverageId, bytes calldata data) external;",
@@ -199,6 +203,35 @@ export default function InsurancePolicies() {
             content: "    external returns (ebool valid);",
             highlighted: true,
           },
+          { content: "}" },
+        ]}
+        showLineNumbers={true}
+      />
+
+      <p className="text-docs-text-secondary leading-relaxed mt-4 mb-4">
+        The plain-mode interface, used by the mainnet launch path, swaps the FHE
+        types for primitives but keeps the same shape:
+      </p>
+
+      <CodeBlock
+        filename="IUnderwriterPolicy.sol"
+        language="solidity"
+        lines={[
+          { content: "interface IUnderwriterPolicy is IERC165 {" },
+          {
+            content:
+              "  function onPolicySet(uint256 coverageId, bytes calldata data) external;",
+          },
+          {
+            content:
+              "  function evaluateRisk(uint256 escrowId, bytes calldata riskProof)",
+          },
+          { content: "    external returns (uint256 riskScore);" },
+          {
+            content:
+              "  function judge(uint256 coverageId, bytes calldata disputeProof)",
+          },
+          { content: "    external returns (bool valid);" },
           { content: "}" },
         ]}
         showLineNumbers={true}
@@ -272,7 +305,7 @@ export default function InsurancePolicies() {
           { content: "" },
           {
             content:
-              'import { IUnderwriterPolicy } from "@reineira-os/shared/contracts/interfaces/plugins/IUnderwriterPolicy.sol";',
+              'import { IConfidentialUnderwriterPolicy } from "@reineira-os/shared/contracts/interfaces/plugins/IConfidentialUnderwriterPolicy.sol";',
           },
           {
             content:
@@ -285,7 +318,7 @@ export default function InsurancePolicies() {
           { content: "" },
           {
             content:
-              "contract P2PMarketplacePolicy is IUnderwriterPolicy, ERC165 {",
+              "contract P2PMarketplacePolicy is IConfidentialUnderwriterPolicy, ERC165 {",
           },
           {
             content: "    // Risk tiers in basis points (100 bps = 1%)",
@@ -491,7 +524,7 @@ export default function InsurancePolicies() {
           },
           {
             content:
-              "        return interfaceId == type(IUnderwriterPolicy).interfaceId",
+              "        return interfaceId == type(IConfidentialUnderwriterPolicy).interfaceId",
           },
           {
             content: "            || super.supportsInterface(interfaceId);",

@@ -102,10 +102,10 @@ const contractSecurityColumns = [
 ];
 const contractSecurityRows = [
   {
-    mechanism: "Proxy pattern",
+    mechanism: "Proxy pattern (testnet only)",
     standard: "UUPS",
     purpose:
-      "Upgradeable contracts with minimal proxy overhead. Upgrade logic lives in the implementation, not the proxy.",
+      "UUPS upgradeable on chaos-net testnet via TestnetCoreBase. Removed at v1.0 mainnet: every contract becomes an immutable singleton, no _authorizeUpgrade hook, no upgrade authority (Whitepaper §11.8).",
   },
   {
     mechanism: "Namespaced storage",
@@ -129,7 +129,7 @@ const contractSecurityRows = [
     mechanism: "Access control",
     standard: "Ownable",
     purpose:
-      "Single-owner admin pattern for testnet. Multi-sig and timelock planned for future releases.",
+      "Single-owner admin pattern on chaos-net for parameter custody and emergency response. Deploy posture is a Safe multisig behind a TimelockController (Whitepaper §10.6). Upgrade authority is eliminated entirely at v1.0 mainnet.",
   },
   {
     mechanism: "Initializer",
@@ -146,34 +146,40 @@ const limitationColumns = [
 ];
 const limitationRows = [
   {
-    limitation: "Single coordinator",
+    limitation: "Single canonical coordinator in production",
     impact:
-      "Single point of failure for relay task distribution. If the coordinator goes down, cross-chain settlement stalls.",
-    plan: "Redundant coordinator instances with failover.",
+      "Only the Foundation-operated coordinator runs in chaos-net. If it stalls, the canonical relay queue backs up. Third parties may already run independent coordinators against the same OperatorRegistry / TaskExecutor contracts.",
+    plan: "On-chain CoordinatorRegistry + cross-graph slashing (votes spanning ≥3 independent coordinator–operator graphs) on the v1.0 track.",
   },
   {
     limitation: "In-memory operator state",
     impact:
-      "Operator relay state is lost on restart. Pending messages may need manual resubmission.",
+      "Operator relay job state is held in-memory; on restart, pending jobs may need manual resubmission via the operator CLI.",
     plan: "Persistent state store with automatic recovery.",
   },
   {
-    limitation: "Single-quorum slashing only",
+    limitation: "Cross-graph slashing not yet shipped",
     impact:
-      "OperatorSlashingManager enforces a single stake-weighted quorum across the active set. Cross-graph slashing (votes spanning ≥3 independent coordinator–operator graphs) is spec'd but not yet shipped.",
-    plan: "CoordinatorRegistry with cross-graph slashing on the v1.0 track.",
+      "The four-stage pipeline (5% bond → 3-day challenge → 4-day vote → 14-day expiry, QUORUM_BPS = 1000) is shipped. Whitepaper §8.6 argues the four-stage moat — not the quorum threshold — is the load-bearing safety property; the 10% quorum is intentional, not a transitional limitation.",
+    plan: "Cross-graph slashing (multi-graph attestation) is tracked for the v1.0 hardening lock; not a blocker for chaos-net.",
   },
   {
-    limitation: "Testnet FHE",
+    limitation: "Testnet UUPS proxy posture",
     impact:
-      "FHE coprocessor is testnet-grade. Encryption is functional but security parameters may change before production.",
-    plan: "Production FHE parameters audited by cryptography team.",
+      "Testnet contracts inherit TestnetCoreBase (Initializable + UUPS + Ownable + ReentrancyGuard + ERC-2771) so we can iterate. The owner can still upgrade contracts; trust is not yet structurally eliminated.",
+    plan: "v1.0 mainnet contracts drop UUPS entirely and ship as immutable singletons (Whitepaper §11.8). Upgrade authority is removed at the bytecode level.",
   },
   {
-    limitation: "No timelock",
+    limitation: "CoFHE substrate trust (encrypted mode)",
     impact:
-      "Admin upgrades are immediate with no delay. No governance review period.",
-    plan: "Timelock on admin actions with emergency multisig override.",
+      "FHE coprocessor is a single-substrate trust counterparty: liveness, key management, and attestation rest on its operator quorum, not on the host chain's validator set. Confidentiality is conditional on TFHE IND-CPA security (TA1) and CoFHE correctness (TA2).",
+    plan: "Threshold-FHE, MPC distribution, or hardware attestation — tracked as Open Problem 4.1 in the whitepaper, decision target pre-mainnet.",
+  },
+  {
+    limitation: "No external audit at chaos-net launch",
+    impact:
+      "Phase 7 internal review remediated ~85 findings including 8 mainnet blockers; Slither / Aderyn baselines dated 2026-05-04. Use of chaos-net during Jun 2026 → Q4 2026 is at the user's own risk (Whitepaper §10.6).",
+    plan: "External audit committed for v1.0 hardening (Q4 2026 mainnet); auditor selection gated on Standard-tier budget.",
   },
 ];
 

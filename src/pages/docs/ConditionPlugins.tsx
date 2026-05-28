@@ -44,6 +44,13 @@ const interfaceRows = [
     purpose: "Parse and store your Gate configuration",
   },
   {
+    fn: "getConditionFee",
+    calledBy: "ConfidentialEscrow._setCondition()",
+    when: "Stamp time (in create)",
+    purpose:
+      "Declare the resolver-author fee in bps (0–10000) and recipient. Return (0, address(0)) for no fee.",
+  },
+  {
     fn: "isConditionMet",
     calledBy: "ConfidentialEscrow.redeem()",
     when: "Settlement attempt",
@@ -90,7 +97,7 @@ export default function ConditionPlugins() {
         filename="IConditionResolver.sol"
         language="solidity"
         lines={[
-          { content: "interface IConditionResolver {" },
+          { content: "interface IConditionResolver is IERC165 {" },
           {
             content:
               "  function isConditionMet(uint256 escrowId) external view returns (bool);",
@@ -101,12 +108,37 @@ export default function ConditionPlugins() {
               "  function onConditionSet(uint256 escrowId, bytes calldata data) external;",
             highlighted: true,
           },
+          {
+            content: "  function getConditionFee(uint256 escrowId)",
+            highlighted: true,
+          },
+          {
+            content:
+              "    external view returns (uint16 bps, address recipient);",
+            highlighted: true,
+          },
           { content: "}" },
         ]}
         showLineNumbers={true}
       />
 
       <DocsTable columns={interfaceColumns} rows={interfaceRows} />
+
+      <Callout variant="info" title="getConditionFee in the examples below">
+        <p>
+          Each Solidity example below shows only <code>onConditionSet</code> and{" "}
+          <code>isConditionMet</code> for clarity. A production resolver must
+          also implement{" "}
+          <code>
+            getConditionFee(uint256 escrowId) view returns (uint16 bps, address
+            recipient)
+          </code>{" "}
+          — the simplest stub is <code>{`{ return (0, address(0)); }`}</code>{" "}
+          when you don't charge a resolver-author fee. The protocol calls it
+          once at escrow creation to stamp the Condition fee slot; the sum of
+          all stamped fees is bounded by <code>MAX_TOTAL_BPS = 10000</code>.
+        </p>
+      </Callout>
 
       {/* ------------------------------------------------------------------ */}
       <h2
@@ -1074,7 +1106,7 @@ export default function ConditionPlugins() {
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         The fastest way to build a resolver is with{" "}
         <a
-          href="/developers/reineira-code"
+          href="/developer-tools/reineira-code"
           className="text-brand-primary font-medium hover:underline"
         >
           ReineiraOS Code
@@ -1090,7 +1122,7 @@ export default function ConditionPlugins() {
             title: "ReineiraOS Code",
             description:
               "Generate production-ready resolvers with AI-assisted development",
-            href: "/developers/reineira-code",
+            href: "/developer-tools/reineira-code",
             icon: Code2,
           },
         ]}

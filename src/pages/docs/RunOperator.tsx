@@ -345,10 +345,39 @@ export default function RunOperator() {
 
       <DocsTable columns={economicsColumns} rows={economicsRows} />
 
+      <Callout
+        variant="warning"
+        title="Zero fees during chaos-net (block-locked)"
+      >
+        <p>
+          The fee schedule above is the <strong>activated</strong> rate. During
+          chaos-net,{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            FeeManager
+          </code>{" "}
+          is pinned to zero in bytecode:{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            collectFee()
+          </code>{" "}
+          returns 0 for every task until{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            block.number ≥ MAINNET_ACTIVATION_BLOCK
+          </code>{" "}
+          (Whitepaper §8.8). Operator income during chaos-net comes from the
+          Foundation-funded{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            OperatorSubsidyManager
+          </code>{" "}
+          (per-task cUSDC payments, capacity-bounded). Rates can be staged into
+          storage during chaos-net, but they do not apply until the activation
+          block.
+        </p>
+      </Callout>
+
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Fees are deducted from the bridged amount before settlement. For a
-        10,000 USDC transfer, 50 USDC goes to the operator, 30 USDC to the
-        protocol, and 9,920 USDC reaches the destination escrow.
+        Post-activation: fees are deducted from the bridged amount before
+        settlement. For a 10,000 USDC transfer, 35 USDC goes to the operator, 15
+        USDC to the protocol, and 9,950 USDC reaches the destination escrow.
       </p>
 
       {/* Monitoring */}

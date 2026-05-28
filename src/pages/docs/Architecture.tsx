@@ -126,7 +126,8 @@ export default function Architecture() {
       </h3>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The FHE layer uses a coprocessor-based system. Encrypted types (
+        The FHE layer is Fhenix CoFHE — a coprocessor that holds the secret key
+        off-chain and exposes precompiles to the EVM. Encrypted types (
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           euint64
         </code>
@@ -141,9 +142,10 @@ export default function Architecture() {
         ) are stored as handles managed by the coprocessor. Client-side
         encryption uses{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
-          cofhejs
+          @cofhe/sdk
         </code>{" "}
-        with input types (
+        (the v0.5 successor to the earlier <code>cofhejs</code>) with input
+        types (
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           InEuint64
         </code>
@@ -180,8 +182,13 @@ export default function Architecture() {
             content: "    ebool    isRedeemed;   // encrypted redemption flag",
             highlighted: true,
           },
-          { content: "    bool     exists;       // cleartext existence flag" },
           { content: "}" },
+          { content: "" },
+          { content: "// Existence is derived from the next-id counter," },
+          {
+            content:
+              "// not a per-escrow plaintext flag — leaving zero plaintext on the struct.",
+          },
         ]}
       />
 
@@ -197,24 +204,29 @@ export default function Architecture() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           escrowId
         </code>
-        . Every protocol contract is deployed as an{" "}
-        <strong className="text-docs-text-primary">immutable singleton</strong>{" "}
-        at a fixed address — there is no UUPS proxy, no{" "}
+        . Contracts use ERC-7201 namespaced storage with{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          __gap[50]
+        </code>{" "}
+        reserves and inherit a shared base. On chaos-net testnet that base is{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          TestnetCoreBase
+        </code>{" "}
+        (Initializable + UUPS + Ownable + ReentrancyGuard + ERC-2771) so we can
+        iterate without breaking integrators. The v1.0 mainnet deployment drops
+        UUPS entirely: every protocol contract becomes an immutable singleton —
+        no{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           _authorizeUpgrade
         </code>{" "}
-        hook, and no owner or admin upgrade key. Contracts still use ERC-7201
-        namespaced storage with{" "}
-        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
-          __gap[50]
-        </code>
-        , but for layout compatibility across deployment versions rather than
-        in-place upgrades. ERC-2771 meta-transaction support is provided via a
-        base contract (
-        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
-          TestnetCoreBase
-        </code>
-        ).
+        hook, no owner or admin upgrade key. ERC-2771 meta-transaction support
+        carries over.
+      </p>
+      <p className="text-docs-text-secondary text-[14px] leading-relaxed mb-4">
+        Storage namespace today: <code>privara.storage.*</code> (legacy,
+        retained for cross-deployment-version compatibility per Whitepaper
+        §6.2). The <code>reineira.storage.*</code> prefix is canonical from v1.0
+        mainnet onwards.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -237,9 +249,10 @@ export default function Architecture() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Public mode can deploy on any EVM chain; the current chaos-net
-        deployment runs on Arbitrum L2. Cross-chain funding arrives over two
-        rails — Circle CCTP V2 for USDC, and LayerZero OFT / USDT0 for USDT
-        (available to non-U.S. and non-EU users) — both of which funnel into{" "}
+        deployment runs on Arbitrum L2. Cross-chain funding arrives over Circle
+        CCTP V2 for USDC today; the LayerZero OFT / USDT0 rail for USDT
+        (available to non-U.S. and non-EU users) is specified for v1.0. Both
+        funnel into{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           ConfidentialEscrow.fundFrom
         </code>
@@ -263,7 +276,7 @@ export default function Architecture() {
       <ArchitectureDiagram
         title="SYSTEM COMPONENTS"
         steps={[
-          { label: "Client (SDK)", sublabel: "Encrypts inputs via cofhejs" },
+          { label: "Client (SDK)", sublabel: "Encrypts inputs via @cofhe/sdk" },
           { label: "EVM Contracts", sublabel: "ConfidentialEscrow + Gates" },
           { label: "Coordinator", sublabel: "Task distribution" },
           { label: "Operators", sublabel: "CCTP relay + settlement" },
@@ -288,9 +301,10 @@ export default function Architecture() {
           </strong>{" "}
           — The SDK encrypts amount and owner address locally using{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px]">
-            cofhejs.encrypt()
+            @cofhe/sdk
           </code>{" "}
-          with the network's public FHE key.
+          (<code>encryptInputs([...]).execute()</code>) with the network's
+          public FHE key.
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">

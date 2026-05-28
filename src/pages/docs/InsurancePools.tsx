@@ -102,10 +102,26 @@ export default function InsurancePools() {
       />
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Anyone can create an Insurance pool, attach policies, provide liquidity,
-        and earn premiums. This is the open economy layer of ReineiraOS — the
-        best underwriters build the best pools and earn the most.
+        Anyone can create an Insurance pool (with an allowlisted payment token),
+        attach policies, provide liquidity, and earn premiums. This is the open
+        economy layer of ReineiraOS — the best underwriters build the best pools
+        and earn the most.
       </p>
+
+      <Callout variant="info" title="Four-role separation (Whitepaper §7.2)">
+        <p>
+          Every pool has four roles: <strong>Pool Creator</strong> (deploys via
+          factory, owns immutable creator royalty),{" "}
+          <strong>Pool Manager</strong> (parameter custody, policy admission;
+          transferable to DAO/multisig), <strong>Guardian</strong> (safety veto
+          and emergency-deallocate only, no earnings), and{" "}
+          <strong>Operator</strong> (executes pool-routing tasks under the
+          orchestration layer). Creator and Manager can be the same address at
+          deploy time — pass <code>initialManager</code> and{" "}
+          <code>guardian</code> to <code>createPool</code> to set them
+          explicitly.
+        </p>
+      </Callout>
 
       {/* ------------------------------------------------------------------ */}
       <h2
@@ -419,21 +435,43 @@ export default function InsurancePools() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        All financial values in the insurance system are FHE-encrypted:
+        In confidential (FHE) mode, per-buyer financial values are encrypted{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          euint64
+        </code>{" "}
+        and never leak through events (per-buyer premium and payout are emitted
+        as 0). Plain mode ships the same lifecycle without encryption.
+      </p>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Confidential in encrypted mode:
       </p>
 
       <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
-        <li>Stake amounts</li>
-        <li>Coverage amounts</li>
-        <li>Risk scores</li>
-        <li>Premium payments</li>
-        <li>Claim payouts</li>
+        <li>Per-buyer stake amounts</li>
+        <li>Per-buyer coverage amounts and risk scores</li>
+        <li>Per-buyer premium payments and payout amounts</li>
+        <li>Total liquidity and total premiums (aggregates also encrypted)</li>
       </ul>
 
-      <Callout variant="info" title="On-chain privacy">
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Public on both modes:
+      </p>
+
+      <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
+        <li>Coverage lifecycle events (without amounts)</li>
+        <li>Policy and pool addresses (publishable for discovery)</li>
+        <li>Pool-creation event</li>
+        <li>Dispute event (with caller, without verdict)</li>
+      </ul>
+
+      <Callout variant="info" title="Disclosure bound (Whitepaper Prop 7.2)">
         <p>
-          On-chain events emit only indexed IDs. No amounts, no addresses, no
-          policy details are visible to chain observers.
+          The Premium/Loss-Ratio Disclosure Bound formalises this split. In
+          encrypted mode, per-buyer financial values cannot be reconstructed
+          from chain state under TFHE IND-CPA security — but policy/pool
+          identities and lifecycle existence remain observable so integrators
+          can find your pool.
         </p>
       </Callout>
 

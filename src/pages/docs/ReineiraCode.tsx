@@ -82,8 +82,8 @@ export default function ReineiraCode() {
           <strong className="text-docs-text-primary font-semibold">
             Test harness
           </strong>{" "}
-          — FHE-enabled test suite with cofhejs mocks so you can test encrypted
-          logic locally
+          — FHE-enabled test suite with @cofhe/sdk mocks so you can test
+          encrypted logic locally
         </li>
       </ul>
 

@@ -383,9 +383,29 @@ export default function CoordinatorNetwork() {
         </code>{" "}
         slashes a misbehaving operator's cUSDC bond via a{" "}
         <strong className="text-docs-text-primary font-semibold">
-          single stake-weighted quorum
-        </strong>{" "}
-        across the active operator set.
+          four-stage dispute pipeline
+        </strong>
+        : the proposer posts a 5% bond and submits an evidence hash; a 3-day{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          CHALLENGE_PERIOD
+        </code>{" "}
+        opens; if challenged within the window, a stake-weighted vote runs for{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          VOTING_PERIOD
+        </code>{" "}
+        of 4 days; unchallenged proposals execute after the challenge window and
+        the proposer recovers their bond plus a 10% slasher reward; the proposal
+        expires past{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          EXPIRY_PERIOD
+        </code>{" "}
+        (14 days) and both bonds return. The vote quorum is{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          QUORUM_BPS = 1000
+        </code>{" "}
+        (10% of total active stake) — the safety argument is the four-stage moat
+        (evidence hash + asymmetric bond + slow pipeline + owner backstop), not
+        the quorum threshold itself (Whitepaper §8.6).
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
