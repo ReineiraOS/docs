@@ -102,25 +102,24 @@ export default function InsurancePools() {
       />
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Anyone can create an Insurance pool (with an allowlisted payment
-        token), attach policies, provide liquidity, and earn premiums. This is
-        the open economy layer of ReineiraOS — the best underwriters build
-        the best pools and earn the most.
+        Anyone can create an Insurance pool (with an allowlisted payment token),
+        attach policies, provide liquidity, and earn premiums. This is the open
+        economy layer of ReineiraOS — the best underwriters build the best pools
+        and earn the most.
       </p>
 
       <Callout variant="info" title="Four-role separation (Whitepaper §7.2)">
         <p>
-          Every pool has four roles:{" "}
-          <strong>Pool Creator</strong> (deploys via factory, owns immutable
-          creator royalty),{" "}
+          Every pool has four roles: <strong>Pool Creator</strong> (deploys via
+          factory, owns immutable creator royalty),{" "}
           <strong>Pool Manager</strong> (parameter custody, policy admission;
-          transferable to DAO/multisig),{" "}
-          <strong>Guardian</strong> (safety veto and emergency-deallocate
-          only, no earnings), and <strong>Operator</strong> (executes
-          pool-routing tasks under the orchestration layer). Creator and
-          Manager can be the same address at deploy time — pass{" "}
-          <code>initialManager</code> and <code>guardian</code> to{" "}
-          <code>createPool</code> to set them explicitly.
+          transferable to DAO/multisig), <strong>Guardian</strong> (safety veto
+          and emergency-deallocate only, no earnings), and{" "}
+          <strong>Operator</strong> (executes pool-routing tasks under the
+          orchestration layer). Creator and Manager can be the same address at
+          deploy time — pass <code>initialManager</code> and{" "}
+          <code>guardian</code> to <code>createPool</code> to set them
+          explicitly.
         </p>
       </Callout>
 
@@ -440,9 +439,8 @@ export default function InsurancePools() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           euint64
         </code>{" "}
-        and never leak through events (per-buyer premium and payout are
-        emitted as 0). Plain mode ships the same lifecycle without
-        encryption.
+        and never leak through events (per-buyer premium and payout are emitted
+        as 0). Plain mode ships the same lifecycle without encryption.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">

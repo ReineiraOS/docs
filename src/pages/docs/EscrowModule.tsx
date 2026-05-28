@@ -408,8 +408,14 @@ export default function EscrowModule() {
         filename="static-methods.ts"
         language="typescript"
         lines={[
-          { content: "sdk.escrow.get(42n)              // synchronous — get EscrowInstance by ID" },
-          { content: "sdk.escrow.exists(42n)           // Promise<boolean> — verify on-chain" },
+          {
+            content:
+              "sdk.escrow.get(42n)              // synchronous — get EscrowInstance by ID",
+          },
+          {
+            content:
+              "sdk.escrow.exists(42n)           // Promise<boolean> — verify on-chain",
+          },
           {
             content:
               "sdk.escrow.total()               // Promise<bigint> — total escrows created",
@@ -418,7 +424,10 @@ export default function EscrowModule() {
             content:
               "sdk.escrow.redeemMultiple([0n,1n]) // Promise<TransactionResult> — batch redeem, cap 20",
           },
-          { content: "sdk.escrow.build()               // EscrowBuilder — fluent builder" },
+          {
+            content:
+              "sdk.escrow.build()               // EscrowBuilder — fluent builder",
+          },
         ]}
       />
 

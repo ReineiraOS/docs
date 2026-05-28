@@ -167,9 +167,18 @@ export default function InsuranceModule() {
             content: "  paymentToken: sdk.addresses.confidentialUSDC,",
             highlighted: true,
           },
-          { content: "  initialManager: '0xManager...',  // optional, defaults to caller (Creator)" },
-          { content: "  guardian: '0xGuardian...',       // optional, zero address allowed" },
-          { content: "  isOpen: true,                    // false = private (EIP-712 voucher-gated)" },
+          {
+            content:
+              "  initialManager: '0xManager...',  // optional, defaults to caller (Creator)",
+          },
+          {
+            content:
+              "  guardian: '0xGuardian...',       // optional, zero address allowed",
+          },
+          {
+            content:
+              "  isOpen: true,                    // false = private (EIP-712 voucher-gated)",
+          },
           { content: "})" },
           { content: "// pool.id, pool.address, pool.createTx.hash" },
         ]}
@@ -177,9 +186,10 @@ export default function InsuranceModule() {
 
       <p className="text-docs-text-secondary text-[14px] leading-relaxed mt-3">
         The four-role separation (Creator / Manager / Guardian / Underwriter)
-        from Whitepaper §7.2 maps onto these parameters. <code>isOpen: false</code>{" "}
-        gates buyers behind a manager-signed <code>CoverageInvite</code>{" "}
-        (EIP-712) — useful for closed cohorts and pilot underwriting.
+        from Whitepaper §7.2 maps onto these parameters.{" "}
+        <code>isOpen: false</code> gates buyers behind a manager-signed{" "}
+        <code>CoverageInvite</code> (EIP-712) — useful for closed cohorts and
+        pilot underwriting.
       </p>
 
       <h3

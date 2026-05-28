@@ -345,10 +345,13 @@ export default function RunOperator() {
 
       <DocsTable columns={economicsColumns} rows={economicsRows} />
 
-      <Callout variant="warning" title="Zero fees during chaos-net (block-locked)">
+      <Callout
+        variant="warning"
+        title="Zero fees during chaos-net (block-locked)"
+      >
         <p>
-          The fee schedule above is the <strong>activated</strong> rate.
-          During chaos-net,{" "}
+          The fee schedule above is the <strong>activated</strong> rate. During
+          chaos-net,{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             FeeManager
           </code>{" "}
@@ -373,9 +376,8 @@ export default function RunOperator() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Post-activation: fees are deducted from the bridged amount before
-        settlement. For a 10,000 USDC transfer, 35 USDC goes to the operator,
-        15 USDC to the protocol, and 9,950 USDC reaches the destination
-        escrow.
+        settlement. For a 10,000 USDC transfer, 35 USDC goes to the operator, 15
+        USDC to the protocol, and 9,950 USDC reaches the destination escrow.
       </p>
 
       {/* Monitoring */}

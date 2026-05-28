@@ -126,8 +126,8 @@ export default function Architecture() {
       </h3>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The FHE layer is Fhenix CoFHE — a coprocessor that holds the secret
-        key off-chain and exposes precompiles to the EVM. Encrypted types (
+        The FHE layer is Fhenix CoFHE — a coprocessor that holds the secret key
+        off-chain and exposes precompiles to the EVM. Encrypted types (
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           euint64
         </code>
@@ -185,7 +185,10 @@ export default function Architecture() {
           { content: "}" },
           { content: "" },
           { content: "// Existence is derived from the next-id counter," },
-          { content: "// not a per-escrow plaintext flag — leaving zero plaintext on the struct." },
+          {
+            content:
+              "// not a per-escrow plaintext flag — leaving zero plaintext on the struct.",
+          },
         ]}
       />
 
@@ -208,22 +211,22 @@ export default function Architecture() {
         reserves and inherit a shared base. On chaos-net testnet that base is{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           TestnetCoreBase
-        </code>
-        {" "}(Initializable + UUPS + Ownable + ReentrancyGuard + ERC-2771) so
-        we can iterate without breaking integrators. The v1.0 mainnet
-        deployment drops UUPS entirely: every protocol contract becomes an
-        immutable singleton — no{" "}
+        </code>{" "}
+        (Initializable + UUPS + Ownable + ReentrancyGuard + ERC-2771) so we can
+        iterate without breaking integrators. The v1.0 mainnet deployment drops
+        UUPS entirely: every protocol contract becomes an immutable singleton —
+        no{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           _authorizeUpgrade
         </code>{" "}
-        hook, no owner or admin upgrade key. ERC-2771 meta-transaction
-        support carries over.
+        hook, no owner or admin upgrade key. ERC-2771 meta-transaction support
+        carries over.
       </p>
       <p className="text-docs-text-secondary text-[14px] leading-relaxed mb-4">
         Storage namespace today: <code>privara.storage.*</code> (legacy,
         retained for cross-deployment-version compatibility per Whitepaper
-        §6.2). The <code>reineira.storage.*</code> prefix is canonical from
-        v1.0 mainnet onwards.
+        §6.2). The <code>reineira.storage.*</code> prefix is canonical from v1.0
+        mainnet onwards.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -246,8 +249,8 @@ export default function Architecture() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Public mode can deploy on any EVM chain; the current chaos-net
-        deployment runs on Arbitrum L2. Cross-chain funding arrives over
-        Circle CCTP V2 for USDC today; the LayerZero OFT / USDT0 rail for USDT
+        deployment runs on Arbitrum L2. Cross-chain funding arrives over Circle
+        CCTP V2 for USDC today; the LayerZero OFT / USDT0 rail for USDT
         (available to non-U.S. and non-EU users) is specified for v1.0. Both
         funnel into{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">

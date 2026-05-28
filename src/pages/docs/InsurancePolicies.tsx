@@ -209,8 +209,8 @@ export default function InsurancePolicies() {
       />
 
       <p className="text-docs-text-secondary leading-relaxed mt-4 mb-4">
-        The plain-mode interface, used by the mainnet launch path, swaps the
-        FHE types for primitives but keeps the same shape:
+        The plain-mode interface, used by the mainnet launch path, swaps the FHE
+        types for primitives but keeps the same shape:
       </p>
 
       <CodeBlock

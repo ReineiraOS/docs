@@ -47,7 +47,8 @@ const interfaceRows = [
     fn: "getConditionFee",
     calledBy: "ConfidentialEscrow._setCondition()",
     when: "Stamp time (in create)",
-    purpose: "Declare the resolver-author fee in bps (0–10000) and recipient. Return (0, address(0)) for no fee.",
+    purpose:
+      "Declare the resolver-author fee in bps (0–10000) and recipient. Return (0, address(0)) for no fee.",
   },
   {
     fn: "isConditionMet",
@@ -108,8 +109,7 @@ export default function ConditionPlugins() {
             highlighted: true,
           },
           {
-            content:
-              "  function getConditionFee(uint256 escrowId)",
+            content: "  function getConditionFee(uint256 escrowId)",
             highlighted: true,
           },
           {
@@ -126,15 +126,17 @@ export default function ConditionPlugins() {
 
       <Callout variant="info" title="getConditionFee in the examples below">
         <p>
-          Each Solidity example below shows only{" "}
-          <code>onConditionSet</code> and <code>isConditionMet</code> for
-          clarity. A production resolver must also implement{" "}
-          <code>getConditionFee(uint256 escrowId) view returns (uint16 bps, address recipient)</code>
-          {" "}— the simplest stub is{" "}
-          <code>{`{ return (0, address(0)); }`}</code> when you don't charge a
-          resolver-author fee. The protocol calls it once at escrow creation
-          to stamp the Condition fee slot; the sum of all stamped fees is
-          bounded by <code>MAX_TOTAL_BPS = 10000</code>.
+          Each Solidity example below shows only <code>onConditionSet</code> and{" "}
+          <code>isConditionMet</code> for clarity. A production resolver must
+          also implement{" "}
+          <code>
+            getConditionFee(uint256 escrowId) view returns (uint16 bps, address
+            recipient)
+          </code>{" "}
+          — the simplest stub is <code>{`{ return (0, address(0)); }`}</code>{" "}
+          when you don't charge a resolver-author fee. The protocol calls it
+          once at escrow creation to stamp the Condition fee slot; the sum of
+          all stamped fees is bounded by <code>MAX_TOTAL_BPS = 10000</code>.
         </p>
       </Callout>
 

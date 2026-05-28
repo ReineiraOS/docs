@@ -116,7 +116,10 @@ const tokenRows = [
     name: "ConfidentialUSDC (cUSDC)",
     address: "0x42E47f9bA89712C317f60A72C81A610A2b68c48a",
   },
-  { name: "USDC (Arbitrum Sepolia)", address: "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d" },
+  {
+    name: "USDC (Arbitrum Sepolia)",
+    address: "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
+  },
   {
     name: "GovernanceToken (REINEIRA)",
     address: "0xb847e041bB3bC78C3CD951286AbCa28593739D12",
@@ -232,8 +235,8 @@ export default function Contracts() {
           resolves addresses automatically — you do not need to configure them
           manually. Both <strong>plain mode</strong> (mainnet launch path) and{" "}
           <strong>confidential mode</strong> (FHE, gated on Fhenix CoFHE
-          availability) are listed; the SDK exposes them as separate modules
-          (<code>sdk.escrow</code> / <code>sdk.escrowPlain</code> etc.).
+          availability) are listed; the SDK exposes them as separate modules (
+          <code>sdk.escrow</code> / <code>sdk.escrowPlain</code> etc.).
         </p>
       </Callout>
 
@@ -253,8 +256,8 @@ export default function Contracts() {
         <li>
           <strong>Testnet (Arbitrum Sepolia, today):</strong> UUPS upgradeable
           proxies behind <code>TestnetCoreBase</code> (Initializable + UUPS +
-          Ownable + ReentrancyGuard + ERC-2771). This lets us iterate during
-          the chaos-net runway without breaking integrators on every patch.
+          Ownable + ReentrancyGuard + ERC-2771). This lets us iterate during the
+          chaos-net runway without breaking integrators on every patch.
         </li>
         <li>
           <strong>Mainnet v1.0 (Q4 2026 hardening lock onwards):</strong>{" "}
@@ -272,8 +275,8 @@ export default function Contracts() {
           canonical-deployment registry — not an on-chain contract. They list
           the addresses ReineiraOS treats as canonical on each host. Other
           bytecode-equivalent deployments may exist; you may interact with any
-          of them, but Foundation services (relayer, coordinator, app
-          frontend) connect only to the canonical set.
+          of them, but Foundation services (relayer, coordinator, app frontend)
+          connect only to the canonical set.
         </p>
       </Callout>
 
@@ -329,8 +332,8 @@ export default function Contracts() {
       <DocsTable columns={contractColumns} rows={confidentialInsuranceRows} />
 
       <p className="text-docs-text-secondary text-[14px] leading-relaxed mt-3">
-        Individual <code>ConfidentialInsurancePool</code> instances are
-        deployed lazily by <code>ConfidentialPoolFactory.createPool()</code> as{" "}
+        Individual <code>ConfidentialInsurancePool</code> instances are deployed
+        lazily by <code>ConfidentialPoolFactory.createPool()</code> as{" "}
         <code>ERC1967Proxy</code> clones — they do not have a single canonical
         address.
       </p>
@@ -385,9 +388,9 @@ export default function Contracts() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Cross-chain funding originates on one of the supported source chains
-        and is relayed to Arbitrum Sepolia (destination domain{" "}
-        <code>3</code>) via Circle CCTP V2.
+        Cross-chain funding originates on one of the supported source chains and
+        is relayed to Arbitrum Sepolia (destination domain <code>3</code>) via
+        Circle CCTP V2.
       </p>
 
       <DocsTable columns={cctpColumns} rows={cctpRows} />
@@ -418,8 +421,8 @@ export default function Contracts() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Two pluggable interfaces extend the protocol. Both require ERC-165 so
-        the registries can validate at registration time. The underwriter
-        policy has two variants — pick the one matching your deployment mode.
+        the registries can validate at registration time. The underwriter policy
+        has two variants — pick the one matching your deployment mode.
       </p>
 
       <h3
@@ -430,9 +433,9 @@ export default function Contracts() {
       </h3>
 
       <p className="text-docs-text-secondary leading-relaxed mb-3">
-        Implemented by Gate plugins. <code>onConditionSet</code> fires at
-        escrow creation; <code>getConditionFee</code> is read once at stamp
-        time; <code>isConditionMet</code> is called at redemption.
+        Implemented by Gate plugins. <code>onConditionSet</code> fires at escrow
+        creation; <code>getConditionFee</code> is read once at stamp time;{" "}
+        <code>isConditionMet</code> is called at redemption.
       </p>
 
       <CodeBlock
@@ -450,8 +453,7 @@ export default function Contracts() {
               "  function onConditionSet(uint256 escrowId, bytes calldata data) external;",
           },
           {
-            content:
-              "  function getConditionFee(uint256 escrowId)",
+            content: "  function getConditionFee(uint256 escrowId)",
             highlighted: true,
           },
           {
@@ -517,8 +519,7 @@ export default function Contracts() {
         language="solidity"
         lines={[
           {
-            content:
-              "interface IConfidentialUnderwriterPolicy is IERC165 {",
+            content: "interface IConfidentialUnderwriterPolicy is IERC165 {",
           },
           {
             content:
@@ -546,8 +547,8 @@ export default function Contracts() {
         <p>
           All three interfaces extend <code>IERC165</code>. Your contract must
           implement <code>supportsInterface(bytes4)</code> and return{" "}
-          <code>true</code> for the relevant interface ID, otherwise the
-          escrow / policy registry will reject it.
+          <code>true</code> for the relevant interface ID, otherwise the escrow
+          / policy registry will reject it.
         </p>
       </Callout>
 

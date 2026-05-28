@@ -201,10 +201,10 @@ export default function ReineiraSDK() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The SDK exposes six modules accessible as properties. <code>escrow</code>{" "}
-        and <code>insurance</code> hit the confidential (FHE) deployment;{" "}
-        <code>escrowPlain</code> and <code>insurancePlain</code> hit the
-        mainnet-launch plaintext deployment.
+        The SDK exposes six modules accessible as properties.{" "}
+        <code>escrow</code> and <code>insurance</code> hit the confidential
+        (FHE) deployment; <code>escrowPlain</code> and{" "}
+        <code>insurancePlain</code> hit the mainnet-launch plaintext deployment.
       </p>
 
       <CodeBlock
@@ -243,9 +243,8 @@ export default function ReineiraSDK() {
         <code>PoolInstance</code>, <code>CoverageInstance</code>, and their
         plain variants) representing a single on-chain artifact —{" "}
         <code>escrow.fund()</code>, <code>pool.stake()</code>,{" "}
-        <code>coverage.dispute()</code> etc. all live on the returned
-        instances. See the individual module pages for the full method
-        surface.
+        <code>coverage.dispute()</code> etc. all live on the returned instances.
+        See the individual module pages for the full method surface.
       </p>
 
       {/* ── Utilities ──────────────────────────────────────────────────── */}

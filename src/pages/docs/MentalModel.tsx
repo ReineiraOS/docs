@@ -281,8 +281,7 @@ export default function MentalModel() {
             highlighted: true,
           },
           {
-            content:
-              "    function getConditionFee(uint256 escrowId)",
+            content: "    function getConditionFee(uint256 escrowId)",
           },
           {
             content:

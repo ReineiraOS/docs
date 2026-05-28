@@ -393,9 +393,9 @@ export default function CoordinatorNetwork() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           VOTING_PERIOD
         </code>{" "}
-        of 4 days; unchallenged proposals execute after the challenge window
-        and the proposer recovers their bond plus a 10% slasher reward; the
-        proposal expires past{" "}
+        of 4 days; unchallenged proposals execute after the challenge window and
+        the proposer recovers their bond plus a 10% slasher reward; the proposal
+        expires past{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           EXPIRY_PERIOD
         </code>{" "}
@@ -403,9 +403,9 @@ export default function CoordinatorNetwork() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           QUORUM_BPS = 1000
         </code>{" "}
-        (10% of total active stake) — the safety argument is the four-stage
-        moat (evidence hash + asymmetric bond + slow pipeline + owner
-        backstop), not the quorum threshold itself (Whitepaper §8.6).
+        (10% of total active stake) — the safety argument is the four-stage moat
+        (evidence hash + asymmetric bond + slow pipeline + owner backstop), not
+        the quorum threshold itself (Whitepaper §8.6).
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">

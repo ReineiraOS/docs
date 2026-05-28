@@ -104,11 +104,10 @@ export default function CrossChain() {
           <strong className="text-docs-text-primary font-semibold">
             LayerZero OFT / USDT0
           </strong>{" "}
-          for USDT — handler family{" "}
-          (<code>LZOFTHandler</code>, <code>LZOFTEscrowReceiver</code>,{" "}
-          <code>LZOFTForwarder</code>) is specified in Whitepaper §9.2; the{" "}
-          <code>ConfidentialUSDT</code> wrapper is also tracked for v1.0.
-          Non-U.S./non-EU-only on launch.{" "}
+          for USDT — handler family (<code>LZOFTHandler</code>,{" "}
+          <code>LZOFTEscrowReceiver</code>, <code>LZOFTForwarder</code>) is
+          specified in Whitepaper §9.2; the <code>ConfidentialUSDT</code>{" "}
+          wrapper is also tracked for v1.0. Non-U.S./non-EU-only on launch.{" "}
           <DocsBadge variant="amber" className="ml-1">
             Spec'd
           </DocsBadge>
@@ -264,7 +263,10 @@ export default function CrossChain() {
 
       <DocsTable columns={feeColumns} rows={feeRows} />
 
-      <Callout variant="warning" title="Zero fees during chaos-net (block-locked)">
+      <Callout
+        variant="warning"
+        title="Zero fees during chaos-net (block-locked)"
+      >
         <p>
           The schedule above is the <strong>activated</strong> rate.{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
@@ -274,9 +276,9 @@ export default function CrossChain() {
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             block.number &lt; MAINNET_ACTIVATION_BLOCK
           </code>{" "}
-          — <code>collectFee()</code> returns 0 for every relay until
-          activation (Whitepaper §8.8). During chaos-net, operators receive
-          per-task cUSDC subsidies from the Foundation-funded{" "}
+          — <code>collectFee()</code> returns 0 for every relay until activation
+          (Whitepaper §8.8). During chaos-net, operators receive per-task cUSDC
+          subsidies from the Foundation-funded{" "}
           <code>OperatorSubsidyManager</code> instead of bridged-amount
           deductions.
         </p>
@@ -284,8 +286,8 @@ export default function CrossChain() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Post-activation: fees are deducted from the bridged amount before
-        settlement. For a 10,000 USDC transfer, 35 USDC goes to the operator,
-        15 USDC to the protocol (FeeManager), and 9,950 USDC reaches the
+        settlement. For a 10,000 USDC transfer, 35 USDC goes to the operator, 15
+        USDC to the protocol (FeeManager), and 9,950 USDC reaches the
         destination escrow.
       </p>
 
