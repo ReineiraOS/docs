@@ -41,13 +41,13 @@ const packageRows = [
   {
     package: "backend",
     name: "@reineira-os/modules-backend",
-    stack: "TypeScript + Clean Architecture",
+    stack: "TypeScript and Clean Architecture",
     purpose: "Backend API (Vercel-ready, DB-agnostic)",
   },
   {
     package: "app",
     name: "@reineira-os/modules-app",
-    stack: "React 19 + Vite + ZeroDev",
+    stack: "React 19, Vite, and ZeroDev",
     purpose: "Platform dashboard with smart accounts",
   },
 ];
@@ -101,7 +101,7 @@ const appLayerRows = [
   {
     layer: "Components",
     directory: "src/components/",
-    responsibility: "UI components (shadcn/ui + feature components)",
+    responsibility: "UI components (shadcn/ui and feature components)",
   },
   {
     layer: "Stores",
@@ -200,9 +200,9 @@ const compatColumns = [
 ];
 
 const compatRows = [
-  { requirement: "Node.js", version: ">= 18.0.0" },
+  { requirement: "Node.js", version: ">= 20.0.0" },
   { requirement: "pnpm", version: ">= 10.0.0" },
-  { requirement: "ReineiraOS SDK", version: "^0.1.0" },
+  { requirement: "ReineiraOS SDK", version: "^1.0.0" },
   { requirement: "Platform version", version: "0.1" },
 ];
 
@@ -220,12 +220,12 @@ const ecosystemRows = [
   },
   {
     repo: "reineira-code",
-    purpose: "Build Gates and Insurance Policies",
+    purpose: "Build Gates and Recourse Policies",
     platform: "0.1",
   },
   {
     repo: "platform-modules (this repo)",
-    purpose: "Ship the product — backend + frontend",
+    purpose: "Ship the product — backend and frontend",
     platform: "0.1",
   },
 ];
@@ -391,7 +391,7 @@ export default function PlatformModules() {
           <strong className="text-docs-text-primary font-semibold">
             ReineiraOS SDK integration
           </strong>{" "}
-          — Escrow creation, funding, redemption, and insurance via{" "}
+          — Escrow creation, funding, redemption, and recourse via{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             @reineira-os/sdk
           </code>
@@ -716,8 +716,8 @@ export default function PlatformModules() {
         <li>Wires API routes and React pages for your entities</li>
         <li>Sets up environment templates with the right variables</li>
         <li>
-          Creates the startup OS alongside (strategy docs, agents, slash
-          commands)
+          Scaffolds the venture workspace alongside (strategy docs, agents,
+          slash commands)
         </li>
       </ul>
 
@@ -769,7 +769,7 @@ export default function PlatformModules() {
           },
           {
             title: "Code",
-            description: "Build custom Gates and Policies",
+            description: "Build custom Gates and Recourse Policies",
             href: "/developer-tools/reineira-code",
             icon: Code2,
           },

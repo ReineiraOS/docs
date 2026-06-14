@@ -29,7 +29,7 @@ export default function ReineiraCode() {
 
       <PageHeader
         title="Code"
-        description="A preconfigured development environment that pairs Claude Code with the full protocol context. Clone, open, and start building condition resolvers and insurance policies with AI assistance."
+        description="A preconfigured Claude Code environment with full protocol context for building condition resolvers and Recourse policies with AI assistance."
         readingTime="4 min read"
       />
 
@@ -165,9 +165,9 @@ export default function ReineiraCode() {
             Sepolia.
           </p>
         </Step>
-        <Step title="Attach to escrow">
+        <Step title="Attach to an Escrow">
           <p className="text-docs-text-secondary mb-3">
-            Use the SDK to create escrows with your new resolver:
+            Use the SDK to create Escrows with your new resolver:
           </p>
           <CodeBlock
             filename="create-escrow.ts"
@@ -230,7 +230,7 @@ export default function ReineiraCode() {
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">
-            Custom Insurance policies
+            Custom Recourse policies
           </strong>{" "}
           — define risk scoring and dispute resolution for any domain
         </li>

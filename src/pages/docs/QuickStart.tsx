@@ -12,6 +12,7 @@ import Steps, { Step } from "@/components/docs/Steps";
 import PropertyCard from "@/components/docs/PropertyCard";
 import LinkCard from "@/components/docs/LinkCard";
 import DocsAccordion, { AccordionItem } from "@/components/docs/DocsAccordion";
+import ModeToggle from "@/components/docs/ModeToggle";
 import { BookOpen, Code2, Rocket } from "lucide-react";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
@@ -225,7 +226,7 @@ export default function QuickStart() {
           proceeding:
         </p>
         <ul className="mt-2 space-y-1 list-disc list-inside">
-          <li>Node.js 20+ and npm / yarn / pnpm</li>
+          <li>Node.js 20+ and npm, yarn, or pnpm</li>
           <li>A Hardhat development environment</li>
           <li>
             A local Hardhat node with @cofhe/sdk mocks (or access to the FHE
@@ -294,8 +295,8 @@ export default function QuickStart() {
 
         <Step title="Encrypt an amount">
           <p className="text-docs-text-secondary">
-            The SDK encrypts amounts client-side before they touch the chain.
-            Use the builder pattern — the{" "}
+            In the encrypted track the SDK encrypts amounts client-side before
+            they touch the chain. Use the builder pattern — the{" "}
             <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
               .amount()
             </code>{" "}
@@ -304,6 +305,43 @@ export default function QuickStart() {
           </p>
         </Step>
       </Steps>
+
+      <p className="text-docs-text-secondary leading-relaxed mt-6 mb-2">
+        ReineiraOS runs the same primitives in two tracks. Pick one — the
+        builder API is identical, only the module differs:
+      </p>
+
+      <ModeToggle
+        publicMode={
+          <p>
+            <strong>Public (plain)</strong> is the live default on chaos-net
+            today. State is plaintext on-chain, so there is no FHE gas overhead
+            and everything is publicly verifiable. Use{" "}
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              sdk.escrowPlain
+            </code>{" "}
+            and{" "}
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              sdk.recoursePlain
+            </code>
+            . The examples below also run unchanged against the plain module.
+          </p>
+        }
+        encryptedMode={
+          <p>
+            <strong>Encrypted (confidential)</strong> is the v1.0 mainnet form.
+            Amounts, parties, and conditions are FHE-encrypted on-chain via{" "}
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              sdk.escrow
+            </code>{" "}
+            and{" "}
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              sdk.recourse
+            </code>
+            . The builder snippet below shows this track.
+          </p>
+        }
+      />
 
       {/* ── Create your first Escrow ────────────────────────────────────── */}
       <h2
@@ -480,9 +518,9 @@ export default function QuickStart() {
 
         <AccordionItem title="Is there an audit?">
           <p>
-            Internal review is complete for escrow, Gate, cross-chain, and
-            operator contracts. Insurance contracts have interfaces defined.
-            Third-party audit is planned. See{" "}
+            Internal review is complete for escrow, Gate, cross-chain, operator,
+            and Recourse contracts — Recourse ships its full pool, manager,
+            factory, and registry stack. Third-party audit is planned. See{" "}
             <a
               href="/learn/security"
               className="text-brand-primary font-medium hover:underline"

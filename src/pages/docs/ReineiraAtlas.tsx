@@ -48,7 +48,7 @@ const agentRows = [
   {
     agent: "protocol-policy",
     domain: "Protocol",
-    desc: "Guides design of IUnderwriterPolicy contracts for insurance risk evaluation and dispute resolution",
+    desc: "Guides design of IUnderwriterPolicy contracts for recourse risk evaluation and dispute resolution",
   },
   {
     agent: "product-frontend",
@@ -111,7 +111,7 @@ const protocolCmdRows = [
   },
   {
     command: "/policy",
-    desc: "Design an insurance underwriter policy",
+    desc: "Design a recourse underwriter policy",
     agent: "protocol-policy",
   },
   {
@@ -124,7 +124,7 @@ const protocolCmdRows = [
 const productCmdRows = [
   {
     command: "/dev-frontend",
-    desc: "Frontend development (React 19 + ZeroDev)",
+    desc: "Frontend development (React 19 and ZeroDev)",
     agent: "product-frontend",
   },
   {
@@ -185,17 +185,17 @@ const dataRows = [
   {
     stream: "Decisions",
     dir: "data/decisions/",
-    desc: "Strategic decisions with rationale, alternatives considered, and expected outcomes. Logged by any agent after a significant choice.",
+    desc: "Strategic decisions, rationale, alternatives, and expected outcomes, logged by any agent after a significant choice.",
   },
   {
     stream: "Metrics",
     dir: "data/metrics/",
-    desc: "KPI snapshots with protocol metrics (GMV, escrow volume), business metrics (revenue, active wallets), and growth metrics (community, contributors).",
+    desc: "KPI snapshots across protocol, business, and growth metrics, including GMV, revenue, wallets, community, and contributors.",
   },
   {
     stream: "Signals",
     dir: "data/signals/",
-    desc: "Market intelligence, competitive moves, regulatory changes, and ecosystem updates. Captured by research and growth agents.",
+    desc: "Market intelligence, competitive moves, regulatory changes, and ecosystem updates from research and growth agents.",
   },
 ];
 
@@ -247,7 +247,7 @@ const ecosystemColumns = [
 const ecosystemRows = [
   {
     repo: "reineira-atlas",
-    purpose: "Run the startup: strategy, ops, growth, compliance, pitch",
+    purpose: "Run the venture: strategy, ops, growth, compliance, pitch",
     platform: "0.1",
   },
   {
@@ -257,7 +257,7 @@ const ecosystemRows = [
   },
   {
     repo: "platform-modules",
-    purpose: "Ship the product: backend API + React 19 platform app",
+    purpose: "Ship the product: backend API and React 19 platform app",
     platform: "0.1",
   },
 ];
@@ -272,14 +272,14 @@ export default function ReineiraAtlas() {
 
       <PageHeader
         title="Atlas"
-        description="The startup operating system for ventures building on ReineiraOS. Strategy, operations, growth, compliance, fundraising, and team coordination — powered by a 12-agent AI team."
+        description="A scaffolding engine that turns a venture brief into ReineiraOS strategy docs, a 12-agent AI team, slash commands, and a working app."
         readingTime="12 min read"
       />
 
       <Callout variant="tip" title="Who is Atlas for?">
         <p>
           Atlas is for founders, ops leads, and non-technical team members who
-          need to run a startup in the confidential finance ecosystem. You do
+          need to launch a venture in the confidential finance ecosystem. You do
           not need to write code to use it.
         </p>
       </Callout>
@@ -311,7 +311,7 @@ export default function ReineiraAtlas() {
             Global system configuration and operating context.
           </p>
         </Step>
-        <Step title="CLAUDE.md loads ecosystem repos, contract addresses, and tech stack">
+        <Step title="CLAUDE.md loads repos, addresses, and tech stack">
           <p className="text-docs-text-secondary">
             Technical context for the AI agents.
           </p>
@@ -426,7 +426,7 @@ export default function ReineiraAtlas() {
         lines={[
           {
             content:
-              "/resolver Design a payment verification resolver using zkTLS proof from Reclaim Protocol",
+              "/resolver Design a zkTLS payment resolver with Reclaim Protocol",
           },
         ]}
       />
@@ -491,8 +491,8 @@ export default function ReineiraAtlas() {
             <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
               /bootstrap
             </code>{" "}
-            command reads your brief, generates the full startup OS (strategy
-            docs, agent team, slash commands), and scaffolds a working
+            command reads your brief, generates your full venture workspace
+            (strategy docs, agent team, slash commands), and scaffolds a working
             application from{" "}
             <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
               platform-modules
@@ -551,7 +551,7 @@ export default function ReineiraAtlas() {
         </code>{" "}
         file at the project root is the starting point for your entire Atlas
         configuration. Every agent reads it. Every document template pulls from
-        it. The starter agent uses it to bootstrap your full operating system.
+        it. The starter agent uses it to scaffold your full venture workspace.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -740,7 +740,7 @@ export default function ReineiraAtlas() {
         lines={[
           {
             content:
-              "/strategy We're building a P2P crypto trading desk. Should we focus on Africa or Southeast Asia first?",
+              "/strategy For a P2P crypto desk, choose Africa or Southeast Asia first",
           },
         ]}
       />
@@ -765,7 +765,7 @@ export default function ReineiraAtlas() {
         lines={[
           {
             content:
-              "/tokenomics Model the unit economics for an escrow fee of 0.25% with insurance premium of 2%",
+              "/tokenomics Model unit economics for Escrow pricing and Recourse premiums",
           },
         ]}
       />
@@ -791,7 +791,7 @@ export default function ReineiraAtlas() {
         lines={[
           {
             content:
-              "/compliance We want to launch in the EU. What MiCA requirements apply to our non-custodial escrow product?",
+              "/compliance What MiCA rules apply to an EU non-custodial Escrow product?",
           },
         ]}
       />
@@ -818,7 +818,7 @@ export default function ReineiraAtlas() {
         lines={[
           {
             content:
-              "/pitch-prep We have a 30-minute call with a pre-seed fund that focuses on DeFi infrastructure",
+              "/pitch-prep Prepare for a 30-minute call with a DeFi pre-seed fund",
           },
         ]}
       />

@@ -120,14 +120,14 @@ export const navigation: NavSection[] = [
         slug: "atlas",
         href: "/developer-tools/atlas",
         description:
-          "Startup operating system — strategy, compliance, fundraising, and app scaffolding.",
+          "Scaffolding engine — bootstraps a venture workspace (strategy docs, agent team, and a working app) from a brief.",
       },
       {
         title: "Code",
         slug: "reineira-code",
         href: "/developer-tools/reineira-code",
         description:
-          "AI-assisted development environment for building Gates and Insurances.",
+          "AI-assisted development environment for building Gates and Recourse coverage.",
       },
       {
         title: "Platform Modules",
@@ -149,7 +149,7 @@ export const navigation: NavSection[] = [
         title: "Mental Model",
         slug: "mental-model",
         href: "/learn/mental-model",
-        description: "Four primitives: Escrow, Gate, Insurance, Operator.",
+        description: "Four primitives: Escrow, Gate, Recourse, Operator.",
       },
       {
         title: "Architecture",
@@ -213,10 +213,10 @@ export const navigation: NavSection[] = [
           "Define and deploy risk evaluation and dispute resolution policies.",
       },
       {
-        title: "Insurance Pools",
-        slug: "insurance-pools",
-        href: "/build/insurance-pools",
-        description: "Liquidity pools backing Insurance coverage.",
+        title: "Recourse Pools",
+        slug: "recourse-pools",
+        href: "/build/recourse-pools",
+        description: "Liquidity pools backing Recourse coverage.",
       },
       {
         title: "Cross-Chain Settlement",
@@ -322,10 +322,10 @@ export const navigation: NavSection[] = [
         description: "Complete Escrow module API reference.",
       },
       {
-        title: "Insurance Module",
-        slug: "insurance-module",
-        href: "/reference/insurance-module",
-        description: "Complete Insurance module API reference.",
+        title: "Recourse Module",
+        slug: "recourse-module",
+        href: "/reference/recourse-module",
+        description: "Complete Recourse module API reference.",
       },
       {
         title: "MCP Server",

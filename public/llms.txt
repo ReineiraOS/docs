@@ -45,7 +45,7 @@ The Reineira Settlement Standard — the open, OSI-aligned conformance spec, sep
 - [Escrow Lifecycle](https://docs.reineira.xyz/build/escrow-lifecycle): Create, fund, verify, and settle an Escrow — the full state machine.
 - [Condition Resolvers](https://docs.reineira.xyz/build/condition-resolvers): Custom verification logic that controls when an Escrow releases funds.
 - [Underwriter Policies](https://docs.reineira.xyz/build/underwriter-policies): Define and deploy risk evaluation and dispute resolution policies.
-- [Insurance Pools](https://docs.reineira.xyz/build/insurance-pools): Liquidity pools backing Insurance coverage.
+- [Recourse Pools](https://docs.reineira.xyz/build/recourse-pools): Liquidity pools backing Recourse coverage.
 - [Cross-Chain Settlement](https://docs.reineira.xyz/build/cross-chain): Settle Escrows across EVM-compatible chains via Circle CCTP V2.
 - [Atlas-Deployed L3s](https://docs.reineira.xyz/build/atlas-l3): Self-deploy ReineiraOS on your own L3 via Atlas; operator-routed liquidity over the native rollup bridge.
 - [Gas & Performance](https://docs.reineira.xyz/build/gas-performance): Optimization strategies for FHE-heavy operations.
@@ -67,7 +67,7 @@ The Reineira Settlement Standard — the open, OSI-aligned conformance spec, sep
 - [Contracts](https://docs.reineira.xyz/reference/contracts): Deployed contract addresses and ABIs.
 - [SDK](https://docs.reineira.xyz/reference/sdk): TypeScript/JavaScript SDK for building on ReineiraOS — `@reineira-os/sdk`.
 - [Escrow Module](https://docs.reineira.xyz/reference/escrow-module): Complete Escrow module API reference.
-- [Insurance Module](https://docs.reineira.xyz/reference/insurance-module): Complete Insurance module API reference.
+- [Recourse Module](https://docs.reineira.xyz/reference/recourse-module): Complete Recourse module API reference.
 - [MCP Server](https://docs.reineira.xyz/reference/mcp-server): AI assistant access to docs, contracts, and interfaces via the Model Context Protocol.
 
 ## Optional

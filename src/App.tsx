@@ -38,8 +38,8 @@ import Economics from "./pages/docs/Economics";
 // Build
 import EscrowLifecycle from "./pages/docs/EscrowLifecycle";
 import ConditionPlugins from "./pages/docs/ConditionPlugins";
-import InsurancePolicies from "./pages/docs/InsurancePolicies";
-import InsurancePools from "./pages/docs/InsurancePools";
+import UnderwriterPolicies from "./pages/docs/UnderwriterPolicies";
+import RecoursePools from "./pages/docs/RecoursePools";
 import GasPerformance from "./pages/docs/GasPerformance";
 import L3Deployments from "./pages/docs/L3Deployments";
 
@@ -58,7 +58,7 @@ import AgenticComposition from "./pages/docs/research/AgenticComposition";
 import Contracts from "./pages/docs/Contracts";
 import ReineiraSDK from "./pages/docs/ReineiraSDK";
 import EscrowModule from "./pages/docs/EscrowModule";
-import InsuranceModule from "./pages/docs/InsuranceModule";
+import RecourseModule from "./pages/docs/RecourseModule";
 import McpServer from "./pages/docs/McpServer";
 
 /** Redirect component for legacy /docs/* URLs */
@@ -125,15 +125,22 @@ const App = () => (
       <Route path="/build/condition-resolvers" element={<ConditionPlugins />} />
       <Route
         path="/build/underwriter-policies"
-        element={<InsurancePolicies />}
+        element={<UnderwriterPolicies />}
       />
-      <Route path="/build/insurance-pools" element={<InsurancePools />} />
+      <Route path="/build/recourse-pools" element={<RecoursePools />} />
       <Route path="/build/cross-chain" element={<CrossChain />} />
       <Route path="/build/atlas-l3" element={<L3Deployments />} />
       <Route path="/build/gas-performance" element={<GasPerformance />} />
       {/* Legacy redirects — Build */}
       <Route path="/build/condition-plugins" element={<ConditionPlugins />} />
-      <Route path="/build/insurance-policies" element={<InsurancePolicies />} />
+      <Route
+        path="/build/insurance-policies"
+        element={<UnderwriterPolicies />}
+      />
+      <Route
+        path="/build/insurance-pools"
+        element={<Navigate to="/build/recourse-pools" replace />}
+      />
       <Route path="/operate/cross-chain" element={<CrossChain />} />
       {/* Operate */}
       <Route
@@ -164,7 +171,11 @@ const App = () => (
       <Route path="/reference/contracts" element={<Contracts />} />
       <Route path="/reference/sdk" element={<ReineiraSDK />} />
       <Route path="/reference/escrow-module" element={<EscrowModule />} />
-      <Route path="/reference/insurance-module" element={<InsuranceModule />} />
+      <Route path="/reference/recourse-module" element={<RecourseModule />} />
+      <Route
+        path="/reference/insurance-module"
+        element={<Navigate to="/reference/recourse-module" replace />}
+      />
       <Route path="/reference/mcp-server" element={<McpServer />} />
       {/* Dynamic fallbacks for section hubs */}
       <Route path="/:section" element={<SectionPage />} />

@@ -6,10 +6,10 @@ export const DEFAULT_TITLE =
   "ReineiraOS Docs — Build on the OS for Programmable Settlement";
 
 export const DEFAULT_DESCRIPTION =
-  "Developer documentation for ReineiraOS. Encrypted flows, underwritten outcomes, AI-native tooling. FHE-encrypted escrow, condition plugins, cross-chain USDC, and protocol-native insurance — one SDK.";
+  "Developer documentation for ReineiraOS. Encrypted flows, underwritten outcomes, AI-native tooling. FHE-encrypted escrow, condition plugins, cross-chain USDC, and protocol-native recourse — one SDK.";
 
 const DEFAULT_OG_DESCRIPTION =
-  "Encrypted flows. Underwritten outcomes. AI-native tooling. Escrow, conditions, cross-chain settlement, and insurance — one SDK.";
+  "Encrypted flows. Underwritten outcomes. AI-native tooling. Escrow, conditions, cross-chain settlement, and recourse — one SDK.";
 
 export interface RouteSEO {
   path: string;

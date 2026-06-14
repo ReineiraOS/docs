@@ -11,7 +11,7 @@ const toc: TocItem[] = [
   { id: "audit-posture", title: "Known audit posture", level: 2 },
   {
     id: "compliance",
-    title: "Compliance & alignment targets",
+    title: "Non-custodial software posture",
     level: 2,
   },
   { id: "limits", title: "Limits of the model", level: 2 },
@@ -61,7 +61,7 @@ export default function Risk() {
           No external smart-contract audit is complete as of publication. The
           audit-readiness package is an internal Phase 7 self-review
           (scope-freeze 2026-05-05) covering the four in-scope contract packages
-          — tokens, escrow, orchestration, and insurance — with ~85 manual
+          — tokens, escrow, orchestration, and recourse — with ~85 manual
           findings and eight mainnet blockers routed to remediation. A companion
           checklist (2026-05-07) records the pinned dependency hashes and
           Safe-plus-Timelock mainnet-deploy posture the external auditor will
@@ -76,26 +76,18 @@ export default function Risk() {
         id="compliance"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Compliance &amp; alignment targets
+        Non-custodial software posture
       </h2>
       <blockquote className="border-l-4 border-docs-border-strong pl-4 my-6 text-docs-text-secondary leading-relaxed italic">
-        <p className="mb-4">
-          Compliance posture is framed as forward-looking alignment targets,
-          never as current certification. The targets surfaced for the
-          protocol's institutional readiness are: ISO/IEC 27001 Information
-          Security Management System; SOC 2 Type II service-organisation
-          controls; ISO/IEC 27701 Privacy Information Management System; ISAE
-          3000 assurance engagement for non-financial-information attestation on
-          protocol metrics; FATF Recommendation 16 (Travel Rule), whose
-          applicability to encrypted-amount transfers remains an open question;
-          and MiCA (EU Regulation 2023/1114) alignment posture for EU operator
-          activity.
-        </p>
         <p>
-          As of publication, none of the ISO or SOC items above are certified.
-          They are forward-looking objectives committed to a post-mainnet
-          implementation timeline conditional on resourcing. The roadmap is
-          open.
+          The protocol is non-custodial software: it makes no regulated-entity
+          claim and asserts no certification. There is no compliance
+          certification — no SOC 2, ISO, ISAE, MiCA, or FATF attestation is
+          claimed or implied — and the protocol does not gate by jurisdiction.
+          The security evidence on this page concerns the contract surface and
+          its trust assumptions, not any regulatory attestation. Any
+          application-layer compliance obligations belong to the party deploying
+          on top of the protocol, not to the protocol contracts.
         </p>
       </blockquote>
 

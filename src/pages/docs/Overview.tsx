@@ -21,7 +21,7 @@ const toc: TocItem[] = [
   { id: "core-properties", title: "Core properties", level: 2 },
   { id: "confidential-by-default", title: "Confidential by default", level: 3 },
   { id: "pluggable-verification", title: "Pluggable verification", level: 3 },
-  { id: "open-insurance-economy", title: "Open coverage economy", level: 3 },
+  { id: "open-insurance-economy", title: "Open recourse economy", level: 3 },
   { id: "what-you-get", title: "What you get", level: 2 },
   { id: "sdk-example", title: "SDK example", level: 2 },
   { id: "who-is-it-for", title: "Who is it for?", level: 2 },
@@ -41,17 +41,17 @@ const whatYouGetRows = [
   {
     capability: "Escrow",
     description:
-      "FHE-encrypted escrow that holds funds — amounts, parties, and conditions are never exposed on-chain in cleartext.",
+      "FHE-encrypted Escrow that holds funds — amounts, parties, and conditions are never exposed on-chain in cleartext.",
   },
   {
     capability: "Gate",
     description:
-      "Pluggable verification contract that controls when an Escrow releases funds — zkTLS proofs, oracles, prediction markets, time locks, or your own logic.",
+      "Pluggable contract for Escrow release: zkTLS proofs, oracles, prediction markets, time locks, or custom logic.",
   },
   {
-    capability: "Insurance",
+    capability: "Recourse",
     description:
-      "Protocol-native coverage pools for chargebacks, fraud, and delivery failures. Underwriters earn yield by staking capital.",
+      "Protocol-native coverage pools for chargebacks, fraud, and delivery failures; Underwriters earn yield by staking capital.",
   },
   {
     capability: "Operators",
@@ -76,7 +76,7 @@ const pillarRows = [
   {
     pillar: "Reineira Settlement Protocol",
     description:
-      "The on-chain immutable contracts: confidential escrow, pluggable Gates, encrypted-state insurance, and operator-secured cross-chain settlement.",
+      "The on-chain contracts: confidential escrow, pluggable Gates, encrypted-state recourse, and operator-secured cross-chain settlement. Upgradeable today (UUPS); immutability is the v1.0 target.",
   },
   {
     pillar: "Reineira Settlement Standard (RSS)",
@@ -86,7 +86,7 @@ const pillarRows = [
   {
     pillar: "Builder Stack",
     description:
-      "Reineira Atlas (the startup operating system) plus Reineira Code (the resolver and policy authoring environment).",
+      "Reineira Atlas (the venture scaffolding engine) plus Reineira Code (the resolver and policy authoring environment).",
   },
 ];
 
@@ -112,9 +112,9 @@ const sdkLines = [
   },
   { content: "  .create()", highlighted: true },
   { content: "" },
-  { content: "// 2. Purchase insurance for the Escrow" },
+  { content: "// 2. Purchase recourse coverage for the Escrow" },
   {
-    content: "const coverage = await sdk.insurance.purchaseCoverage({",
+    content: "const coverage = await sdk.recourse.purchaseCoverage({",
     highlighted: true,
   },
   { content: "  pool: '0xPool...',", highlighted: true },
@@ -193,8 +193,9 @@ export default function Overview() {
           ReineiraOS is <strong>not</strong> a privacy chain (it deploys on
           existing EVM chains), <strong>not</strong> a payment processor (the
           money moves through USDC/CCTP), <strong>not</strong> a DeFi protocol
-          (revenue comes from fees, not emissions), and <strong>not</strong> an
-          oracle network (Gates consume oracles — they don't replace them).
+          (no emissions; the protocol itself takes no fee), and{" "}
+          <strong>not</strong> an oracle network (Gates consume oracles — they
+          don't replace them).
         </p>
       </Callout>
 
@@ -233,29 +234,29 @@ export default function Overview() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         ReineiraOS is public settlement infrastructure, not a rent-seeking
-        platform. The contracts are immutable with no upgrade authority, and the
-        protocol charges zero fees during chaos-net — block-locked at the
-        contract level.
+        platform. The protocol charges no fees of its own, and contract
+        immutability is the v1.0 target — contracts are upgradeable today (UUPS)
+        so the chaos-net surface can be hardened before the controls are frozen.
       </p>
 
       <Callout variant="info" title="Public-infrastructure posture">
         <ul className="space-y-2 list-disc list-inside">
           <li>
-            <strong>Immutable contracts.</strong> No upgrade authority — code is
-            fixed once deployed.
+            <strong>Upgradeable today, immutable at v1.0.</strong> Contracts use
+            UUPS with an owner during chaos-net; relinquishing upgrade authority
+            is the v1.0 milestone.
           </li>
           <li>
-            <strong>Zero protocol fees during chaos-net.</strong> Fee switches
-            are block-locked off.
+            <strong>No protocol fee.</strong> The protocol takes no cut. Any
+            fees are builder- and role-configurable (a Gate's condition fee, an
+            underwriter's premium); the operator relay fee is specified.
           </li>
           <li>
-            <strong>Operators bond cUSDC, not a token.</strong> Security comes
-            from collateral, not emissions.
+            <strong>Operator economics are specified.</strong> Bonding, relay
+            fees, and slashing are defined in the spec, not yet wired live.
           </li>
           <li>
-            <strong>No token yet.</strong> The REINEIRA token{" "}
-            <strong>does not exist</strong> and is conditional on future
-            triggers.
+            <strong>No token.</strong> The protocol has no token.
           </li>
           <li>
             <strong>Deployed by Reineira Labs Limited</strong> (RAK DAO Free
@@ -328,11 +329,11 @@ export default function Overview() {
         id="open-insurance-economy"
         className="text-[20px] font-semibold tracking-[-0.01em] leading-[1.4] text-docs-text-primary mt-8 mb-3"
       >
-        3. Open coverage economy (Insurance)
+        3. Open recourse economy (Recourse)
       </h3>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Insurance pools provide LP-backed coverage with encrypted risk scoring.
-        The{" "}
+        Recourse (the Shield product) provides LP-backed coverage pools with
+        encrypted risk scoring. The{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           IUnderwriterPolicy
         </code>{" "}
@@ -361,8 +362,8 @@ export default function Overview() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Create an Escrow, purchase insurance, and fund it cross-chain — three
-        steps:
+        Create an Escrow, purchase recourse coverage, and fund it cross-chain —
+        three steps:
       </p>
 
       <CodeBlock
@@ -386,9 +387,9 @@ export default function Overview() {
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             .create()
           </code>
-          . Insurance is purchased separately via{" "}
+          . Recourse coverage is purchased separately via{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            sdk.insurance.purchaseCoverage()
+            sdk.recourse.purchaseCoverage()
           </code>{" "}
           after the Escrow exists.
         </p>
@@ -404,9 +405,9 @@ export default function Overview() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Anyone shipping payment products where money must move conditionally —
-        businesses building marketplaces, developers integrating escrow into
+        businesses building marketplaces, developers integrating Escrow into
         dApps, AI agents that need programmatic conditional settlement, and
-        plugin builders extending the protocol with new Gates or insurance
+        plugin builders extending the protocol with new Gates or Recourse
         policies.
       </p>
 
@@ -436,7 +437,7 @@ export default function Overview() {
           },
           {
             title: "Mental Model",
-            description: "Core primitives: Escrow, Gate, Insurance, Operators.",
+            description: "Core primitives: Escrow, Gate, Recourse, Operator.",
             href: "/learn/mental-model",
             icon: Brain,
           },

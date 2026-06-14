@@ -70,7 +70,7 @@
         <loc>https://docs.reineira.xyz/build/underwriter-policies/</loc>
     </url>
     <url>
-        <loc>https://docs.reineira.xyz/build/insurance-pools/</loc>
+        <loc>https://docs.reineira.xyz/build/recourse-pools/</loc>
     </url>
     <url>
         <loc>https://docs.reineira.xyz/build/cross-chain/</loc>
@@ -109,7 +109,7 @@
         <loc>https://docs.reineira.xyz/reference/escrow-module/</loc>
     </url>
     <url>
-        <loc>https://docs.reineira.xyz/reference/insurance-module/</loc>
+        <loc>https://docs.reineira.xyz/reference/recourse-module/</loc>
     </url>
     <url>
         <loc>https://docs.reineira.xyz/reference/mcp-server/</loc>

@@ -2,7 +2,6 @@ import DocsLayout from "@/components/layout/DocsLayout";
 import Breadcrumbs from "@/components/docs/Breadcrumbs";
 import PageHeader from "@/components/docs/PageHeader";
 import Callout from "@/components/docs/Callout";
-import CodeBlock from "@/components/docs/CodeBlock";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
 import DocsBadge from "@/components/docs/DocsBadge";
@@ -20,7 +19,7 @@ const toc: TocItem[] = [
     level: 3,
   },
   { id: "minimizing-fhe-costs", title: "Minimizing FHE costs", level: 3 },
-  { id: "insurance-benchmarks", title: "Insurance pool benchmarks", level: 2 },
+  { id: "insurance-benchmarks", title: "Recourse pool benchmarks", level: 2 },
   { id: "cctp-settlement", title: "CCTP v2 cross-chain settlement", level: 2 },
   {
     id: "optimization-tips",
@@ -60,13 +59,13 @@ const escrowBenchRows = [
     op: "escrow.fund()",
     gas: "~185,000",
     fhe: "homomorphic add (paidAmount += amount)",
-    notes: "ERC-20 transferFrom + encrypted accumulator update",
+    notes: "ERC-20 transferFrom and encrypted accumulator update",
   },
   {
     op: "escrow.redeem()",
     gas: "~320,000",
     fhe: "FHE.eq (owner check), FHE.and, FHE.select",
-    notes: "Calls isConditionMet + FHE.select for silent failure payout",
+    notes: "Calls isConditionMet and FHE.select for silent failure payout",
   },
   {
     op: "escrow.redeem() (no resolver)",
@@ -90,8 +89,8 @@ const escrowBenchRows = [
 
 const resolverBenchColumns = [
   { header: "Resolver type", key: "type", width: "220px" },
-  { header: "isConditionMet gas", key: "isMet", width: "180px" },
-  { header: "onConditionSet gas", key: "onSet", width: "180px" },
+  { header: "isConditionMet gas (est.)", key: "isMet", width: "180px" },
+  { header: "onConditionSet gas (est.)", key: "onSet", width: "180px" },
   { header: "Bottleneck", key: "bottleneck" },
 ];
 const resolverBenchRows = [
@@ -99,7 +98,7 @@ const resolverBenchRows = [
     type: "TimeLock",
     isMet: "~25,000",
     onSet: "~45,000",
-    bottleneck: "Single SLOAD + timestamp compare",
+    bottleneck: "Single SLOAD and timestamp comparison",
   },
   {
     type: "PriceFeed (Chainlink)",
@@ -118,7 +117,7 @@ const resolverBenchRows = [
     type: "Prediction (UMA Oracle)",
     isMet: "~60,000",
     onSet: "~110,000",
-    bottleneck: "External call to hasPrice + getPrice",
+    bottleneck: "External calls to hasPrice and getPrice",
   },
   {
     type: "Multi-sig (N-of-M)",
@@ -130,7 +129,7 @@ const resolverBenchRows = [
 
 const fheColumns = [
   { header: "FHE operation", key: "op", mono: true, width: "260px" },
-  { header: "Gas overhead", key: "gas", width: "180px" },
+  { header: "Gas overhead (est.)", key: "gas", width: "180px" },
   { header: "When it happens", key: "when" },
   { header: "Frequency", key: "freq", width: "140px" },
 ];
@@ -138,7 +137,7 @@ const fheRows = [
   {
     op: "encrypt(uint64)",
     gas: "~45,000 - 60,000",
-    when: "Escrow creation, insurance deposit",
+    when: "Escrow creation, recourse deposit",
     freq: "Once per value",
   },
   {
@@ -196,7 +195,7 @@ const insuranceBenchRows = [
     op: "pool.stake()",
     gas: "~220,000",
     fhe: "encrypt stake amount, add to pool total",
-    notes: "ERC-20 transfer + encrypted accumulator",
+    notes: "ERC-20 transfer and encrypted accumulator",
   },
   {
     op: "pool.unstake()",
@@ -294,7 +293,7 @@ const gasBudgetRows = [
   {
     range: "< 30,000",
     rating: <DocsBadge variant="green">Excellent</DocsBadge>,
-    guidance: "Single storage read + comparison. Ideal.",
+    guidance: "Single storage read and comparison. Ideal.",
   },
   {
     range: "30,000 - 80,000",
@@ -374,37 +373,37 @@ const summaryColumns = [
 ];
 const summaryRows = [
   {
-    flow: "Create + fund + redeem (no resolver)",
+    flow: "Create, fund, and redeem (no resolver)",
     gas: "~645,000",
     cost: "< $0.01",
     steps: "3 transactions",
   },
   {
-    flow: "Create + fund + redeem (TimeLock)",
+    flow: "Create, fund, and redeem (TimeLock)",
     gas: "~715,000",
     cost: "< $0.01",
     steps: "3 transactions",
   },
   {
-    flow: "Create + fund + submit proof + redeem (PayPal)",
+    flow: "Create, fund, submit proof, and redeem (PayPal)",
     gas: "~935,000",
     cost: "~$0.01",
     steps: "4 transactions",
   },
   {
-    flow: "Cross-chain fund (CCTP) + redeem",
+    flow: "Cross-chain fund (CCTP) and redeem",
     gas: "~580,000 (Arbitrum side)",
-    cost: "< $0.01 (Arbitrum) + L1 source cost",
+    cost: "< $0.01 (Arbitrum) and L1 source cost",
     steps: "2-3 transactions on Arbitrum",
   },
   {
-    flow: "Insurance: deposit + purchase coverage",
+    flow: "Recourse: deposit and purchase coverage",
     gas: "~530,000",
     cost: "< $0.01",
     steps: "2 transactions",
   },
   {
-    flow: "Insurance: claim + dispute + resolution",
+    flow: "Recourse: claim, dispute, and resolution",
     gas: "~910,000",
     cost: "~$0.01",
     steps: "3 transactions",
@@ -418,7 +417,7 @@ export default function GasPerformance() {
 
       <PageHeader
         title="Gas & Performance"
-        description="Detailed gas benchmarks for every protocol operation, FHE cost analysis, CCTP settlement timing, and optimization strategies for resolver writers."
+        description="Hand-estimated gas costs, FHE overhead, CCTP timing, and resolver optimizations; a measured forge snapshot baseline is still pending."
         readingTime="15 min read"
       />
 
@@ -429,11 +428,18 @@ export default function GasPerformance() {
         you design resolvers and integrations that stay fast and affordable.
       </p>
 
-      <Callout variant="warning" title="Testnet estimates">
+      <Callout variant="warning" title="Estimates, not measured benchmarks">
         <p>
-          All numbers below are testnet estimates measured on Arbitrum Sepolia
-          with FHE coprocessor devnet. Mainnet costs will vary with network
-          congestion, L1 calldata pricing, and CoFHE operator fees.
+          Every number on this page is a hand estimate for the Arbitrum-plus-FHE
+          target — there is no committed gas snapshot in the repo yet, so treat
+          the figures as order-of-magnitude guidance rather than measured
+          results. A{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            forge snapshot
+          </code>{" "}
+          baseline is pending; once it lands these tables will be replaced with
+          measured values. Actual costs will vary with network congestion, L1
+          calldata pricing, and CoFHE operator fees.
         </p>
       </Callout>
 
@@ -446,7 +452,7 @@ export default function GasPerformance() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        These are the core protocol operations. Every escrow goes through
+        These are the core protocol operations. Every Escrow goes through
         create, fund, and redeem. Each step involves FHE encryption or
         decryption, which dominates the gas cost.
       </p>
@@ -506,7 +512,7 @@ export default function GasPerformance() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         FHE coprocessor operations are the single biggest cost factor in
-        ReineiraOS. Every confidential value — escrow amounts, insurance stakes,
+        ReineiraOS. Every confidential value — escrow amounts, recourse stakes,
         risk scores — is an FHE ciphertext.
       </p>
 
@@ -562,12 +568,12 @@ export default function GasPerformance() {
           <strong className="text-docs-text-primary font-semibold">
             Cache plaintext when safe:
           </strong>{" "}
-          The{" "}
+          Escrow existence is the plaintext predicate{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            exists
+            escrowId &lt; counter
           </code>{" "}
-          flag on the escrow struct is a plaintext boolean — use it for cheap
-          existence checks before triggering FHE operations.
+          (a sequential counter comparison, not a per-record boolean) — use it
+          for cheap existence checks before triggering FHE operations.
         </li>
       </ul>
 
@@ -576,12 +582,13 @@ export default function GasPerformance() {
         id="insurance-benchmarks"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Insurance pool operation gas benchmarks
+        Recourse pool operation gas estimates
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Insurance operations follow the same FHE pattern — all financial values
-        are encrypted.
+        Recourse (Shield) operations follow the same FHE pattern — all financial
+        values are encrypted. As above, these are hand estimates, not measured
+        benchmarks.
       </p>
 
       <DocsTable columns={insuranceBenchColumns} rows={insuranceBenchRows} />
@@ -627,19 +634,28 @@ export default function GasPerformance() {
       <Callout variant="tip" title="Optimizing CCTP settlement">
         <p>
           <strong className="text-docs-text-primary font-semibold">
-            Pre-fund escrows
+            Pre-fund Escrows
           </strong>{" "}
-          with USDC already on Arbitrum to skip CCTP entirely. Use the SDK's{" "}
+          with USDC already on Arbitrum to skip CCTP entirely. To wait on a
+          cross-chain fund, use{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            awaitSettlement
+            FundResult.waitForSettlement()
           </code>{" "}
-          helper — it polls the attestation service and automatically calls{" "}
+          (or pass{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            {"escrow.fund(..., { waitForSettlement: true })"}
+          </code>
+          ). It resolves when the destination-chain{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            EscrowFunded
+          </code>{" "}
+          event fires — the operator relays the attestation and submits the
+          mint, so the SDK never calls{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             receiveMessage
           </code>{" "}
-          once the attestation is ready. Batch multiple settlements into a
-          single polling loop if funding several escrows from the same source
-          chain.
+          itself. Funding several Escrows from the same source chain can share a
+          single wait.
         </p>
       </Callout>
 

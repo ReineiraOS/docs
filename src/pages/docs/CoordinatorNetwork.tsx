@@ -7,6 +7,7 @@ import ArchitectureDiagram from "@/components/docs/ArchitectureDiagram";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
 import DocsBadge from "@/components/docs/DocsBadge";
+import StatusBadge from "@/components/docs/StatusBadge";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
@@ -62,9 +63,9 @@ const limitationRows = [
   {
     limitation: "Coordinator does not pre-verify stake",
     impact:
-      "The off-chain coordinator does not pre-check operator bond before accepting an SSE subscription. Bonding and eligibility are still enforced on-chain by the OperatorRegistry and TaskExecutor at execution time.",
+      "The off-chain coordinator does not pre-check operator bond before accepting an SSE subscription. Registration and eligibility live on-chain in the OperatorRegistry; the bond-and-slashing economics that would back them are Spec'd, not yet wired.",
     resolution:
-      "Optional coordinator-side stake check to reduce wasted dispatch to unbonded subscribers.",
+      "Optional coordinator-side stake check, once the bond economics are live, to reduce wasted dispatch to unbonded subscribers.",
   },
   {
     limitation: "Round-robin only",
@@ -99,7 +100,7 @@ export default function CoordinatorNetwork() {
 
       <PageHeader
         title="Operator Network"
-        description="The task-dispatch and coordination layer of ReineiraOS. Operators bond cUSDC on-chain and claim relay tasks; off-chain coordinators dispatch those tasks. Registration is permissionless from chaos-net Day 1."
+        description="The task-dispatch and coordination layer of ReineiraOS. Operators register on-chain and relay CCTP tasks; off-chain coordinators dispatch those tasks. Registration is permissionless from chaos-net Day 1. Operators earn relay/task fees and the protocol takes nothing. The economic-security layer (cUSDC bond, relay/task fees, slashing) is Spec'd — designed, not yet production-usable on chaos-net."
         readingTime="6 min read"
       />
 
@@ -112,10 +113,8 @@ export default function CoordinatorNetwork() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The Operator Network has two layers. On-chain, operators bond{" "}
-        <strong className="text-docs-text-primary font-semibold">cUSDC</strong>{" "}
-        — the immutable ERC-7984 confidential USDC wrapper, not a protocol token
-        — into the OperatorRegistry, then claim and execute relay tasks via the
+        The Operator Network has two layers. On-chain, operators register in the
+        OperatorRegistry, then claim and execute relay tasks via the
         TaskExecutor. Off-chain, a{" "}
         <strong className="text-docs-text-primary font-semibold">
           coordinator service
@@ -125,7 +124,32 @@ export default function CoordinatorNetwork() {
           operator nodes
         </strong>{" "}
         via Server-Sent Events (SSE). The operator node and CLI are open-source.
+        Operators can run today and relay CCTP transfers; the{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          economic-security layer
+        </strong>{" "}
+        that incentivizes and disciplines them — the cUSDC stake/bond, the
+        relay/task fees operators earn (the protocol takes nothing), and
+        slashing — is <StatusBadge status="spec" className="align-middle" />.
       </p>
+
+      <Callout
+        variant="warning"
+        title="Operator economics are Spec'd, not production-usable"
+      >
+        <p>
+          The relay machinery works on chaos-net today — the coordinator
+          dispatches, and operators can claim and execute CCTP tasks. But the
+          incentive layer is{" "}
+          <strong>designed, not yet production-usable on chaos-net</strong>: the
+          cUSDC bond, the relay/task fees operators earn, and slashing are
+          specified but not wired end-to-end. The protocol takes no cut of those
+          fees, and there is no operator subsidy and no protocol token.{" "}
+          <code>OperatorSlashingManager</code> is implemented but undeployed and
+          unwired (only an owner-emergency path can slash today). Do not treat
+          the operator network as economically secured.
+        </p>
+      </Callout>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         The coordinator is a{" "}
@@ -135,9 +159,9 @@ export default function CoordinatorNetwork() {
         : it does not custody funds or enforce eligibility. The Foundation
         operates a canonical coordinator at a published URL, but any third party
         may run an independent coordinator against the same on-chain
-        OperatorRegistry and TaskExecutor contracts. All security enforcement —
-        bonding, exclusive windows, permissionless fallback, fee collection —
-        happens on-chain.
+        OperatorRegistry and TaskExecutor contracts. Security enforcement that
+        is live — registration, exclusive windows, permissionless fallback —
+        happens on-chain; the protocol itself charges no fee.
       </p>
 
       {/* Operator registration */}
@@ -163,9 +187,16 @@ export default function CoordinatorNetwork() {
         <li>
           Posts the required{" "}
           <strong className="text-docs-text-primary font-semibold">
-            cUSDC bond
+            operator bond
           </strong>{" "}
-          to the OperatorRegistry
+          to the OperatorRegistry. The bond is denominated in{" "}
+          <strong className="text-docs-text-primary font-semibold">
+            cUSDC
+          </strong>{" "}
+          (the immutable confidential USDC wrapper), but the bond-and-slashing
+          economics are part of the Spec'd operator layer — not yet wired live
+          on chaos-net{" "}
+          <StatusBadge status="spec" className="ml-1 align-middle" />
         </li>
         <li>
           Passes sanctions screening via the optional{" "}
@@ -179,25 +210,27 @@ export default function CoordinatorNetwork() {
 
       <Callout
         variant="info"
-        title="Recommended-operators list is a signal, not a gate"
+        title="Any coordinator list is a signal, not a gate"
       >
         <p>
-          The Foundation maintains an{" "}
-          <strong>off-chain, KYB-attested "recommended-operators" list</strong>{" "}
-          used only for the subsidy programme. It is a curation signal — it is{" "}
-          <strong>not</strong> a permission gate. Operators that are not on the
-          list can still register, claim, and execute tasks permissionlessly.
+          The Foundation may publish an{" "}
+          <strong>off-chain list of operators it has worked with</strong> as a
+          curation signal — it is <strong>not</strong> a permission gate.
+          Operators that are not on any such list can still register, claim, and
+          execute tasks permissionlessly, against the canonical coordinator or
+          their own.
         </p>
       </Callout>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        During chaos-net, the{" "}
-        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-          OperatorSubsidyManager
-        </code>{" "}
-        pays operators from a Foundation-funded cUSDC pool to bootstrap
-        liquidity. The subsidy programme runs during chaos-net only and becomes
-        inert post-activation.
+        The operator economy is sustained entirely by the relay/task fees
+        operators earn — there is{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          no operator subsidy programme and no protocol token
+        </strong>
+        . The protocol takes no cut of operator fees. Those fee mechanics are
+        part of the Spec'd operator layer, not yet wired live on chaos-net.{" "}
+        <StatusBadge status="spec" className="ml-1 align-middle" />
       </p>
 
       {/* Architecture */}
@@ -264,7 +297,7 @@ export default function CoordinatorNetwork() {
           },
           {
             label: "Operator executes on-chain",
-            sublabel: "Claims + executes task",
+            sublabel: "Claims and executes task",
           },
         ]}
       />
@@ -283,10 +316,12 @@ export default function CoordinatorNetwork() {
 
       <Callout variant="info" title="On-chain enforcement">
         <p>
-          The coordinator only distributes tasks. All security enforcement —
-          staking requirements, exclusive windows, permissionless fallback, fee
-          collection — happens on-chain via the OperatorRegistry and
-          TaskExecutor contracts.
+          The coordinator only distributes tasks. Live security enforcement —
+          the exclusive window and the permissionless fallback — happens
+          on-chain via the OperatorRegistry and TaskExecutor contracts. The
+          protocol charges no fee; any operator relay fee is part of the Spec'd
+          operator economics, and the slashing that would back staking
+          requirements is Spec'd (see below).
         </p>
       </Callout>
 
@@ -316,9 +351,10 @@ export default function CoordinatorNetwork() {
         language="bash"
         lines={[
           { content: "# Subscribe to relay events for your operator address" },
+          { content: "curl -N \\", highlighted: true },
           {
             content:
-              "curl -N https://dswtxw6k9mker.cloudfront.net/operators/0xYourAddress.../subscribe",
+              "  https://dswtxw6k9mker.cloudfront.net/operators/0xYourAddress.../subscribe",
             highlighted: true,
           },
         ]}
@@ -358,7 +394,8 @@ export default function CoordinatorNetwork() {
           <strong className="text-docs-text-primary font-semibold">
             60–600 seconds:
           </strong>{" "}
-          Any active (staked, non-slashed) operator can execute
+          Any active, registered operator can execute (the stake-and-slashing
+          gate behind "active" is part of the Spec'd operator economics)
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">
@@ -377,19 +414,47 @@ export default function CoordinatorNetwork() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The shipped{" "}
+        Stake-weighted quorum slashing is{" "}
+        <StatusBadge status="spec" className="align-middle" />. The{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           OperatorSlashingManager
         </code>{" "}
-        slashes a misbehaving operator's cUSDC bond via a{" "}
+        is{" "}
         <strong className="text-docs-text-primary font-semibold">
-          single stake-weighted quorum
+          implemented
         </strong>{" "}
-        across the active operator set.
+        — it would slash a misbehaving operator's bond via a single
+        stake-weighted quorum across the active operator set — but it is{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          not deployed and not wired
+        </strong>
+        :{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          setSlashingManager
+        </code>{" "}
+        is never called, so the registry does not delegate to it. Today the only
+        active path is{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          owner-direct emergency slashing
+        </strong>{" "}
+        — the contract owner can slash, but the quorum mechanism is inert. Do
+        not rely on quorum slashing as a live discipline.
       </p>
 
+      <Callout
+        variant="warning"
+        title="Slashing is designed, not yet production-usable on chaos-net"
+      >
+        <p>
+          Because the slashing manager is undeployed and unwired, an operator's
+          bond is not actually at risk through the quorum mechanism today. The
+          economic security that slashing is meant to provide does not yet hold
+          on chaos-net.
+        </p>
+      </Callout>
+
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Two related mechanisms are specified for the v1.0 track but are{" "}
+        Two related mechanisms are also specified for the v1.0 track but are{" "}
         <strong className="text-docs-text-primary font-semibold">
           not yet shipped
         </strong>

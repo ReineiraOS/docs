@@ -6,7 +6,7 @@ import CodeBlock from "@/components/docs/CodeBlock";
 import ArchitectureDiagram from "@/components/docs/ArchitectureDiagram";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
-import DocsBadge from "@/components/docs/DocsBadge";
+import StatusBadge from "@/components/docs/StatusBadge";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
@@ -28,9 +28,17 @@ const chainColumns = [
   { header: "Status", key: "status", width: "100px" },
 ];
 const chainRows = [
-  { chain: "Arbitrum Sepolia (destination)", domain: "3", status: "Live" },
-  { chain: "Ethereum Sepolia", domain: "0", status: "Live" },
-  { chain: "Base Sepolia", domain: "6", status: "Live" },
+  {
+    chain: "Arbitrum Sepolia (destination)",
+    domain: "3",
+    status: <StatusBadge status="live" />,
+  },
+  {
+    chain: "Ethereum Sepolia",
+    domain: "0",
+    status: <StatusBadge status="live" />,
+  },
+  { chain: "Base Sepolia", domain: "6", status: <StatusBadge status="live" /> },
 ];
 
 const timingColumns = [
@@ -41,7 +49,7 @@ const timingRows = [
   { step: "USDC burn on source chain", duration: "~15 seconds" },
   { step: "Circle Iris attestation", duration: "60\u2013120 seconds" },
   {
-    step: "Operator relay + on-chain execution",
+    step: "Operator relay and on-chain execution",
     duration: "10\u201360 seconds",
   },
   { step: "Total end-to-end", duration: "~90\u2013200 seconds" },
@@ -49,19 +57,19 @@ const timingRows = [
 
 const feeColumns = [
   { header: "Fee", key: "fee" },
-  { header: "Rate", key: "rate", width: "120px" },
+  { header: "Rate", key: "rate", width: "160px" },
   { header: "Recipient", key: "recipient" },
 ];
 const feeRows = [
   {
     fee: "Operator relay fee",
-    rate: "0.35%",
+    rate: <StatusBadge status="spec" />,
     recipient: "Relay operator who executed the task",
   },
   {
-    fee: "Protocol relay fee",
-    rate: "0.15%",
-    recipient: "ReineiraOS protocol (FeeManager)",
+    fee: "Protocol take",
+    rate: "None",
+    recipient: "The protocol charges nothing",
   },
 ];
 
@@ -72,7 +80,7 @@ export default function CrossChain() {
 
       <PageHeader
         title="Cross-Chain Settlement"
-        description="ReineiraOS ships two transport rails at v1.0: Circle CCTP V2 for native USDC and LayerZero OFT / USDT0 for USDT. Both funnel into a single escrow sink, so additional bridges integrate without touching the escrow engine."
+        description="ReineiraOS bridges native USDC through its only live rail, Circle CCTP V2, into one Escrow sink that future rails can reuse."
         readingTime="6 min read"
       />
 
@@ -85,7 +93,7 @@ export default function CrossChain() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Two transport rails ship at v1.0:
+        Today there is exactly <strong>one live rail</strong>:
       </p>
 
       <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
@@ -94,27 +102,26 @@ export default function CrossChain() {
             Circle CCTP V2
           </strong>{" "}
           for USDC — native burn-mint with attestation via the Circle Iris
-          network. No wrapped tokens.
+          network. No wrapped tokens. <StatusBadge status="live" />
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">
             LayerZero OFT / USDT0
           </strong>{" "}
-          for USDT — shipped at v1.0 and available to non-U.S. / non-EU users.{" "}
-          <DocsBadge variant="green" className="ml-1">
-            Live
-          </DocsBadge>
+          for USDT — on the roadmap, not yet built. Adds a second native
+          stablecoin transport (USDT) alongside the USDC rail.{" "}
+          <StatusBadge status="spec" />
         </li>
       </ul>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Both rails are handled by their own transport handler, and both funnel
-        into a single{" "}
+        The bridge is <strong>CCTP-only</strong> today. The transport layer is
+        designed so additional rails (such as the spec'd LayerZero OFT / USDT0
+        path) register their own handler and funnel into the same{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           ConfidentialEscrow.fundFrom
         </code>{" "}
-        sink. Additional bridges integrate via handler registration without
-        modifying the escrow engine.
+        sink, without modifying the escrow engine.
       </p>
 
       <h2
@@ -138,9 +145,9 @@ export default function CrossChain() {
       />
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The diagram below traces the USDC / CCTP V2 rail. The USDT rail follows
-        an analogous burn-attest-execute path over LayerZero OFT / USDT0 but
-        terminates at the same{" "}
+        The diagram above traces the USDC / CCTP V2 rail — the only rail live
+        today. When the spec'd LayerZero OFT / USDT0 path ships, it would follow
+        an analogous burn-attest-execute pattern and terminate at the same{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           ConfidentialEscrow.fundFrom
         </code>{" "}
@@ -152,6 +159,10 @@ export default function CrossChain() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           depositForBurnWithHook()
         </code>{" "}
+        on{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          TokenMessenger
+        </code>{" "}
         on the source chain. Circle Iris signs the burn message, the coordinator
         dispatches a relay task, and an operator submits the message and
         attestation on-chain via{" "}
@@ -161,6 +172,28 @@ export default function CrossChain() {
         . USDC is then minted on the destination chain and routed to the escrow
         via hook data.
       </p>
+
+      <Callout variant="info" title="TokenMessenger vs MessageTransmitter">
+        <p>
+          These are two distinct CCTP V2 contracts.{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            TokenMessenger
+          </code>{" "}
+          does the <strong>burn</strong> on the source chain (
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            depositForBurn
+          </code>
+          );{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            MessageTransmitter
+          </code>{" "}
+          does the <strong>mint</strong> on the destination chain (
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            receiveMessage
+          </code>
+          ).
+        </p>
+      </Callout>
 
       <h2
         id="supported-chains"
@@ -172,10 +205,10 @@ export default function CrossChain() {
       <DocsTable columns={chainColumns} rows={chainRows} />
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Arbitrum Sepolia is the destination chain where all escrows and
-        insurance contracts are deployed; source chains are where buyers fund
-        from. The CCTP Domain column applies to the USDC rail — the USDT rail
-        routes over LayerZero OFT / USDT0 instead of CCTP domains.
+        Arbitrum Sepolia is the destination chain where all escrows and recourse
+        contracts are deployed; source chains are where buyers fund from. The
+        CCTP Domain column applies to the live USDC rail. The spec'd USDT rail
+        would route over LayerZero OFT / USDT0 instead of CCTP domains.
       </p>
 
       <Callout variant="warning" title="chaos-net is public and unaudited">
@@ -257,9 +290,12 @@ export default function CrossChain() {
       <DocsTable columns={feeColumns} rows={feeRows} />
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Fees are deducted from the bridged amount before settlement. For a
-        10,000 USDC transfer, 50 USDC goes to the operator, 30 USDC to the
-        protocol (FeeManager), and 9,920 USDC reaches the destination escrow.
+        The <strong>protocol charges nothing</strong> on a cross-chain transfer.
+        The only fee is the operator relay fee, which compensates the operator
+        that fronts the relay and submits it on-chain — its economics are
+        spec'd, not live, so there is no published rate to quote yet. When set,
+        any such fee is deducted from the bridged amount before settlement and
+        the remainder reaches the destination escrow.
       </p>
 
       <h2

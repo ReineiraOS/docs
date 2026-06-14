@@ -41,12 +41,12 @@ const handlerRows = [
   },
   {
     handler: "PoolRoutingHandler",
-    role: "IInsurancePool routing.",
+    role: "IRecoursePool routing.",
     status: <DocsBadge variant="amber">Spec'd · post-v1.0</DocsBadge>,
   },
   {
     handler: "LZOFTHandler",
-    role: "LayerZero OFT relay for USDT0 (the rail itself ships at v1.0).",
+    role: "LayerZero OFT relay for USDT0. The LayerZero/USDT0 rail is not built — CCTP V2/USDC is the only live bridge rail; this second rail is research/roadmap.",
     status: <DocsBadge variant="amber">Spec'd · post-v1.0</DocsBadge>,
   },
 ];
