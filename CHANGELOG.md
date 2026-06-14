@@ -1,3 +1,10 @@
+## [1.8.4](https://github.com/ReineiraOS/docs/compare/v1.8.3...v1.8.4) (2026-06-14)
+
+
+### Bug Fixes
+
+* **contracts:** update plain-mode Arb Sepolia addresses to 2026-06-14 redeploy ([cf06c0e](https://github.com/ReineiraOS/docs/commit/cf06c0e352486d23029e128696d92864c7dc4031))
+
 ## [1.8.3](https://github.com/ReineiraOS/docs/compare/v1.8.2...v1.8.3) (2026-06-14)
 
 
