@@ -175,9 +175,9 @@ export default function BuilderJourney() {
             <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
               reineira-code
             </code>
-            . Describe your Gate or Recourse Policy to Claude Code. It
-            generates the Solidity contract, tests, and deployment script.
-            Deploy to Arbitrum Sepolia.
+            . Describe your Gate or Recourse Policy to Claude Code. It generates
+            the Solidity contract, tests, and deployment script. Deploy to
+            Arbitrum Sepolia.
           </p>
           <CodeBlock
             filename="terminal"
@@ -254,10 +254,9 @@ export default function BuilderJourney() {
         </code>{" "}
         command is the entry point — it reads your venture brief and generates
         both your venture workspace (docs, agents, skills, data model) and a
-        working
-        application scaffolded from platform-modules. After bootstrap, you have
-        12 specialized agents for protocol, product, strategy, growth, ops, and
-        legal work.
+        working application scaffolded from platform-modules. After bootstrap,
+        you have 12 specialized agents for protocol, product, strategy, growth,
+        ops, and legal work.
       </p>
 
       <h3
@@ -315,9 +314,9 @@ export default function BuilderJourney() {
             /bootstrap
           </code>
           , it reads your brief, generates your venture workspace, then
-          scaffolds a
-          working app from platform-modules — customized with your venture name,
-          entities, and branding. After deploying contracts via Code,{" "}
+          scaffolds a working app from platform-modules — customized with your
+          venture name, entities, and branding. After deploying contracts via
+          Code,{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             /integrate
           </code>{" "}
@@ -330,7 +329,10 @@ export default function BuilderJourney() {
         title="DATA FLOW"
         steps={[
           { label: "brief.md", sublabel: "Your venture brief" },
-          { label: "/bootstrap", sublabel: "Atlas scaffolds workspace and app" },
+          {
+            label: "/bootstrap",
+            sublabel: "Atlas scaffolds workspace and app",
+          },
           { label: "reineira-code", sublabel: "Build Gates & Recourse" },
           { label: "/integrate", sublabel: "Wire protocol to app" },
           { label: "Ship", sublabel: "Deploy to Vercel and Arbitrum" },

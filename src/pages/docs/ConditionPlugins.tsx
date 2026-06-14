@@ -139,8 +139,7 @@ export default function ConditionPlugins() {
 
       <Callout variant="info" title="Both hooks fire atomically at creation">
         <p>
-          At escrow creation the protocol calls{" "}
-          <strong>both</strong>{" "}
+          At escrow creation the protocol calls <strong>both</strong>{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             onConditionSet
           </code>{" "}
@@ -180,7 +179,10 @@ export default function ConditionPlugins() {
         </p>
       </Callout>
 
-      <Callout variant="warning" title="Illustrative patterns, not shipped contracts">
+      <Callout
+        variant="warning"
+        title="Illustrative patterns, not shipped contracts"
+      >
         <p>
           The four resolvers below —{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
@@ -199,7 +201,8 @@ export default function ConditionPlugins() {
             TimeLockResolver
           </code>{" "}
           — are <strong>illustrative patterns</strong> to copy, not contracts
-          shipped in this protocol repo. The only resolver shipped in-protocol is{" "}
+          shipped in this protocol repo. The only resolver shipped in-protocol
+          is{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             MockConditionResolver
           </code>{" "}
@@ -398,12 +401,10 @@ export default function ConditionPlugins() {
           { content: "        );" },
           { content: "        require(" },
           {
-            content:
-              "            keccak256(bytes(extractedMerchantId)) ==",
+            content: "            keccak256(bytes(extractedMerchantId)) ==",
           },
           {
-            content:
-              "                keccak256(bytes(config.merchantId)),",
+            content: "                keccak256(bytes(config.merchantId)),",
           },
           { content: '            "Merchant ID mismatch"' },
           { content: "        );" },
@@ -786,7 +787,10 @@ export default function ConditionPlugins() {
         showLineNumbers={true}
       />
 
-      <Callout variant="warning" title="Third-party address — verify before use">
+      <Callout
+        variant="warning"
+        title="Third-party address — verify before use"
+      >
         <p>
           The feed address{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
@@ -1097,7 +1101,10 @@ export default function ConditionPlugins() {
         showLineNumbers={true}
       />
 
-      <Callout variant="warning" title="Third-party address — verify before use">
+      <Callout
+        variant="warning"
+        title="Third-party address — verify before use"
+      >
         <p>
           The oracle address{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">

@@ -44,7 +44,8 @@ const interfaceRows = [
   {
     fn: "evaluateRisk",
     when: "Coverage purchase",
-    returns: "uint256 riskScore (plain) / euint64 (confidential), 0\u201310000 bps",
+    returns:
+      "uint256 riskScore (plain) / euint64 (confidential), 0\u201310000 bps",
     purpose: "Determines the premium the buyer pays",
   },
   {
@@ -130,20 +131,24 @@ export default function UnderwriterPolicies() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           IUnderwriterPolicy
         </code>{" "}
-        returns <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+        returns{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           uint256 riskScore
         </code>{" "}
-        and <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+        and{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           bool valid
         </code>
         ; the encrypted{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           IConfidentialUnderwriterPolicy
         </code>{" "}
-        returns <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+        returns{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           euint64
         </code>{" "}
-        and <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+        and{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           ebool
         </code>
         .
@@ -290,8 +295,8 @@ export default function UnderwriterPolicies() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        A policy for a P2P marketplace where buyers pay sellers via PayPal (using
-        the zkTLS resolver from the{" "}
+        A policy for a P2P marketplace where buyers pay sellers via PayPal
+        (using the zkTLS resolver from the{" "}
         <a
           href="/build/condition-resolvers"
           className="text-brand-primary font-medium hover:underline"
@@ -302,13 +307,16 @@ export default function UnderwriterPolicies() {
         transaction after the seller already redeemed crypto.
       </p>
 
-      <Callout variant="info" title="Illustrative — you author and register your own policy">
+      <Callout
+        variant="info"
+        title="Illustrative — you author and register your own policy"
+      >
         <p>
           This example returns <code>euint64</code> / <code>ebool</code>, so it
           implements <code>IConfidentialUnderwriterPolicy</code> (the encrypted
           interface). It would not compile against the plain{" "}
-          <code>IUnderwriterPolicy</code>, which expects{" "}
-          <code>uint256</code> / <code>bool</code>. The protocol ships only{" "}
+          <code>IUnderwriterPolicy</code>, which expects <code>uint256</code> /{" "}
+          <code>bool</code>. The protocol ships only{" "}
           <code>MockUnderwriterPolicy</code> and{" "}
           <code>MockConfidentialUnderwriterPolicy</code> — there is no shipped{" "}
           <code>P2PMarketplacePolicy</code>. Underwriters author and deploy
@@ -656,7 +664,8 @@ export default function UnderwriterPolicies() {
               "// 2. Owner registers it protocol-wide (ERC-165-checked):",
           },
           {
-            content: "//    PolicyRegistry.registerPolicy('0xP2PMarketplacePolicy...')",
+            content:
+              "//    PolicyRegistry.registerPolicy('0xP2PMarketplacePolicy...')",
           },
           {
             content: "// 3. Pool Creator curates it onto the pool:",

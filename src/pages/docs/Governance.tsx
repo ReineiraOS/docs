@@ -11,7 +11,11 @@ import type { TocItem } from "@/components/layout/TableOfContents";
 const toc: TocItem[] = [
   { id: "posture", title: "Public-Infrastructure posture", level: 2 },
   { id: "software-vendor", title: "Software Vendor, not operator", level: 2 },
-  { id: "immutable", title: "Upgradeability & the immutability target", level: 2 },
+  {
+    id: "immutable",
+    title: "Upgradeability & the immutability target",
+    level: 2,
+  },
   { id: "authorities", title: "What the privileged roles can do", level: 2 },
   { id: "phases", title: "Path to immutability", level: 2 },
 ];
@@ -96,18 +100,18 @@ export default function Governance() {
         Software Vendor, not operator
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        <strong>Reineira Labs Limited is the Software Vendor.</strong> It authors
-        the protocol contracts, publishes the Reineira Settlement Standard (RSS),
-        distributes the builder stack, maintains documentation, coordinates
-        external audits, and deploys the canonical reference implementation. It
-        does <strong>not</strong> operate the protocol, does{" "}
+        <strong>Reineira Labs Limited is the Software Vendor.</strong> It
+        authors the protocol contracts, publishes the Reineira Settlement
+        Standard (RSS), distributes the builder stack, maintains documentation,
+        coordinates external audits, and deploys the canonical reference
+        implementation. It does <strong>not</strong> operate the protocol, does{" "}
         <strong>not</strong> custody user funds, and at v1.0 holds no admin keys
         on deployed contracts (there are none to hold). There is{" "}
-        <strong>no protocol token</strong> and{" "}
-        <strong>no protocol fee</strong>: any fees in the system are set and kept
-        by independent third parties — Gate builders, recourse pools and their
-        LPs, and operators — for the work or capital they supply. Reineira Labs
-        is a software company funded by equity.
+        <strong>no protocol token</strong> and <strong>no protocol fee</strong>:
+        any fees in the system are set and kept by independent third parties —
+        Gate builders, recourse pools and their LPs, and operators — for the
+        work or capital they supply. Reineira Labs is a software company funded
+        by equity.
       </p>
 
       <h2
@@ -166,9 +170,9 @@ export default function Governance() {
           <p className="text-docs-text-secondary leading-relaxed">
             Reineira Labs Limited authors and deploys the contracts as
             owner-upgradeable UUPS proxies, publishes RSS, and coordinates
-            audits. Source under BUSL-1.1 converting to Apache 2.0 on the
-            Change Date <code className="not-italic">2029-06-01</code>. The
-            upgrade surface is stewarded via the owner key while the protocol is
+            audits. Source under BUSL-1.1 converting to Apache 2.0 on the Change
+            Date <code className="not-italic">2029-06-01</code>. The upgrade
+            surface is stewarded via the owner key while the protocol is
             iterated and audited.
           </p>
         </Step>
@@ -191,8 +195,9 @@ export default function Governance() {
           can steal escrowed funds, change escrow terms, bypass a gate, or
           decrypt your state. While the owner can still ship UUPS upgrades on
           chaos-net (the v1.0 mainnet target renounces that key), there is no
-          token and no protocol fee — the Software Vendor publishes the open-source
-          software and coordinates audits, it does not touch your money.
+          token and no protocol fee — the Software Vendor publishes the
+          open-source software and coordinates audits, it does not touch your
+          money.
         </p>
       </Callout>
 

@@ -208,7 +208,8 @@ export default function RecoursePools() {
           the Manager. Per-staker reward distribution is not live:{" "}
           <code>pendingRewards()</code> returns <code>0</code> and{" "}
           <code>claimRewards()</code> emits an event but transfers nothing on
-          both <code>RecoursePool</code> and <code>ConfidentialRecoursePool</code>
+          both <code>RecoursePool</code> and{" "}
+          <code>ConfidentialRecoursePool</code>
           . Build against the interface; do not promise stakers a yield stream
           yet. <StatusBadge status="spec" detail="per-LP rewards" />
         </p>
@@ -323,14 +324,16 @@ export default function RecoursePools() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           addPolicy()
         </code>{" "}
-        reverts <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+        reverts{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           InvalidPolicy
         </code>{" "}
         otherwise.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        On the public track, <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+        On the public track,{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           PlainPoolInstance
         </code>{" "}
         exposes the full Creator / Manager surface:
@@ -397,7 +400,8 @@ export default function RecoursePools() {
       </h3>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Pools carry an <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+        Pools carry an{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           isOpen
         </code>{" "}
         flag. Open pools let anyone purchase coverage. Private pools require an
@@ -405,17 +409,20 @@ export default function RecoursePools() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           CoverageInviteLib
         </code>
-        ) — vouchers are revocable and carry a <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+        ) — vouchers are revocable and carry a{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           maxUses
         </code>{" "}
         cap. On the public track,{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           purchaseCoverage
         </code>{" "}
-        accepts <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+        accepts{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           invite
         </code>{" "}
-        and <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+        and{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           inviteSig
         </code>{" "}
         fields; the encrypted (FHE) coverage path does not support invites yet.
@@ -468,7 +475,8 @@ export default function RecoursePools() {
               { content: "  policy: '0xPolicy...'," },
               { content: "  escrowId: escrow.id,", highlighted: true },
               {
-                content: "  coverageAmount: sdk.usdc(50000), // capped to escrow",
+                content:
+                  "  coverageAmount: sdk.usdc(50000), // capped to escrow",
                 highlighted: true,
               },
               {
@@ -487,7 +495,10 @@ export default function RecoursePools() {
                   "const status = await coverage.status() // Active | Claimed | Expired",
               },
               { content: "" },
-              { content: "// File a dispute — resolves Active -> Claimed atomically" },
+              {
+                content:
+                  "// File a dispute — resolves Active -> Claimed atomically",
+              },
               {
                 content: "await coverage.dispute('0xProofBytes...')",
               },
@@ -549,12 +560,15 @@ export default function RecoursePools() {
           { content: "await pool.unstake(stakeId)" },
           { content: "" },
           {
-            content:
-              "// Per-LP reward distribution is Spec'd (not live):",
+            content: "// Per-LP reward distribution is Spec'd (not live):",
           },
-          { content: "// pendingRewards() returns 0, claimRewards() is a no-op." },
           {
-            content: "// Premiums accrue to the pool; the Manager calls claimPremiums().",
+            content:
+              "// pendingRewards() returns 0, claimRewards() is a no-op.",
+          },
+          {
+            content:
+              "// Premiums accrue to the pool; the Manager calls claimPremiums().",
           },
         ]}
         showLineNumbers={false}
@@ -569,7 +583,8 @@ export default function RecoursePools() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        On the encrypted track (<code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+        On the encrypted track (
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           sdk.recourse
         </code>
         ), all financial values in the Recourse system are FHE-encrypted:

@@ -380,13 +380,16 @@ export default function EnterpriseChecklist() {
 
       <DocsTable columns={auditColumns} rows={auditRows} />
 
-      <Callout variant="warning" title="No external audit yet — chaos-net is unaudited">
+      <Callout
+        variant="warning"
+        title="No external audit yet — chaos-net is unaudited"
+      >
         <p>
           The badges above reflect the internal Phase 7 self-review only. No
           external smart-contract audit is complete; a comprehensive third-party
-          audit is planned prior to production launch and the external auditor is
-          not yet engaged. Chaos-net is unaudited — do not use it for real funds.
-          Follow the{" "}
+          audit is planned prior to production launch and the external auditor
+          is not yet engaged. Chaos-net is unaudited — do not use it for real
+          funds. Follow the{" "}
           <a
             href="/learn/security"
             className="text-brand-primary font-medium hover:underline"

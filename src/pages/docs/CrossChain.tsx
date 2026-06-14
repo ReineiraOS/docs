@@ -33,7 +33,11 @@ const chainRows = [
     domain: "3",
     status: <StatusBadge status="live" />,
   },
-  { chain: "Ethereum Sepolia", domain: "0", status: <StatusBadge status="live" /> },
+  {
+    chain: "Ethereum Sepolia",
+    domain: "0",
+    status: <StatusBadge status="live" />,
+  },
   { chain: "Base Sepolia", domain: "6", status: <StatusBadge status="live" /> },
 ];
 
@@ -98,8 +102,7 @@ export default function CrossChain() {
             Circle CCTP V2
           </strong>{" "}
           for USDC — native burn-mint with attestation via the Circle Iris
-          network. No wrapped tokens.{" "}
-          <StatusBadge status="live" />
+          network. No wrapped tokens. <StatusBadge status="live" />
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">

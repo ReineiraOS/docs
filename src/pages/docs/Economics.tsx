@@ -124,7 +124,10 @@ const operatorParamColumns = [
 ];
 const operatorParamRows = [
   { param: "Monthly relay volume", value: "500,000 USDC" },
-  { param: "Operator relay fee rate", value: "Operator-set (Spec'd; not yet enabled)" },
+  {
+    param: "Operator relay fee rate",
+    value: "Operator-set (Spec'd; not yet enabled)",
+  },
   { param: "Number of relay tasks", value: "100" },
   { param: "Bond asset", value: "Specified" },
   { param: "Unbonding period", value: "Specified" },
@@ -245,8 +248,7 @@ export default function Economics() {
         The protocol itself charges nothing. Every fee below is set by the party
         that earns it — a builder, an underwriter, or an operator. None of them
         flow to the protocol, and rates are theirs to set (or zero). The
-        operator relay fee and slasher reward are{" "}
-        <StatusBadge status="spec" />.
+        operator relay fee and slasher reward are <StatusBadge status="spec" />.
       </p>
 
       <h3
@@ -294,8 +296,7 @@ export default function Economics() {
         id="operator-subsidy"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Operator subsidy{" "}
-        <StatusBadge status="spec" />
+        Operator subsidy <StatusBadge status="spec" />
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -457,11 +458,11 @@ export default function Economics() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Operators run relay nodes that execute cross-chain CCTP tasks: fetching
-        Circle attestations and submitting relay transactions on-chain. They earn
-        an operator relay fee they configure on the USDC amount they bridge, with
-        a bootstrap subsidy while volume ramps. The full mechanism — bond, relay
-        fee, slashing, subsidy — is <StatusBadge status="spec" />, so the worked
-        example below is illustrative.
+        Circle attestations and submitting relay transactions on-chain. They
+        earn an operator relay fee they configure on the USDC amount they
+        bridge, with a bootstrap subsidy while volume ramps. The full mechanism
+        — bond, relay fee, slashing, subsidy — is <StatusBadge status="spec" />,
+        so the worked example below is illustrative.
       </p>
 
       <h3
@@ -477,7 +478,10 @@ export default function Economics() {
         filename="operator-math"
         language="bash"
         lines={[
-          { content: "# Monthly operator revenue — rate r is operator-set (Spec'd; not yet enabled)" },
+          {
+            content:
+              "# Monthly operator revenue — rate r is operator-set (Spec'd; not yet enabled)",
+          },
           {
             content: "$500,000 x r = monthly relay revenue",
             highlighted: true,
@@ -644,10 +648,10 @@ export default function Economics() {
 
       <Callout variant="info" title="Aligned incentives">
         <p>
-          The protocol takes no cut of premiums or settlement — every fee accrues
-          to the builder, underwriter, or operator who configured it. The
-          protocol succeeds when they do. That alignment is the zero-fee posture,
-          not a treasury that grows with volume.
+          The protocol takes no cut of premiums or settlement — every fee
+          accrues to the builder, underwriter, or operator who configured it.
+          The protocol succeeds when they do. That alignment is the zero-fee
+          posture, not a treasury that grows with volume.
         </p>
       </Callout>
 

@@ -240,12 +240,23 @@ export default function ReineiraSDK() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         The SDK exposes six modules accessible as properties. The encrypted
-        (confidential) modules — <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">escrow</code>{" "}
-        and <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">recourse</code> — are the v1.0
-        form; the public (plain) modules —{" "}
-        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">escrowPlain</code>{" "}
-        and <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">recoursePlain</code> — are
-        live on chaos-net today.
+        (confidential) modules —{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          escrow
+        </code>{" "}
+        and{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          recourse
+        </code>{" "}
+        — are the v1.0 form; the public (plain) modules —{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          escrowPlain
+        </code>{" "}
+        and{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          recoursePlain
+        </code>{" "}
+        — are live on chaos-net today.
       </p>
 
       <CodeBlock
@@ -253,8 +264,7 @@ export default function ReineiraSDK() {
         language="typescript"
         lines={[
           {
-            content:
-              "// Encrypted (confidential) — v1.0 mainnet form",
+            content: "// Encrypted (confidential) — v1.0 mainnet form",
           },
           {
             content:
@@ -274,8 +284,7 @@ export default function ReineiraSDK() {
           },
           { content: "" },
           {
-            content:
-              "// Public (plain) — live on chaos-net today",
+            content: "// Public (plain) — live on chaos-net today",
           },
           {
             content:

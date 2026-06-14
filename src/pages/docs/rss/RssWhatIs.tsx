@@ -90,8 +90,8 @@ export default function RssWhatIs() {
         RSS does <strong>not</strong> mandate upgradeability — conforming
         implementations may be upgradeable, immutable, or hybrid (the v1.0
         reference implementation is immutable). RSS does not cover token
-        economics, fee policy, governance, the execution stack for
-        self-hosted deployments, or the builder stack (Atlas, Code).
+        economics, fee policy, governance, the execution stack for self-hosted
+        deployments, or the builder stack (Atlas, Code).
       </p>
 
       <h2

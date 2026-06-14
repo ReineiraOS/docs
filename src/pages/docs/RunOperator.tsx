@@ -114,8 +114,7 @@ export default function RunOperator() {
         register without Foundation invitation. The CLI, service, and relay all
         work today; the cUSDC bond, the relay/task fees operators earn (the
         protocol takes nothing), and slashing that make up the operator
-        economics are{" "}
-        <StatusBadge status="spec" className="align-middle" />.
+        economics are <StatusBadge status="spec" className="align-middle" />.
       </p>
 
       <Callout
@@ -125,9 +124,9 @@ export default function RunOperator() {
         <p>
           You can build from source, register, run the service, and relay CCTP
           transfers on chaos-net today. But the incentive layer is{" "}
-          <strong>designed, not yet production-usable on chaos-net</strong>:
-          the cUSDC stake/bond, the relay/task fees operators earn, and slashing
-          are specified but not wired end-to-end. The protocol takes no cut, and
+          <strong>designed, not yet production-usable on chaos-net</strong>: the
+          cUSDC stake/bond, the relay/task fees operators earn, and slashing are
+          specified but not wired end-to-end. The protocol takes no cut, and
           there is no operator subsidy and no protocol token. Run an operator to
           test the relay path, not to earn — and do not treat a posted bond as
           economically at risk yet.
@@ -248,8 +247,7 @@ export default function RunOperator() {
                   "# Coordinator to connect to. Defaults to http://localhost:3001 if unset —",
               },
               {
-                content:
-                  "# set it explicitly to point at a real coordinator.",
+                content: "# set it explicitly to point at a real coordinator.",
               },
               {
                 content: "export COORDINATOR_URL=https://your-coordinator...",
@@ -348,15 +346,17 @@ export default function RunOperator() {
         denominated in{" "}
         <strong className="text-docs-text-primary font-semibold">cUSDC</strong>{" "}
         (bound in OperatorRegistry at deployment) and the 7-day unbonding period
-        is hardcoded — but the bond-and-slashing layer is not wired end-to-end on
-        chaos-net, so the bond does not yet act as live, slashable collateral.
+        is hardcoded — but the bond-and-slashing layer is not wired end-to-end
+        on chaos-net, so the bond does not yet act as live, slashable
+        collateral.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         An optional ISanctionsOracle can be wired into the OperatorRegistry;
         when configured, it blocks registration of listed addresses. Beyond that
         there is no admission gate. The operator economy is sustained by the
-        relay/task fees operators earn — the protocol takes nothing, and there is{" "}
+        relay/task fees operators earn — the protocol takes nothing, and there
+        is{" "}
         <strong className="text-docs-text-primary font-semibold">
           no operator subsidy programme and no protocol token
         </strong>
@@ -438,18 +438,18 @@ export default function RunOperator() {
 
       <DocsTable columns={economicsColumns} rows={economicsRows} />
 
-      <Callout
-        variant="warning"
-        title="No live operator earnings on chaos-net"
-      >
+      <Callout variant="warning" title="No live operator earnings on chaos-net">
         <p>
           The cUSDC bond, the relay/task fees operators earn, and slashing that
-          would let an operator earn are <strong>Spec'd — designed, but not yet
-          production-usable on chaos-net</strong>. The protocol itself charges
-          no fee and takes no cut of operator fees; there is no operator subsidy
-          and no protocol token. No operator relay fee is collected today. Run
-          an operator to exercise and test the relay path; do not expect revenue
-          until the economic layer is wired and live.
+          would let an operator earn are{" "}
+          <strong>
+            Spec'd — designed, but not yet production-usable on chaos-net
+          </strong>
+          . The protocol itself charges no fee and takes no cut of operator
+          fees; there is no operator subsidy and no protocol token. No operator
+          relay fee is collected today. Run an operator to exercise and test the
+          relay path; do not expect revenue until the economic layer is wired
+          and live.
         </p>
       </Callout>
 

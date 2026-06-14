@@ -148,19 +148,25 @@ export default function RecourseModule() {
       />
 
       <p className="text-docs-text-secondary leading-relaxed mb-4 mt-2">
-        This is <strong className="text-docs-text-primary font-semibold">Recourse</strong> — the
-        protocol primitive behind the Shield product. The encrypted track (
+        This is{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          Recourse
+        </strong>{" "}
+        — the protocol primitive behind the Shield product. The encrypted track
+        (
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           sdk.recourse
         </code>
-        , <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+        ,{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           ConfidentialRecoursePool
         </code>
         ) is the v1.0 target; the public track (
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           sdk.recoursePlain
         </code>
-        , <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+        ,{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           RecoursePool.sol
         </code>
         ) is live on chaos-net today.{" "}
@@ -356,10 +362,12 @@ export default function RecourseModule() {
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             removePolicy()
           </code>{" "}
-          on PoolInstance. <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          on PoolInstance.{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             addPolicy()
           </code>{" "}
-          reverts <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          reverts{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             InvalidPolicy
           </code>{" "}
           unless the policy is already registered.

@@ -212,8 +212,8 @@ export default function Contracts() {
       <Callout variant="warning" title="Upgradeable today, immutable at v1.0">
         <p>
           The contracts below are <strong>upgradeable today</strong> on
-          chaos-net. They are deployed behind{" "}
-          <strong>UUPS proxies</strong> with an{" "}
+          chaos-net. They are deployed behind <strong>UUPS proxies</strong> with
+          an{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             Ownable
           </code>{" "}
@@ -223,15 +223,15 @@ export default function Contracts() {
           </code>{" "}
           hook — the deployment JSONs carry a proxy-and-implementation pair for
           each address, and the implementation can be swapped behind the same
-          proxy address. <strong>Immutability is the v1.0 mainnet target</strong>
-          , not today's state: at v1.0 the upgrade key is relinquished so the
-          addresses can no longer be upgraded in place. ERC-7201 namespaced
-          storage with{" "}
+          proxy address.{" "}
+          <strong>Immutability is the v1.0 mainnet target</strong>, not today's
+          state: at v1.0 the upgrade key is relinquished so the addresses can no
+          longer be upgraded in place. ERC-7201 namespaced storage with{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             __gap[50]
           </code>{" "}
-          keeps the storage layout forward-compatible across upgrades. The tables
-          on this page list the current chaos-net addresses; they are a
+          keeps the storage layout forward-compatible across upgrades. The
+          tables on this page list the current chaos-net addresses; they are a
           documentation surface, not an on-chain registry.
         </p>
       </Callout>
@@ -454,7 +454,10 @@ export default function Contracts() {
         ]}
       />
 
-      <Callout variant="warning" title="ERC-165 expected (not enforced at wiring)">
+      <Callout
+        variant="warning"
+        title="ERC-165 expected (not enforced at wiring)"
+      >
         <p>
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             IConditionResolver
@@ -472,8 +475,7 @@ export default function Contracts() {
             true
           </code>{" "}
           for the interface ID. Note that this is an interface requirement and
-          best practice, but the escrow does{" "}
-          <strong>not</strong> call{" "}
+          best practice, but the escrow does <strong>not</strong> call{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             supportsInterface
           </code>{" "}

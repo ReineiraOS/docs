@@ -132,8 +132,8 @@ export default function L3Deployments() {
         <p>
           Self-deployed L3s do <strong>not</strong> ship their own CCTP V2
           handlers (or the spec'd LayerZero OFT rail, once built) — those bridge
-          transports operate at the L1/L2 layer, not L3. The native rollup bridge
-          is the only required transport.
+          transports operate at the L1/L2 layer, not L3. The native rollup
+          bridge is the only required transport.
         </p>
       </Callout>
 

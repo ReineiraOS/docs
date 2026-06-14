@@ -371,7 +371,11 @@ export default function EscrowModule() {
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
         Public track (Plain){" "}
-        <StatusBadge status="live" detail="chaos-net" className="align-middle" />
+        <StatusBadge
+          status="live"
+          detail="chaos-net"
+          className="align-middle"
+        />
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -391,9 +395,8 @@ export default function EscrowModule() {
         publicMode={
           <div>
             <p>
-              <code>sdk.escrowPlain</code> (the{" "}
-              <code>PlainEscrowModule</code>) returns a{" "}
-              <code>PlainEscrowInstance</code> backed by the{" "}
+              <code>sdk.escrowPlain</code> (the <code>PlainEscrowModule</code>)
+              returns a <code>PlainEscrowInstance</code> backed by the{" "}
               <code>Escrow.sol</code> contract and the <code>plain*</code>{" "}
               deployment addresses. State (owner, amount, paidAmount, redeemed)
               is readable on-chain. This is what is live on chaos-net.
@@ -419,10 +422,7 @@ export default function EscrowModule() {
         exposes a comparable surface:
       </p>
 
-      <DocsTable
-        columns={plainInstanceColumns}
-        rows={plainInstanceRows}
-      />
+      <DocsTable columns={plainInstanceColumns} rows={plainInstanceRows} />
 
       <CodeBlock
         filename="plain-escrow.ts"

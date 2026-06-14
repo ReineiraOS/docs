@@ -123,11 +123,11 @@ export default function EscrowLifecycle() {
         </code>{" "}
         contract holds owner, caller, amount, paidAmount, and the redeemed flag
         as FHE ciphertexts (caller is retained distinctly from owner for
-        fee-authorisation checks); existence is the plaintext predicate
-        escrowId &lt; counter. The owner-match, fully-funded, and not-redeemed
-        checks are branchless — a failing redemption transfers zero instead of
-        reverting, preventing information leakage — while the Gate condition is
-        checked in plaintext and reverts.
+        fee-authorisation checks); existence is the plaintext predicate escrowId
+        &lt; counter. The owner-match, fully-funded, and not-redeemed checks are
+        branchless — a failing redemption transfers zero instead of reverting,
+        preventing information leakage — while the Gate condition is checked in
+        plaintext and reverts.
       </p>
 
       <ArchitectureDiagram
@@ -247,7 +247,10 @@ export default function EscrowLifecycle() {
         filename="create-vault.ts"
         language="typescript"
         lines={[
-          { content: "// The SDK encrypts owner and amount, then calls create()" },
+          {
+            content:
+              "// The SDK encrypts owner and amount, then calls create()",
+          },
           { content: "const escrow = await sdk.escrow.create({" },
           { content: "  amount: sdk.usdc(1000),", highlighted: true },
           { content: "  owner: beneficiary,", highlighted: true },
@@ -348,8 +351,8 @@ export default function EscrowLifecycle() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           paidAmount
         </code>
-        . Wrapping plain USDC into a confidential balance happens upstream — only
-        in{" "}
+        . Wrapping plain USDC into a confidential balance happens upstream —
+        only in{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           CCTPV2ConfidentialEscrowReceiver.settle()
         </code>
@@ -471,7 +474,8 @@ export default function EscrowLifecycle() {
             highlighted: true,
           },
           {
-            content: "        FHE.eq(escrow.owner, FHE.asEaddress(msg.sender)),",
+            content:
+              "        FHE.eq(escrow.owner, FHE.asEaddress(msg.sender)),",
             highlighted: true,
           },
           {

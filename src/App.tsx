@@ -133,7 +133,10 @@ const App = () => (
       <Route path="/build/gas-performance" element={<GasPerformance />} />
       {/* Legacy redirects — Build */}
       <Route path="/build/condition-plugins" element={<ConditionPlugins />} />
-      <Route path="/build/insurance-policies" element={<UnderwriterPolicies />} />
+      <Route
+        path="/build/insurance-policies"
+        element={<UnderwriterPolicies />}
+      />
       <Route
         path="/build/insurance-pools"
         element={<Navigate to="/build/recourse-pools" replace />}

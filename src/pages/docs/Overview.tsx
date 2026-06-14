@@ -247,8 +247,8 @@ export default function Overview() {
             is the v1.0 milestone.
           </li>
           <li>
-            <strong>No protocol fee.</strong> The protocol takes no cut. Any fees
-            are builder- and role-configurable (a Gate's condition fee, an
+            <strong>No protocol fee.</strong> The protocol takes no cut. Any
+            fees are builder- and role-configurable (a Gate's condition fee, an
             underwriter's premium); the operator relay fee is specified.
           </li>
           <li>

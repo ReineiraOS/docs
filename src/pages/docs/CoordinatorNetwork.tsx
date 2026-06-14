@@ -190,10 +190,12 @@ export default function CoordinatorNetwork() {
             operator bond
           </strong>{" "}
           to the OperatorRegistry. The bond is denominated in{" "}
-          <strong className="text-docs-text-primary font-semibold">cUSDC</strong>{" "}
+          <strong className="text-docs-text-primary font-semibold">
+            cUSDC
+          </strong>{" "}
           (the immutable confidential USDC wrapper), but the bond-and-slashing
-          economics are part of the Spec'd operator layer — not yet wired live on
-          chaos-net{" "}
+          economics are part of the Spec'd operator layer — not yet wired live
+          on chaos-net{" "}
           <StatusBadge status="spec" className="ml-1 align-middle" />
         </li>
         <li>
@@ -315,11 +317,11 @@ export default function CoordinatorNetwork() {
       <Callout variant="info" title="On-chain enforcement">
         <p>
           The coordinator only distributes tasks. Live security enforcement —
-          the exclusive window and the permissionless fallback — happens on-chain
-          via the OperatorRegistry and TaskExecutor contracts. The protocol
-          charges no fee; any operator relay fee is part of the Spec'd operator
-          economics, and the slashing that would back staking requirements is{" "}
-          Spec'd (see below).
+          the exclusive window and the permissionless fallback — happens
+          on-chain via the OperatorRegistry and TaskExecutor contracts. The
+          protocol charges no fee; any operator relay fee is part of the Spec'd
+          operator economics, and the slashing that would back staking
+          requirements is Spec'd (see below).
         </p>
       </Callout>
 
@@ -417,7 +419,10 @@ export default function CoordinatorNetwork() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           OperatorSlashingManager
         </code>{" "}
-        is <strong className="text-docs-text-primary font-semibold">implemented</strong>{" "}
+        is{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          implemented
+        </strong>{" "}
         — it would slash a misbehaving operator's bond via a single
         stake-weighted quorum across the active operator set — but it is{" "}
         <strong className="text-docs-text-primary font-semibold">
