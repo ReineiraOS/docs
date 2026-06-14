@@ -30,7 +30,7 @@ const techReqColumns = [
 ];
 
 const techReqRows = [
-  { requirement: "Runtime", details: "Node.js 18+" },
+  { requirement: "Runtime", details: "Node.js 20+" },
   { requirement: "SDK", details: "@reineira-os/sdk" },
   { requirement: "Smart contracts", details: "Solidity 0.8.24+, Hardhat" },
   { requirement: "FHE backend", details: "CoFHE coprocessor" },
@@ -52,27 +52,27 @@ const auditColumns = [
 const auditRows = [
   {
     component: "Escrow (ConfidentialEscrow)",
-    status: <DocsBadge variant="green">Internal review complete</DocsBadge>,
+    status: <DocsBadge variant="green">Internal review</DocsBadge>,
   },
   {
     component: "Gate (IConditionResolver)",
-    status: <DocsBadge variant="green">Internal review complete</DocsBadge>,
+    status: <DocsBadge variant="green">Internal review</DocsBadge>,
   },
   {
-    component: "Insurance contracts",
-    status: <DocsBadge variant="amber">Interfaces defined</DocsBadge>,
+    component: "Recourse contracts",
+    status: <DocsBadge variant="green">Internal review</DocsBadge>,
   },
   {
     component: "Cross-Chain (CCTP V2)",
-    status: <DocsBadge variant="green">Internal review complete</DocsBadge>,
+    status: <DocsBadge variant="green">Internal review</DocsBadge>,
   },
   {
     component: "Operator network",
-    status: <DocsBadge variant="green">Internal review complete</DocsBadge>,
+    status: <DocsBadge variant="green">Internal review</DocsBadge>,
   },
   {
-    component: "Third-party audit",
-    status: <DocsBadge variant="blue">Planned</DocsBadge>,
+    component: "External third-party audit",
+    status: <DocsBadge variant="blue">Not yet engaged</DocsBadge>,
   },
 ];
 
@@ -182,7 +182,7 @@ export default function EnterpriseChecklist() {
               destination chains)
             </li>
             <li>
-              Assess insurance coverage requirements for your transaction types
+              Assess recourse coverage requirements for your transaction types
             </li>
           </ul>
         </Step>
@@ -242,10 +242,10 @@ export default function EnterpriseChecklist() {
             <li>
               Configure{" "}
               <a
-                href="/build/insurance-policies"
+                href="/build/underwriter-policies"
                 className="text-brand-primary font-medium hover:underline"
               >
-                insurance policies
+                recourse policies
               </a>{" "}
               and pool coverage
             </li>
@@ -284,8 +284,8 @@ export default function EnterpriseChecklist() {
           </p>
           <ul className="space-y-1.5 list-disc list-inside text-docs-text-secondary">
             <li>
-              Map money transmission requirements for your operating
-              jurisdictions
+              Map the regulatory requirements that apply to your application in
+              your operating jurisdictions
             </li>
             <li>
               Document the non-custodial architecture (escrows are
@@ -310,7 +310,7 @@ export default function EnterpriseChecklist() {
               Define data retention and deletion policies compatible with FHE
               constraints
             </li>
-            <li>Review insurance pool terms and underwriter obligations</li>
+            <li>Review recourse pool terms and underwriter obligations</li>
           </ul>
         </Step>
 
@@ -372,22 +372,35 @@ export default function EnterpriseChecklist() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Current audit and review status for each protocol component:
+        Current review status for each protocol component.{" "}
+        <strong>Internal review</strong> means the component was covered by the
+        internal Phase 7 self-review, not by an external auditor. No external
+        smart-contract audit is complete as of publication.
       </p>
 
       <DocsTable columns={auditColumns} rows={auditRows} />
 
-      <Callout variant="info" title="Audit timeline">
+      <Callout variant="warning" title="No external audit yet — chaos-net is unaudited">
         <p>
-          A comprehensive third-party audit is planned prior to production
-          launch. Follow the{" "}
+          The badges above reflect the internal Phase 7 self-review only. No
+          external smart-contract audit is complete; a comprehensive third-party
+          audit is planned prior to production launch and the external auditor is
+          not yet engaged. Chaos-net is unaudited — do not use it for real funds.
+          Follow the{" "}
           <a
             href="/learn/security"
             className="text-brand-primary font-medium hover:underline"
           >
             Security
           </a>{" "}
-          page for updates.
+          and{" "}
+          <a
+            href="/risk"
+            className="text-brand-primary font-medium hover:underline"
+          >
+            Risk &amp; Audit Status
+          </a>{" "}
+          pages for updates.
         </p>
       </Callout>
 

@@ -39,7 +39,7 @@ const toolRows = [
   },
   {
     tool: "get_contracts",
-    desc: "Deployed contract addresses on Arbitrum Sepolia, filterable by category (Escrow, Insurance, Orchestration, etc.).",
+    desc: "Deployed contract addresses on Arbitrum Sepolia, filterable by category (Escrow, Recourse, Orchestration, etc.).",
   },
   {
     tool: "get_interfaces",
@@ -110,9 +110,10 @@ export default function McpServer() {
         language="bash"
         showLineNumbers={false}
         lines={[
+          { content: "claude mcp add reineira-docs --transport http \\" },
           {
             content:
-              "claude mcp add reineira-docs --transport http https://zyx576c546w4m4ag7nzhf467du0wixjg.lambda-url.us-east-2.on.aws/",
+              "  https://zyx576c546w4m4ag7nzhf467du0wixjg.lambda-url.us-east-2.on.aws/",
           },
         ]}
       />
@@ -196,7 +197,7 @@ export default function McpServer() {
         <li>"Search the docs for CCTP cross-chain settlement"</li>
         <li>"Show me the IUnderwriterPolicy interface"</li>
         <li>"What Solidity version does ReineiraOS use?"</li>
-        <li>"How do I create an insurance pool?"</li>
+        <li>"How do I create a recourse pool?"</li>
       </ul>
 
       <Callout variant="info" title="Source of truth">

@@ -22,7 +22,7 @@ export default function ResearchPreviews() {
 
       <PageHeader
         title="Research Previews"
-        description="Exploratory directions with no committed scope or delivery date. These are research notes, not roadmap items."
+        description="Exploratory research directions with no committed scope, design, delivery date, or roadmap status."
         readingTime="4 min read"
       />
 

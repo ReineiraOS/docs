@@ -35,14 +35,7 @@ const releaseRows = [
     milestone: "chaos-net (Q4 2026)",
     status: <DocsBadge variant="amber">Spec'd</DocsBadge>,
     notes:
-      "Adds async + agentic interfaces and the first five RIPs; bundles the formal conformance suite.",
-  },
-  {
-    version: "v1.0",
-    milestone: "TGE (Q3 / Q4 2027)",
-    status: <DocsBadge variant="amber">Spec'd</DocsBadge>,
-    notes:
-      "Conformance suite extends to the async, agentic, and execution surfaces.",
+      "Adds async and agentic interfaces and the first five RIPs; bundles the formal conformance suite.",
   },
 ];
 
@@ -53,7 +46,7 @@ export default function RssVersioning() {
 
       <PageHeader
         title="Versioning & RIPs"
-        description="RSS is semver-versioned per the manifest. Changes are admitted through the Reineira Improvement Proposal (RIP) process — the EIP analog."
+        description="RSS is semver-versioned through the manifest, with changes admitted through Reineira Improvement Proposals (RIPs), the EIP analog."
         readingTime="4 min read"
       />
 

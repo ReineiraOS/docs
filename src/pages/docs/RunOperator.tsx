@@ -8,7 +8,7 @@ import ArchitectureDiagram from "@/components/docs/ArchitectureDiagram";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
 import Steps, { Step } from "@/components/docs/Steps";
-import DocsBadge from "@/components/docs/DocsBadge";
+import StatusBadge from "@/components/docs/StatusBadge";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
@@ -33,7 +33,7 @@ const requirementRows = [
   {
     req: "Bond asset",
     details:
-      "cUSDC — an immutable ERC-7984 USDC wrapper. The OperatorRegistry accepts the configured bond asset; amount is configurable via OperatorRegistry.",
+      "cUSDC (the immutable confidential USDC wrapper) is the specified operator bond, bound in OperatorRegistry at deployment. The bond/slashing layer is Spec'd — not yet wired live on chaos-net, so do not treat a posted bond as slashable collateral yet.",
   },
   {
     req: "ETH",
@@ -41,7 +41,7 @@ const requirementRows = [
   },
   {
     req: "RPC endpoints",
-    details: "Arbitrum Sepolia + each source chain you intend to relay for",
+    details: "Arbitrum Sepolia and each source chain you intend to relay for",
   },
   {
     req: "Private key",
@@ -50,7 +50,7 @@ const requirementRows = [
   { req: "Node.js", details: "v20 LTS or higher" },
   {
     req: "System",
-    details: "Linux/macOS, 2+ CPU cores, 4 GB RAM, stable internet",
+    details: "Linux/macOS, at least 2 CPU cores, 4 GB RAM, stable internet",
   },
 ];
 
@@ -59,27 +59,27 @@ const economicsColumns = [
   { header: "Value", key: "value" },
 ];
 const economicsRows = [
-  { metric: "Operator relay fee", value: "0.35% (35 bps) of bridged USDC" },
   {
-    metric: "Protocol relay fee",
-    value: "0.15% (15 bps) of bridged USDC (separate from operator fee)",
+    metric: "Protocol fee",
+    value: "None \u2014 the protocol charges nothing",
   },
   {
-    metric: "Escrow settlement fee",
-    value: "0.25% (25 bps) on escrow redemption",
+    metric: "Operator relay/task fee",
+    value:
+      "Operator's own charge, kept by the operator (no protocol cut). Spec'd \u2014 no live rate; not collected on chaos-net today",
   },
   {
-    metric: "Minimum bond",
-    value: "Configurable via OperatorRegistry (cUSDC)",
+    metric: "Operator subsidy / token",
+    value: "None \u2014 no subsidy programme and no protocol token",
+  },
+  {
+    metric: "Bond asset",
+    value:
+      "cUSDC (bound in OperatorRegistry at deployment). Spec'd \u2014 not yet wired live on chaos-net",
   },
   {
     metric: "Unbonding period",
     value: "7 days (hardcoded in OperatorRegistry)",
-  },
-  { metric: "Example: 10,000 USDC relay", value: "35 USDC operator earnings" },
-  {
-    metric: "Fee settlement",
-    value: "Automatic \u2014 credited to operator wallet on task completion",
   },
 ];
 
@@ -90,7 +90,7 @@ export default function RunOperator() {
 
       <PageHeader
         title="Run an Operator"
-        description="Operators are staked relay nodes that execute cross-chain CCTP v2 settlement tasks. They relay burn-and-mint messages between chains and earn fees on every operation."
+        description="Operators are relay nodes that execute cross-chain CCTP v2 settlement tasks, relaying burn-and-mint messages between chains. You can build, run, and relay today. Operators earn relay/task fees and the protocol takes nothing. The economics that reward and discipline operators — the cUSDC stake/bond, relay/task fees, and slashing — are Spec'd: designed, not yet production-usable on chaos-net."
         readingTime="8 min read"
       />
 
@@ -105,14 +105,34 @@ export default function RunOperator() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        You bond cUSDC on-chain, connect to the coordinator via SSE, and execute
+        You register on-chain, connect to the coordinator via SSE, and execute
         cross-chain CCTP relay tasks. The coordinator distributes tasks via
         round-robin. On-chain contracts (OperatorRegistry, TaskExecutor) enforce
-        bonding requirements, exclusive windows, and fee collection.
-        Registration is permissionless from chaos-net day 1: any address that
-        meets the bond requirement, is sanctions-clean, and has not been
-        previously slashed can register without Foundation invitation.
+        the exclusive window and the permissionless fallback. Registration is
+        permissionless from chaos-net day 1: any address that meets the on-chain
+        criteria, is sanctions-clean, and has not been previously slashed can
+        register without Foundation invitation. The CLI, service, and relay all
+        work today; the cUSDC bond, the relay/task fees operators earn (the
+        protocol takes nothing), and slashing that make up the operator
+        economics are{" "}
+        <StatusBadge status="spec" className="align-middle" />.
       </p>
+
+      <Callout
+        variant="warning"
+        title="Operator economics are Spec'd, not production-usable"
+      >
+        <p>
+          You can build from source, register, run the service, and relay CCTP
+          transfers on chaos-net today. But the incentive layer is{" "}
+          <strong>designed, not yet production-usable on chaos-net</strong>:
+          the cUSDC stake/bond, the relay/task fees operators earn, and slashing
+          are specified but not wired end-to-end. The protocol takes no cut, and
+          there is no operator subsidy and no protocol token. Run an operator to
+          test the relay path, not to earn — and do not treat a posted bond as
+          economically at risk yet.
+        </p>
+      </Callout>
 
       <DocsTable
         columns={[
@@ -122,7 +142,8 @@ export default function RunOperator() {
         rows={[
           {
             prop: "Relay fee",
-            value: "35 bps (0.35%) of bridged USDC per relay",
+            value:
+              "Spec'd operator economics — the protocol charges no fee; no live operator-fee rate",
           },
           {
             prop: "Exclusive window",
@@ -164,18 +185,37 @@ export default function RunOperator() {
       </h2>
 
       <Steps>
-        <Step title="Install the operator CLI">
+        <Step title="Build the operator CLI from source">
+          <p className="text-docs-text-secondary leading-relaxed mb-3">
+            The operator CLI (
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              @reineira-os/operator-cli
+            </code>
+            , bin{" "}
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              reineira-operator
+            </code>
+            ) is{" "}
+            <strong className="text-docs-text-primary font-semibold">
+              not published to npm
+            </strong>
+            . Build it from the monorepo workspace:
+          </p>
           <CodeBlock
             filename="terminal"
             language="bash"
             lines={[
+              { content: "# From the repo root, install workspace deps" },
+              { content: "npm install" },
+              { content: "" },
+              { content: "# Build the CLI workspace" },
               {
-                content: "npm install -g @reineira-ops/operator-cli",
+                content: "npm run build -w @reineira-os/operator-cli",
                 highlighted: true,
               },
               { content: "" },
-              { content: "# Verify installation" },
-              { content: "reineira-operator --version" },
+              { content: "# Verify the bin resolves" },
+              { content: "npx reineira-operator --version" },
             ]}
             showLineNumbers={false}
           />
@@ -202,16 +242,43 @@ export default function RunOperator() {
                 content:
                   "export SOURCE_RPC_BASE_SEPOLIA=https://base-sepolia-rpc...",
               },
+              { content: "" },
+              {
+                content:
+                  "# Coordinator to connect to. Defaults to http://localhost:3001 if unset —",
+              },
+              {
+                content:
+                  "# set it explicitly to point at a real coordinator.",
+              },
+              {
+                content: "export COORDINATOR_URL=https://your-coordinator...",
+                highlighted: true,
+              },
             ]}
             showLineNumbers={false}
           />
         </Step>
         <Step title="Register as an operator">
+          <p className="text-docs-text-secondary leading-relaxed mb-3">
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              register
+            </code>{" "}
+            requires a{" "}
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              --stake
+            </code>{" "}
+            argument and errors without it (the stake amount is part of the
+            Spec'd operator economics — the figure below is illustrative):
+          </p>
           <CodeBlock
             filename="terminal"
             language="bash"
             lines={[
-              { content: "reineira-operator register", highlighted: true },
+              {
+                content: "reineira-operator register --stake 5000",
+                highlighted: true,
+              },
               { content: "" },
               { content: "# Verify your registration" },
               { content: "reineira-operator status" },
@@ -220,24 +287,49 @@ export default function RunOperator() {
           />
         </Step>
         <Step title="Start the operator service">
+          <p className="text-docs-text-secondary leading-relaxed mb-3">
+            The operator service (
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              @reineira-os/operator
+            </code>
+            ) is a NestJS app with{" "}
+            <strong className="text-docs-text-primary font-semibold">
+              no bin
+            </strong>{" "}
+            — there is nothing to{" "}
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              npx
+            </code>
+            . Build it, then start it from the workspace:
+          </p>
           <CodeBlock
             filename="terminal"
             language="bash"
             lines={[
+              { content: "# Build the service workspace first" },
+              { content: "npm run build -w @reineira-os/operator" },
+              { content: "" },
               {
                 content:
-                  "# Start the operator agent (connects to coordinator via SSE)",
+                  "# Start the service (connects to COORDINATOR_URL via SSE)",
               },
-              { content: "npx @reineira-ops/operator", highlighted: true },
+              {
+                content: "npm run start -w @reineira-os/operator",
+                highlighted: true,
+              },
             ]}
             showLineNumbers={false}
           />
           <p className="text-docs-text-secondary leading-relaxed mt-3">
-            The operator connects to the coordinator at{" "}
+            The service connects to the coordinator at{" "}
             <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-              dswtxw6k9mker.cloudfront.net
+              COORDINATOR_URL
             </code>{" "}
-            via SSE and automatically receives and executes relay tasks.
+            (it does not auto-connect to any hosted URL; the default is{" "}
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              http://localhost:3001
+            </code>
+            ) via SSE and then receives and executes relay tasks.
           </p>
         </Step>
       </Steps>
@@ -251,29 +343,25 @@ export default function RunOperator() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        You bond cUSDC on-chain via the OperatorRegistry contract. cUSDC is an
-        immutable ERC-7984 USDC wrapper, and it is the configured bond asset —
-        not a governance token. The bond acts as collateral and is slashable for
-        misbehavior. The minimum bond amount is configurable via the
-        OperatorRegistry. Unbonding period is 7 days (hardcoded).
+        Staking is part of the Spec'd operator economics{" "}
+        <StatusBadge status="spec" className="align-middle" />. The bond is
+        denominated in{" "}
+        <strong className="text-docs-text-primary font-semibold">cUSDC</strong>{" "}
+        (bound in OperatorRegistry at deployment) and the 7-day unbonding period
+        is hardcoded — but the bond-and-slashing layer is not wired end-to-end on
+        chaos-net, so the bond does not yet act as live, slashable collateral.
       </p>
-
-      <Callout variant="info" title="No REINEIRA token yet">
-        <p>
-          The operator bond is denominated in cUSDC, not in a REINEIRA token.{" "}
-          <DocsBadge variant="amber">Spec&apos;d</DocsBadge> The REINEIRA token
-          does not exist yet — it is conditional on future triggers and has no
-          launch date. Do not treat the bond as a governance-token stake.
-        </p>
-      </Callout>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         An optional ISanctionsOracle can be wired into the OperatorRegistry;
-        when configured, it blocks registration of listed addresses. A separate
-        Foundation-funded subsidy programme (OperatorSubsidyManager) pays
-        operators from a cUSDC pool during chaos-net only, against an off-chain
-        eligibility list (typically KYB-attested). If you're not on the list you
-        still participate normally — you simply receive no subsidy.
+        when configured, it blocks registration of listed addresses. Beyond that
+        there is no admission gate. The operator economy is sustained by the
+        relay/task fees operators earn — the protocol takes nothing, and there is{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          no operator subsidy programme and no protocol token
+        </strong>
+        . Those fee mechanics are Spec'd, not yet wired live on chaos-net{" "}
+        <StatusBadge status="spec" className="align-middle" />.
       </p>
 
       <CodeBlock
@@ -281,7 +369,10 @@ export default function RunOperator() {
         language="bash"
         lines={[
           { content: "# Check current stake and status" },
-          { content: "reineira-operator stake" },
+          { content: "reineira-operator stake info" },
+          { content: "" },
+          { content: "# Add to your stake" },
+          { content: "reineira-operator stake add --amount 1000" },
           { content: "" },
           { content: "# Begin unbonding (starts the 7-day cooldown)" },
           { content: "reineira-operator unbond" },
@@ -325,8 +416,10 @@ export default function RunOperator() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           TaskExecutor.executeTask()
         </code>
-        . CCTP mints USDC on Arbitrum Sepolia, funds are routed to the escrow
-        via hook data, and fees are collected by FeeManager.
+        . CCTP mints USDC on Arbitrum Sepolia and funds are routed to the escrow
+        via hook data. The protocol itself takes no fee; any operator relay fee
+        is part of the Spec'd operator economics and is not collected on
+        chaos-net today.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -345,11 +438,20 @@ export default function RunOperator() {
 
       <DocsTable columns={economicsColumns} rows={economicsRows} />
 
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Fees are deducted from the bridged amount before settlement. For a
-        10,000 USDC transfer, 50 USDC goes to the operator, 30 USDC to the
-        protocol, and 9,920 USDC reaches the destination escrow.
-      </p>
+      <Callout
+        variant="warning"
+        title="No live operator earnings on chaos-net"
+      >
+        <p>
+          The cUSDC bond, the relay/task fees operators earn, and slashing that
+          would let an operator earn are <strong>Spec'd — designed, but not yet
+          production-usable on chaos-net</strong>. The protocol itself charges
+          no fee and takes no cut of operator fees; there is no operator subsidy
+          and no protocol token. No operator relay fee is collected today. Run
+          an operator to exercise and test the relay path; do not expect revenue
+          until the economic layer is wired and live.
+        </p>
+      </Callout>
 
       {/* Monitoring */}
       <h2
@@ -434,6 +536,17 @@ export default function RunOperator() {
         showLineNumbers={false}
       />
 
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          unbond
+        </code>{" "}
+        supports a{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          --confirm
+        </code>{" "}
+        flag to skip the interactive prompt.
+      </p>
+
       <Callout variant="info" title="Unbonding period">
         <p>
           The 7-day unbonding period is hardcoded in the OperatorRegistry
@@ -441,7 +554,10 @@ export default function RunOperator() {
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             UNBOND_PERIOD = 7 days
           </code>
-          ). During this period, your stake remains locked and slashable.
+          ). During this period your stake remains locked. Slashing of that
+          stake is Spec'd — the slashing manager is implemented but not yet
+          wired — so the stake is not actually slashable through the quorum
+          mechanism on chaos-net today.
         </p>
       </Callout>
 

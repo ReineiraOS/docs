@@ -64,7 +64,7 @@ const componentRows = [
       "Core interface ships; reference resolvers are spec'd separately below.",
   },
   {
-    component: "Encrypted-state Insurance",
+    component: "Encrypted-state Recourse (Shield)",
     status: <StatusBadge status="chaos-net" />,
     notes: "Coverage manager + IUnderwriterPolicy. Public mode at chaos-net.",
   },
@@ -77,13 +77,13 @@ const componentRows = [
     component: "FeeManager (zero-fee posture)",
     status: <StatusBadge status="chaos-net" />,
     notes:
-      "Zero fees through chaos-net, block-locked by MAINNET_ACTIVATION_BLOCK — no governance toggle.",
+      "The protocol charges nothing. Fee bps are owner-settable with no block gate; zero fees are policy, not a bytecode constant.",
   },
   {
     component: "OperatorSubsidyManager",
-    status: <StatusBadge status="chaos-net" />,
+    status: <StatusBadge status="spec" />,
     notes:
-      "Active during the chaos-net window only — Foundation-funded cUSDC subsidies; inert after mainnet activation.",
+      "Spec'd, no contract exists — an operator-onboarding cUSDC subsidy for the chaos-net window; build against the intent, not a live contract.",
   },
   {
     component: "OperatorSlashingManager",
@@ -98,8 +98,9 @@ const componentRows = [
   },
   {
     component: "LayerZero OFT Handlers (USDT0 rail)",
-    status: <StatusBadge status="chaos-net" />,
-    notes: "Shipped at v1.0 alongside CCTP V2, for non-U.S./non-EU users.",
+    status: <StatusBadge status="spec" />,
+    notes:
+      "Spec'd second cross-chain rail (USDT0); designed to ship at v1.0 alongside CCTP V2. CCTP V2 / USDC is the one live cross-chain rail today.",
   },
   {
     component: "Encrypted mode (Fhenix CoFHE)",
@@ -140,10 +141,10 @@ const componentRows = [
     notes: "Standard specifies ahead of code; lands at RSS v0.2 (Q4 2026).",
   },
   {
-    component: "Three-entity stack (Entity Stack)",
-    status: <StatusBadge status="spec" detail="Phase 2" />,
+    component: "Immutable singletons (no upgrade authority)",
+    status: <StatusBadge status="spec" detail="v1.0 mainnet" />,
     notes:
-      "Single entity today; full three-entity stack at Phase 2 (Q1–Q2 2027).",
+      "Owner-upgradeable UUPS proxies on chaos-net today; ownership is renounced to reach immutable bytecode with no upgrade authority at v1.0 mainnet.",
   },
   {
     component: "Agentic handlers (AgentCall / VerdictSubmit / PoolRouting)",
@@ -208,29 +209,9 @@ const openRows = [
     target: "deferred indefinitely; conditional on a future RSS revision",
   },
   {
-    id: "9.1 / 9.2 Token bridge / OP-Stack native bridge",
+    id: "9.1 OP-Stack host native bridge",
     status: <StatusBadge status="research" />,
-    target: "conditional on TGE / host activation milestones",
-  },
-  {
-    id: "10.1 / 13.1 Compliance certification roadmap",
-    status: <StatusBadge status="research" />,
-    target: "post-mainnet activation",
-  },
-  {
-    id: "11.1 FATF Travel Rule applicability",
-    status: <StatusBadge status="research" />,
-    target: "pre-mainnet activation",
-  },
-  {
-    id: "11.2 DevCo → Foundation transition",
-    status: <StatusBadge status="research" />,
-    target: "prior to Phase 2 (Q1–Q2 2027)",
-  },
-  {
-    id: "12.1 / 12.2 REINEIRA token decimals / TGE trigger calibration",
-    status: <StatusBadge status="research" />,
-    target: "prior to any TGE event",
+    target: "deferred to OP-Stack host activation milestone",
   },
 ];
 
@@ -241,7 +222,7 @@ export default function Status() {
 
       <PageHeader
         title="Status & Roadmap"
-        description="An honest, component-by-component view of what ships when. Built from the protocol's implementation notes and open problems."
+        description="A component-by-component view of delivery milestones, based on the protocol's implementation notes and open problems."
         readingTime="6 min read"
       />
 

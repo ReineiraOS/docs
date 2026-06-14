@@ -4,46 +4,19 @@ import PageHeader from "@/components/docs/PageHeader";
 import Callout from "@/components/docs/Callout";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
-import DocsBadge from "@/components/docs/DocsBadge";
 import Steps, { Step } from "@/components/docs/Steps";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
 const toc: TocItem[] = [
   { id: "posture", title: "Public-Infrastructure posture", level: 2 },
-  { id: "entity-stack", title: "Three-entity stack", level: 2 },
-  { id: "immutable", title: "Immutable contracts", level: 2 },
+  { id: "software-vendor", title: "Software Vendor, not operator", level: 2 },
+  { id: "immutable", title: "Upgradeability & the immutability target", level: 2 },
   { id: "authorities", title: "What the privileged roles can do", level: 2 },
-  { id: "participation", title: "Participation Policy & bond", level: 2 },
-  { id: "conditional-tge", title: "Conditional TGE & the DAO", level: 2 },
-  { id: "phases", title: "Phases", level: 2 },
+  { id: "phases", title: "Path to immutability", level: 2 },
 ];
 
 const { prev, next } = getPrevNext("/learn/governance");
-
-const entityColumns = [
-  { header: "Entity", key: "entity", width: "200px" },
-  { header: "Jurisdiction", key: "juris", width: "130px" },
-  { header: "Role", key: "role" },
-];
-
-const entityRows = [
-  {
-    entity: "Reineira Labs Limited (DevCo)",
-    juris: "RAK DAO Free Zone, UAE",
-    role: "Software Vendor — authors the contracts, publishes the RSS standard, maintains docs, deploys the canonical reference implementation, coordinates audits. Does not operate the protocol, custody funds, or provide financial services.",
-  },
-  {
-    entity: "Reineira HoldCo",
-    juris: "British Virgin Islands",
-    role: "Parent entity; counterparty to Convertible Note / SAFE instruments (Reg S, non-U.S. investors). Holds equity in DevCo. Does not custody protocol IP.",
-  },
-  {
-    entity: "Reineira Foundation",
-    juris: "Cayman Islands",
-    role: "IP assignee from Phase 2; conditional token issuance (if the token-launch triggers are met); DAO custody; ParticipationBond custody; grant-programme and Foundation-operated-services administrator.",
-  },
-];
 
 const authorityColumns = [
   { header: "Authority", key: "auth", width: "210px" },
@@ -52,24 +25,24 @@ const authorityColumns = [
 
 const authorityRows = [
   {
-    auth: "Upgrade authority",
-    can: "None. Contracts are immutable singletons — no UUPS proxy, no _authorizeUpgrade hook, no admin upgrade key on any contract.",
+    auth: "Upgrade authority (owner)",
+    can: "On chaos-net today, every contract is UUPS-upgradeable behind a proxy: TestnetCoreBase gates _authorizeUpgrade with onlyOwner, so the contract owner can ship a new implementation. Renouncing this authority to reach immutable bytecode is the v1.0 mainnet target, not the current state.",
   },
   {
     auth: "slashingManager",
-    can: "Execute OperatorRegistry.slash and route slashed stake, via OperatorSlashingManager (with owner as backstop).",
+    can: "Execute OperatorRegistry.slash and route slashed stake, via OperatorSlashingManager (with owner as backstop). Slashing is spec'd — the manager is undeployed and unwired on chaos-net.",
   },
   {
     auth: "Coverage Manager admin",
-    can: "Admin setters (setEscrow, setPoolFactory) and policy registration. Cannot upgrade or migrate state-bearing contracts. DevCo (Phase 1) → Foundation multisig (Phase 2).",
+    can: "Admin setters (setEscrow, setPoolFactory) and policy registration, plus the owner-gated proxy upgrade hook on chaos-net. At v1.0 there is no upgrade hook and no admin key on a state-bearing contract.",
   },
   {
-    auth: "Fee governance (post-activation)",
-    can: "Set fee bps into storage within an immutable bytecode ceiling. Cannot raise the ceiling (requires a new immutable FeeManager) and cannot collect any fee before MAINNET_ACTIVATION_BLOCK.",
+    auth: "Fee governance",
+    can: "Set fee bps into FeeManager storage (owner-settable, no block gate). The protocol charges nothing today; zero-fee is the posture the owner maintains, not a constant baked into bytecode.",
   },
   {
     auth: "Trusted Forwarder (ERC-2771)",
-    can: "Attribute the original signer for sponsored gas. Foundation-published, KYB-pinned allowlist.",
+    can: "Attribute the original signer for sponsored gas. The forwarder address is bound at construction of the protocol base contract.",
   },
 ];
 
@@ -79,9 +52,9 @@ export default function Governance() {
       <Breadcrumbs />
 
       <PageHeader
-        title="Governance & Entity Stack"
-        description="ReineiraOS is Public Infrastructure: immutable contracts deployed by a Software Vendor, with no upgrade authority and no token at launch."
-        readingTime="9 min read"
+        title="Governance Posture"
+        description="ReineiraOS is Public Infrastructure published by a Software Vendor, with no token and no fees. Contracts are owner-upgradeable on chaos-net today; renouncing that authority to reach immutable bytecode with no upgrade authority is the v1.0 mainnet target."
+        readingTime="7 min read"
       />
 
       <h2
@@ -91,62 +64,80 @@ export default function Governance() {
         Public-Infrastructure posture
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        ReineiraOS launches as Public Infrastructure. Every contract is an{" "}
-        <strong>immutable singleton</strong> with no upgrade authority; protocol
-        fees are pinned at zero through chaos-net by a block-locked activation
-        constant; operators bond <strong>cUSDC</strong>, not a token; and a{" "}
-        <strong>REINEIRA token does not exist yet</strong> — any issuance is
-        conditional on the token-launch trigger conditions. Reineira Labs
-        Limited (RAK DAO Free Zone, UAE) deploys the contracts as a{" "}
-        <strong>Software Vendor</strong>, not as an operator of the protocol.
+        ReineiraOS launches as Public Infrastructure. On chaos-net today every
+        contract is <strong>UUPS-upgradeable</strong> behind a proxy, with the
+        upgrade hook gated by the contract owner; converging on{" "}
+        <strong>immutable singletons with no upgrade authority</strong> is the
+        v1.0 mainnet target rather than the current state. The protocol{" "}
+        <strong>charges nothing</strong> — zero fees are a posture the owner
+        maintains, not a constant locked into bytecode. Operators post a spec'd{" "}
+        <strong>cUSDC bond</strong>, not a token, and{" "}
+        <strong>there is no token</strong>. Reineira Labs Limited deploys the
+        contracts as a <strong>Software Vendor</strong>, not as an operator of
+        the protocol.
       </p>
 
-      <Callout variant="info" title="Governance does not vote on upgrades">
+      <Callout variant="info" title="Governance on the path to immutability">
         <p>
-          Because the contracts are immutable, there is no upgrade to govern. No
-          entity — DevCo, HoldCo, Foundation, or any future DAO — holds upgrade
-          authority. New functionality ships as{" "}
+          Today the contract owner can ship UUPS upgrades, so governance has a
+          real upgrade surface to steward. The v1.0 mainnet target is to
+          renounce that authority and freeze the bytecode; once there, no party
+          holds upgrade authority over the deployed contracts, and new
+          functionality would ship only as{" "}
           <strong>new contract deployments at new addresses</strong> that you
           opt into.
         </p>
       </Callout>
 
       <h2
-        id="entity-stack"
+        id="software-vendor"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Three-entity stack
+        Software Vendor, not operator
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Governance is split across three entities. The full stack is reached at
-        Phase 2.{" "}
-        <DocsBadge variant="amber">Spec'd · Phase 2 (Q1–Q2 2027)</DocsBadge>
+        <strong>Reineira Labs Limited is the Software Vendor.</strong> It authors
+        the protocol contracts, publishes the Reineira Settlement Standard (RSS),
+        distributes the builder stack, maintains documentation, coordinates
+        external audits, and deploys the canonical reference implementation. It
+        does <strong>not</strong> operate the protocol, does{" "}
+        <strong>not</strong> custody user funds, and at v1.0 holds no admin keys
+        on deployed contracts (there are none to hold). There is{" "}
+        <strong>no protocol token</strong> and{" "}
+        <strong>no protocol fee</strong>: any fees in the system are set and kept
+        by independent third parties — Gate builders, recourse pools and their
+        LPs, and operators — for the work or capital they supply. Reineira Labs
+        is a software company funded by equity.
       </p>
-      <DocsTable columns={entityColumns} rows={entityRows} />
 
       <h2
         id="immutable"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Immutable contracts
+        Upgradeability &amp; the immutability target
       </h2>
       <blockquote className="border-l-4 border-docs-border-strong pl-4 my-6 text-docs-text-secondary leading-relaxed italic">
         <p>
-          Every contract is an immutable singleton at a fixed address. No entity
-          holds upgrade authority. There is no UUPS proxy, no{" "}
-          <code className="not-italic">_authorizeUpgrade</code> hook, no Owner
-          role with upgrade privileges, and no admin key on any escrow, coverage
-          manager, operator registry, fee manager, or token wrapper. Storage and
-          logic are both frozen at deployment.
+          On chaos-net today, every state-bearing contract sits behind a UUPS
+          proxy. The shared base —{" "}
+          <code className="not-italic">TestnetCoreBase</code> — is{" "}
+          <code className="not-italic">UUPSUpgradeable</code> and{" "}
+          <code className="not-italic">OwnableUpgradeable</code> and gates{" "}
+          <code className="not-italic">_authorizeUpgrade(address)</code> with{" "}
+          <code className="not-italic">onlyOwner</code>, so the owner can ship a
+          new implementation. The deployment JSONs carry matching proxy and
+          implementation pairs. Freezing logic and storage by renouncing the
+          upgrade key is the <strong>v1.0 mainnet target</strong>, not a
+          property that holds today.
         </p>
       </blockquote>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Contracts still use ERC-7201 namespaced storage and carry a{" "}
+        Contracts use ERC-7201 namespaced storage and carry a{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           __gap[50]
         </code>{" "}
-        reserve — not for in-place upgrades (there are none) but so a future
-        immutable redeployment can share storage conventions.
+        reserve so that UUPS upgrades can extend storage without colliding with
+        existing slots — standard upgrade-safety practice for layout evolution.
       </p>
 
       <h2
@@ -156,117 +147,52 @@ export default function Governance() {
         What the privileged roles can do
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Five authorities partition the protocol's privileged surface. None can
-        upgrade a contract, withdraw escrowed funds, modify escrow terms,
-        force-resolve a gate, or decrypt FHE state without explicit permission.
+        Five authorities partition the protocol's privileged surface. The owner
+        can ship UUPS upgrades on chaos-net today (the immutable-bytecode target
+        removes this later), but no authority can withdraw escrowed funds,
+        modify escrow terms, force-resolve a gate, or decrypt FHE state without
+        explicit permission.
       </p>
       <DocsTable columns={authorityColumns} rows={authorityRows} />
-
-      <h2
-        id="participation"
-        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
-      >
-        Participation Policy &amp; bond
-      </h2>
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Under the Participation Policy, the Foundation commits to{" "}
-        <strong>not</strong> act as operator, pool creator, pool manager, or
-        curator on any role-collapsed venue. The commitment is collateralised by
-        a <strong>$1M-equivalent ParticipationBond denominated in cUSDC</strong>
-        , deployed empty at chaos-net and funded from Phase 2 capital if and
-        when SAFT/QF rounds execute. Any Foundation key that participates on a
-        role-collapsed venue forfeits the bond; quarterly{" "}
-        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-          NonParticipationAttestation
-        </code>{" "}
-        events build an immutable record.
-      </p>
-      <Callout variant="info" title="Three sequenced commitments">
-        <ul className="space-y-2 list-disc list-inside">
-          <li>
-            <strong>Phase 1</strong> — DevCo publishes Participation Policy v0.1
-            as a bylaws-draft commitment.
-          </li>
-          <li>
-            <strong>Phase 2</strong> — Foundation adopts v1.0 as a board-level
-            commitment (modifiable only by board 2/3 supermajority).
-          </li>
-          <li>
-            <strong>Phase 3 (conditional, post-TGE)</strong> — Foundation
-            deploys v1.1 to an immutable contract for 3 years, modifiable only
-            by token-holder 2/3 supermajority under a 30-day timelock.
-          </li>
-        </ul>
-      </Callout>
-
-      <h2
-        id="conditional-tge"
-        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
-      >
-        Conditional TGE &amp; the DAO
-      </h2>
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        <DocsBadge variant="amber">Research · conditional</DocsBadge> There is
-        no REINEIRA token and no DAO today. The Foundation executes a Token
-        Generation Event only if <strong>all four</strong> triggers are met:
-      </p>
-      <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
-        <li>
-          A basin condition sustained ≥12 months: ≥30 operator entities,
-          cumulative GMV ≥$5B, LP TVL ≥$10M, ≥50 integrated applications, across
-          4 consecutive quarters.
-        </li>
-        <li>
-          External-counsel sign-off on digital-commodity classification OR a
-          permanent U.S. geo-fence.
-        </li>
-        <li>A Foundation board 2/3 supermajority attestation.</li>
-        <li>A completed independent governance-design review.</li>
-      </ul>
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        If a TGE occurs, the DAO governs grant/treasury and Participation-Policy
-        parameters — never contract upgrades, which do not exist.
-      </p>
 
       <h2
         id="phases"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Phases
+        Path to immutability
       </h2>
       <Steps>
-        <Step title="Phase 1 — DevCo as Software Vendor (chaos-net, from Jul 2026)">
+        <Step title="Chaos-net — owner-upgradeable (from Jul 2026)">
           <p className="text-docs-text-secondary leading-relaxed">
-            Reineira Labs Limited authors and deploys the immutable contracts,
-            publishes RSS, and coordinates audits. IP held under BUSL-1.1.
-            Capital via the BVI HoldCo Convertible Note (Reg S). No token, no
-            SAFT, no DAO.
+            Reineira Labs Limited authors and deploys the contracts as
+            owner-upgradeable UUPS proxies, publishes RSS, and coordinates
+            audits. Source under BUSL-1.1 converting to Apache 2.0 on the
+            Change Date <code className="not-italic">2029-06-01</code>. The
+            upgrade surface is stewarded via the owner key while the protocol is
+            iterated and audited.
           </p>
         </Step>
-        <Step title="Phase 2 — Foundation operational (Q1–Q2 2027)">
+        <Step title="v1.0 mainnet — immutable singletons, no upgrade authority">
           <p className="text-docs-text-secondary leading-relaxed">
-            The Cayman Foundation becomes operational; IP transfers from DevCo
-            to Foundation via the CLA assignment chain; DevCo continues as
-            Software Vendor under a maintenance contract. Token issuance is{" "}
-            <strong>not</strong> a Phase 2 milestone.
-          </p>
-        </Step>
-        <Step title="Phase 3 — Conditional, post-TGE (only if the token-launch triggers are met)">
-          <p className="text-docs-text-secondary leading-relaxed">
-            Only if the four triggers are satisfied, a TGE issues the REINEIRA
-            token, the DAO activates, and Participation Policy v1.1 is deployed
-            immutable. The protocol operates fully without ever reaching this
-            phase.
+            Ownership of the deployed contracts is renounced so they are left
+            with no upgrade hook and no privileged controller. From that point
+            the bytecode is the protocol: functional evolution ships only as new
+            immutable deployments at new addresses, and migration is opt-in. No
+            party can reach into a deployed contract to mutate it — the
+            rugpull-via-upgrade failure mode is structurally eliminated, not
+            mitigated.
           </p>
         </Step>
       </Steps>
 
-      <Callout variant="tip" title="Trust minimization holds from day one">
+      <Callout variant="tip" title="Non-custodial from day one">
         <p>
-          Because contracts are immutable and non-custodial, you do not need to
-          trust any entity to use the protocol safely: no admin can steal funds,
-          change escrow terms, bypass a gate, or decrypt your state. The entity
-          stack governs grants, audits, and the standard — not your money.
+          The contracts are non-custodial regardless of upgrade status: no admin
+          can steal escrowed funds, change escrow terms, bypass a gate, or
+          decrypt your state. While the owner can still ship UUPS upgrades on
+          chaos-net (the v1.0 mainnet target renounces that key), there is no
+          token and no protocol fee — the Software Vendor publishes the open-source
+          software and coordinates audits, it does not touch your money.
         </p>
       </Callout>
 

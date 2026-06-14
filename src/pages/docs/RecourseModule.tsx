@@ -5,6 +5,8 @@ import CodeBlock from "@/components/docs/CodeBlock";
 import DocsTable from "@/components/docs/DocsTable";
 import PropertyCard from "@/components/docs/PropertyCard";
 import PageNav from "@/components/docs/PageNav";
+import Callout from "@/components/docs/Callout";
+import StatusBadge from "@/components/docs/StatusBadge";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
@@ -21,7 +23,7 @@ const toc: TocItem[] = [
   { id: "events", title: "Events", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/reference/insurance-module");
+const { prev, next } = getPrevNext("/reference/recourse-module");
 
 const poolColumns = [
   { header: "Method", key: "method", mono: true, width: "220px" },
@@ -67,7 +69,7 @@ const coverageProperties = [
     name: "pool",
     type: "string",
     required: true,
-    description: "Insurance pool address.",
+    description: "Recourse pool address.",
   },
   {
     name: "policy",
@@ -79,13 +81,15 @@ const coverageProperties = [
     name: "escrowId",
     type: "bigint",
     required: true,
-    description: "Escrow ID to cover.",
+    description:
+      "Escrow ID to cover. Coverage is hard-bound to this escrow — reverts EscrowDoesNotExist if it does not exist.",
   },
   {
     name: "coverageAmount",
     type: "bigint",
     required: true,
-    description: "Coverage amount in token base units.",
+    description:
+      "Coverage amount in token base units. Capped to the escrow amount.",
   },
   {
     name: "expiry",
@@ -117,12 +121,12 @@ const coverageInstanceRows = [
   {
     method: "status()",
     returns: "Promise<CoverageStatus>",
-    desc: "Active, Disputed, Claimed, or Expired",
+    desc: "Active, Claimed, or Expired",
   },
   {
     method: "dispute(proof)",
     returns: "Promise<TransactionResult>",
-    desc: "File a dispute with proof bytes",
+    desc: "File a dispute with proof bytes. Resolves Active → Claimed atomically; reverts DisputeRejected on failure.",
   },
   { method: "id", returns: "bigint", desc: "Coverage identifier" },
   {
@@ -132,16 +136,36 @@ const coverageInstanceRows = [
   },
 ];
 
-export default function InsuranceModule() {
+export default function RecourseModule() {
   return (
     <DocsLayout toc={toc} editHref="">
       <Breadcrumbs />
 
       <PageHeader
-        title="Insurance Module"
-        description="sdk.insurance — create Insurance pools, manage policies, purchase coverage, and handle disputes."
+        title="Recourse Module"
+        description="sdk.recourse — create Recourse pools, manage policies, purchase coverage, and handle disputes."
         readingTime="5 min read"
       />
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4 mt-2">
+        This is <strong className="text-docs-text-primary font-semibold">Recourse</strong> — the
+        protocol primitive behind the Shield product. The encrypted track (
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          sdk.recourse
+        </code>
+        , <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          ConfidentialRecoursePool
+        </code>
+        ) is the v1.0 target; the public track (
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          sdk.recoursePlain
+        </code>
+        , <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          RecoursePool.sol
+        </code>
+        ) is live on chaos-net today.{" "}
+        <StatusBadge status="chaos-net" detail="public track" />
+      </p>
 
       {/* ── Pools ──────────────────────────────────────────────────────── */}
       <h2
@@ -162,15 +186,30 @@ export default function InsuranceModule() {
         filename="create-pool.ts"
         language="typescript"
         lines={[
-          { content: "const pool = await sdk.insurance.createPool({" },
+          { content: "const pool = await sdk.recourse.createPool({" },
           {
             content: "  paymentToken: sdk.addresses.confidentialUSDC,",
             highlighted: true,
           },
+          { content: "  // optional — default to caller / open pool" },
+          { content: "  initialManager: '0xManager...'," },
+          { content: "  guardian: '0xGuardian...'," },
+          { content: "  isOpen: true," },
           { content: "})" },
           { content: "// pool.id, pool.address, pool.createTx.hash" },
         ]}
       />
+
+      <Callout variant="warning" title="Payment token must be allow-listed">
+        <p>
+          <code>paymentToken</code> must be allow-listed via{" "}
+          <code>PoolFactory.addAllowedToken()</code> (owner-only) before you
+          create a pool with it. Otherwise <code>createPool</code> reverts{" "}
+          <code>TokenNotAllowed</code>. Only <code>paymentToken</code> is
+          required — <code>initialManager</code>, <code>guardian</code>, and{" "}
+          <code>isOpen</code> are optional.
+        </p>
+      </Callout>
 
       <h3
         id="get-existing-pool"
@@ -183,8 +222,8 @@ export default function InsuranceModule() {
         filename="get-pool.ts"
         language="typescript"
         lines={[
-          { content: "const pool = await sdk.insurance.getPool(0n)" },
-          { content: "const count = await sdk.insurance.poolCount()" },
+          { content: "const pool = await sdk.recourse.getPool(0n)" },
+          { content: "const count = await sdk.recourse.poolCount()" },
         ]}
       />
 
@@ -218,7 +257,7 @@ export default function InsuranceModule() {
         lines={[
           { content: "// Required fields" },
           {
-            content: "const coverage = await sdk.insurance.purchaseCoverage({",
+            content: "const coverage = await sdk.recourse.purchaseCoverage({",
           },
           { content: "  pool: '0xPool...'," },
           { content: "  policy: '0xPolicy...'," },
@@ -229,6 +268,17 @@ export default function InsuranceModule() {
         ]}
       />
 
+      <Callout variant="info" title="Coverage is bound to an Escrow">
+        <p>
+          Every coverage is hard-bound to an Escrow. Purchase reverts{" "}
+          <code>EscrowDoesNotExist</code> or <code>EscrowNotConfigured</code> if
+          the escrow is missing or not set up, the coverage amount is capped to
+          the Escrow amount, and an Escrow can carry at most{" "}
+          <code>MAX_COVERAGES_PER_ESCROW</code> (5) coverages. There is no
+          parametric or standalone cover.
+        </p>
+      </Callout>
+
       <p className="text-docs-text-secondary leading-relaxed mb-4 mt-6">
         With optional policy data and risk proof:
       </p>
@@ -238,7 +288,7 @@ export default function InsuranceModule() {
         language="typescript"
         lines={[
           {
-            content: "const coverage = await sdk.insurance.purchaseCoverage({",
+            content: "const coverage = await sdk.recourse.purchaseCoverage({",
           },
           { content: "  pool: '0xPool...'," },
           { content: "  policy: '0xPolicy...'," },
@@ -252,7 +302,7 @@ export default function InsuranceModule() {
       />
 
       <PropertyCard
-        title="sdk.insurance.purchaseCoverage(options)"
+        title="sdk.recourse.purchaseCoverage(options)"
         properties={coverageProperties}
       />
 
@@ -276,15 +326,48 @@ export default function InsuranceModule() {
       </h3>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Policies are managed at the pool level via{" "}
-        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-          addPolicy()
-        </code>{" "}
-        and{" "}
-        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-          removePolicy()
-        </code>{" "}
-        on PoolInstance. See the Pools section above.
+        Onboarding a policy is a{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          two-gate
+        </strong>{" "}
+        process:
+      </p>
+
+      <ol className="space-y-2 text-docs-text-secondary leading-relaxed list-decimal list-inside mb-4">
+        <li>
+          <strong className="text-docs-text-primary font-semibold">
+            Protocol allow-list.
+          </strong>{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            PolicyRegistry.registerPolicy(policy)
+          </code>{" "}
+          is owner-only and ERC-165-checked — the policy must advertise the
+          underwriter-policy interface.
+        </li>
+        <li>
+          <strong className="text-docs-text-primary font-semibold">
+            Pool curation.
+          </strong>{" "}
+          Then the pool Creator calls{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            pool.addPolicy()
+          </code>{" "}
+          /{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            removePolicy()
+          </code>{" "}
+          on PoolInstance. <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            addPolicy()
+          </code>{" "}
+          reverts <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            InvalidPolicy
+          </code>{" "}
+          unless the policy is already registered.
+        </li>
+      </ol>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        See the Pools section above for the Creator-only pool methods.
       </p>
 
       {/* ── Bridge ─────────────────────────────────────────────────────── */}
@@ -330,8 +413,13 @@ export default function InsuranceModule() {
         language="typescript"
         lines={[
           {
-            content:
-              "sdk.events.onPoolCreated((poolId, pool, underwriter) => { ... });",
+            content: "sdk.events.onPoolCreated((",
+          },
+          {
+            content: "  poolId, pool, creator, manager, guardian, isOpen",
+          },
+          {
+            content: ") => { ... });",
           },
           {
             content: "sdk.events.onCoveragePurchased((coverageId) => { ... });",

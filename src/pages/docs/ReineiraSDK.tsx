@@ -14,6 +14,7 @@ const toc: TocItem[] = [
   { id: "create-and-initialize", title: "Create and initialize", level: 2 },
   { id: "configuration", title: "Configuration", level: 2 },
   { id: "modules", title: "Modules", level: 2 },
+  { id: "confidential-vs-plain", title: "Confidential vs Plain", level: 3 },
   { id: "utilities", title: "Utilities", level: 2 },
   { id: "viem-interop", title: "Viem interop", level: 2 },
   { id: "error-types", title: "Error types", level: 2 },
@@ -73,12 +74,50 @@ const configProperties = [
   },
 ];
 
+const modeColumns = [
+  { header: "Module", key: "module", mono: true, width: "190px" },
+  { header: "Track", key: "track", width: "150px" },
+  { header: "Status", key: "status", width: "130px" },
+  { header: "When to use", key: "use" },
+];
+
+const modeRows = [
+  {
+    module: "sdk.escrowPlain",
+    track: "Public / plain",
+    status: "Chaos-net (live)",
+    use: "Default path today. Plaintext escrow state — fast iteration, public verifiability, no FHE gas overhead.",
+  },
+  {
+    module: "sdk.recoursePlain",
+    track: "Public / plain",
+    status: "Chaos-net (live)",
+    use: "Coverage pools with plaintext risk and premiums — live alongside plain escrows on chaos-net.",
+  },
+  {
+    module: "sdk.escrow",
+    track: "Encrypted / confidential",
+    status: "v1.0",
+    use: "FHE-encrypted amounts, parties, and conditions. The v1.0 mainnet form when on-chain confidentiality is required.",
+  },
+  {
+    module: "sdk.recourse",
+    track: "Encrypted / confidential",
+    status: "v1.0",
+    use: "Coverage with encrypted risk scoring and premiums computed in ciphertext. Pairs with the encrypted escrow track.",
+  },
+];
+
 const errorColumns = [
   { header: "Error", key: "error", mono: true, width: "240px" },
   { header: "When thrown", key: "desc" },
 ];
 
 const errorRows = [
+  {
+    error: "ReineiraError",
+    desc: "Base class for all SDK errors — catch this to handle any of the below",
+  },
   {
     error: "ApprovalRequiredError",
     desc: "Fund or stake called without token approval",
@@ -113,8 +152,8 @@ export default function ReineiraSDK() {
 
       <PageHeader
         title="SDK"
-        description="The main entry point for all ReineiraOS operations. Create escrows, manage insurance, bridge cross-chain, and listen to events."
-        readingTime="5 min read"
+        description="The main entry point for all ReineiraOS operations. Create escrows, manage recourse coverage, bridge cross-chain, and listen to events — in both public (plain) and encrypted (confidential) modes."
+        readingTime="6 min read"
       />
 
       {/* ── Install ────────────────────────────────────────────────────── */}
@@ -200,7 +239,13 @@ export default function ReineiraSDK() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The SDK exposes four modules accessible as properties:
+        The SDK exposes six modules accessible as properties. The encrypted
+        (confidential) modules — <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">escrow</code>{" "}
+        and <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">recourse</code> — are the v1.0
+        form; the public (plain) modules —{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">escrowPlain</code>{" "}
+        and <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">recoursePlain</code> — are
+        live on chaos-net today.
       </p>
 
       <CodeBlock
@@ -209,22 +254,54 @@ export default function ReineiraSDK() {
         lines={[
           {
             content:
-              "sdk.escrow     // EscrowModule — create, fund, redeem escrows",
+              "// Encrypted (confidential) — v1.0 mainnet form",
           },
           {
             content:
-              "sdk.insurance  // InsuranceModule — pools, policies, coverage",
+              "sdk.escrow         // EscrowModule — create, fund, redeem encrypted escrows",
           },
           {
             content:
-              "sdk.bridge     // BridgeModule — CCTP health check, coordinator submit",
+              "sdk.recourse       // RecourseModule — pools, policies, coverage (encrypted)",
           },
           {
             content:
-              "sdk.events     // EventsModule — real-time event listeners",
+              "sdk.bridge         // BridgeModule — CCTP health check, coordinator submit",
+          },
+          {
+            content:
+              "sdk.events         // EventsModule — real-time event listeners",
+          },
+          { content: "" },
+          {
+            content:
+              "// Public (plain) — live on chaos-net today",
+          },
+          {
+            content:
+              "sdk.escrowPlain    // PlainEscrowModule — plaintext escrows",
+          },
+          {
+            content:
+              "sdk.recoursePlain  // PlainRecourseModule — plaintext coverage pools",
           },
         ]}
       />
+
+      <h3
+        id="confidential-vs-plain"
+        className="text-[20px] font-semibold tracking-[-0.01em] leading-[1.4] text-docs-text-primary mt-8 mb-3"
+      >
+        Confidential vs Plain
+      </h3>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Plain and confidential are the same primitives in two modes: public
+        (plaintext state) versus encrypted (FHE state). Pick by what is live and
+        whether you need on-chain confidentiality.
+      </p>
+
+      <DocsTable columns={modeColumns} rows={modeRows} />
 
       {/* ── Utilities ──────────────────────────────────────────────────── */}
       <h2

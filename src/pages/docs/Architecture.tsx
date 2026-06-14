@@ -41,7 +41,7 @@ const layerRows = [
   {
     layer: "Storage",
     tech: "ERC-7201",
-    desc: "Encrypted state variables stored via namespaced storage. Contracts are immutable singletons; ERC-7201 + __gap[50] preserve layout across deployment versions. ERC-2771 meta-transaction support.",
+    desc: "Encrypted state variables stored via namespaced storage. Contracts are UUPS-upgradeable proxies on chaos-net today (immutable bytecode is the v1.0 target); ERC-7201 + __gap[50] keep storage layout safe across upgrades. ERC-2771 meta-transaction support.",
   },
   {
     layer: "Orchestration",
@@ -197,35 +197,45 @@ export default function Architecture() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           escrowId
         </code>
-        . Every protocol contract is deployed as an{" "}
-        <strong className="text-docs-text-primary">immutable singleton</strong>{" "}
-        at a fixed address — there is no UUPS proxy, no{" "}
+        . On chaos-net today, every protocol contract is deployed as a{" "}
+        <strong className="text-docs-text-primary">
+          UUPS-upgradeable proxy
+        </strong>{" "}
+        whose{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           _authorizeUpgrade
         </code>{" "}
-        hook, and no owner or admin upgrade key. Contracts still use ERC-7201
-        namespaced storage with{" "}
-        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
-          __gap[50]
-        </code>
-        , but for layout compatibility across deployment versions rather than
-        in-place upgrades. ERC-2771 meta-transaction support is provided via a
-        base contract (
+        hook is gated by the contract owner (the base contract,{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           TestnetCoreBase
         </code>
-        ).
+        , is{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          UUPSUpgradeable
+        </code>{" "}
+        +{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          OwnableUpgradeable
+        </code>
+        ). Contracts use ERC-7201 namespaced storage with{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          __gap[50]
+        </code>{" "}
+        to keep storage layout safe as upgrades extend state, and ERC-2771
+        meta-transaction support comes from the same base.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Because contracts are immutable, functional evolution ships as{" "}
+        Freezing logic and storage by renouncing the upgrade key is the{" "}
+        <strong className="text-docs-text-primary">v1.0 mainnet target</strong>.
+        Once immutable, functional evolution would ship as{" "}
         <strong className="text-docs-text-primary">
           new contract deployments at new addresses
         </strong>{" "}
-        that users opt into by migration — never as in-place upgrades. The{" "}
-        canonical-deployment registry is a documentation surface, not an
-        on-chain contract; it lists the v1.0 deployment addresses across host
-        chains. You remain free to interact with any other bytecode deployment.
+        that users opt into by migration. The canonical-deployment registry is a
+        documentation surface, not an on-chain contract; it lists the deployment
+        addresses across host chains. You remain free to interact with any other
+        bytecode deployment.
       </p>
 
       <h3
@@ -237,15 +247,17 @@ export default function Architecture() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Public mode can deploy on any EVM chain; the current chaos-net
-        deployment runs on Arbitrum L2. Cross-chain funding arrives over two
-        rails — Circle CCTP V2 for USDC, and LayerZero OFT / USDT0 for USDT
-        (available to non-U.S. and non-EU users) — both of which funnel into{" "}
+        deployment runs on Arbitrum L2. Cross-chain funding arrives over Circle
+        CCTP V2 for USDC — the one live rail — which funnels into{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           ConfidentialEscrow.fundFrom
         </code>
-        . A coordinator service distributes relay tasks to staked operators via
-        round-robin assignment; operators relay the burn-and-mint (or OFT)
-        attestations so the escrow contract receives the funds.
+        . A second LayerZero OFT / USDT0 rail for USDT (aimed at non-U.S. and
+        non-EU users) is specified but not yet shipped{" "}
+        <DocsBadge variant="amber">Spec'd</DocsBadge>. A coordinator service
+        distributes relay tasks to staked operators via round-robin assignment;
+        operators relay the burn-and-mint attestations so the escrow contract
+        receives the funds.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -264,9 +276,9 @@ export default function Architecture() {
         title="SYSTEM COMPONENTS"
         steps={[
           { label: "Client (SDK)", sublabel: "Encrypts inputs via cofhejs" },
-          { label: "EVM Contracts", sublabel: "ConfidentialEscrow + Gates" },
+          { label: "EVM Contracts", sublabel: "ConfidentialEscrow and Gates" },
           { label: "Coordinator", sublabel: "Task distribution" },
-          { label: "Operators", sublabel: "CCTP relay + settlement" },
+          { label: "Operators", sublabel: "CCTP relay and settlement" },
         ]}
       />
 

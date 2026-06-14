@@ -5,13 +5,14 @@ import CodeBlock from "@/components/docs/CodeBlock";
 import DocsTable from "@/components/docs/DocsTable";
 import Callout from "@/components/docs/Callout";
 import DocsBadge from "@/components/docs/DocsBadge";
+import StatusBadge from "@/components/docs/StatusBadge";
 import PageNav from "@/components/docs/PageNav";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
 const toc: TocItem[] = [
   { id: "escrow", title: "Escrow", level: 2 },
-  { id: "insurance", title: "Insurance", level: 2 },
+  { id: "insurance", title: "Recourse", level: 2 },
   { id: "orchestration", title: "Orchestration", level: 2 },
   { id: "tokens", title: "Tokens", level: 2 },
   { id: "external-dependencies", title: "External dependencies", level: 2 },
@@ -24,37 +25,87 @@ const toc: TocItem[] = [
 const { prev, next } = getPrevNext("/reference/contracts");
 
 const contractColumns = [
-  { header: "Contract", key: "name", width: "260px" },
+  { header: "Contract", key: "name", width: "300px" },
   { header: "Address", key: "address", mono: true },
+  { header: "Mode / Status", key: "status", width: "180px" },
 ];
 
-const escrowRows = [
+// Public mode (PLAIN) — live on chaos-net. Values are in the clear; the SDK
+// reaches these via sdk.escrow / sdk.recoursePlain.
+const escrowPlainRows = [
+  {
+    name: "Escrow",
+    address: "0xa125db70c1f17E395AfFa30b32e1e4A94aF3A81c",
+    status: <StatusBadge status="live" detail="public mode" />,
+  },
+  {
+    name: "EscrowReceiver",
+    address: "0xD4cb6F1B679C3b16AE02aAdc66e172142EAAC5a2",
+    status: <StatusBadge status="live" detail="public mode" />,
+  },
+];
+
+// Encrypted mode (CONFIDENTIAL) — deployed on chaos-net against MOCKED Fhenix
+// CoFHE; real encryption arrives at v1.0.
+const escrowConfidentialRows = [
   {
     name: "ConfidentialEscrow",
     address: "0xbe1eEB78504B71beEE1b33D3E3D367A2F9a549A6",
+    status: <StatusBadge status="chaos-net" detail="encrypted, v1.0" />,
   },
   {
     name: "CCTPV2ConfidentialEscrowReceiver",
     address: "0x67AE0C5fE86716441B38b73A66F21c6aC8e338d0",
-  },
-  {
-    name: "SimpleCondition",
-    address: "0xA0f6F26de1D3289425aA8A7fDDb769c61CD38e97",
+    status: <StatusBadge status="chaos-net" detail="encrypted, v1.0" />,
   },
 ];
 
-const insuranceRows = [
+// Recourse — public mode (PLAIN). RecoursePool is factory-created by PoolFactory.
+const recoursePlainRows = [
+  {
+    name: "RecoursePool (factory-created)",
+    address: "0xCd05D0B8854ff030d874Ec346EbB883C40E63C33",
+    status: <StatusBadge status="live" detail="public mode" />,
+  },
+  {
+    name: "PoolFactory",
+    address: "0xA2D78bfaB94B93106c8Da17E6967501D54DfE772",
+    status: <StatusBadge status="live" detail="public mode" />,
+  },
+  {
+    name: "PolicyRegistry",
+    address: "0xAf23b86086FC6DC74796865be3B3a8bBAd68AB95",
+    status: <StatusBadge status="live" detail="public mode" />,
+  },
+  {
+    name: "CoverageManager",
+    address: "0x3fcD1896745B2b91b4397e7E762910Fbf7eE9D22",
+    status: <StatusBadge status="live" detail="public mode" />,
+  },
+];
+
+// Recourse — encrypted mode (CONFIDENTIAL). ConfidentialRecoursePool is
+// factory-created by ConfidentialPoolFactory.
+const recourseConfidentialRows = [
+  {
+    name: "ConfidentialRecoursePool (factory-created)",
+    address: "— (deployed per pool by factory)",
+    status: <StatusBadge status="chaos-net" detail="encrypted, v1.0" />,
+  },
   {
     name: "ConfidentialPolicyRegistry",
     address: "0x962A6c7Be4fC765B0E8B601ab4BB210938660190",
+    status: <StatusBadge status="chaos-net" detail="encrypted, v1.0" />,
   },
   {
     name: "ConfidentialCoverageManager",
     address: "0x40A3A53d54D25cF079Bc9C2033224159d4EA3A67",
+    status: <StatusBadge status="chaos-net" detail="encrypted, v1.0" />,
   },
   {
     name: "ConfidentialPoolFactory",
     address: "0xCBD3815244ee96a92B3Ca3C71B6eD9acB3661e80",
+    status: <StatusBadge status="chaos-net" detail="encrypted, v1.0" />,
   },
 ];
 
@@ -62,15 +113,22 @@ const orchestrationRows = [
   {
     name: "OperatorRegistry",
     address: "0x1422ccC8B42079D810835631a5DFE1347a602959",
+    status: <StatusBadge status="chaos-net" />,
   },
   {
     name: "TaskExecutor",
     address: "0x7F24077A3341Af05E39fC232A77c21A03Bbd2262",
+    status: <StatusBadge status="chaos-net" />,
   },
-  { name: "FeeManager", address: "0x5a11DC96CEfd2fB46759F08aCE49515aa23F0156" },
+  {
+    name: "FeeManager",
+    address: "0x5a11DC96CEfd2fB46759F08aCE49515aa23F0156",
+    status: <StatusBadge status="chaos-net" />,
+  },
   {
     name: "CCTPHandler",
     address: "0xb37A83461B01097e1E440405264dA59EE9a3F273",
+    status: <StatusBadge status="chaos-net" />,
   },
 ];
 
@@ -78,11 +136,12 @@ const tokenRows = [
   {
     name: "ConfidentialUSDC (cUSDC)",
     address: "0x42E47f9bA89712C317f60A72C81A610A2b68c48a",
+    status: <StatusBadge status="chaos-net" detail="encrypted, v1.0" />,
   },
-  { name: "USDC", address: "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d" },
   {
-    name: "GovernanceToken",
-    address: "0xb847e041bB3bC78C3CD951286AbCa28593739D12",
+    name: "USDC",
+    address: "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
+    status: <StatusBadge status="chaos-net" />,
   },
 ];
 
@@ -90,10 +149,12 @@ const externalRows = [
   {
     name: "CCTP MessageTransmitter",
     address: "0xE737e5cEBEEBa77EFE34D4aa090756590b1CE275",
+    status: <StatusBadge status="chaos-net" />,
   },
   {
     name: "TrustedForwarder (ERC-2771)",
     address: "0x7ceA357B5AC0639F89F9e378a1f03Aa5005C0a25",
+    status: <StatusBadge status="chaos-net" />,
   },
 ];
 
@@ -132,37 +193,46 @@ export default function Contracts() {
 
       <PageHeader
         title="Contracts"
-        description="All ReineiraOS contracts deployed on Arbitrum Sepolia as immutable singletons at fixed addresses. Addresses are baked into the SDK — no manual configuration needed."
+        description="All ReineiraOS contracts deployed on chaos-net at fixed addresses across two modes — public (PLAIN) and encrypted (CONFIDENTIAL). Addresses are baked into the SDK — no manual configuration needed."
         readingTime="4 min read"
       />
 
-      <Callout variant="info" title="Testnet deployment">
+      <Callout variant="info" title="chaos-net deployment">
         <p>
           All contracts below are deployed on{" "}
-          <DocsBadge variant="blue">Arbitrum Sepolia</DocsBadge>. Addresses are
-          baked into the SDK — you do not need to configure them manually.
+          <DocsBadge variant="blue">chaos-net</DocsBadge>. Addresses are baked
+          into the SDK — you do not need to configure them manually. Each table
+          is split into <strong>public mode (PLAIN)</strong> — live, values in
+          the clear — and <strong>encrypted mode (CONFIDENTIAL)</strong> —
+          deployed on chaos-net against mocked Fhenix CoFHE, with real
+          encryption arriving at v1.0.
         </p>
       </Callout>
 
-      <Callout variant="warning" title="Immutable singletons">
+      <Callout variant="warning" title="Upgradeable today, immutable at v1.0">
         <p>
-          Every contract below is an <strong>immutable singleton</strong>{" "}
-          deployed at a fixed address. There is no UUPS proxy, no{" "}
+          The contracts below are <strong>upgradeable today</strong> on
+          chaos-net. They are deployed behind{" "}
+          <strong>UUPS proxies</strong> with an{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            Ownable
+          </code>{" "}
+          owner that gates an owner-only{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             _authorizeUpgrade
           </code>{" "}
-          hook, and no owner or admin upgrade key — these addresses cannot be
-          upgraded in place. Functional changes ship as new contract deployments
-          at new addresses that you opt into by migration. The tables on this
-          page form the canonical-deployment registry: a documentation surface,
-          not an on-chain contract, listing the v1.0 addresses across host
-          chains. You may interact with any other bytecode deployment. ERC-7201
-          namespaced storage with{" "}
+          hook — the deployment JSONs carry a proxy-and-implementation pair for
+          each address, and the implementation can be swapped behind the same
+          proxy address. <strong>Immutability is the v1.0 mainnet target</strong>
+          , not today's state: at v1.0 the upgrade key is relinquished so the
+          addresses can no longer be upgraded in place. ERC-7201 namespaced
+          storage with{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             __gap[50]
           </code>{" "}
-          is kept for layout compatibility across deployment versions, not for
-          in-place upgrades.
+          keeps the storage layout forward-compatible across upgrades. The tables
+          on this page list the current chaos-net addresses; they are a
+          documentation surface, not an on-chain registry.
         </p>
       </Callout>
 
@@ -174,17 +244,44 @@ export default function Contracts() {
         Escrow
       </h2>
 
-      <DocsTable columns={contractColumns} rows={escrowRows} />
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Public mode (PLAIN) — <code>Escrow.sol</code>, values in the clear, live
+        on chaos-net via <code>sdk.escrow</code>:
+      </p>
 
-      {/* ── Insurance ──────────────────────────────────────────────────── */}
+      <DocsTable columns={contractColumns} rows={escrowPlainRows} />
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Encrypted mode (CONFIDENTIAL) — amounts and balances encrypted; deployed
+        on chaos-net against mocked Fhenix CoFHE, with real encryption at v1.0:
+      </p>
+
+      <DocsTable columns={contractColumns} rows={escrowConfidentialRows} />
+
+      {/* ── Recourse ───────────────────────────────────────────────────── */}
       <h2
         id="insurance"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Insurance
+        Recourse
       </h2>
 
-      <DocsTable columns={contractColumns} rows={insuranceRows} />
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Public mode (PLAIN) — <code>RecoursePool.sol</code> and the surrounding
+        coverage stack, live on chaos-net via <code>sdk.recoursePlain</code>.
+        Pools are created by the factory, so each <code>RecoursePool</code> is
+        deployed per pool (the address below is one such factory-created pool):
+      </p>
+
+      <DocsTable columns={contractColumns} rows={recoursePlainRows} />
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Encrypted mode (CONFIDENTIAL) — the confidential coverage stack;{" "}
+        <code>ConfidentialRecoursePool</code> instances are created per pool by{" "}
+        <code>ConfidentialPoolFactory</code>:
+      </p>
+
+      <DocsTable columns={contractColumns} rows={recourseConfidentialRows} />
 
       {/* ── Orchestration ──────────────────────────────────────────────── */}
       <h2
@@ -235,7 +332,7 @@ export default function Contracts() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        These are the two interfaces you implement to extend the protocol:
+        These are the interfaces you implement to extend the protocol:
       </p>
 
       <h3
@@ -249,7 +346,7 @@ export default function Contracts() {
         filename="IConditionResolver.sol"
         language="solidity"
         lines={[
-          { content: "interface IConditionResolver {" },
+          { content: "interface IConditionResolver is IERC165 {" },
           {
             content:
               "  function isConditionMet(uint256 escrowId) external view returns (bool);",
@@ -258,6 +355,18 @@ export default function Contracts() {
           {
             content:
               "  function onConditionSet(uint256 escrowId, bytes calldata data) external;",
+            highlighted: true,
+          },
+          {
+            content: "  function getConditionFee(uint256 escrowId)",
+            highlighted: true,
+          },
+          {
+            content: "    external view",
+            highlighted: true,
+          },
+          {
+            content: "    returns (uint16 bps, address recipient);",
             highlighted: true,
           },
           { content: "}" },
@@ -271,11 +380,57 @@ export default function Contracts() {
         IUnderwriterPolicy
       </h3>
 
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Public mode (PLAIN) — risk score and dispute outcome are returned in the
+        clear:
+      </p>
+
       <CodeBlock
         filename="IUnderwriterPolicy.sol"
         language="solidity"
         lines={[
           { content: "interface IUnderwriterPolicy {" },
+          {
+            content:
+              "  function onPolicySet(uint256 coverageId, bytes calldata data) external;",
+          },
+          {
+            content:
+              "  function evaluateRisk(uint256 escrowId, bytes calldata riskProof)",
+            highlighted: true,
+          },
+          {
+            content: "    external returns (uint256 riskScore);",
+            highlighted: true,
+          },
+          {
+            content:
+              "  function judge(uint256 coverageId, bytes calldata disputeProof)",
+            highlighted: true,
+          },
+          { content: "    external returns (bool valid);", highlighted: true },
+          { content: "}" },
+        ]}
+      />
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Encrypted mode (CONFIDENTIAL) — the same shape, but the risk score and
+        dispute outcome stay encrypted as Fhenix FHE handles (
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          euint64
+        </code>{" "}
+        /{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          ebool
+        </code>
+        ):
+      </p>
+
+      <CodeBlock
+        filename="IConfidentialUnderwriterPolicy.sol"
+        language="solidity"
+        lines={[
+          { content: "interface IConfidentialUnderwriterPolicy {" },
           {
             content:
               "  function onPolicySet(uint256 coverageId, bytes calldata data) external;",
@@ -299,9 +454,16 @@ export default function Contracts() {
         ]}
       />
 
-      <Callout variant="warning" title="ERC-165 required">
+      <Callout variant="warning" title="ERC-165 expected (not enforced at wiring)">
         <p>
-          Both interfaces require ERC-165 support. Your contract must implement{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            IConditionResolver
+          </code>{" "}
+          inherits{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            IERC165
+          </code>
+          , so your contract should implement{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             supportsInterface(bytes4)
           </code>{" "}
@@ -309,7 +471,21 @@ export default function Contracts() {
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             true
           </code>{" "}
-          for the relevant interface ID.
+          for the interface ID. Note that this is an interface requirement and
+          best practice, but the escrow does{" "}
+          <strong>not</strong> call{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            supportsInterface
+          </code>{" "}
+          when a resolver is wired. The only on-chain guard at wiring time is a{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            resolver.code.length != 0
+          </code>{" "}
+          check (it reverts with{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            InvalidResolver
+          </code>{" "}
+          otherwise).
         </p>
       </Callout>
 

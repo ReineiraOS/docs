@@ -35,7 +35,7 @@ const layerRows = [
     after: "Apache 2.0",
   },
   {
-    layer: "Core protocol (escrow, insurance, orchestration)",
+    layer: "Core protocol (Escrow, Recourse, orchestration)",
     now: "BUSL-1.1",
     after: "Apache 2.0",
   },
@@ -48,7 +48,7 @@ export default function RssLicensing() {
 
       <PageHeader
         title="Licensing"
-        description="The standard is open and free to implement. Only the reference implementation's core carries a time-limited license that converts to Apache 2.0."
+        description="The standard is open and free to implement; only the reference implementation's core has a time-limited license that converts to Apache 2.0."
         readingTime="3 min read"
       />
 
@@ -68,7 +68,7 @@ export default function RssLicensing() {
       <Callout variant="info" title="Two layers, two licenses">
         <p>
           The <strong>standard</strong> is free to implement against. The{" "}
-          <strong>reference implementation's core</strong> (escrow, insurance,
+          <strong>reference implementation's core</strong> (Escrow, Recourse,
           orchestration) is licensed under BUSL-1.1 and converts to Apache 2.0
           on the irrevocable Change Date <strong>2029-06-01</strong>.
         </p>

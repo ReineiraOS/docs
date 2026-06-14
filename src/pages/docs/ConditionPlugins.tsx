@@ -6,7 +6,6 @@ import CodeBlock from "@/components/docs/CodeBlock";
 import ArchitectureDiagram from "@/components/docs/ArchitectureDiagram";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
-import Steps, { Step } from "@/components/docs/Steps";
 import LinkCard from "@/components/docs/LinkCard";
 import { Code2 } from "lucide-react";
 import { getPrevNext } from "@/data/navigation";
@@ -39,15 +38,22 @@ const interfaceColumns = [
 const interfaceRows = [
   {
     fn: "onConditionSet",
-    calledBy: "ConfidentialEscrow.create()",
+    calledBy: "Escrow / ConfidentialEscrow.create()",
     when: "Escrow creation",
     purpose: "Parse and store your Gate configuration",
   },
   {
     fn: "isConditionMet",
-    calledBy: "ConfidentialEscrow.redeem()",
+    calledBy: "Escrow.redeem() / redeemMultiple()",
     when: "Settlement attempt",
     purpose: "Return true if the Gate condition is satisfied",
+  },
+  {
+    fn: "getConditionFee",
+    calledBy: "Escrow / ConfidentialEscrow.create()",
+    when: "Escrow creation",
+    purpose:
+      "Return the per-escrow condition fee (bps) and recipient — builder-configurable, protocol takes nothing",
   },
 ];
 
@@ -78,6 +84,17 @@ export default function ConditionPlugins() {
         yours — the protocol doesn't care how you verify, only that you do.
       </p>
 
+      <Callout variant="info" title='"Gate" is the product name for a resolver'>
+        <p>
+          <strong>Gate</strong> is the product name for an{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            IConditionResolver
+          </code>{" "}
+          contract. "Gate" and "condition resolver" refer to the same thing
+          throughout these docs.
+        </p>
+      </Callout>
+
       {/* ------------------------------------------------------------------ */}
       <h2
         id="the-interface"
@@ -90,7 +107,7 @@ export default function ConditionPlugins() {
         filename="IConditionResolver.sol"
         language="solidity"
         lines={[
-          { content: "interface IConditionResolver {" },
+          { content: "interface IConditionResolver is IERC165 {" },
           {
             content:
               "  function isConditionMet(uint256 escrowId) external view returns (bool);",
@@ -101,12 +118,98 @@ export default function ConditionPlugins() {
               "  function onConditionSet(uint256 escrowId, bytes calldata data) external;",
             highlighted: true,
           },
+          {
+            content: "  function getConditionFee(uint256 escrowId)",
+            highlighted: true,
+          },
+          {
+            content: "    external view",
+            highlighted: true,
+          },
+          {
+            content: "    returns (uint16 bps, address recipient);",
+            highlighted: true,
+          },
           { content: "}" },
         ]}
         showLineNumbers={true}
       />
 
       <DocsTable columns={interfaceColumns} rows={interfaceRows} />
+
+      <Callout variant="info" title="Both hooks fire atomically at creation">
+        <p>
+          At escrow creation the protocol calls{" "}
+          <strong>both</strong>{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            onConditionSet
+          </code>{" "}
+          and{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            getConditionFee
+          </code>{" "}
+          atomically, from the plain{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            Escrow
+          </code>{" "}
+          or{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            ConfidentialEscrow
+          </code>{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            .create()
+          </code>
+          .{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            isConditionMet
+          </code>{" "}
+          is checked on every settlement path — both{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            redeem()
+          </code>{" "}
+          and{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            redeemMultiple()
+          </code>{" "}
+          gate on it. The fee that{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            getConditionFee
+          </code>{" "}
+          returns is <strong>builder-configurable</strong> — the protocol itself
+          takes nothing.
+        </p>
+      </Callout>
+
+      <Callout variant="warning" title="Illustrative patterns, not shipped contracts">
+        <p>
+          The four resolvers below —{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            PayPalConditionResolver
+          </code>
+          ,{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            PriceFeedResolver
+          </code>
+          ,{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            PredictionResolver
+          </code>
+          , and{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            TimeLockResolver
+          </code>{" "}
+          — are <strong>illustrative patterns</strong> to copy, not contracts
+          shipped in this protocol repo. The only resolver shipped in-protocol is{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            MockConditionResolver
+          </code>{" "}
+          (for tests). The one production resolver,{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            DeliveryDeadlineResolver
+          </code>
+          , lives in the separate x402 repo.
+        </p>
+      </Callout>
 
       {/* ------------------------------------------------------------------ */}
       <h2
@@ -171,8 +274,11 @@ export default function ConditionPlugins() {
           { content: "pragma solidity ^0.8.24;" },
           { content: "" },
           {
+            content: "import { IConditionResolver } from",
+          },
+          {
             content:
-              'import { IConditionResolver } from "@reineira-os/shared/contracts/interfaces/plugins/IConditionResolver.sol";',
+              '    "@reineira-os/shared/contracts/interfaces/plugins/IConditionResolver.sol";',
           },
           {
             content:
@@ -231,6 +337,25 @@ export default function ConditionPlugins() {
           { content: "        return configs[escrowId].fulfilled;" },
           { content: "    }" },
           { content: "" },
+          {
+            content:
+              "    // Per-escrow condition fee — return 0 to charge nothing",
+          },
+          {
+            content: "    function getConditionFee(uint256)",
+          },
+          {
+            content: "        external pure override",
+          },
+          {
+            content: "        returns (uint16, address)",
+          },
+          {
+            content: "    {",
+          },
+          { content: "        return (0, address(0));" },
+          { content: "    }" },
+          { content: "" },
           { content: "    // Buyer calls this with their zkTLS proof" },
           { content: "    function submitProof(" },
           { content: "        uint256 escrowId," },
@@ -274,13 +399,17 @@ export default function ConditionPlugins() {
           { content: "        require(" },
           {
             content:
-              "            keccak256(bytes(extractedMerchantId)) == keccak256(bytes(config.merchantId)),",
+              "            keccak256(bytes(extractedMerchantId)) ==",
+          },
+          {
+            content:
+              "                keccak256(bytes(config.merchantId)),",
           },
           { content: '            "Merchant ID mismatch"' },
           { content: "        );" },
           { content: "" },
           {
-            content: "        // 4. Mark as fulfilled + prevent replay",
+            content: "        // 4. Mark as fulfilled and prevent replay",
             highlighted: true,
           },
           { content: "        config.fulfilled = true;", highlighted: true },
@@ -310,8 +439,13 @@ export default function ConditionPlugins() {
           { content: "    }" },
           { content: "" },
           {
-            content:
-              "    function supportsInterface(bytes4 interfaceId) public view override returns (bool) {",
+            content: "    function supportsInterface(bytes4 interfaceId)",
+          },
+          {
+            content: "        public view override returns (bool)",
+          },
+          {
+            content: "    {",
           },
           {
             content:
@@ -343,9 +477,12 @@ export default function ConditionPlugins() {
           },
           {
             content:
-              "const resolverData = ethers.AbiCoder.defaultAbiCoder().encode(['string'], ['MERCHANT_ABC123'])",
+              "const resolverData = ethers.AbiCoder.defaultAbiCoder().encode(",
             highlighted: true,
           },
+          { content: "  ['string']," },
+          { content: "  ['MERCHANT_ABC123']," },
+          { content: ")" },
           { content: "" },
           { content: "const escrow = await sdk.escrow" },
           { content: "  .build()" },
@@ -364,13 +501,20 @@ export default function ConditionPlugins() {
             content: "// then submits it on-chain to the resolver contract",
           },
           {
-            content:
-              "const resolverAbi = ['function submitProof(uint256,bytes,string,string) external']",
+            content: "const resolverAbi = [",
           },
           {
             content:
-              "const resolver = new ethers.Contract('0xPayPalResolver...', resolverAbi, buyerSigner)",
+              "  'function submitProof(uint256,bytes,string,string) external',",
           },
+          { content: "]" },
+          {
+            content: "const resolver = new ethers.Contract(",
+          },
+          { content: "  '0xPayPalResolver...'," },
+          { content: "  resolverAbi," },
+          { content: "  buyerSigner," },
+          { content: ")" },
           {
             content:
               "await resolver.submitProof(escrow.id, proof, 'CAPTURED', 'MERCHANT_ABC123')",
@@ -402,7 +546,7 @@ export default function ConditionPlugins() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Release an escrow when an asset price crosses a threshold. Uses
+        Release an Escrow when an asset price crosses a threshold. Uses
         Chainlink's price feeds deployed natively on Arbitrum.
       </p>
 
@@ -414,8 +558,11 @@ export default function ConditionPlugins() {
           { content: "pragma solidity ^0.8.24;" },
           { content: "" },
           {
+            content: "import { IConditionResolver } from",
+          },
+          {
             content:
-              'import { IConditionResolver } from "@reineira-os/shared/contracts/interfaces/plugins/IConditionResolver.sol";',
+              '    "@reineira-os/shared/contracts/interfaces/plugins/IConditionResolver.sol";',
           },
           {
             content:
@@ -484,13 +631,26 @@ export default function ConditionPlugins() {
             content: '        require(feed != address(0), "Invalid feed");',
           },
           {
-            content:
-              '        require(maxStaleness > 0 && maxStaleness <= 86400, "Staleness out of range");',
+            content: "        require(",
+          },
+          {
+            content: "            maxStaleness > 0 && maxStaleness <= 86400,",
+          },
+          {
+            content: '            "Staleness out of range"',
+          },
+          {
+            content: "        );",
           },
           { content: "" },
           {
-            content:
-              "        conditions[escrowId] = PriceCondition(feed, threshold, above, maxStaleness);",
+            content: "        conditions[escrowId] = PriceCondition(",
+          },
+          {
+            content: "            feed, threshold, above, maxStaleness",
+          },
+          {
+            content: "        );",
           },
           { content: "    }" },
           { content: "" },
@@ -530,8 +690,28 @@ export default function ConditionPlugins() {
           { content: "    }" },
           { content: "" },
           {
-            content:
-              "    function supportsInterface(bytes4 interfaceId) public view override returns (bool) {",
+            content: "    function getConditionFee(uint256)",
+          },
+          {
+            content: "        external pure override",
+          },
+          {
+            content: "        returns (uint16, address)",
+          },
+          {
+            content: "    {",
+          },
+          { content: "        return (0, address(0));" },
+          { content: "    }" },
+          { content: "" },
+          {
+            content: "    function supportsInterface(bytes4 interfaceId)",
+          },
+          {
+            content: "        public view override returns (bool)",
+          },
+          {
+            content: "    {",
           },
           {
             content:
@@ -606,9 +786,23 @@ export default function ConditionPlugins() {
         showLineNumbers={true}
       />
 
-      <Callout variant="info" title="Chainlink feeds on Arbitrum">
+      <Callout variant="warning" title="Third-party address — verify before use">
         <p>
-          Key feeds:{" "}
+          The feed address{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612
+          </code>{" "}
+          is a <strong>Chainlink-deployed</strong> price feed, not a
+          Reineira-deployed contract. Always verify the exact feed address on
+          Chainlink's official registry (
+          <a
+            href="https://data.chain.link"
+            className="text-brand-primary font-medium hover:underline"
+          >
+            data.chain.link
+          </a>
+          ) for your target chain before wiring it into a Gate. Key feeds
+          include{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             ETH/USD
           </code>
@@ -624,17 +818,10 @@ export default function ConditionPlugins() {
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             USDC/USD
           </code>
-          ,{" "}
+          , and{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             LINK/USD
           </code>
-          . Full list at{" "}
-          <a
-            href="https://data.chain.link"
-            className="text-brand-primary font-medium hover:underline"
-          >
-            data.chain.link
-          </a>
           .
         </p>
       </Callout>
@@ -648,7 +835,7 @@ export default function ConditionPlugins() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Release an escrow based on a prediction market resolution. Uses UMA's
+        Release an Escrow based on a prediction market resolution. Uses UMA's
         Optimistic Oracle on Arbitrum to verify real-world event outcomes.
       </p>
 
@@ -660,8 +847,11 @@ export default function ConditionPlugins() {
           { content: "pragma solidity ^0.8.24;" },
           { content: "" },
           {
+            content: "import { IConditionResolver } from",
+          },
+          {
             content:
-              'import { IConditionResolver } from "@reineira-os/shared/contracts/interfaces/plugins/IConditionResolver.sol";',
+              '    "@reineira-os/shared/contracts/interfaces/plugins/IConditionResolver.sol";',
           },
           {
             content:
@@ -773,8 +963,14 @@ export default function ConditionPlugins() {
             content: "        // Check if the question has been resolved",
           },
           {
+            content: "        if (!oracle.hasPrice(",
+          },
+          {
             content:
-              "        if (!oracle.hasPrice(cond.identifier, cond.requestTimestamp, cond.ancillaryData)) {",
+              "            cond.identifier, cond.requestTimestamp, cond.ancillaryData",
+          },
+          {
+            content: "        )) {",
           },
           { content: "            return false;" },
           { content: "        }" },
@@ -798,8 +994,28 @@ export default function ConditionPlugins() {
           { content: "    }" },
           { content: "" },
           {
-            content:
-              "    function supportsInterface(bytes4 interfaceId) public view override returns (bool) {",
+            content: "    function getConditionFee(uint256)",
+          },
+          {
+            content: "        external pure override",
+          },
+          {
+            content: "        returns (uint16, address)",
+          },
+          {
+            content: "    {",
+          },
+          { content: "        return (0, address(0));" },
+          { content: "    }" },
+          { content: "" },
+          {
+            content: "    function supportsInterface(bytes4 interfaceId)",
+          },
+          {
+            content: "        public view override returns (bool)",
+          },
+          {
+            content: "    {",
           },
           {
             content:
@@ -881,6 +1097,18 @@ export default function ConditionPlugins() {
         showLineNumbers={true}
       />
 
+      <Callout variant="warning" title="Third-party address — verify before use">
+        <p>
+          The oracle address{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            0xa6B71E26C5e0845f74c812102Ca7114b6a896AB2
+          </code>{" "}
+          is a <strong>UMA-deployed</strong> Optimistic Oracle, not a
+          Reineira-deployed contract. Verify the exact deployment on UMA's
+          official registry for your target chain before wiring it into a Gate.
+        </p>
+      </Callout>
+
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         This pattern works for any binary or numeric outcome — sports results,
         election outcomes, protocol milestones, token price targets, or any
@@ -907,8 +1135,11 @@ export default function ConditionPlugins() {
           { content: "pragma solidity ^0.8.24;" },
           { content: "" },
           {
+            content: "import { IConditionResolver } from",
+          },
+          {
             content:
-              'import { IConditionResolver } from "@reineira-os/shared/contracts/interfaces/plugins/IConditionResolver.sol";',
+              '    "@reineira-os/shared/contracts/interfaces/plugins/IConditionResolver.sol";',
           },
           {
             content:
@@ -951,8 +1182,28 @@ export default function ConditionPlugins() {
           { content: "    }" },
           { content: "" },
           {
-            content:
-              "    function supportsInterface(bytes4 interfaceId) public view override returns (bool) {",
+            content: "    function getConditionFee(uint256)",
+          },
+          {
+            content: "        external pure override",
+          },
+          {
+            content: "        returns (uint16, address)",
+          },
+          {
+            content: "    {",
+          },
+          { content: "        return (0, address(0));" },
+          { content: "    }" },
+          { content: "" },
+          {
+            content: "    function supportsInterface(bytes4 interfaceId)",
+          },
+          {
+            content: "        public view override returns (bool)",
+          },
+          {
+            content: "    {",
           },
           {
             content:
@@ -980,7 +1231,7 @@ export default function ConditionPlugins() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           .condition()
         </code>{" "}
-        call to create an escrow with no release condition — redeemable
+        call to create an Escrow with no release condition — redeemable
         immediately after funding:
       </p>
 
@@ -1024,7 +1275,28 @@ export default function ConditionPlugins() {
           <strong className="text-docs-text-primary font-semibold">
             ERC-165
           </strong>{" "}
-          so the protocol can verify your contract implements the interface
+          —{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            IConditionResolver
+          </code>{" "}
+          inherits{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            IERC165
+          </code>
+          , so implementing{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            supportsInterface
+          </code>{" "}
+          is required by the interface and best practice. Note the escrow does
+          not call it at wiring time — its only on-chain guard is{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            resolver.code.length != 0
+          </code>{" "}
+          (reverts{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            InvalidResolver
+          </code>
+          )
         </li>
         <li>
           Protect against{" "}

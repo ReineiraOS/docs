@@ -27,11 +27,11 @@ const hostRows = [
   {
     host: "Arbitrum L2",
     role: "Canonical host — chaos-net Jul 2026, v1.0 mainnet Q4 2026.",
-    status: <DocsBadge variant="green">Live (canonical)</DocsBadge>,
+    status: <DocsBadge variant="blue">Canonical testnet</DocsBadge>,
   },
   {
     host: "Ethereum L1",
-    role: "Planned host — institutional + L1-finality use cases.",
+    role: "Planned host — institutional and L1-finality use cases.",
     status: <DocsBadge variant="amber">Planned</DocsBadge>,
   },
   {
@@ -53,7 +53,7 @@ export default function L3Deployments() {
 
       <PageHeader
         title="Atlas-Deployed L3s"
-        description="Third parties self-deploy ReineiraOS on their own L3 via Reineira Atlas. The L3 owner maintains it; the canonical operator set supplies cross-chain liquidity."
+        description="Third parties self-deploy ReineiraOS on an L3 via Reineira Atlas, maintain it, and use canonical Operators for cross-chain liquidity."
         readingTime="5 min read"
       />
 
@@ -130,10 +130,10 @@ export default function L3Deployments() {
       </p>
       <Callout variant="info" title="No per-L3 bridge handlers">
         <p>
-          Self-deployed L3s do <strong>not</strong> ship their own CCTP V2 or
-          LayerZero OFT handlers — those bridge transports operate at the L1/L2
-          layer, not L3. The native rollup bridge is the only required
-          transport.
+          Self-deployed L3s do <strong>not</strong> ship their own CCTP V2
+          handlers (or the spec'd LayerZero OFT rail, once built) — those bridge
+          transports operate at the L1/L2 layer, not L3. The native rollup bridge
+          is the only required transport.
         </p>
       </Callout>
 

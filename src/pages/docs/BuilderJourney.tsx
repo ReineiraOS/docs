@@ -40,17 +40,17 @@ const repoRows = [
   {
     repo: "reineira-atlas",
     purpose: "Plan the venture, scaffold the app",
-    stack: "Markdown + Claude Code agents",
+    stack: "Markdown and Claude Code agents",
   },
   {
     repo: "reineira-code",
-    purpose: "Build on-chain plugins (Gates, Policies)",
-    stack: "Hardhat + Solidity + cofhejs",
+    purpose: "Build on-chain plugins (Gates, Recourse Policies)",
+    stack: "Hardhat, Solidity, and cofhejs",
   },
   {
     repo: "platform-modules",
-    purpose: "Ship the product (backend + frontend)",
-    stack: "pnpm monorepo: TypeScript + React 19",
+    purpose: "Ship the product (backend and frontend)",
+    stack: "pnpm monorepo: TypeScript and React 19",
   },
 ];
 
@@ -103,7 +103,7 @@ export default function BuilderJourney() {
 
       <PageHeader
         title="Builder Journey"
-        description="The end-to-end flow of building a venture on ReineiraOS — from strategy brief to deployed product. Three tools, one pipeline."
+        description="The end-to-end path from strategy brief to deployed ReineiraOS product, using three tools in one pipeline."
         readingTime="7 min read"
       />
 
@@ -157,7 +157,7 @@ export default function BuilderJourney() {
             <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
               /bootstrap
             </code>{" "}
-            inside Atlas. This single command generates your startup OS
+            inside Atlas. This single command generates your venture workspace
             (strategy docs, agent team, slash commands) AND scaffolds a working
             app from platform-modules (React 19 frontend + TypeScript backend).
             One command, full stack.
@@ -175,7 +175,7 @@ export default function BuilderJourney() {
             <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
               reineira-code
             </code>
-            . Describe your Gate or Insurance Policy to Claude Code. It
+            . Describe your Gate or Recourse Policy to Claude Code. It
             generates the Solidity contract, tests, and deployment script.
             Deploy to Arbitrum Sepolia.
           </p>
@@ -247,13 +247,14 @@ export default function BuilderJourney() {
       </h3>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The operating system. Atlas is a structured set of Claude Code agents
-        that run your startup. The{" "}
+        The scaffolding engine. Atlas is a structured set of Claude Code agents
+        that scaffold your venture. The{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           /bootstrap
         </code>{" "}
         command is the entry point — it reads your venture brief and generates
-        both the startup OS (docs, agents, skills, data model) and a working
+        both your venture workspace (docs, agents, skills, data model) and a
+        working
         application scaffolded from platform-modules. After bootstrap, you have
         12 specialized agents for protocol, product, strategy, growth, ops, and
         legal work.
@@ -313,7 +314,8 @@ export default function BuilderJourney() {
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             /bootstrap
           </code>
-          , it reads your brief, generates the startup OS, then scaffolds a
+          , it reads your brief, generates your venture workspace, then
+          scaffolds a
           working app from platform-modules — customized with your venture name,
           entities, and branding. After deploying contracts via Code,{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
@@ -328,10 +330,10 @@ export default function BuilderJourney() {
         title="DATA FLOW"
         steps={[
           { label: "brief.md", sublabel: "Your venture brief" },
-          { label: "/bootstrap", sublabel: "Atlas generates OS + app" },
-          { label: "reineira-code", sublabel: "Build Gates & Policies" },
+          { label: "/bootstrap", sublabel: "Atlas scaffolds workspace and app" },
+          { label: "reineira-code", sublabel: "Build Gates & Recourse" },
           { label: "/integrate", sublabel: "Wire protocol to app" },
-          { label: "Ship", sublabel: "Deploy to Vercel + Arbitrum" },
+          { label: "Ship", sublabel: "Deploy to Vercel and Arbitrum" },
         ]}
       />
 
@@ -355,9 +357,10 @@ export default function BuilderJourney() {
           language="bash"
           showLineNumbers={false}
           lines={[
+            { content: "claude mcp add reineira-docs --transport http \\" },
             {
               content:
-                "claude mcp add reineira-docs --transport http https://zyx576c546w4m4ag7nzhf467du0wixjg.lambda-url.us-east-2.on.aws/",
+                "  https://zyx576c546w4m4ag7nzhf467du0wixjg.lambda-url.us-east-2.on.aws/",
             },
           ]}
         />
@@ -382,7 +385,7 @@ export default function BuilderJourney() {
           },
           {
             title: "Code",
-            description: "Build custom Gates and Insurance Policies",
+            description: "Build custom Gates and Recourse Policies",
             href: "/developer-tools/reineira-code",
             icon: Code2,
           },

@@ -10,7 +10,7 @@ interface StepsProps {
   children: React.ReactNode;
 }
 
-export function Step({ number, title, children }: StepProps) {
+export function Step({ title, children }: StepProps) {
   // Rendered by Steps container — number is injected by parent
   return (
     <div

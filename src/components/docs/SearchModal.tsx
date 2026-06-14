@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, FileText, Hash, X } from "lucide-react";
+import { Search, FileText, X } from "lucide-react";
 import { navigation } from "@/data/navigation";
 
 interface SearchModalProps {

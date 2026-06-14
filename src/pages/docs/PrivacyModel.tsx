@@ -59,10 +59,10 @@ const encryptedRows = [
     details: "Whether an Escrow has been settled is hidden via ebool.",
   },
   {
-    data: "Insurance stakes",
+    data: "Recourse stakes",
     visibility: "Encrypted",
     details:
-      "Underwriter stake amounts in insurance pools are stored as euint64.",
+      "Underwriter stake amounts in recourse pools are stored as euint64.",
   },
   {
     data: "Risk scores",
@@ -351,7 +351,7 @@ export default function PrivacyModel() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         The event design ensures that on-chain observers can track <em>that</em>{" "}
-        an escrow exists and <em>when</em> it transitions, but never learn{" "}
+        an Escrow exists and <em>when</em> it transitions, but never learn{" "}
         <em>how much</em> is at stake or <em>who</em> the parties are.
       </p>
 
@@ -438,7 +438,7 @@ export default function PrivacyModel() {
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">
-            Insurance policies compute on encrypted data
+            Recourse policies compute on encrypted data
           </strong>{" "}
           —{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
@@ -461,7 +461,7 @@ export default function PrivacyModel() {
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             FHE.allowTransient
           </code>
-          . Only authorized parties (owner, insurance manager) can read specific
+          . Only authorized parties (owner, recourse manager) can read specific
           encrypted fields.
         </li>
         <li>

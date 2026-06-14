@@ -3,10 +3,10 @@ import Breadcrumbs from "@/components/docs/Breadcrumbs";
 import PageHeader from "@/components/docs/PageHeader";
 import Callout from "@/components/docs/Callout";
 import CodeBlock from "@/components/docs/CodeBlock";
-import ArchitectureDiagram from "@/components/docs/ArchitectureDiagram";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
 import ModeToggle from "@/components/docs/ModeToggle";
+import StatusBadge from "@/components/docs/StatusBadge";
 import Steps, { Step } from "@/components/docs/Steps";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
@@ -16,7 +16,7 @@ const toc: TocItem[] = [
   { id: "the-interface", title: "The interface", level: 2 },
   {
     id: "example-p2p-policy",
-    title: "Example: P2P marketplace Insurance policy",
+    title: "Example: P2P marketplace Recourse policy",
     level: 2,
   },
   { id: "risk-evaluation", title: "Risk evaluation", level: 3 },
@@ -44,13 +44,13 @@ const interfaceRows = [
   {
     fn: "evaluateRisk",
     when: "Coverage purchase",
-    returns: "Encrypted risk score (0\u201310000 bps)",
+    returns: "uint256 riskScore (plain) / euint64 (confidential), 0\u201310000 bps",
     purpose: "Determines the premium the buyer pays",
   },
   {
     fn: "judge",
     when: "Dispute filed",
-    returns: "Encrypted boolean",
+    returns: "bool valid (plain) / ebool (confidential)",
     purpose: "Determines if the claim is valid and should be paid out",
   },
 ];
@@ -88,7 +88,7 @@ const designRows = [
   },
 ];
 
-export default function InsurancePolicies() {
+export default function UnderwriterPolicies() {
   return (
     <DocsLayout toc={toc} editHref="">
       <Breadcrumbs />
@@ -100,7 +100,7 @@ export default function InsurancePolicies() {
       />
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        An insurance policy is a Solidity contract that answers two questions:{" "}
+        An underwriter policy is a Solidity contract that answers two questions:{" "}
         <strong className="text-docs-text-primary font-semibold">
           "How risky is this Escrow?"
         </strong>{" "}
@@ -124,16 +124,29 @@ export default function InsurancePolicies() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Like Escrow, the Insurance primitive ships in two modes with identical
-        interfaces. The plaintext{" "}
+        Like Escrow, the Recourse primitive ships in two modes with parallel
+        interfaces that share function names and ordering — but they differ in
+        return types. The plaintext{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           IUnderwriterPolicy
         </code>{" "}
-        and the encrypted{" "}
+        returns <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          uint256 riskScore
+        </code>{" "}
+        and <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          bool valid
+        </code>
+        ; the encrypted{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           IConfidentialUnderwriterPolicy
         </code>{" "}
-        share function names and ordering.
+        returns <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          euint64
+        </code>{" "}
+        and <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          ebool
+        </code>
+        .
       </p>
 
       <ModeToggle
@@ -171,35 +184,73 @@ export default function InsurancePolicies() {
       </h2>
 
       <CodeBlock
-        filename="IUnderwriterPolicy.sol"
-        language="solidity"
-        lines={[
-          { content: "interface IUnderwriterPolicy {" },
+        tabs={[
           {
-            content:
-              "  function onPolicySet(uint256 coverageId, bytes calldata data) external;",
+            label: "Plain (chaos-net)",
+            language: "solidity",
+            filename: "IUnderwriterPolicy.sol",
+            lines: [
+              { content: "interface IUnderwriterPolicy {" },
+              {
+                content:
+                  "  function onPolicySet(uint256 coverageId, bytes calldata data) external;",
+              },
+              { content: "" },
+              {
+                content:
+                  "  function evaluateRisk(uint256 escrowId, bytes calldata riskProof)",
+                highlighted: true,
+              },
+              {
+                content: "    external returns (uint256 riskScore);",
+                highlighted: true,
+              },
+              { content: "" },
+              {
+                content:
+                  "  function judge(uint256 coverageId, bytes calldata disputeProof)",
+                highlighted: true,
+              },
+              {
+                content: "    external returns (bool valid);",
+                highlighted: true,
+              },
+              { content: "}" },
+            ],
           },
-          { content: "" },
           {
-            content:
-              "  function evaluateRisk(uint256 escrowId, bytes calldata riskProof)",
-            highlighted: true,
+            label: "Confidential (v1.0)",
+            language: "solidity",
+            filename: "IConfidentialUnderwriterPolicy.sol",
+            lines: [
+              { content: "interface IConfidentialUnderwriterPolicy {" },
+              {
+                content:
+                  "  function onPolicySet(uint256 coverageId, bytes calldata data) external;",
+              },
+              { content: "" },
+              {
+                content:
+                  "  function evaluateRisk(uint256 escrowId, bytes calldata riskProof)",
+                highlighted: true,
+              },
+              {
+                content: "    external returns (euint64 riskScore);",
+                highlighted: true,
+              },
+              { content: "" },
+              {
+                content:
+                  "  function judge(uint256 coverageId, bytes calldata disputeProof)",
+                highlighted: true,
+              },
+              {
+                content: "    external returns (ebool valid);",
+                highlighted: true,
+              },
+              { content: "}" },
+            ],
           },
-          {
-            content: "    external returns (euint64 riskScore);",
-            highlighted: true,
-          },
-          { content: "" },
-          {
-            content:
-              "  function judge(uint256 coverageId, bytes calldata disputeProof)",
-            highlighted: true,
-          },
-          {
-            content: "    external returns (ebool valid);",
-            highlighted: true,
-          },
-          { content: "}" },
         ]}
         showLineNumbers={true}
       />
@@ -239,17 +290,32 @@ export default function InsurancePolicies() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        A real policy for a P2P marketplace where buyers pay sellers via PayPal
-        (using the zkTLS resolver from the{" "}
+        A policy for a P2P marketplace where buyers pay sellers via PayPal (using
+        the zkTLS resolver from the{" "}
         <a
           href="/build/condition-resolvers"
           className="text-brand-primary font-medium hover:underline"
         >
           Condition Resolvers
         </a>{" "}
-        page). Insurance covers the case where a buyer disputes a PayPal
+        page). Recourse covers the case where a buyer disputes a PayPal
         transaction after the seller already redeemed crypto.
       </p>
+
+      <Callout variant="info" title="Illustrative — you author and register your own policy">
+        <p>
+          This example returns <code>euint64</code> / <code>ebool</code>, so it
+          implements <code>IConfidentialUnderwriterPolicy</code> (the encrypted
+          interface). It would not compile against the plain{" "}
+          <code>IUnderwriterPolicy</code>, which expects{" "}
+          <code>uint256</code> / <code>bool</code>. The protocol ships only{" "}
+          <code>MockUnderwriterPolicy</code> and{" "}
+          <code>MockConfidentialUnderwriterPolicy</code> — there is no shipped{" "}
+          <code>P2PMarketplacePolicy</code>. Underwriters author and deploy
+          their own policy and register it via{" "}
+          <code>PolicyRegistry.registerPolicy()</code> (owner-gated).
+        </p>
+      </Callout>
 
       <h3
         id="risk-evaluation"
@@ -271,8 +337,11 @@ export default function InsurancePolicies() {
           { content: "pragma solidity ^0.8.24;" },
           { content: "" },
           {
+            content: "import { IConfidentialUnderwriterPolicy } from",
+          },
+          {
             content:
-              'import { IUnderwriterPolicy } from "@reineira-os/shared/contracts/interfaces/plugins/IUnderwriterPolicy.sol";',
+              '    "@reineira-os/shared/contracts/interfaces/plugins/IConfidentialUnderwriterPolicy.sol";',
           },
           {
             content:
@@ -285,7 +354,7 @@ export default function InsurancePolicies() {
           { content: "" },
           {
             content:
-              "contract P2PMarketplacePolicy is IUnderwriterPolicy, ERC165 {",
+              "contract P2PMarketplacePolicy is IConfidentialUnderwriterPolicy, ERC165 {",
           },
           {
             content: "    // Risk tiers in basis points (100 bps = 1%)",
@@ -486,12 +555,17 @@ export default function InsurancePolicies() {
           { content: "    }" },
           { content: "" },
           {
-            content:
-              "    function supportsInterface(bytes4 interfaceId) public view override returns (bool) {",
+            content: "    function supportsInterface(bytes4 interfaceId)",
+          },
+          {
+            content: "        public view override returns (bool)",
+          },
+          {
+            content: "    {",
           },
           {
             content:
-              "        return interfaceId == type(IUnderwriterPolicy).interfaceId",
+              "        return interfaceId == type(IConfidentialUnderwriterPolicy).interfaceId",
           },
           {
             content: "            || super.supportsInterface(interfaceId);",
@@ -513,25 +587,37 @@ export default function InsurancePolicies() {
       <Steps>
         <Step title="Buyer purchases coverage">
           <p className="text-docs-text-secondary leading-relaxed mb-2">
-            Buyer wants to insure a $1,000 P2P trade. Policy evaluates risk at
-            200 bps (2%).
+            Buyer wants to cover a $1,000 P2P trade fully backed by a $1,000
+            escrow. Coverage is first capped homomorphically to the lesser of
+            the requested amount and the escrowed amount. Policy evaluates risk
+            at 200 bps (2%). The protocol then computes{" "}
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              premium = (cappedCoverage × riskScore) / 10000
+            </code>{" "}
+            in ciphertext, where the risk score is in basis points (10000 =
+            100%).
           </p>
           <p className="text-docs-text-secondary leading-relaxed">
             <strong className="text-docs-text-primary font-semibold">
-              Premium = $1,000 x 2% = $20
+              Premium = ($1,000 × 200) / 10000 = $20
             </strong>
           </p>
         </Step>
-        <Step title="Premium flows to pool">
+        <Step title="Premium accrues to the pool">
           <p className="text-docs-text-secondary leading-relaxed">
-            The $20 premium is transferred (encrypted) to the insurance pool.
-            Pool stakers earn yield from this premium.
+            The $20 premium accrues to the pool bucket. The Manager withdraws
+            accrued premiums via{" "}
+            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+              claimPremiums()
+            </code>
+            ; automatic per-LP yield distribution is{" "}
+            <StatusBadge status="spec" detail="per-LP rewards" />.
           </p>
         </Step>
         <Step title="Trade completes normally">
           <p className="text-docs-text-secondary leading-relaxed">
             Most trades complete without issues. The coverage expires after 30
-            days. The pool keeps the $20 premium — pure profit for stakers.
+            days and the pool keeps the $20 premium as pool revenue.
           </p>
         </Step>
         <Step title="Or: dispute filed">
@@ -563,16 +649,20 @@ export default function InsurancePolicies() {
         language="typescript"
         lines={[
           {
-            content: "// Deploy your policy contract to Arbitrum",
+            content: "// 1. Deploy your policy contract to Arbitrum",
           },
           {
-            content: "// Then register it with the protocol",
+            content:
+              "// 2. Owner registers it protocol-wide (ERC-165-checked):",
           },
           {
-            content: "// Get your pool and add the policy",
+            content: "//    PolicyRegistry.registerPolicy('0xP2PMarketplacePolicy...')",
           },
           {
-            content: "const pool = await sdk.insurance.getPool(0n)",
+            content: "// 3. Pool Creator curates it onto the pool:",
+          },
+          {
+            content: "const pool = await sdk.recourse.getPool(0n)",
           },
           {
             content: "await pool.addPolicy('0xP2PMarketplacePolicy...')",
@@ -614,9 +704,16 @@ export default function InsurancePolicies() {
           <strong className="text-docs-text-primary font-semibold">
             $15K/month in premiums
           </strong>{" "}
-          flowing to the pool
+          accruing to the pool, withdrawable by the Manager via{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            claimPremiums()
+          </code>
         </li>
-        <li>Pool stakers earn their share; you can stake into your own pool</li>
+        <li>
+          Automatic per-LP reward distribution is{" "}
+          <StatusBadge status="spec" detail="per-LP rewards" /> — model returns
+          to the pool / Manager today, not a passive staker yield stream
+        </li>
       </ul>
 
       <Callout variant="tip" title="Accuracy is the moat">

@@ -6,7 +6,7 @@ import CodeBlock from "@/components/docs/CodeBlock";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
 import DocsBadge from "@/components/docs/DocsBadge";
-import Steps, { Step } from "@/components/docs/Steps";
+import StatusBadge from "@/components/docs/StatusBadge";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
@@ -22,7 +22,7 @@ const toc: TocItem[] = [
   { id: "privacy", title: "Privacy", level: 2 },
 ];
 
-const { prev, next } = getPrevNext("/build/insurance-pools");
+const { prev, next } = getPrevNext("/build/recourse-pools");
 
 const lifecycleColumns = [
   { header: "Step", key: "step", width: "100px" },
@@ -52,17 +52,12 @@ const lifecycleRows = [
   },
   {
     step: "5. Dispute (if needed)",
-    what: "Buyer files dispute with proof",
+    what: "Buyer files dispute with proof; policy\u2019s judge() runs and, if valid, the coverage moves Active \u2192 Claimed in the same call",
     who: "Buyer / developer",
   },
   {
-    step: "6. Judgment",
-    what: "Policy\u2019s judge() returns encrypted verdict",
-    who: "Your policy contract",
-  },
-  {
-    step: "7. Claim payout",
-    what: "If valid, claim is paid from pool liquidity",
+    step: "6. Claim payout",
+    what: "If the verdict is valid, the claim is paid from pool liquidity; otherwise the call reverts DisputeRejected",
     who: "Protocol (automatic)",
   },
 ];
@@ -77,12 +72,9 @@ const stateRows = [
     meaning: "Coverage is live \u2014 disputes can be filed",
   },
   {
-    state: <DocsBadge variant="amber">Disputed</DocsBadge>,
-    meaning: "A dispute has been filed and is being judged",
-  },
-  {
     state: <DocsBadge variant="red">Claimed</DocsBadge>,
-    meaning: "Dispute was valid \u2014 claim paid from pool",
+    meaning:
+      "Dispute was valid \u2014 claim paid from pool. dispute() moves Active \u2192 Claimed atomically.",
   },
   {
     state: <DocsBadge variant="default">Expired</DocsBadge>,
@@ -90,21 +82,77 @@ const stateRows = [
   },
 ];
 
-export default function InsurancePools() {
+const plainPoolColumns = [
+  { header: "Member", key: "member", mono: true, width: "200px" },
+  { header: "Role", key: "role", width: "150px" },
+  { header: "Description", key: "desc" },
+];
+const plainPoolRows = [
+  {
+    member: "creator / manager / guardian",
+    role: "view",
+    desc: "Current role holders on the pool",
+  },
+  {
+    member: "isOpen / paymentToken",
+    role: "view",
+    desc: "Whether the pool is open, and its allow-listed payment token",
+  },
+  {
+    member: "totalLiquidity / stakedAmount",
+    role: "view",
+    desc: "Pool-level liquidity and your staked balance",
+  },
+  {
+    member: "transferManager(addr)",
+    role: "Creator",
+    desc: "Hand the Manager role to another address",
+  },
+  {
+    member: "addPolicy / removePolicy",
+    role: "Creator",
+    desc: "Curate registered policies (reverts InvalidPolicy if unregistered)",
+  },
+  {
+    member: "isPolicy(addr)",
+    role: "view",
+    desc: "Check whether a policy is approved on this pool",
+  },
+  {
+    member: "stake / unstake",
+    role: "LP",
+    desc: "Deposit or withdraw liquidity",
+  },
+  {
+    member: "pendingRewards / claimRewards",
+    role: "Spec'd",
+    desc: "No-op today \u2014 returns 0 / transfers nothing (per-LP rewards Spec'd)",
+  },
+];
+
+export default function RecoursePools() {
   return (
     <DocsLayout toc={toc} editHref="">
       <Breadcrumbs />
 
       <PageHeader
-        title="Insurance Pools"
-        description="Create permissionless Insurance pools, curate policies, provide liquidity, and earn premiums from every coverage purchase."
+        title="Recourse Pools"
+        description="Create Recourse pools, curate policies, provide liquidity, and collect premiums on every coverage purchase."
         readingTime="8 min read"
       />
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Anyone can create an Insurance pool, attach policies, provide liquidity,
-        and earn premiums. This is the open economy layer of ReineiraOS — the
-        best underwriters build the best pools and earn the most.
+        Anyone can create a Recourse pool, attach policies, and provide
+        liquidity. This is the open economy layer of ReineiraOS — the best
+        underwriters build the best pools. The public track (
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          sdk.recoursePlain
+        </code>
+        ) is live on chaos-net; the encrypted track (
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          sdk.recourse
+        </code>
+        ) is the v1.0 target.
       </p>
 
       {/* ------------------------------------------------------------------ */}
@@ -116,7 +164,7 @@ export default function InsurancePools() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Think of insurance pools like Morpho vaults:
+        Think of Recourse pools like Morpho vaults:
       </p>
 
       <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
@@ -140,21 +188,36 @@ export default function InsurancePools() {
           <strong className="text-docs-text-primary font-semibold">
             Premiums
           </strong>{" "}
-          flow to the pool on every coverage purchase
+          accrue to the pool on every coverage purchase, into a single pool
+          bucket
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">
-            You and stakers
+            The Manager
           </strong>{" "}
-          earn yield from premiums
+          withdraws accrued premiums via{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            claimPremiums()
+          </code>
         </li>
       </ul>
+
+      <Callout variant="warning" title="Per-LP reward distribution is Spec'd">
+        <p>
+          Today premiums accrue to one pool bucket and are withdrawable only by
+          the Manager. Per-staker reward distribution is not live:{" "}
+          <code>pendingRewards()</code> returns <code>0</code> and{" "}
+          <code>claimRewards()</code> emits an event but transfers nothing on
+          both <code>RecoursePool</code> and <code>ConfidentialRecoursePool</code>
+          . Build against the interface; do not promise stakers a yield stream
+          yet. <StatusBadge status="spec" detail="per-LP rewards" />
+        </p>
+      </Callout>
 
       <Callout variant="tip" title="Quality drives growth">
         <p>
           The better your policies (accurate risk scoring, fair disputes), the
-          more builders trust your pool, the more coverage is purchased, the
-          more everyone earns.
+          more builders trust your pool and the more coverage is purchased.
         </p>
       </Callout>
 
@@ -170,13 +233,18 @@ export default function InsurancePools() {
         filename="create-pool.ts"
         language="typescript"
         lines={[
+          { content: "// Public track (live on chaos-net)" },
           {
-            content: "const pool = await sdk.insurance.createPool({",
+            content: "const pool = await sdk.recoursePlain.createPool({",
           },
           {
-            content: "  paymentToken: sdk.addresses.confidentialUSDC,",
+            content: "  paymentToken: sdk.addresses.plainUSDC,",
             highlighted: true,
           },
+          { content: "  // optional — default to caller / open pool" },
+          { content: "  initialManager: '0xManager...'," },
+          { content: "  guardian: '0xGuardian...'," },
+          { content: "  isOpen: true," },
           { content: "})" },
           { content: "" },
           { content: "console.log('Pool ID:', pool.id)" },
@@ -187,8 +255,23 @@ export default function InsurancePools() {
         showLineNumbers={false}
       />
 
+      <Callout variant="warning" title="Allow-list the payment token first">
+        <p>
+          <code>paymentToken</code> must be allow-listed via{" "}
+          <code>PoolFactory.addAllowedToken()</code> (owner-only) or{" "}
+          <code>createPool</code> reverts <code>TokenNotAllowed</code>. Only{" "}
+          <code>paymentToken</code> is required; <code>initialManager</code>,{" "}
+          <code>guardian</code>, and <code>isOpen</code> are optional. The pool
+          container is a <code>RecoursePool</code> (or{" "}
+          <code>ConfidentialRecoursePool</code> on the encrypted track) proxy
+          deployed by <code>PoolFactory</code>.
+        </p>
+      </Callout>
+
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        You are now an underwriter. The pool is yours to manage.
+        You are now the pool Creator. The pool is yours to manage — assign a
+        Manager and Guardian, curate policies, and gate liquidity if you keep it
+        private.
       </p>
 
       {/* ------------------------------------------------------------------ */}
@@ -219,7 +302,7 @@ export default function InsurancePools() {
             highlighted: true,
           },
           {
-            content: "await pool.addPolicy('0xCargoInsurancePolicy...')",
+            content: "await pool.addPolicy('0xCargoRecoursePolicy...')",
           },
           { content: "" },
           { content: "// Remove a policy" },
@@ -232,8 +315,28 @@ export default function InsurancePools() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Buyers / developers can only purchase coverage using policies your pool
-        has approved.
+        has approved. A policy must first be allow-listed protocol-wide via{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          PolicyRegistry.registerPolicy()
+        </code>{" "}
+        (owner-only, ERC-165-checked);{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          addPolicy()
+        </code>{" "}
+        reverts <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          InvalidPolicy
+        </code>{" "}
+        otherwise.
       </p>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        On the public track, <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          PlainPoolInstance
+        </code>{" "}
+        exposes the full Creator / Manager surface:
+      </p>
+
+      <DocsTable columns={plainPoolColumns} rows={plainPoolRows} />
 
       {/* ------------------------------------------------------------------ */}
       <h2
@@ -270,8 +373,52 @@ export default function InsurancePools() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Staked liquidity backs the coverage your pool sells. When claims are
-        paid, they come from this liquidity. Premiums accumulate in the pool as
-        coverage is purchased.
+        paid, they come from this liquidity. Premiums accumulate in a single
+        pool bucket as coverage is purchased, and the Manager withdraws them via{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          claimPremiums()
+        </code>
+        .
+      </p>
+
+      <Callout variant="warning" title="LP yield is not wired yet">
+        <p>
+          The yield subsystem (<code>StrategyRouter</code>,{" "}
+          <code>IYieldAdapter</code>, <code>PoolRiskLib</code>) is built but not
+          wired to the pool — the pool↔router hook is deferred (ADR-0002) and
+          only a <code>MockYieldAdapter</code> exists. Combined with the no-op
+          reward accounting above, there is no live per-LP yield stream today.{" "}
+          <StatusBadge status="spec" detail="pool↔router hook" />
+        </p>
+      </Callout>
+
+      <h3 className="text-[20px] font-semibold tracking-[-0.01em] leading-[1.4] text-docs-text-primary mt-8 mb-3">
+        Open vs private pools
+      </h3>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        Pools carry an <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          isOpen
+        </code>{" "}
+        flag. Open pools let anyone purchase coverage. Private pools require an
+        EIP-712 coverage-invite voucher signed by the Manager (
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          CoverageInviteLib
+        </code>
+        ) — vouchers are revocable and carry a <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          maxUses
+        </code>{" "}
+        cap. On the public track,{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          purchaseCoverage
+        </code>{" "}
+        accepts <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          invite
+        </code>{" "}
+        and <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          inviteSig
+        </code>{" "}
+        fields; the encrypted (FHE) coverage path does not support invites yet.
       </p>
 
       {/* ------------------------------------------------------------------ */}
@@ -315,13 +462,13 @@ export default function InsurancePools() {
             lines: [
               {
                 content:
-                  "const coverage = await sdk.insurance.purchaseCoverage({",
+                  "const coverage = await sdk.recourse.purchaseCoverage({",
               },
               { content: "  pool: '0xPool...'," },
               { content: "  policy: '0xPolicy...'," },
-              { content: "  escrowId: escrow.id," },
+              { content: "  escrowId: escrow.id,", highlighted: true },
               {
-                content: "  coverageAmount: sdk.usdc(50000),",
+                content: "  coverageAmount: sdk.usdc(50000), // capped to escrow",
                 highlighted: true,
               },
               {
@@ -337,17 +484,17 @@ export default function InsurancePools() {
               { content: "// Check status" },
               {
                 content:
-                  "const status = await coverage.status() // Active | Disputed | Claimed | Expired",
+                  "const status = await coverage.status() // Active | Claimed | Expired",
               },
               { content: "" },
-              { content: "// File a dispute" },
+              { content: "// File a dispute — resolves Active -> Claimed atomically" },
               {
                 content: "await coverage.dispute('0xProofBytes...')",
               },
             ],
           },
           {
-            label: "Atomic escrow + coverage",
+            label: "Atomic Escrow and coverage",
             language: "typescript",
             filename: "atomic-create.ts",
             lines: [
@@ -359,7 +506,7 @@ export default function InsurancePools() {
                 content: "  .condition('0xResolver...', resolverData)",
               },
               {
-                content: "  .insurance({",
+                content: "  .recourse({",
                 highlighted: true,
               },
               {
@@ -403,9 +550,12 @@ export default function InsurancePools() {
           { content: "" },
           {
             content:
-              "// Premium distribution to individual stakers is in progress",
+              "// Per-LP reward distribution is Spec'd (not live):",
           },
-          { content: "// Premiums accumulate in the pool for now" },
+          { content: "// pendingRewards() returns 0, claimRewards() is a no-op." },
+          {
+            content: "// Premiums accrue to the pool; the Manager calls claimPremiums().",
+          },
         ]}
         showLineNumbers={false}
       />
@@ -419,7 +569,10 @@ export default function InsurancePools() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        All financial values in the insurance system are FHE-encrypted:
+        On the encrypted track (<code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          sdk.recourse
+        </code>
+        ), all financial values in the Recourse system are FHE-encrypted:
       </p>
 
       <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">

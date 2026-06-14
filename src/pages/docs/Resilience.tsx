@@ -41,7 +41,7 @@ const maliciousResolverRows = [
     behavior:
       "Escrow is redeemable immediately regardless of actual condition.",
     response:
-      "No protocol-level defense — escrow creator chose this resolver. Escrow terms are immutable once created.",
+      "No protocol-level defense — the Escrow creator chose this resolver. Escrow terms are immutable once created.",
   },
   {
     mode: "Always returns false",
@@ -53,7 +53,7 @@ const maliciousResolverRows = [
     mode: "Reverts on call",
     behavior: "isConditionMet() reverts, blocking redemption attempts.",
     response:
-      "Same as always-false — the escrow cannot be redeemed through normal flow.",
+      "Same as always-false — the Escrow cannot be redeemed through normal flow.",
   },
 ];
 
@@ -83,9 +83,9 @@ const trustRows = [
   },
   {
     component: "Operators",
-    trust: "Staked + slashable",
+    trust: "Staked; slashing Spec'd (not yet wired)",
     impact:
-      "Censorship or delayed relay. Mitigated by 3-tier fallback and permissionless relay after timeout.",
+      "Censorship or delay. The 3-tier fallback and timeout relay work without Operator economics; slashing is Spec'd, not wired.",
   },
   {
     component: "Meta-tx relayer",
@@ -117,7 +117,7 @@ const circuitBreakerRows = [
     mechanism: "Silent failure (FHE.select)",
     protects: "Information leakage on failed redemption",
     details:
-      "Failed redeem() calls transfer zero instead of reverting. FHE.select() chooses between paidAmount or zero based on encrypted conditions — hiding why a redemption failed.",
+      "Failed redeem() calls transfer zero instead of reverting. FHE.select() hides the encrypted reason for failure.",
   },
   {
     mechanism: "Reentrancy guards",
@@ -129,7 +129,7 @@ const circuitBreakerRows = [
     mechanism: "ERC-7201 namespaced storage",
     protects: "Storage collisions on upgrade",
     details:
-      "Each module has a unique storage namespace derived from a deterministic hash. No two modules can overwrite each other's state.",
+      "Each module uses a deterministic storage namespace, preventing modules from overwriting one another.",
   },
   {
     mechanism: "Replay protection",
@@ -147,7 +147,7 @@ const circuitBreakerRows = [
     mechanism: "Escrow isolation",
     protects: "Cross-escrow contamination",
     details:
-      "Each escrow is an independent state machine. A failure in one escrow cannot affect another.",
+      "Each Escrow is an independent state machine. A failure in one Escrow cannot affect another.",
   },
   {
     mechanism: "Initializer guards",
@@ -271,10 +271,10 @@ export default function Resilience() {
           },
           {
             label: "Open (60–600s)",
-            sublabel: "Any staked operator can relay for the fee",
+            sublabel: "Any active, registered operator can relay",
           },
           {
-            label: "Permissionless (600s+)",
+            label: "Open after 600s",
             sublabel: "Anyone can relay — no stake required",
           },
         ]}
@@ -299,7 +299,7 @@ export default function Resilience() {
         <strong className="text-docs-text-primary font-semibold">
           What breaks:
         </strong>{" "}
-        An insurance pool does not have enough liquidity to cover a claim.
+        A Recourse pool does not have enough liquidity to cover a claim.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -307,7 +307,7 @@ export default function Resilience() {
           Impact:
         </strong>{" "}
         The claim payout is limited to whatever is available in the pool.
-        Insurance pools are isolated — one pool's exhaustion cannot drain
+        Recourse pools are isolated — one pool's exhaustion cannot drain
         another.
       </p>
 
@@ -338,7 +338,7 @@ export default function Resilience() {
         <strong className="text-docs-text-primary font-semibold">
           Impact:
         </strong>{" "}
-        Depends on the failure mode. The escrow creator chose the resolver, so
+        Depends on the failure mode. The Escrow creator chose the resolver, so
         the protocol treats it as a user decision. A malicious resolver can
         block redemption (griefing) but cannot redirect funds.
       </p>
@@ -351,8 +351,8 @@ export default function Resilience() {
       <Callout variant="warning" title="Resolver selection is critical">
         <p>
           The protocol cannot protect you from a bad resolver — it can only
-          ensure that a bad resolver cannot affect <em>other</em> escrows.
-          Always audit resolver code before attaching it to an escrow with real
+          ensure that a bad resolver cannot affect <em>other</em> Escrows.
+          Always audit resolver code before attaching it to an Escrow with real
           value.
         </p>
       </Callout>

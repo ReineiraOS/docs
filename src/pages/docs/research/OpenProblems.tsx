@@ -67,46 +67,8 @@ const rows = [
   },
   {
     id: "9.1",
-    title: "Token bridge model across hosts",
-    target:
-      "conditional on the token-launch trigger conditions for L1↔L2; later hosts deferred to their activation milestones",
-  },
-  {
-    id: "9.2",
     title: "OP-Stack host native bridge",
     target: "deferred to OP-Stack host activation milestone",
-  },
-  {
-    id: "10.1",
-    title: "Compliance Certification Roadmap",
-    target: "post-mainnet activation",
-  },
-  {
-    id: "11.1",
-    title: "FATF Travel Rule Applicability to Encrypted-Amount Escrow",
-    target: "pre-mainnet activation",
-  },
-  {
-    id: "11.2",
-    title: "Foundation operations transition from DevCo to Foundation",
-    target: "prior to Phase 2 (Q1–Q2 2027)",
-  },
-  {
-    id: "12.1",
-    title: "REINEIRA Token Decimals (deferred)",
-    target:
-      "prior to any token-launch event under the token-launch trigger conditions",
-  },
-  {
-    id: "12.2",
-    title: "TGE trigger threshold calibration",
-    target:
-      "prior to any token-launch event under the token-launch trigger conditions",
-  },
-  {
-    id: "13.1",
-    title: "Compliance Certification Targets",
-    target: "post-mainnet activation",
   },
 ];
 
@@ -117,7 +79,7 @@ export default function OpenProblems() {
 
       <PageHeader
         title="Open Problems"
-        description="The protocol's open problems and the decision target attached to each. None carries a committed delivery date."
+        description="The protocol's open problems and their decision targets, none of which carries a committed delivery date."
         readingTime="4 min read"
       />
 

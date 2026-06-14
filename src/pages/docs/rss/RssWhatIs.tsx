@@ -30,7 +30,7 @@ export default function RssWhatIs() {
       />
 
       <div className="mb-2">
-        <DocsBadge variant="green">Standard · OSI-aligned licence</DocsBadge>
+        <DocsBadge variant="green">OSI-aligned RSS</DocsBadge>
       </div>
 
       <h2
@@ -42,7 +42,7 @@ export default function RssWhatIs() {
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         The Reineira Settlement Standard (RSS) is the abstract conformance
         specification for confidential settlement on the four primitives —
-        escrow, gate, insurance, operator. The contracts under{" "}
+        Escrow, Gate, Recourse, Operator. The contracts under{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           packages/
         </code>{" "}
@@ -90,7 +90,7 @@ export default function RssWhatIs() {
         RSS does <strong>not</strong> mandate upgradeability — conforming
         implementations may be upgradeable, immutable, or hybrid (the v1.0
         reference implementation is immutable). RSS does not cover token
-        economics, fee policy, DAO governance, the execution stack for
+        economics, fee policy, governance, the execution stack for
         self-hosted deployments, or the builder stack (Atlas, Code).
       </p>
 
@@ -113,8 +113,8 @@ export default function RssWhatIs() {
         protocol users: any conforming deployment can host the same plugins,
         accept the same bridge handlers, be observed by the same indexers and
         slashing oracles, and present the same SDK surface — independently of
-        who maintains its contracts. The reference implementation competes on
-        operational quality, fee schedule, and audit history, not on
+        who maintains its contracts. The protocol charges nothing; the reference
+        implementation competes on operational quality and audit history, not on
         incompatibility.
       </p>
 

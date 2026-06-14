@@ -10,7 +10,7 @@ import type { TocItem } from "@/components/layout/TableOfContents";
 
 const toc: TocItem[] = [
   { id: "escrow", title: "Escrow lifecycle", level: 2 },
-  { id: "gates", title: "Release gates", level: 2 },
+  { id: "gates", title: "Release Gates", level: 2 },
   { id: "underwriting", title: "Underwriting", level: 2 },
   { id: "fees", title: "Fee modules", level: 2 },
   { id: "v02", title: "Async & agentic (v0.2)", level: 2 },
@@ -25,7 +25,7 @@ export default function RssInterfaceSurface() {
 
       <PageHeader
         title="Interface Surface"
-        description="The Solidity interfaces a conformant deployment implements — the escrow lifecycle, pluggable gates, underwriting, and fee modules."
+        description="The Solidity interfaces a conformant deployment implements — the Escrow lifecycle, pluggable Gates, underwriting, and fee modules."
         readingTime="6 min read"
       />
 
@@ -87,12 +87,29 @@ export default function RssInterfaceSurface() {
           { content: "    ) external returns (uint256 escrowId);" },
           { content: "" },
           {
-            content:
-              "    function fund(uint256 escrowId, InEuint64 calldata encryptedPayment) external;",
+            content: "    function fund(",
           },
           {
-            content:
-              "    function fundFrom(uint256 escrowId, euint64 amount) external; // cross-chain sink",
+            content: "        uint256 escrowId,",
+          },
+          {
+            content: "        InEuint64 calldata encryptedPayment",
+          },
+          {
+            content: "    ) external;",
+          },
+          { content: "    // Cross-chain funding sink." },
+          {
+            content: "    function fundFrom(",
+          },
+          {
+            content: "        uint256 escrowId,",
+          },
+          {
+            content: "        euint64 amount",
+          },
+          {
+            content: "    ) external;",
           },
           { content: "    function redeem(uint256 escrowId) external;" },
           {
@@ -119,13 +136,13 @@ export default function RssInterfaceSurface() {
         id="gates"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Release gates
+        Release Gates
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           IConditionResolver
         </code>{" "}
-        controls when an escrow may release. The escrow calls{" "}
+        controls when an Escrow may release. The Escrow calls{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           onConditionSet
         </code>{" "}

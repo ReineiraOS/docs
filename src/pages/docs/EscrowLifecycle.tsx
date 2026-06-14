@@ -33,19 +33,29 @@ const stateColumns = [
 ];
 const stateRows = [
   {
-    state: "Created",
+    state: "Open",
     status: <DocsBadge variant="blue">Active</DocsBadge>,
-    desc: "Escrow exists on-chain with encrypted owner and amount. Not yet funded.",
+    desc: "Escrow exists on-chain with owner and amount set. Not yet funded.",
   },
   {
     state: "Funded",
     status: <DocsBadge variant="amber">Active</DocsBadge>,
-    desc: "USDC deposited and wrapped into ConfidentialUSDC. The encrypted paidAmount is updated.",
+    desc: "Confidential funds deposited. The paidAmount is updated.",
   },
   {
-    state: "Redeemed",
+    state: "Released",
     status: <DocsBadge variant="green">Final</DocsBadge>,
-    desc: "Funds released to the owner. The encrypted isRedeemed flag is set. Terminal state.",
+    desc: "Funds released to the owner. The isRedeemed flag is set. Terminal state.",
+  },
+  {
+    state: "Refunded",
+    status: <DocsBadge variant="default">Declared</DocsBadge>,
+    desc: "Reserved in the Phase enum but not yet driven by any code path.",
+  },
+  {
+    state: "Disputed",
+    status: <DocsBadge variant="default">Declared</DocsBadge>,
+    desc: "Reserved in the Phase enum but not yet driven by any code path.",
   },
 ];
 
@@ -71,8 +81,12 @@ const eventRows = [
     when: "Multiple Escrows redeemed in a single call via redeemMultiple().",
   },
   {
-    event: "FeeSet(escrowId)",
-    when: "An insurance fee is attached to the Escrow by the insurance manager.",
+    event: "FeeStamped(escrowId, kind, bps, recipient)",
+    when: "A third-party fee is recorded: the Condition fee at create() (from the Gate's getConditionFee), the Underwriter fee at coverage purchase. The Protocol slot is reserved and never stamped — the protocol charges nothing.",
+  },
+  {
+    event: "FeeDistributed(escrowId, kind, amount, recipient)",
+    when: "A stamped fee is paid out to its recipient during settlement.",
   },
 ];
 
@@ -97,20 +111,29 @@ export default function EscrowLifecycle() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        A Escrow is a state machine with three states. Transitions are triggered
-        by on-chain calls. The{" "}
+        An Escrow moves through an{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          IEscrow.Phase
+        </code>{" "}
+        state machine. The enum declares five values — Open, Funded, Released,
+        Refunded, Disputed — though only the first three are driven today.
+        Transitions are triggered by on-chain calls. The{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           ConfidentialEscrow
         </code>{" "}
-        contract uses FHE-encrypted flags and a silent failure pattern — failed
-        redemptions transfer zero instead of reverting, preventing information
-        leakage.
+        contract holds owner, caller, amount, paidAmount, and the redeemed flag
+        as FHE ciphertexts (caller is retained distinctly from owner for
+        fee-authorisation checks); existence is the plaintext predicate
+        escrowId &lt; counter. The owner-match, fully-funded, and not-redeemed
+        checks are branchless — a failing redemption transfers zero instead of
+        reverting, preventing information leakage — while the Gate condition is
+        checked in plaintext and reverts.
       </p>
 
       <ArchitectureDiagram
         title="ESCROW STATE MACHINE"
         steps={[
-          { label: "Create", sublabel: "Encrypted owner + amount" },
+          { label: "Create", sublabel: "Encrypted owner and amount" },
           { label: "Fund", sublabel: "Deposit USDC" },
           { label: "Redeem", sublabel: "Gate check → funds released" },
         ]}
@@ -147,9 +170,10 @@ export default function EscrowLifecycle() {
               The owner, amount, paid amount, and redemption flag are held as
               FHE ciphertexts (<code>eaddress</code>, <code>euint64</code>,{" "}
               <code>ebool</code>). Redemption uses <code>FHE.select()</code> so
-              success and failure are indistinguishable on-chain. Encrypted
-              state does not exist until v1.0 mainnet (Q4 2026), gated on Fhenix
-              CoFHE.
+              the authorized and unauthorized branches emit identical events,
+              charge identical gas, and return identically-shaped ciphertext —
+              cryptographically indistinguishable on-chain. Encrypted state does
+              not exist until v1.0 mainnet (Q4 2026), gated on Fhenix CoFHE.
             </p>
           </div>
         }
@@ -179,6 +203,22 @@ export default function EscrowLifecycle() {
         </p>
       </Callout>
 
+      <Callout variant="warning" title="status() differs by track">
+        <p>
+          On the public track,{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            Escrow.status()
+          </code>{" "}
+          returns the real phase — Open (unfunded), Funded, or Released. On the
+          encrypted track,{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            ConfidentialEscrow.status()
+          </code>{" "}
+          is a stub that always returns Open, because the real state lives in
+          ciphertext — derive progress from events or the SDK helpers instead.
+        </p>
+      </Callout>
+
       <h2
         id="creating"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
@@ -199,35 +239,53 @@ export default function EscrowLifecycle() {
         is called atomically during creation.
       </p>
 
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        The SDK encrypts the inputs and submits the call for you:
+      </p>
+
       <CodeBlock
         filename="create-vault.ts"
         language="typescript"
         lines={[
-          { content: "import { Encryptable } from '@cofhe/sdk';" },
+          { content: "// The SDK encrypts owner and amount, then calls create()" },
+          { content: "const escrow = await sdk.escrow.create({" },
+          { content: "  amount: sdk.usdc(1000),", highlighted: true },
+          { content: "  owner: beneficiary,", highlighted: true },
           {
             content:
-              "import { createCofheConfig, createCofheClient } from '@cofhe/sdk/node';",
-          },
-          { content: "import { arbSepolia } from '@cofhe/sdk/chains';" },
-          { content: "" },
-          { content: "// 1. Initialize the FHE client" },
-          {
-            content:
-              "const client = createCofheClient(createCofheConfig({ supportedChains: [arbSepolia] }));",
-          },
-          { content: "await client.connect(publicClient, walletClient);" },
-          { content: "" },
-          { content: "// 2. Encrypt owner and amount client-side" },
-          {
-            content: "const [encOwner, encAmount] = await client",
+              "  resolver: resolverAddr,   // Gate address (omit for unconditional)",
+            highlighted: true,
           },
           {
             content:
-              "  .encryptInputs([Encryptable.address(beneficiary), Encryptable.uint64(amount)])",
+              "  resolverData,             // bytes passed to onConditionSet()",
+            highlighted: true,
           },
-          { content: "  .execute();" },
+          { content: "})" },
+        ]}
+      />
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4 mt-6">
+        Or call the contract directly with pre-encrypted inputs:
+      </p>
+
+      <CodeBlock
+        filename="create-vault-raw.ts"
+        language="typescript"
+        lines={[
+          { content: "import { Contract } from 'ethers';" },
+          { content: "// Replace with your compiled artifact." },
+          {
+            content:
+              "import CONFIDENTIAL_ESCROW_ABI from './abi/ConfidentialEscrow.json';",
+          },
           { content: "" },
-          { content: "// 2. Create the Escrow on-chain", highlighted: true },
+          {
+            content:
+              "const escrow = new Contract(addresses.escrow, CONFIDENTIAL_ESCROW_ABI, signer);",
+          },
+          { content: "" },
+          { content: "// encOwner / encAmount are encrypted client-side" },
           { content: "const tx = await escrow.create(", highlighted: true },
           {
             content: "  encOwner,       // InEaddress — encrypted beneficiary",
@@ -255,7 +313,7 @@ export default function EscrowLifecycle() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           FHE.allow()
         </code>{" "}
-        access to the owner and the insurance manager (if set).
+        access to the owner and the coverage manager (if set).
       </p>
 
       <h2
@@ -266,18 +324,38 @@ export default function EscrowLifecycle() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Deposit USDC into the Escrow via{" "}
+        Deposit funds into the Escrow via{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
-          fund(escrowId, amount)
+          fund(uint256 escrowId, InEuint64 encryptedPayment)
         </code>{" "}
         or{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
-          fundFrom(escrowId, amount, payer)
+          fundFrom(uint256 escrowId, euint64 amount)
+        </code>{" "}
+        — the payer is always{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          _msgSender()
         </code>
-        . The contract wraps the USDC into ConfidentialUSDC and updates the
-        encrypted{" "}
+        , so there is no explicit payer argument.{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          fund()
+        </code>{" "}
+        pulls an already-confidential FHERC20 balance via{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          confidentialTransferFrom
+        </code>{" "}
+        and updates the encrypted{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           paidAmount
+        </code>
+        . Wrapping plain USDC into a confidential balance happens upstream — only
+        in{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          CCTPV2ConfidentialEscrowReceiver.settle()
+        </code>
+        , before it calls{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          fundFrom
         </code>
         . Cross-chain funding via CCTP is handled by the SDK's bridge module.
       </p>
@@ -294,7 +372,24 @@ export default function EscrowLifecycle() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           redeem(escrowId)
         </code>{" "}
-        to settle the Escrow. The contract checks:
+        to settle the Escrow. The checks run in two stages — a plaintext Gate
+        check, then the encrypted conditions.
+      </p>
+
+      <p className="text-docs-text-secondary leading-relaxed mb-4">
+        First, if a Gate is attached, the contract checks{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          IConditionResolver.isConditionMet(escrowId)
+        </code>{" "}
+        in plaintext via{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          _checkCondition()
+        </code>{" "}
+        and <strong>reverts</strong> with{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          ConditionNotMet
+        </code>{" "}
+        if it is false. Only after that does it evaluate the encrypted checks:
       </p>
 
       <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
@@ -306,28 +401,29 @@ export default function EscrowLifecycle() {
           (via FHE comparison)
         </li>
         <li>
+          The Escrow is fully funded —{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            paidAmount &gt;= amount
+          </code>{" "}
+          (via FHE comparison)
+        </li>
+        <li>
           The Escrow has not already been redeemed (via encrypted{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             isRedeemed
           </code>{" "}
           flag)
         </li>
-        <li>
-          If a Gate is attached,{" "}
-          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            IConditionResolver.isConditionMet(escrowId)
-          </code>{" "}
-          returns true
-        </li>
       </ul>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        All three checks are combined into a single encrypted boolean via FHE
-        AND operations. If all conditions pass, the encrypted{" "}
+        These three encrypted checks are combined into a single encrypted
+        boolean via FHE AND operations. If they pass, the encrypted{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           paidAmount
         </code>{" "}
-        is transferred. If any fail, zero is transferred — no revert.
+        is transferred; if any fail, zero is transferred — no revert. The Gate
+        condition is the only check that leaks, because it reverts in plaintext.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -358,17 +454,47 @@ export default function EscrowLifecycle() {
         filename="ConfidentialEscrow.sol"
         language="solidity"
         lines={[
-          { content: "// Combine all checks into a single encrypted boolean" },
           {
             content:
-              "ebool canRedeem = FHE.and(isOwner, FHE.and(notRedeemed, conditionMet));",
+              "// Gate condition was already checked in plaintext (reverts on failure).",
+          },
+          {
+            content:
+              "// The encrypted checks: owner match, fully funded, not yet redeemed.",
+          },
+          {
+            content: "ebool canRedeem = FHE.and(",
+            highlighted: true,
+          },
+          {
+            content: "    FHE.and(",
+            highlighted: true,
+          },
+          {
+            content: "        FHE.eq(escrow.owner, FHE.asEaddress(msg.sender)),",
+            highlighted: true,
+          },
+          {
+            content: "        FHE.gte(escrow.paidAmount, escrow.amount)",
+            highlighted: true,
+          },
+          {
+            content: "    ),",
+            highlighted: true,
+          },
+          {
+            content: "    FHE.not(escrow.isRedeemed)",
+            highlighted: true,
+          },
+          {
+            content: ");",
             highlighted: true,
           },
           { content: "" },
           { content: "// Select payout or zero — no revert on failure" },
           {
             content:
-              "euint64 payout = FHE.select(canRedeem, escrow.paidAmount, zeroAmount);",
+              "euint64 payout = FHE.select(canRedeem, escrow.paidAmount, FHE.asEuint64(0));",
             highlighted: true,
           },
         ]}
@@ -376,10 +502,24 @@ export default function EscrowLifecycle() {
 
       <Callout variant="warning" title="Why no revert?">
         <p>
-          A revert would leak information about <em>why</em> the redemption
-          failed — wrong caller, already redeemed, or condition not met. By
-          always transferring (potentially zero), the contract hides the failure
-          reason from on-chain observers.
+          A revert would leak information about <em>why</em> the encrypted
+          redemption failed — wrong caller, not fully funded, or already
+          redeemed. By always transferring (potentially zero), the contract
+          hides those failure reasons from on-chain observers. The Gate
+          condition is the exception: it is checked in plaintext and{" "}
+          <strong>does</strong> revert on a single{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            redeem()
+          </code>
+          , so it leaks. In{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            redeemMultiple()
+          </code>
+          , a failing condition is silently{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            continue
+          </code>
+          d instead of reverting, so the batch still settles its other entries.
         </p>
       </Callout>
 

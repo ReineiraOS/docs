@@ -44,7 +44,7 @@ const criteriaRows = [
   },
   {
     clause: "(f) Canonical events",
-    req: "Emits the events declared in ICore and IEscrowEvents (and the analogous insurance/operator event sets) so cross-implementation indexers and oracles can observe state without implementation-specific schemas.",
+    req: "Emits the events declared in ICore and IEscrowEvents (and the analogous recourse/operator event sets) so cross-implementation indexers and oracles can observe state without implementation-specific schemas.",
   },
 ];
 
@@ -96,7 +96,7 @@ export default function RssConformance() {
           packages/&lt;pkg&gt;/test/
         </code>
         . The current Foundry surface counts roughly 36 unit-test contracts
-        across escrow, insurance, orchestration, and tokens — FHE and plaintext
+        across escrow, recourse, orchestration, and tokens — FHE and plaintext
         unit tests, integration tests, and invariant tests. The RSS v0.1
         conformance suite freezes a binding subset of these. The intent is
         platform-agnostic: the suite should run against any conforming
