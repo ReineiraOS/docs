@@ -1,3 +1,10 @@
+## [1.8.3](https://github.com/ReineiraOS/docs/compare/v1.8.2...v1.8.3) (2026-06-14)
+
+
+### Bug Fixes
+
+* **contracts:** correct Arb Sepolia deployed addresses to 2026-06-14 redeploy ([2640cb4](https://github.com/ReineiraOS/docs/commit/2640cb4d2e09a8fbefe72fe1bd1ed4ce945983ca))
+
 ## [1.8.2](https://github.com/ReineiraOS/docs/compare/v1.8.1...v1.8.2) (2026-06-14)
 
 
