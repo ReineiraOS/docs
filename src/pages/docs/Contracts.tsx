@@ -35,12 +35,12 @@ const contractColumns = [
 const escrowPlainRows = [
   {
     name: "Escrow",
-    address: "0xa125db70c1f17E395AfFa30b32e1e4A94aF3A81c",
+    address: "0xAf4e9b2f19a2BF7CF05B7eAae20369FBE3823B8D",
     status: <StatusBadge status="live" detail="public mode" />,
   },
   {
     name: "EscrowReceiver",
-    address: "0xD4cb6F1B679C3b16AE02aAdc66e172142EAAC5a2",
+    address: "0x495b4E97C1983B79B926994D8278E06b9BbdC834",
     status: <StatusBadge status="live" detail="public mode" />,
   },
 ];
@@ -64,22 +64,22 @@ const escrowConfidentialRows = [
 const recoursePlainRows = [
   {
     name: "RecoursePool (factory-created)",
-    address: "0xCd05D0B8854ff030d874Ec346EbB883C40E63C33",
+    address: "0xb07967Ac5d301C65C70Fe3C0B7B8513B15B23047",
     status: <StatusBadge status="live" detail="public mode" />,
   },
   {
     name: "PoolFactory",
-    address: "0xA2D78bfaB94B93106c8Da17E6967501D54DfE772",
+    address: "0x2AA20E195290426ad626F65C540FCE2A58DFF9AF",
     status: <StatusBadge status="live" detail="public mode" />,
   },
   {
     name: "PolicyRegistry",
-    address: "0xAf23b86086FC6DC74796865be3B3a8bBAd68AB95",
+    address: "0x44A8314006E036047586bA90cD3FC153B8990361",
     status: <StatusBadge status="live" detail="public mode" />,
   },
   {
     name: "CoverageManager",
-    address: "0x3fcD1896745B2b91b4397e7E762910Fbf7eE9D22",
+    address: "0xE93191EE7C275E2C8a93FE9A6a2a67f2124daB8E",
     status: <StatusBadge status="live" detail="public mode" />,
   },
 ];
