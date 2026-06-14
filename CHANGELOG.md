@@ -1,3 +1,10 @@
+## [1.8.2](https://github.com/ReineiraOS/docs/compare/v1.8.1...v1.8.2) (2026-06-14)
+
+
+### Bug Fixes
+
+* cut release for software-only docs edition ([b91309e](https://github.com/ReineiraOS/docs/commit/b91309e67ad7da8897c249a83577a56cfa0fdfba)), closes [#22](https://github.com/ReineiraOS/docs/issues/22)
+
 ## [1.8.1](https://github.com/ReineiraOS/platform-web-docs-app/compare/v1.8.0...v1.8.1) (2026-05-24)
 
 
