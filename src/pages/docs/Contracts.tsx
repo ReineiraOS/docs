@@ -50,12 +50,12 @@ const escrowPlainRows = [
 const escrowConfidentialRows = [
   {
     name: "ConfidentialEscrow",
-    address: "0xbe1eEB78504B71beEE1b33D3E3D367A2F9a549A6",
+    address: "0xF50A9CF008a79CFCA39aa9a345aa06e8D12727E2",
     status: <StatusBadge status="chaos-net" detail="encrypted, v1.0" />,
   },
   {
     name: "CCTPV2ConfidentialEscrowReceiver",
-    address: "0x67AE0C5fE86716441B38b73A66F21c6aC8e338d0",
+    address: "0xe0E6CC9Ee62Fa36b96eC4F50CDc462Fd14aa0fD3",
     status: <StatusBadge status="chaos-net" detail="encrypted, v1.0" />,
   },
 ];
@@ -94,17 +94,17 @@ const recourseConfidentialRows = [
   },
   {
     name: "ConfidentialPolicyRegistry",
-    address: "0x962A6c7Be4fC765B0E8B601ab4BB210938660190",
+    address: "0x17a3222BD2167C7620815CD6a1C8d215F11CAa25",
     status: <StatusBadge status="chaos-net" detail="encrypted, v1.0" />,
   },
   {
     name: "ConfidentialCoverageManager",
-    address: "0x40A3A53d54D25cF079Bc9C2033224159d4EA3A67",
+    address: "0x636084Da863569bd90c94C1C7a5180eBF8F88AAd",
     status: <StatusBadge status="chaos-net" detail="encrypted, v1.0" />,
   },
   {
     name: "ConfidentialPoolFactory",
-    address: "0xCBD3815244ee96a92B3Ca3C71B6eD9acB3661e80",
+    address: "0x278c43aB5B8726EbdFD6E7352c128aDA48269442",
     status: <StatusBadge status="chaos-net" detail="encrypted, v1.0" />,
   },
 ];
@@ -112,22 +112,22 @@ const recourseConfidentialRows = [
 const orchestrationRows = [
   {
     name: "OperatorRegistry",
-    address: "0x1422ccC8B42079D810835631a5DFE1347a602959",
+    address: "0x5Ac3a3750e0a9f7d4ddBC0B52c3f13E8f927FB59",
     status: <StatusBadge status="chaos-net" />,
   },
   {
     name: "TaskExecutor",
-    address: "0x7F24077A3341Af05E39fC232A77c21A03Bbd2262",
+    address: "0x4D239335f39E585Bb75631C4683538EFC496a5EB",
     status: <StatusBadge status="chaos-net" />,
   },
   {
     name: "FeeManager",
-    address: "0x5a11DC96CEfd2fB46759F08aCE49515aa23F0156",
+    address: "0x639f5cB99DcF9681A0461A1452c3845811d3308A",
     status: <StatusBadge status="chaos-net" />,
   },
   {
     name: "CCTPHandler",
-    address: "0xb37A83461B01097e1E440405264dA59EE9a3F273",
+    address: "0x575186a64B9FC49E135A2440DC4A1395edc0F3aD",
     status: <StatusBadge status="chaos-net" />,
   },
 ];
