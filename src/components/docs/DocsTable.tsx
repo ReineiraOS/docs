@@ -14,8 +14,8 @@ interface DocsTableProps {
 export default function DocsTable({ columns, rows }: DocsTableProps) {
   return (
     <div className="rounded-lg border border-docs-border-default overflow-hidden my-6 shadow-sm">
-      <div className="overflow-x-auto">
-        <table className="w-full text-[14px]">
+      <div className="overflow-x-auto overscroll-x-contain">
+        <table className="min-w-full text-[14px]">
           <thead>
             <tr className="bg-docs-bg-surface-alt">
               {columns.map((col) => (
