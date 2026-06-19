@@ -26,13 +26,14 @@ const releaseColumns = [
 const releaseRows = [
   {
     version: "v0.1",
-    milestone: "testnet (June 2026)",
-    status: <DocsBadge variant="green">Live</DocsBadge>,
-    notes: "Mandatory core, plugin, and fee-module interface subset.",
+    milestone: "Arbitrum Sepolia testnet",
+    status: <DocsBadge variant="green">Live · draft</DocsBadge>,
+    notes:
+      "Live today on Arbitrum Sepolia testnet in draft form — mandatory core, plugin, and fee-module interface subset.",
   },
   {
     version: "v0.2",
-    milestone: "chaos-net (Q4 2026)",
+    milestone: "Q4 2026",
     status: <DocsBadge variant="amber">Spec'd</DocsBadge>,
     notes:
       "Adds async and agentic interfaces and the first five RIPs; bundles the formal conformance suite.",
@@ -57,7 +58,11 @@ export default function RssVersioning() {
         Semver release line
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        RSS is semver-versioned per the release manifest.
+        RSS is semver-versioned per the release manifest.{" "}
+        <strong>
+          RSS v0.1 is live today on Arbitrum Sepolia testnet in draft form
+        </strong>
+        ; v0.2 is specified and not yet shipped.
       </p>
       <DocsTable columns={releaseColumns} rows={releaseRows} />
 
@@ -89,7 +94,7 @@ export default function RssVersioning() {
         A Reineira Improvement Proposal (RIP) is the EIP analog for the
         standard: a versioned proposal that governs whether a change is admitted
         to a release. The first five RIPs are slated to ship alongside RSS v0.2
-        at chaos-net (Q4 2026), bundled with the formal conformance suite.
+        (Q4 2026), bundled with the formal conformance suite.
       </p>
 
       <Callout

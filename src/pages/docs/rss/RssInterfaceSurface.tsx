@@ -247,12 +247,9 @@ export default function RssInterfaceSurface() {
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Fee modules are read at lifecycle stamp time — create, condition-set,
-        coverage-purchase — never on the redeem hot path. The protocol fee bps
-        is governance-settable within an immutable bytecode ceiling (
-        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-          MAX_PROTOCOL_FEE_BPS = 50
-        </code>
-        ).
+        coverage-purchase — never on the redeem hot path. The protocol itself
+        takes no fee; fee modules carry only builder- and role-configured fees,
+        such as a Gate's condition fee or an underwriter's premium.
       </p>
       <CodeBlock
         filename="IProtocolFeeModule.sol"

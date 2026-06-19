@@ -229,17 +229,17 @@ const tokenRows = [
   {
     name: "ConfidentialUSDC (cUSDC)",
     address: <Addr proxy="0x42E47f9bA89712C317f60A72C81A610A2b68c48a" />,
-    status: <StatusBadge status="testnet" />,
+    status: <StatusBadge status="testnet" detail="mock / interim" />,
   },
   {
     name: "USDC",
     address: <Addr proxy="0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d" />,
-    status: <StatusBadge status="testnet" />,
+    status: <StatusBadge status="testnet" detail="Circle testnet" />,
   },
   {
     name: "MockGovernanceToken (operator staking)",
     address: <Addr proxy="0xb847e041bB3bC78C3CD951286AbCa28593739D12" />,
-    status: <StatusBadge status="testnet" />,
+    status: <StatusBadge status="testnet" detail="mock" />,
   },
 ];
 

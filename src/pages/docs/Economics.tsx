@@ -54,7 +54,7 @@ const overviewRows = [
   {
     role: "Operators",
     what: "Run bonded relay nodes that execute cross-chain CCTP tasks",
-    how: "Earn an operator relay fee they configure; bonding, slashing, and any subsidy are specified",
+    how: "Bonding, slashing, and any subsidy are specified; the operator relay fee is slated for removal (no fee today)",
   },
 ];
 
@@ -78,10 +78,10 @@ const protocolFeeRows = [
     recipient: "Recourse pool",
   },
   {
-    fee: "Operator relay fee",
-    setby: "Operator / spec",
+    fee: "Operator relay fee (to be removed)",
+    setby: "Operator (operatorFeeBps)",
     trigger: "Cross-chain CCTP relay execution",
-    recipient: "Operator who executed the task",
+    recipient: "None — slated for removal",
   },
   {
     fee: "Slasher reward",
@@ -126,7 +126,7 @@ const operatorParamRows = [
   { param: "Monthly relay volume", value: "500,000 USDC" },
   {
     param: "Operator relay fee rate",
-    value: "Operator-set (Spec'd; not yet enabled)",
+    value: "None — slated for removal",
   },
   { param: "Number of relay tasks", value: "100" },
   { param: "Bond asset", value: "Specified" },
