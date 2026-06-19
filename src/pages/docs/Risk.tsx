@@ -30,11 +30,12 @@ export default function Risk() {
         readingTime="5 min read"
       />
 
-      <Callout variant="danger" title="Chaos-net is unaudited">
+      <Callout variant="danger" title="Testnet deployment is unaudited">
         <p>
-          Chaos-net is unaudited. Use for testing or at your own risk —
-          interacting with deployed contracts may result in loss of funds. No
-          external smart-contract audit is complete as of publication.
+          The Arbitrum Sepolia testnet deployment is unaudited. Use for testing
+          or at your own risk — interacting with deployed contracts may result
+          in loss of funds. No external smart-contract audit is complete as of
+          publication.
         </p>
       </Callout>
 

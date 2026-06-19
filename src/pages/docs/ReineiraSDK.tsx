@@ -85,14 +85,14 @@ const modeRows = [
   {
     module: "sdk.escrowPlain",
     track: "Public / plain",
-    status: "Chaos-net (live)",
+    status: "Live (Arb. Sepolia)",
     use: "Default path today. Plaintext escrow state — fast iteration, public verifiability, no FHE gas overhead.",
   },
   {
     module: "sdk.recoursePlain",
     track: "Public / plain",
-    status: "Chaos-net (live)",
-    use: "Coverage pools with plaintext risk and premiums — live alongside plain escrows on chaos-net.",
+    status: "Live (Arb. Sepolia)",
+    use: "Coverage pools with plaintext risk and premiums — live alongside plain escrows on Arbitrum Sepolia testnet.",
   },
   {
     module: "sdk.escrow",
@@ -256,7 +256,7 @@ export default function ReineiraSDK() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           recoursePlain
         </code>{" "}
-        — are live on chaos-net today.
+        — are live on Arbitrum Sepolia testnet today.
       </p>
 
       <CodeBlock
@@ -284,7 +284,8 @@ export default function ReineiraSDK() {
           },
           { content: "" },
           {
-            content: "// Public (plain) — live on chaos-net today",
+            content:
+              "// Public (plain) — live on Arbitrum Sepolia testnet today",
           },
           {
             content:

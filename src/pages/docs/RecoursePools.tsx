@@ -148,7 +148,7 @@ export default function RecoursePools() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           sdk.recoursePlain
         </code>
-        ) is live on chaos-net; the encrypted track (
+        ) is live on Arbitrum Sepolia testnet; the encrypted track (
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           sdk.recourse
         </code>
@@ -234,7 +234,7 @@ export default function RecoursePools() {
         filename="create-pool.ts"
         language="typescript"
         lines={[
-          { content: "// Public track (live on chaos-net)" },
+          { content: "// Public track (live on Arbitrum Sepolia testnet)" },
           {
             content: "const pool = await sdk.recoursePlain.createPool({",
           },

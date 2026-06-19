@@ -1,4 +1,4 @@
-export type PageStatus = "live" | "chaos-net" | "spec" | "research";
+export type PageStatus = "live" | "testnet" | "chaos-net" | "spec" | "research";
 
 interface StatusConfig {
   label: string;
@@ -9,6 +9,7 @@ interface StatusConfig {
 /**
  * Honest status taxonomy:
  *  - live      → shipped and in production
+ *  - testnet   → deployed and live on Arbitrum Sepolia testnet
  *  - chaos-net → ships at the chaos-net milestone (unaudited, public mode)
  *  - spec      → designed, not yet shipped — build against the interface
  *  - research  → exploratory, no committed date
@@ -16,6 +17,12 @@ interface StatusConfig {
 const config: Record<PageStatus, StatusConfig> = {
   live: {
     label: "Live",
+    dot: "hsl(142 71% 45%)",
+    classes:
+      "bg-[hsl(142_71%_45%_/_0.08)] text-[hsl(var(--tip-text))] border-transparent",
+  },
+  testnet: {
+    label: "Live (Arb. Sepolia)",
     dot: "hsl(142 71% 45%)",
     classes:
       "bg-[hsl(142_71%_45%_/_0.08)] text-[hsl(var(--tip-text))] border-transparent",

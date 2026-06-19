@@ -24,137 +24,235 @@ const toc: TocItem[] = [
 
 const { prev, next } = getPrevNext("/reference/contracts");
 
+const monoAddr =
+  "font-mono text-[13px] bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 text-docs-text-primary break-all";
+
+/**
+ * Renders a contract address. For UUPS-proxied contracts, pass `impl` to show
+ * the implementation address beneath the proxy — the proxy is the stable entry
+ * point, the implementation is the real contract behind it.
+ */
+function Addr({ proxy, impl }: { proxy: string; impl?: string }) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <span>
+        {impl ? (
+          <span className="text-[11px] text-docs-text-muted mr-1.5">proxy</span>
+        ) : null}
+        <code className={monoAddr}>{proxy}</code>
+      </span>
+      {impl ? (
+        <span>
+          <span className="text-[11px] text-docs-text-muted mr-1.5">impl</span>
+          <code className="font-mono text-[12px] text-docs-text-secondary break-all">
+            {impl}
+          </code>
+        </span>
+      ) : null}
+    </div>
+  );
+}
+
 const contractColumns = [
-  { header: "Contract", key: "name", width: "300px" },
-  { header: "Address", key: "address", mono: true },
-  { header: "Mode / Status", key: "status", width: "180px" },
+  { header: "Contract", key: "name", width: "280px" },
+  { header: "Address", key: "address" },
+  { header: "Status", key: "status", width: "170px" },
 ];
 
-// Public mode (PLAIN) — live on chaos-net. Values are in the clear; the SDK
-// reaches these via sdk.escrow / sdk.recoursePlain.
+// Public mode (PLAIN) — live on Arbitrum Sepolia testnet. Values are in the
+// clear; the SDK reaches these via sdk.escrow / sdk.recoursePlain. Published as
+// single SDK entry points (no proxy/implementation split in a deployment JSON).
 const escrowPlainRows = [
   {
     name: "Escrow",
-    address: "0xa125db70c1f17E395AfFa30b32e1e4A94aF3A81c",
-    status: <StatusBadge status="live" detail="public mode" />,
+    address: <Addr proxy="0xa125db70c1f17E395AfFa30b32e1e4A94aF3A81c" />,
+    status: <StatusBadge status="testnet" />,
   },
   {
     name: "EscrowReceiver",
-    address: "0xD4cb6F1B679C3b16AE02aAdc66e172142EAAC5a2",
-    status: <StatusBadge status="live" detail="public mode" />,
+    address: <Addr proxy="0xD4cb6F1B679C3b16AE02aAdc66e172142EAAC5a2" />,
+    status: <StatusBadge status="testnet" />,
   },
 ];
 
-// Encrypted mode (CONFIDENTIAL) — deployed on chaos-net against MOCKED Fhenix
-// CoFHE; real encryption arrives at v1.0.
+// Encrypted mode (CONFIDENTIAL) — live on Arbitrum Sepolia testnet against
+// MOCKED Fhenix CoFHE; real encryption arrives at v1.0. Proxy + implementation
+// pairs are from packages/escrow/deployments/arbitrumSepolia.json.
 const escrowConfidentialRows = [
   {
     name: "ConfidentialEscrow",
-    address: "0xbe1eEB78504B71beEE1b33D3E3D367A2F9a549A6",
-    status: <StatusBadge status="chaos-net" detail="encrypted, v1.0" />,
+    address: (
+      <Addr
+        proxy="0xF50A9CF008a79CFCA39aa9a345aa06e8D12727E2"
+        impl="0xe734660419626d1d1714901416e467da63a92367"
+      />
+    ),
+    status: <StatusBadge status="testnet" />,
   },
   {
     name: "CCTPV2ConfidentialEscrowReceiver",
-    address: "0x67AE0C5fE86716441B38b73A66F21c6aC8e338d0",
-    status: <StatusBadge status="chaos-net" detail="encrypted, v1.0" />,
+    address: (
+      <Addr
+        proxy="0xe0E6CC9Ee62Fa36b96eC4F50CDc462Fd14aa0fD3"
+        impl="0xaeed75f58bc498ff5954f9d9071b8cc8d09ede7f"
+      />
+    ),
+    status: <StatusBadge status="testnet" />,
   },
 ];
 
 // Recourse — public mode (PLAIN). RecoursePool is factory-created by PoolFactory.
+// Published as single SDK entry points.
 const recoursePlainRows = [
   {
     name: "RecoursePool (factory-created)",
-    address: "0xCd05D0B8854ff030d874Ec346EbB883C40E63C33",
-    status: <StatusBadge status="live" detail="public mode" />,
+    address: <Addr proxy="0xCd05D0B8854ff030d874Ec346EbB883C40E63C33" />,
+    status: <StatusBadge status="testnet" />,
   },
   {
     name: "PoolFactory",
-    address: "0xA2D78bfaB94B93106c8Da17E6967501D54DfE772",
-    status: <StatusBadge status="live" detail="public mode" />,
+    address: <Addr proxy="0xA2D78bfaB94B93106c8Da17E6967501D54DfE772" />,
+    status: <StatusBadge status="testnet" />,
   },
   {
     name: "PolicyRegistry",
-    address: "0xAf23b86086FC6DC74796865be3B3a8bBAd68AB95",
-    status: <StatusBadge status="live" detail="public mode" />,
+    address: <Addr proxy="0xAf23b86086FC6DC74796865be3B3a8bBAd68AB95" />,
+    status: <StatusBadge status="testnet" />,
   },
   {
     name: "CoverageManager",
-    address: "0x3fcD1896745B2b91b4397e7E762910Fbf7eE9D22",
-    status: <StatusBadge status="live" detail="public mode" />,
+    address: <Addr proxy="0x3fcD1896745B2b91b4397e7E762910Fbf7eE9D22" />,
+    status: <StatusBadge status="testnet" />,
   },
 ];
 
 // Recourse — encrypted mode (CONFIDENTIAL). ConfidentialRecoursePool is
-// factory-created by ConfidentialPoolFactory.
+// factory-created by ConfidentialPoolFactory — the listed address is the
+// implementation the factory clones per pool. Proxy + implementation pairs are
+// from packages/recourse/deployments/arbitrumSepolia.json.
 const recourseConfidentialRows = [
   {
-    name: "ConfidentialRecoursePool (factory-created)",
-    address: "— (deployed per pool by factory)",
-    status: <StatusBadge status="chaos-net" detail="encrypted, v1.0" />,
+    name: "ConfidentialRecoursePool",
+    address: (
+      <div className="flex flex-col gap-1">
+        <span>
+          <span className="text-[11px] text-docs-text-muted mr-1.5">impl</span>
+          <code className={monoAddr}>
+            0x75189520f2f618b2E52eeF1007CcbCeAAbB8446b
+          </code>
+        </span>
+        <span className="text-[11px] text-docs-text-muted">
+          cloned per pool by the factory
+        </span>
+      </div>
+    ),
+    status: <StatusBadge status="testnet" />,
   },
   {
     name: "ConfidentialPolicyRegistry",
-    address: "0x962A6c7Be4fC765B0E8B601ab4BB210938660190",
-    status: <StatusBadge status="chaos-net" detail="encrypted, v1.0" />,
+    address: (
+      <Addr
+        proxy="0x17a3222BD2167C7620815CD6a1C8d215F11CAa25"
+        impl="0x6420eca79233e831450018292217b6214cb5353e"
+      />
+    ),
+    status: <StatusBadge status="testnet" />,
   },
   {
     name: "ConfidentialCoverageManager",
-    address: "0x40A3A53d54D25cF079Bc9C2033224159d4EA3A67",
-    status: <StatusBadge status="chaos-net" detail="encrypted, v1.0" />,
+    address: (
+      <Addr
+        proxy="0x636084Da863569bd90c94C1C7a5180eBF8F88AAd"
+        impl="0x19d06d2812e56dd8097ee2d587fe9ca45a63a0eb"
+      />
+    ),
+    status: <StatusBadge status="testnet" />,
   },
   {
     name: "ConfidentialPoolFactory",
-    address: "0xCBD3815244ee96a92B3Ca3C71B6eD9acB3661e80",
-    status: <StatusBadge status="chaos-net" detail="encrypted, v1.0" />,
+    address: (
+      <Addr
+        proxy="0x278c43aB5B8726EbdFD6E7352c128aDA48269442"
+        impl="0x1af525bdbd758a44c26f781d1c6e55b3e40ae18c"
+      />
+    ),
+    status: <StatusBadge status="testnet" />,
   },
 ];
 
+// Orchestration — live on Arbitrum Sepolia testnet. Proxy + implementation
+// pairs are from packages/orchestration/deployments/arbitrumSepolia.json.
 const orchestrationRows = [
   {
     name: "OperatorRegistry",
-    address: "0x1422ccC8B42079D810835631a5DFE1347a602959",
-    status: <StatusBadge status="chaos-net" />,
+    address: (
+      <Addr
+        proxy="0x5Ac3a3750e0a9f7d4ddBC0B52c3f13E8f927FB59"
+        impl="0x681bd064ee0ac16cf005cf3f8894805ef3a7a694"
+      />
+    ),
+    status: <StatusBadge status="testnet" />,
   },
   {
     name: "TaskExecutor",
-    address: "0x7F24077A3341Af05E39fC232A77c21A03Bbd2262",
-    status: <StatusBadge status="chaos-net" />,
+    address: (
+      <Addr
+        proxy="0x4D239335f39E585Bb75631C4683538EFC496a5EB"
+        impl="0xb1a93d5919e9970f29f84ba8a1fcdc9ce106cba0"
+      />
+    ),
+    status: <StatusBadge status="testnet" />,
   },
   {
     name: "FeeManager",
-    address: "0x5a11DC96CEfd2fB46759F08aCE49515aa23F0156",
-    status: <StatusBadge status="chaos-net" />,
+    address: (
+      <Addr
+        proxy="0x639f5cB99DcF9681A0461A1452c3845811d3308A"
+        impl="0x9212b3e6bc449d933ec228a820c4820ce3e7e86e"
+      />
+    ),
+    status: <StatusBadge status="testnet" />,
   },
   {
     name: "CCTPHandler",
-    address: "0xb37A83461B01097e1E440405264dA59EE9a3F273",
-    status: <StatusBadge status="chaos-net" />,
+    address: (
+      <Addr
+        proxy="0x575186a64B9FC49E135A2440DC4A1395edc0F3aD"
+        impl="0x12b7bec24cc534854751af524119b97a86ef4466"
+      />
+    ),
+    status: <StatusBadge status="testnet" />,
   },
 ];
 
 const tokenRows = [
   {
     name: "ConfidentialUSDC (cUSDC)",
-    address: "0x42E47f9bA89712C317f60A72C81A610A2b68c48a",
-    status: <StatusBadge status="chaos-net" detail="encrypted, v1.0" />,
+    address: <Addr proxy="0x42E47f9bA89712C317f60A72C81A610A2b68c48a" />,
+    status: <StatusBadge status="testnet" />,
   },
   {
     name: "USDC",
-    address: "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
-    status: <StatusBadge status="chaos-net" />,
+    address: <Addr proxy="0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d" />,
+    status: <StatusBadge status="testnet" />,
+  },
+  {
+    name: "MockGovernanceToken (operator staking)",
+    address: <Addr proxy="0xb847e041bB3bC78C3CD951286AbCa28593739D12" />,
+    status: <StatusBadge status="testnet" />,
   },
 ];
 
 const externalRows = [
   {
     name: "CCTP MessageTransmitter",
-    address: "0xE737e5cEBEEBa77EFE34D4aa090756590b1CE275",
-    status: <StatusBadge status="chaos-net" />,
+    address: <Addr proxy="0xE737e5cEBEEBa77EFE34D4aa090756590b1CE275" />,
+    status: <StatusBadge status="testnet" />,
   },
   {
     name: "TrustedForwarder (ERC-2771)",
-    address: "0x7ceA357B5AC0639F89F9e378a1f03Aa5005C0a25",
-    status: <StatusBadge status="chaos-net" />,
+    address: <Addr proxy="0x7ceA357B5AC0639F89F9e378a1f03Aa5005C0a25" />,
+    status: <StatusBadge status="testnet" />,
   },
 ];
 
@@ -182,7 +280,7 @@ const cctpRows = [
     chain: "Arbitrum Sepolia",
     domain: "3 (destination)",
     usdc: "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
-    messenger: "\u2014",
+    messenger: "—",
   },
 ];
 
@@ -193,27 +291,28 @@ export default function Contracts() {
 
       <PageHeader
         title="Contracts"
-        description="All ReineiraOS contracts deployed on chaos-net at fixed addresses across two modes — public (PLAIN) and encrypted (CONFIDENTIAL). Addresses are baked into the SDK — no manual configuration needed."
+        description="All ReineiraOS contracts are live on Arbitrum Sepolia testnet at fixed addresses across two modes — public (PLAIN) and encrypted (CONFIDENTIAL). Addresses are baked into the SDK — no manual configuration needed."
         readingTime="4 min read"
       />
 
-      <Callout variant="info" title="chaos-net deployment">
+      <Callout variant="info" title="Arbitrum Sepolia testnet deployment">
         <p>
-          All contracts below are deployed on{" "}
-          <DocsBadge variant="blue">chaos-net</DocsBadge>. Addresses are baked
-          into the SDK — you do not need to configure them manually. Each table
-          is split into <strong>public mode (PLAIN)</strong> — live, values in
-          the clear — and <strong>encrypted mode (CONFIDENTIAL)</strong> —
-          deployed on chaos-net against mocked Fhenix CoFHE, with real
-          encryption arriving at v1.0.
+          All contracts below are live on{" "}
+          <DocsBadge variant="blue">Arbitrum Sepolia</DocsBadge> testnet
+          (chainId 421614). Addresses are baked into the SDK — you do not need
+          to configure them manually. Each table is split into{" "}
+          <strong>public mode (PLAIN)</strong> — values in the clear — and{" "}
+          <strong>encrypted mode (CONFIDENTIAL)</strong> — running against
+          mocked Fhenix CoFHE on testnet, with real encryption arriving at v1.0.
+          No chaos-net or mainnet deployment exists yet.
         </p>
       </Callout>
 
       <Callout variant="warning" title="Upgradeable today, immutable at v1.0">
         <p>
-          The contracts below are <strong>upgradeable today</strong> on
-          chaos-net. They are deployed behind <strong>UUPS proxies</strong> with
-          an{" "}
+          The contracts below are <strong>upgradeable today</strong> on Arbitrum
+          Sepolia testnet. They are deployed behind{" "}
+          <strong>UUPS proxies</strong> with an{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             Ownable
           </code>{" "}
@@ -221,18 +320,20 @@ export default function Contracts() {
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             _authorizeUpgrade
           </code>{" "}
-          hook — the deployment JSONs carry a proxy-and-implementation pair for
-          each address, and the implementation can be swapped behind the same
-          proxy address.{" "}
-          <strong>Immutability is the v1.0 mainnet target</strong>, not today's
-          state: at v1.0 the upgrade key is relinquished so the addresses can no
-          longer be upgraded in place. ERC-7201 namespaced storage with{" "}
+          hook. Where a deployment JSON carries a proxy-and-implementation pair,
+          the tables below list both: the <strong>proxy</strong> is the stable
+          address you call, and the <strong>implementation</strong> is the real
+          contract behind it (it can be swapped without changing the proxy
+          address). <strong>Immutability is the v1.0 mainnet target</strong>,
+          not today's state: at v1.0 the upgrade key is relinquished so the
+          addresses can no longer be upgraded in place. ERC-7201 namespaced
+          storage with{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             __gap[50]
           </code>{" "}
           keeps the storage layout forward-compatible across upgrades. The
-          tables on this page list the current chaos-net addresses; they are a
-          documentation surface, not an on-chain registry.
+          tables on this page list the current Arbitrum Sepolia addresses; they
+          are a documentation surface, not an on-chain registry.
         </p>
       </Callout>
 
@@ -246,14 +347,15 @@ export default function Contracts() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Public mode (PLAIN) — <code>Escrow.sol</code>, values in the clear, live
-        on chaos-net via <code>sdk.escrow</code>:
+        on Arbitrum Sepolia testnet via <code>sdk.escrow</code>:
       </p>
 
       <DocsTable columns={contractColumns} rows={escrowPlainRows} />
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Encrypted mode (CONFIDENTIAL) — amounts and balances encrypted; deployed
-        on chaos-net against mocked Fhenix CoFHE, with real encryption at v1.0:
+        Encrypted mode (CONFIDENTIAL) — amounts and balances encrypted; live on
+        Arbitrum Sepolia testnet against mocked Fhenix CoFHE, with real
+        encryption at v1.0:
       </p>
 
       <DocsTable columns={contractColumns} rows={escrowConfidentialRows} />
@@ -268,9 +370,10 @@ export default function Contracts() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Public mode (PLAIN) — <code>RecoursePool.sol</code> and the surrounding
-        coverage stack, live on chaos-net via <code>sdk.recoursePlain</code>.
-        Pools are created by the factory, so each <code>RecoursePool</code> is
-        deployed per pool (the address below is one such factory-created pool):
+        coverage stack, live on Arbitrum Sepolia testnet via{" "}
+        <code>sdk.recoursePlain</code>. Pools are created by the factory, so
+        each <code>RecoursePool</code> is deployed per pool (the address below
+        is one such factory-created pool):
       </p>
 
       <DocsTable columns={contractColumns} rows={recoursePlainRows} />

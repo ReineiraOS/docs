@@ -147,9 +147,10 @@ export default function EscrowLifecycle() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The Escrow primitive ships in two modes with identical interfaces.
-        Chaos-net runs <strong>public mode</strong>; encrypted mode is a
-        separate immutable deployment that activates at v1.0 mainnet.
+        The Escrow primitive ships in two modes with identical interfaces. The
+        Arbitrum Sepolia testnet deployment runs <strong>public mode</strong>;
+        encrypted mode is a separate immutable deployment that activates at v1.0
+        mainnet.
       </p>
 
       <ModeToggle
@@ -160,7 +161,7 @@ export default function EscrowLifecycle() {
               redemption flag are readable on-chain. The lifecycle (create →
               fund → redeem) and the silent-failure pattern behave identically
               to encrypted mode — only the visibility of state differs. This is
-              what runs at chaos-net today.
+              what runs on Arbitrum Sepolia testnet today.
             </p>
           </div>
         }

@@ -56,7 +56,7 @@ const limitationRows = [
   {
     limitation: "Single coordinator in production",
     impact:
-      "Only the Foundation's canonical coordinator runs in chaos-net, so if it goes down, relay tasks queue until it recovers. Third parties may already run independent coordinators against the same on-chain contracts.",
+      "Only the Foundation's canonical coordinator runs on Arbitrum Sepolia testnet, so if it goes down, relay tasks queue until it recovers. Third parties may already run independent coordinators against the same on-chain contracts.",
     resolution:
       "On-chain coordinator registration (CoordinatorRegistry) and cross-graph slashing land on the v1.0 track (Spec'd).",
   },
@@ -100,7 +100,7 @@ export default function CoordinatorNetwork() {
 
       <PageHeader
         title="Operator Network"
-        description="The task-dispatch and coordination layer of ReineiraOS. Operators register on-chain and relay CCTP tasks; off-chain coordinators dispatch those tasks. Registration is permissionless from chaos-net Day 1. Operators earn relay/task fees and the protocol takes nothing. The economic-security layer (cUSDC bond, relay/task fees, slashing) is Spec'd — designed, not yet production-usable on chaos-net."
+        description="The task-dispatch and coordination layer of ReineiraOS. Operators register on-chain and relay CCTP tasks; off-chain coordinators dispatch those tasks. Registration is permissionless from day one. Operators earn relay/task fees and the protocol takes nothing. The economic-security layer (cUSDC bond, relay/task fees, slashing) is Spec'd — designed, not yet production-usable on Arbitrum Sepolia testnet."
         readingTime="6 min read"
       />
 
@@ -138,11 +138,13 @@ export default function CoordinatorNetwork() {
         title="Operator economics are Spec'd, not production-usable"
       >
         <p>
-          The relay machinery works on chaos-net today — the coordinator
-          dispatches, and operators can claim and execute CCTP tasks. But the
-          incentive layer is{" "}
-          <strong>designed, not yet production-usable on chaos-net</strong>: the
-          cUSDC bond, the relay/task fees operators earn, and slashing are
+          The relay machinery works on Arbitrum Sepolia testnet today — the
+          coordinator dispatches, and operators can claim and execute CCTP
+          tasks. But the incentive layer is{" "}
+          <strong>
+            designed, not yet production-usable on Arbitrum Sepolia testnet
+          </strong>
+          : the cUSDC bond, the relay/task fees operators earn, and slashing are
           specified but not wired end-to-end. The protocol takes no cut of those
           fees, and there is no operator subsidy and no protocol token.{" "}
           <code>OperatorSlashingManager</code> is implemented but undeployed and
@@ -175,7 +177,7 @@ export default function CoordinatorNetwork() {
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Registration is{" "}
         <strong className="text-docs-text-primary font-semibold">
-          permissionless from chaos-net Day 1
+          permissionless from day one
         </strong>{" "}
         at the contract layer — there is no Foundation invitation and no
         allowlist (a pre-approved set of addresses that would gate who may
@@ -195,7 +197,7 @@ export default function CoordinatorNetwork() {
           </strong>{" "}
           (the immutable confidential USDC wrapper), but the bond-and-slashing
           economics are part of the Spec'd operator layer — not yet wired live
-          on chaos-net{" "}
+          on Arbitrum Sepolia testnet{" "}
           <StatusBadge status="spec" className="ml-1 align-middle" />
         </li>
         <li>
@@ -229,7 +231,8 @@ export default function CoordinatorNetwork() {
           no operator subsidy programme and no protocol token
         </strong>
         . The protocol takes no cut of operator fees. Those fee mechanics are
-        part of the Spec'd operator layer, not yet wired live on chaos-net.{" "}
+        part of the Spec'd operator layer, not yet wired live on Arbitrum
+        Sepolia testnet.{" "}
         <StatusBadge status="spec" className="ml-1 align-middle" />
       </p>
 
@@ -248,8 +251,9 @@ export default function CoordinatorNetwork() {
         </code>
         ). Coordinators are not privileged: any third party may run an
         independent coordinator against the same on-chain OperatorRegistry and
-        TaskExecutor. During chaos-net the canonical instance is the only one in
-        production, which keeps debugging and iteration simple.
+        TaskExecutor. On Arbitrum Sepolia testnet today the canonical instance
+        is the only one in production, which keeps debugging and iteration
+        simple.
       </p>
 
       <DocsTable
@@ -443,13 +447,13 @@ export default function CoordinatorNetwork() {
 
       <Callout
         variant="warning"
-        title="Slashing is designed, not yet production-usable on chaos-net"
+        title="Slashing is designed, not yet production-usable on testnet"
       >
         <p>
           Because the slashing manager is undeployed and unwired, an operator's
           bond is not actually at risk through the quorum mechanism today. The
           economic security that slashing is meant to provide does not yet hold
-          on chaos-net.
+          on Arbitrum Sepolia testnet.
         </p>
       </Callout>
 
@@ -491,8 +495,9 @@ export default function CoordinatorNetwork() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        These limitations apply to the chaos-net coordinator and will be
-        addressed as the network matures. chaos-net runs in{" "}
+        These limitations apply to the current testnet coordinator and will be
+        addressed as the network matures. The Arbitrum Sepolia testnet
+        deployment runs in{" "}
         <strong className="text-docs-text-primary font-semibold">
           public mode
         </strong>{" "}

@@ -169,8 +169,8 @@ export default function RecourseModule() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           RecoursePool.sol
         </code>
-        ) is live on chaos-net today.{" "}
-        <StatusBadge status="chaos-net" detail="public track" />
+        ) is live on Arbitrum Sepolia testnet today.{" "}
+        <StatusBadge status="testnet" detail="public track" />
       </p>
 
       {/* ── Pools ──────────────────────────────────────────────────────── */}

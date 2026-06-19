@@ -165,16 +165,17 @@ export default function MentalModel() {
 
       <Callout
         variant="warning"
-        title="Two modes: public on chaos-net, encrypted at v1.0 mainnet"
+        title="Two modes: public on testnet, encrypted at v1.0 mainnet"
       >
         <p>
           The FHE-encrypted behavior described for Escrow and Recourse is the{" "}
           <DocsBadge variant="amber">v1.0 mainnet</DocsBadge> design (Q4 2026).
-          Chaos-net (<DocsBadge variant="blue">Jul 2026</DocsBadge>) runs{" "}
+          The Arbitrum Sepolia testnet deployment (
+          <DocsBadge variant="blue">live today</DocsBadge>) runs{" "}
           <strong>public mode</strong> with plaintext state so the network can
-          be exercised in the open — end-to-end encryption is not live on
-          chaos-net. The interfaces and primitives are identical across both
-          modes; only the state visibility changes.
+          be exercised in the open — end-to-end encryption is not live yet (it
+          activates at v1.0 mainnet). The interfaces and primitives are
+          identical across both modes; only the state visibility changes.
         </p>
       </Callout>
 

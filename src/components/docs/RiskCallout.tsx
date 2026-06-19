@@ -21,11 +21,12 @@ export default function RiskCallout() {
         style={{ color: "hsl(32 81% 29%)" }}
       >
         <AlertTriangle size={13} style={{ color: "hsl(38 92% 50%)" }} />
-        Chaos-net is unaudited
+        Testnet deployment is unaudited
       </div>
       <div className="text-[14px] leading-[1.6] text-docs-text-secondary">
-        Chaos-net is unaudited. Use for testing or at your own risk —
-        interacting with deployed contracts may result in loss of funds. See the{" "}
+        The Arbitrum Sepolia testnet deployment is unaudited. Use for testing or
+        at your own risk — interacting with deployed contracts may result in
+        loss of funds. See the{" "}
         <Link
           to="/risk"
           className="text-brand-primary font-medium hover:underline"

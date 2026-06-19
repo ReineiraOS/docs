@@ -161,8 +161,8 @@ export default function UnderwriterPolicies() {
               Risk scores, premiums, and dispute verdicts are plaintext
               on-chain. Coverage holder and amount are visible. The policy logic
               (evaluateRisk → premium, judge → payout) is identical to encrypted
-              mode — only visibility differs. This is what runs at chaos-net
-              today via <code>IUnderwriterPolicy</code>.
+              mode — only visibility differs. This is what runs on Arbitrum
+              Sepolia testnet today via <code>IUnderwriterPolicy</code>.
             </p>
           </div>
         }
@@ -191,7 +191,7 @@ export default function UnderwriterPolicies() {
       <CodeBlock
         tabs={[
           {
-            label: "Plain (chaos-net)",
+            label: "Plain (testnet)",
             language: "solidity",
             filename: "IUnderwriterPolicy.sol",
             lines: [

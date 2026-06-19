@@ -33,7 +33,7 @@ const requirementRows = [
   {
     req: "Bond asset",
     details:
-      "cUSDC (the immutable confidential USDC wrapper) is the specified operator bond, bound in OperatorRegistry at deployment. The bond/slashing layer is Spec'd — not yet wired live on chaos-net, so do not treat a posted bond as slashable collateral yet.",
+      "cUSDC (the immutable confidential USDC wrapper) is the specified operator bond, bound in OperatorRegistry at deployment. The bond/slashing layer is Spec'd — not yet wired live on Arbitrum Sepolia testnet, so do not treat a posted bond as slashable collateral yet.",
   },
   {
     req: "ETH",
@@ -66,7 +66,7 @@ const economicsRows = [
   {
     metric: "Operator relay/task fee",
     value:
-      "Operator's own charge, kept by the operator (no protocol cut). Spec'd \u2014 no live rate; not collected on chaos-net today",
+      "Operator's own charge, kept by the operator (no protocol cut). Spec'd \u2014 no live rate; not collected on Arbitrum Sepolia testnet today",
   },
   {
     metric: "Operator subsidy / token",
@@ -75,7 +75,7 @@ const economicsRows = [
   {
     metric: "Bond asset",
     value:
-      "cUSDC (bound in OperatorRegistry at deployment). Spec'd \u2014 not yet wired live on chaos-net",
+      "cUSDC (bound in OperatorRegistry at deployment). Spec'd \u2014 not yet wired live on Arbitrum Sepolia testnet",
   },
   {
     metric: "Unbonding period",
@@ -90,7 +90,7 @@ export default function RunOperator() {
 
       <PageHeader
         title="Run an Operator"
-        description="Operators are relay nodes that execute cross-chain CCTP v2 settlement tasks, relaying burn-and-mint messages between chains. You can build, run, and relay today. Operators earn relay/task fees and the protocol takes nothing. The economics that reward and discipline operators — the cUSDC stake/bond, relay/task fees, and slashing — are Spec'd: designed, not yet production-usable on chaos-net."
+        description="Operators are relay nodes that execute cross-chain CCTP v2 settlement tasks, relaying burn-and-mint messages between chains. You can build, run, and relay today. Operators earn relay/task fees and the protocol takes nothing. The economics that reward and discipline operators — the cUSDC stake/bond, relay/task fees, and slashing — are Spec'd: designed, not yet production-usable on Arbitrum Sepolia testnet."
         readingTime="8 min read"
       />
 
@@ -109,7 +109,7 @@ export default function RunOperator() {
         cross-chain CCTP relay tasks. The coordinator distributes tasks via
         round-robin. On-chain contracts (OperatorRegistry, TaskExecutor) enforce
         the exclusive window and the permissionless fallback. Registration is
-        permissionless from chaos-net day 1: any address that meets the on-chain
+        permissionless from day one: any address that meets the on-chain
         criteria, is sanctions-clean, and has not been previously slashed can
         register without Foundation invitation. The CLI, service, and relay all
         work today; the cUSDC bond, the relay/task fees operators earn (the
@@ -123,13 +123,16 @@ export default function RunOperator() {
       >
         <p>
           You can build from source, register, run the service, and relay CCTP
-          transfers on chaos-net today. But the incentive layer is{" "}
-          <strong>designed, not yet production-usable on chaos-net</strong>: the
-          cUSDC stake/bond, the relay/task fees operators earn, and slashing are
-          specified but not wired end-to-end. The protocol takes no cut, and
-          there is no operator subsidy and no protocol token. Run an operator to
-          test the relay path, not to earn — and do not treat a posted bond as
-          economically at risk yet.
+          transfers on Arbitrum Sepolia testnet today. But the incentive layer
+          is{" "}
+          <strong>
+            designed, not yet production-usable on Arbitrum Sepolia testnet
+          </strong>
+          : the cUSDC stake/bond, the relay/task fees operators earn, and
+          slashing are specified but not wired end-to-end. The protocol takes no
+          cut, and there is no operator subsidy and no protocol token. Run an
+          operator to test the relay path, not to earn — and do not treat a
+          posted bond as economically at risk yet.
         </p>
       </Callout>
 
@@ -347,8 +350,8 @@ export default function RunOperator() {
         <strong className="text-docs-text-primary font-semibold">cUSDC</strong>{" "}
         (bound in OperatorRegistry at deployment) and the 7-day unbonding period
         is hardcoded — but the bond-and-slashing layer is not wired end-to-end
-        on chaos-net, so the bond does not yet act as live, slashable
-        collateral.
+        on Arbitrum Sepolia testnet, so the bond does not yet act as live,
+        slashable collateral.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -360,8 +363,8 @@ export default function RunOperator() {
         <strong className="text-docs-text-primary font-semibold">
           no operator subsidy programme and no protocol token
         </strong>
-        . Those fee mechanics are Spec'd, not yet wired live on chaos-net{" "}
-        <StatusBadge status="spec" className="align-middle" />.
+        . Those fee mechanics are Spec'd, not yet wired live on Arbitrum Sepolia
+        testnet <StatusBadge status="spec" className="align-middle" />.
       </p>
 
       <CodeBlock
@@ -419,7 +422,7 @@ export default function RunOperator() {
         . CCTP mints USDC on Arbitrum Sepolia and funds are routed to the escrow
         via hook data. The protocol itself takes no fee; any operator relay fee
         is part of the Spec'd operator economics and is not collected on
-        chaos-net today.
+        Arbitrum Sepolia testnet today.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -438,12 +441,13 @@ export default function RunOperator() {
 
       <DocsTable columns={economicsColumns} rows={economicsRows} />
 
-      <Callout variant="warning" title="No live operator earnings on chaos-net">
+      <Callout variant="warning" title="No live operator earnings on testnet">
         <p>
           The cUSDC bond, the relay/task fees operators earn, and slashing that
           would let an operator earn are{" "}
           <strong>
-            Spec'd — designed, but not yet production-usable on chaos-net
+            Spec'd — designed, but not yet production-usable on Arbitrum Sepolia
+            testnet
           </strong>
           . The protocol itself charges no fee and takes no cut of operator
           fees; there is no operator subsidy and no protocol token. No operator
@@ -557,7 +561,7 @@ export default function RunOperator() {
           ). During this period your stake remains locked. Slashing of that
           stake is Spec'd — the slashing manager is implemented but not yet
           wired — so the stake is not actually slashable through the quorum
-          mechanism on chaos-net today.
+          mechanism on Arbitrum Sepolia testnet today.
         </p>
       </Callout>
 

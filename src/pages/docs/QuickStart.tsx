@@ -314,9 +314,9 @@ export default function QuickStart() {
       <ModeToggle
         publicMode={
           <p>
-            <strong>Public (plain)</strong> is the live default on chaos-net
-            today. State is plaintext on-chain, so there is no FHE gas overhead
-            and everything is publicly verifiable. Use{" "}
+            <strong>Public (plain)</strong> is the live default on Arbitrum
+            Sepolia testnet today. State is plaintext on-chain, so there is no
+            FHE gas overhead and everything is publicly verifiable. Use{" "}
             <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
               sdk.escrowPlain
             </code>{" "}
