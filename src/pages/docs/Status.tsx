@@ -28,9 +28,9 @@ const taxonomyRows = [
     meaning: "Shipped and operating in production.",
   },
   {
-    status: <StatusBadge status="chaos-net" />,
+    status: <StatusBadge status="testnet" />,
     meaning:
-      "Ships at the chaos-net milestone (July 2026). Unaudited; runs in public mode.",
+      "Deployed and live on Arbitrum Sepolia testnet today — unaudited, runs in public mode. (The chaos-net network launches July–August 2026.)",
   },
   {
     status: <StatusBadge status="spec" />,
@@ -53,29 +53,30 @@ const componentColumns = [
 const componentRows = [
   {
     component: "Confidential Escrow",
-    status: <StatusBadge status="chaos-net" />,
+    status: <StatusBadge status="testnet" />,
     notes:
-      "Runs in public mode at chaos-net (July 2026); encrypted state activates at v1.0 mainnet.",
+      "Runs in public mode on Arbitrum Sepolia testnet today; encrypted state activates at v1.0 mainnet.",
   },
   {
     component: "Pluggable release gates (IConditionResolver)",
-    status: <StatusBadge status="chaos-net" />,
+    status: <StatusBadge status="testnet" />,
     notes:
       "Core interface ships; reference resolvers are spec'd separately below.",
   },
   {
     component: "Encrypted-state Recourse (Shield)",
-    status: <StatusBadge status="chaos-net" />,
-    notes: "Coverage manager + IUnderwriterPolicy. Public mode at chaos-net.",
+    status: <StatusBadge status="testnet" />,
+    notes:
+      "Coverage manager + IUnderwriterPolicy. Public mode on Arbitrum Sepolia testnet.",
   },
   {
     component: "Operator set (OperatorRegistry, TaskExecutor)",
-    status: <StatusBadge status="chaos-net" />,
+    status: <StatusBadge status="testnet" />,
     notes: "Permissionless registration from Day 1; cUSDC bond.",
   },
   {
     component: "FeeManager (zero-fee posture)",
-    status: <StatusBadge status="chaos-net" />,
+    status: <StatusBadge status="testnet" />,
     notes:
       "The protocol charges nothing. Fee bps are owner-settable with no block gate; zero fees are policy, not a bytecode constant.",
   },
@@ -87,13 +88,13 @@ const componentRows = [
   },
   {
     component: "OperatorSlashingManager",
-    status: <StatusBadge status="chaos-net" />,
+    status: <StatusBadge status="spec" />,
     notes:
-      "Single stake-weighted quorum across the active set (see CoordinatorRegistry below).",
+      "Spec'd — single stake-weighted quorum across the active set; not yet deployed (see CoordinatorRegistry below).",
   },
   {
     component: "CCTPHandler (Circle CCTP V2 relay)",
-    status: <StatusBadge status="chaos-net" />,
+    status: <StatusBadge status="testnet" />,
     notes: "Cross-chain USDC settlement task handler.",
   },
   {
@@ -144,7 +145,7 @@ const componentRows = [
     component: "Immutable singletons (no upgrade authority)",
     status: <StatusBadge status="spec" detail="v1.0 mainnet" />,
     notes:
-      "Owner-upgradeable UUPS proxies on chaos-net today; ownership is renounced to reach immutable bytecode with no upgrade authority at v1.0 mainnet.",
+      "Owner-upgradeable UUPS proxies on Arbitrum Sepolia testnet today; ownership is renounced to reach immutable bytecode with no upgrade authority at v1.0 mainnet.",
   },
   {
     component: "Agentic handlers (AgentCall / VerdictSubmit / PoolRouting)",
@@ -226,13 +227,13 @@ export default function Status() {
         readingTime="6 min read"
       />
 
-      <Callout variant="warning" title="Chaos-net runs public mode, unaudited">
+      <Callout variant="warning" title="Testnet runs public mode, unaudited">
         <p>
-          The chaos-net deployment runs the protocol in{" "}
+          The Arbitrum Sepolia testnet deployment runs the protocol in{" "}
           <strong>public mode</strong> — encrypted state does not exist on-chain
           until encrypted mode unlocks at v1.0 mainnet hardening (Q4 2026, gated
-          on Fhenix CoFHE). Chaos-net is <strong>unaudited</strong>; see the{" "}
-          <a href="/risk">Risk &amp; Audit Status</a> page.
+          on Fhenix CoFHE). The testnet deployment is <strong>unaudited</strong>
+          ; see the <a href="/risk">Risk &amp; Audit Status</a> page.
         </p>
       </Callout>
 

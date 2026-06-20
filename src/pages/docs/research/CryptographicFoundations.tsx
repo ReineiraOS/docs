@@ -73,9 +73,10 @@ export default function CryptographicFoundations() {
           <DocsBadge variant="amber">Spec'd · v1.0 mainnet</DocsBadge> The
           cryptographic substrate below powers <strong>encrypted mode</strong>,
           which activates at v1.0 mainnet (Q4 2026), gated on the Fhenix CoFHE
-          deployment. Chaos-net (Jul 2026) runs <strong>public mode</strong>{" "}
-          (plaintext). Treat the substrate's coprocessor as a separately
-          administered execution counterparty outside the EVM trust boundary.
+          deployment. The Arbitrum Sepolia testnet deployment runs{" "}
+          <strong>public mode</strong> (plaintext) today. Treat the substrate's
+          coprocessor as a separately administered execution counterparty
+          outside the EVM trust boundary.
         </p>
       </Callout>
 

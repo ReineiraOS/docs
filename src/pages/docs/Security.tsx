@@ -198,10 +198,9 @@ export default function Security() {
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         You post a cUSDC bond to join the relay network. Bonding aligns
         incentives — you lose money if you misbehave, and earn fees when you
-        relay honestly. Registration is permissionless from chaos-net day 1: any
-        address that meets the bond, is sanctions-clean, and has not been
-        previously slashed can register at the contract layer, no invitation
-        needed.
+        relay honestly. Registration is permissionless from day one: any address
+        that meets the bond, is sanctions-clean, and has not been previously
+        slashed can register at the contract layer, no invitation needed.
       </p>
 
       <DocsTable columns={stakingColumns} rows={stakingRows} />
@@ -218,9 +217,9 @@ export default function Security() {
           pay operators from a cUSDC pool during chaos-net against an off-chain
           eligibility list. Operators participate normally without it; the
           subsidy is an additive, future incentive, and there is no protocol
-          token. The operator set grows organically: N∈[5,10] at chaos-net (Jul
-          2026) → N=20 by end-2026 → N≥30 by Q1 2028, bounded by market demand
-          rather than gating.
+          token. The operator set grows organically: N∈[5,10] at chaos-net
+          (Jul–Aug 2026) → N=20 by end-2026 → N≥30 by Q1 2028, bounded by market
+          demand rather than gating.
         </p>
       </Callout>
 
@@ -239,8 +238,8 @@ export default function Security() {
         pattern, with a slasher reward of 10% of the slashed cUSDC stake. The
         parameters below are the contract's configured values.{" "}
         <DocsBadge variant="amber">Spec&apos;d</DocsBadge> The slashing manager
-        is undeployed and unwired on chaos-net — treat the mechanism as
-        specified, not live.
+        is undeployed and unwired on Arbitrum Sepolia testnet — treat the
+        mechanism as specified, not live.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -253,12 +252,13 @@ export default function Security() {
 
       <DocsTable columns={slashingColumns} rows={slashingRows} />
 
-      <Callout variant="warning" title="chaos-net caveat">
+      <Callout variant="warning" title="Testnet caveat">
         <p>
-          chaos-net runs in public mode and is unaudited. Single-quorum slashing
-          exists in OperatorSlashingManager but is undeployed and unwired, and
-          the cross-graph slashing model is not yet shipped. Do not rely on the
-          slashing security model for production guarantees at this stage.
+          The Arbitrum Sepolia testnet deployment runs in public mode and is
+          unaudited. Single-quorum slashing exists in OperatorSlashingManager
+          but is undeployed and unwired, and the cross-graph slashing model is
+          not yet shipped. Do not rely on the slashing security model for
+          production guarantees at this stage.
         </p>
       </Callout>
 
@@ -356,9 +356,10 @@ export default function Security() {
 
       <Callout variant="danger" title="Not production-ready">
         <p>
-          ReineiraOS runs chaos-net in public mode and is unaudited. Do not use
-          it for real funds or production applications. The security model will
-          be audited and hardened before production launch.
+          ReineiraOS runs the Arbitrum Sepolia testnet deployment in public mode
+          and is unaudited. Do not use it for real funds or production
+          applications. The security model will be audited and hardened before
+          production launch.
         </p>
       </Callout>
 

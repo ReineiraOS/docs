@@ -382,14 +382,14 @@ export default function EnterpriseChecklist() {
 
       <Callout
         variant="warning"
-        title="No external audit yet — chaos-net is unaudited"
+        title="No external audit yet — testnet is unaudited"
       >
         <p>
           The badges above reflect the internal Phase 7 self-review only. No
           external smart-contract audit is complete; a comprehensive third-party
           audit is planned prior to production launch and the external auditor
-          is not yet engaged. Chaos-net is unaudited — do not use it for real
-          funds. Follow the{" "}
+          is not yet engaged. The Arbitrum Sepolia testnet deployment is
+          unaudited — do not use it for real funds. Follow the{" "}
           <a
             href="/learn/security"
             className="text-brand-primary font-medium hover:underline"

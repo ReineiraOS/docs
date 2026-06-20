@@ -2,7 +2,7 @@ import { useState, type ReactNode } from "react";
 import { Eye, Lock } from "lucide-react";
 
 interface ModeToggleProps {
-  /** Behavior shown for public mode (live at chaos-net). */
+  /** Behavior shown for public mode (live on Arbitrum Sepolia testnet). */
   publicMode: ReactNode;
   /** Behavior shown for encrypted mode (activates at v1.0 mainnet). */
   encryptedMode: ReactNode;
@@ -11,10 +11,10 @@ interface ModeToggleProps {
 /**
  * Dual-mode viewer for primitive pages (Escrow, Insurance).
  *
- * Honesty contract: chaos-net runs PUBLIC mode. Encrypted mode is a
- * SEPARATE immutable deployment that activates at v1.0 mainnet (Q4 2026,
- * gated on Fhenix CoFHE). The toggle defaults to public mode and badges
- * encrypted mode as not-yet-live.
+ * Honesty contract: the Arbitrum Sepolia testnet deployment runs PUBLIC mode.
+ * Encrypted mode is a SEPARATE immutable deployment that activates at v1.0
+ * mainnet (Q4 2026, gated on Fhenix CoFHE). The toggle defaults to public mode
+ * and badges encrypted mode as not-yet-live.
  */
 export default function ModeToggle({
   publicMode,
@@ -59,11 +59,11 @@ export default function ModeToggle({
         <span className="ml-auto inline-flex items-center rounded-full border border-transparent px-2.5 py-0.5 text-[11px] font-medium">
           {isPublic ? (
             <span className="text-brand-primary bg-[hsl(217_100%_61%_/_0.08)] rounded-full px-2.5 py-0.5">
-              Live · chaos-net
+              Live · Arb. Sepolia
             </span>
           ) : (
             <span className="text-[hsl(var(--warning-text))] bg-[hsl(38_92%_50%_/_0.08)] rounded-full px-2.5 py-0.5">
-              Chaos-net → mainnet (v1.0)
+              Spec'd · v1.0 mainnet
             </span>
           )}
         </span>
@@ -77,7 +77,7 @@ export default function ModeToggle({
       {/* Honest footer */}
       <div className="px-5 py-2.5 bg-docs-bg-surface border-t border-docs-border-default text-[12px] text-docs-text-muted leading-snug">
         {isPublic
-          ? "Public mode runs at chaos-net (July 2026): state is plaintext on-chain. This is what is live today."
+          ? "Public mode is live today on Arbitrum Sepolia testnet: state is plaintext on-chain. This is what is live now (chaos-net launches July–August 2026)."
           : "Encrypted mode — updating soon. Encrypted state does not exist on-chain until v1.0 mainnet (Q4 2026), a separate immutable deployment gated on Fhenix CoFHE. Interfaces are identical across modes."}
       </div>
     </div>

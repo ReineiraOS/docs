@@ -26,7 +26,7 @@ const hostColumns = [
 const hostRows = [
   {
     host: "Arbitrum L2",
-    role: "Canonical host — chaos-net Jul 2026, v1.0 mainnet Q4 2026.",
+    role: "Canonical host — Arbitrum Sepolia testnet today, chaos-net Jul–Aug 2026, v1.0 mainnet Q4 2026.",
     status: <DocsBadge variant="blue">Canonical testnet</DocsBadge>,
   },
   {

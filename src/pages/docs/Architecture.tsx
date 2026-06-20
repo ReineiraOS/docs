@@ -41,7 +41,7 @@ const layerRows = [
   {
     layer: "Storage",
     tech: "ERC-7201",
-    desc: "Encrypted state variables stored via namespaced storage. Contracts are UUPS-upgradeable proxies on chaos-net today (immutable bytecode is the v1.0 target); ERC-7201 + __gap[50] keep storage layout safe across upgrades. ERC-2771 meta-transaction support.",
+    desc: "Encrypted state variables stored via namespaced storage. Contracts are UUPS-upgradeable proxies on Arbitrum Sepolia testnet today (immutable bytecode is the v1.0 target); ERC-7201 + __gap[50] keep storage layout safe across upgrades. ERC-2771 meta-transaction support.",
   },
   {
     layer: "Orchestration",
@@ -77,14 +77,15 @@ export default function Architecture() {
         ReineiraOS is conditional settlement infrastructure built on the
         Ethereum Virtual Machine. It runs in two modes: a{" "}
         <strong className="text-docs-text-primary">public mode</strong> with
-        plaintext amounts — the mode running on chaos-net today — and an{" "}
+        plaintext amounts — the mode running on Arbitrum Sepolia testnet today —
+        and an{" "}
         <strong className="text-docs-text-primary">encrypted mode</strong> that
         uses an FHE coprocessor so settlement logic executes entirely in
         ciphertext. Encrypted mode activates at the v1.0 mainnet launch (Q4
         2026) as a separate immutable deployment{" "}
-        <DocsBadge variant="amber">Spec'd</DocsBadge>; until then the chaos-net
-        deployment operates in public mode{" "}
-        <DocsBadge variant="blue">Chaos-net</DocsBadge>.
+        <DocsBadge variant="amber">Spec'd</DocsBadge>; until then the Arbitrum
+        Sepolia testnet deployment operates in public mode{" "}
+        <DocsBadge variant="blue">Arb. Sepolia</DocsBadge>.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -106,7 +107,8 @@ export default function Architecture() {
         FHE-encrypted values, with plaintext used only for public metadata like
         timestamps and escrow existence flags. The encrypted-state design and
         types described below ship at the v1.0 mainnet launch (Q4 2026); the
-        live chaos-net deployment currently runs in public (plaintext) mode.
+        live Arbitrum Sepolia testnet deployment currently runs in public
+        (plaintext) mode.
       </Callout>
 
       <h2
@@ -197,7 +199,8 @@ export default function Architecture() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           escrowId
         </code>
-        . On chaos-net today, every protocol contract is deployed as a{" "}
+        . On Arbitrum Sepolia testnet today, every protocol contract is deployed
+        as a{" "}
         <strong className="text-docs-text-primary">
           UUPS-upgradeable proxy
         </strong>{" "}
@@ -246,8 +249,8 @@ export default function Architecture() {
       </h3>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Public mode can deploy on any EVM chain; the current chaos-net
-        deployment runs on Arbitrum L2. Cross-chain funding arrives over Circle
+        Public mode can deploy on any EVM chain; the current deployment runs on
+        Arbitrum Sepolia testnet (L2). Cross-chain funding arrives over Circle
         CCTP V2 for USDC — the one live rail — which funnels into{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
           ConfidentialEscrow.fundFrom

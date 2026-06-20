@@ -211,11 +211,11 @@ export default function CrossChain() {
         would route over LayerZero OFT / USDT0 instead of CCTP domains.
       </p>
 
-      <Callout variant="warning" title="chaos-net is public and unaudited">
+      <Callout variant="warning" title="Testnet is public and unaudited">
         <p>
-          chaos-net runs in <strong>public mode</strong> and is{" "}
-          <strong>unaudited</strong>. Do not move value you are not prepared to
-          lose.
+          The Arbitrum Sepolia testnet deployment runs in{" "}
+          <strong>public mode</strong> and is <strong>unaudited</strong>. Do not
+          move value you are not prepared to lose.
         </p>
       </Callout>
 

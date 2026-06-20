@@ -30,15 +30,15 @@ const authorityColumns = [
 const authorityRows = [
   {
     auth: "Upgrade authority (owner)",
-    can: "On chaos-net today, every contract is UUPS-upgradeable behind a proxy: TestnetCoreBase gates _authorizeUpgrade with onlyOwner, so the contract owner can ship a new implementation. Renouncing this authority to reach immutable bytecode is the v1.0 mainnet target, not the current state.",
+    can: "On Arbitrum Sepolia testnet today, every contract is UUPS-upgradeable behind a proxy: TestnetCoreBase gates _authorizeUpgrade with onlyOwner, so the contract owner can ship a new implementation. Renouncing this authority to reach immutable bytecode is the v1.0 mainnet target, not the current state.",
   },
   {
     auth: "slashingManager",
-    can: "Execute OperatorRegistry.slash and route slashed stake, via OperatorSlashingManager (with owner as backstop). Slashing is spec'd — the manager is undeployed and unwired on chaos-net.",
+    can: "Execute OperatorRegistry.slash and route slashed stake, via OperatorSlashingManager (with owner as backstop). Slashing is spec'd — the manager is undeployed and unwired on Arbitrum Sepolia testnet.",
   },
   {
     auth: "Coverage Manager admin",
-    can: "Admin setters (setEscrow, setPoolFactory) and policy registration, plus the owner-gated proxy upgrade hook on chaos-net. At v1.0 there is no upgrade hook and no admin key on a state-bearing contract.",
+    can: "Admin setters (setEscrow, setPoolFactory) and policy registration, plus the owner-gated proxy upgrade hook on Arbitrum Sepolia testnet. At v1.0 there is no upgrade hook and no admin key on a state-bearing contract.",
   },
   {
     auth: "Fee governance",
@@ -57,7 +57,7 @@ export default function Governance() {
 
       <PageHeader
         title="Governance Posture"
-        description="ReineiraOS is Public Infrastructure published by a Software Vendor, with no token and no fees. Contracts are owner-upgradeable on chaos-net today; renouncing that authority to reach immutable bytecode with no upgrade authority is the v1.0 mainnet target."
+        description="ReineiraOS is Public Infrastructure published by a Software Vendor, with no token and no fees. Contracts are owner-upgradeable on Arbitrum Sepolia testnet today; renouncing that authority to reach immutable bytecode with no upgrade authority is the v1.0 mainnet target."
         readingTime="7 min read"
       />
 
@@ -68,11 +68,11 @@ export default function Governance() {
         Public-Infrastructure posture
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        ReineiraOS launches as Public Infrastructure. On chaos-net today every
-        contract is <strong>UUPS-upgradeable</strong> behind a proxy, with the
-        upgrade hook gated by the contract owner; converging on{" "}
-        <strong>immutable singletons with no upgrade authority</strong> is the
-        v1.0 mainnet target rather than the current state. The protocol{" "}
+        ReineiraOS launches as Public Infrastructure. On Arbitrum Sepolia
+        testnet today every contract is <strong>UUPS-upgradeable</strong> behind
+        a proxy, with the upgrade hook gated by the contract owner; converging
+        on <strong>immutable singletons with no upgrade authority</strong> is
+        the v1.0 mainnet target rather than the current state. The protocol{" "}
         <strong>charges nothing</strong> — zero fees are a posture the owner
         maintains, not a constant locked into bytecode. Operators post a spec'd{" "}
         <strong>cUSDC bond</strong>, not a token, and{" "}
@@ -122,8 +122,8 @@ export default function Governance() {
       </h2>
       <blockquote className="border-l-4 border-docs-border-strong pl-4 my-6 text-docs-text-secondary leading-relaxed italic">
         <p>
-          On chaos-net today, every state-bearing contract sits behind a UUPS
-          proxy. The shared base —{" "}
+          On Arbitrum Sepolia testnet today, every state-bearing contract sits
+          behind a UUPS proxy. The shared base —{" "}
           <code className="not-italic">TestnetCoreBase</code> — is{" "}
           <code className="not-italic">UUPSUpgradeable</code> and{" "}
           <code className="not-italic">OwnableUpgradeable</code> and gates{" "}
@@ -152,10 +152,10 @@ export default function Governance() {
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Five authorities partition the protocol's privileged surface. The owner
-        can ship UUPS upgrades on chaos-net today (the immutable-bytecode target
-        removes this later), but no authority can withdraw escrowed funds,
-        modify escrow terms, force-resolve a gate, or decrypt FHE state without
-        explicit permission.
+        can ship UUPS upgrades on Arbitrum Sepolia testnet today (the
+        immutable-bytecode target removes this later), but no authority can
+        withdraw escrowed funds, modify escrow terms, force-resolve a gate, or
+        decrypt FHE state without explicit permission.
       </p>
       <DocsTable columns={authorityColumns} rows={authorityRows} />
 
@@ -166,7 +166,7 @@ export default function Governance() {
         Path to immutability
       </h2>
       <Steps>
-        <Step title="Chaos-net — owner-upgradeable (from Jul 2026)">
+        <Step title="Testnet & chaos-net — owner-upgradeable (today; chaos-net Jul–Aug 2026)">
           <p className="text-docs-text-secondary leading-relaxed">
             Reineira Labs Limited authors and deploys the contracts as
             owner-upgradeable UUPS proxies, publishes RSS, and coordinates
@@ -193,11 +193,11 @@ export default function Governance() {
         <p>
           The contracts are non-custodial regardless of upgrade status: no admin
           can steal escrowed funds, change escrow terms, bypass a gate, or
-          decrypt your state. While the owner can still ship UUPS upgrades on
-          chaos-net (the v1.0 mainnet target renounces that key), there is no
-          token and no protocol fee — the Software Vendor publishes the
-          open-source software and coordinates audits, it does not touch your
-          money.
+          decrypt your state. While the owner can still ship UUPS upgrades today
+          on Arbitrum Sepolia testnet (the v1.0 mainnet target renounces that
+          key), there is no token and no protocol fee — the Software Vendor
+          publishes the open-source software and coordinates audits, it does not
+          touch your money.
         </p>
       </Callout>
 

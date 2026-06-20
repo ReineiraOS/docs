@@ -253,7 +253,7 @@ export default function EscrowModule() {
 
       <PageHeader
         title="Escrow Module"
-        description="sdk.escrow — create, fund, and settle Escrows. The encrypted track (sdk.escrow) targets v1.0; the public track (sdk.escrowPlain) is live on chaos-net."
+        description="sdk.escrow — create, fund, and settle Escrows. The encrypted track (sdk.escrow) targets v1.0; the public track (sdk.escrowPlain) is live on Arbitrum Sepolia testnet."
         readingTime="6 min read"
       />
 
@@ -371,11 +371,7 @@ export default function EscrowModule() {
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
         Public track (Plain){" "}
-        <StatusBadge
-          status="live"
-          detail="chaos-net"
-          className="align-middle"
-        />
+        <StatusBadge status="testnet" className="align-middle" />
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -388,7 +384,8 @@ export default function EscrowModule() {
           ConfidentialEscrow
         </code>
         ), which targets v1.0 mainnet. A mirror <strong>public</strong> track
-        runs today on chaos-net with the same shape but plaintext state.
+        runs today on Arbitrum Sepolia testnet with the same shape but plaintext
+        state.
       </p>
 
       <ModeToggle
@@ -399,7 +396,8 @@ export default function EscrowModule() {
               returns a <code>PlainEscrowInstance</code> backed by the{" "}
               <code>Escrow.sol</code> contract and the <code>plain*</code>{" "}
               deployment addresses. State (owner, amount, paidAmount, redeemed)
-              is readable on-chain. This is what is live on chaos-net.
+              is readable on-chain. This is what is live on Arbitrum Sepolia
+              testnet.
             </p>
           </div>
         }
@@ -428,7 +426,7 @@ export default function EscrowModule() {
         filename="plain-escrow.ts"
         language="typescript"
         lines={[
-          { content: "// Public track — live on chaos-net" },
+          { content: "// Public track — live on Arbitrum Sepolia testnet" },
           { content: "const escrow = await sdk.escrowPlain.create({" },
           { content: "  amount: sdk.usdc(1000)," },
           { content: "  owner: '0xRecipient...'," },

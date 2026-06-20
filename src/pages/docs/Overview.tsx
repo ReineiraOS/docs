@@ -236,15 +236,15 @@ export default function Overview() {
         ReineiraOS is public settlement infrastructure, not a rent-seeking
         platform. The protocol charges no fees of its own, and contract
         immutability is the v1.0 target — contracts are upgradeable today (UUPS)
-        so the chaos-net surface can be hardened before the controls are frozen.
+        so the testnet surface can be hardened before the controls are frozen.
       </p>
 
       <Callout variant="info" title="Public-infrastructure posture">
         <ul className="space-y-2 list-disc list-inside">
           <li>
             <strong>Upgradeable today, immutable at v1.0.</strong> Contracts use
-            UUPS with an owner during chaos-net; relinquishing upgrade authority
-            is the v1.0 milestone.
+            UUPS with an owner today on Arbitrum Sepolia testnet; relinquishing
+            upgrade authority is the v1.0 milestone.
           </li>
           <li>
             <strong>No protocol fee.</strong> The protocol takes no cut. Any
@@ -294,17 +294,14 @@ export default function Overview() {
         margins.
       </p>
 
-      <Callout
-        variant="warning"
-        title="Encrypted mode is not live on chaos-net"
-      >
+      <Callout variant="warning" title="Encrypted mode is not live yet">
         <p>
-          ReineiraOS runs in two modes. Chaos-net (launching{" "}
-          <strong>Jul 2026</strong>) runs <strong>public mode</strong> — state
-          is plaintext so the network can be exercised in the open. Encrypted
-          (FHE) mode activates at <strong>v1.0 mainnet (Q4 2026)</strong>. The
-          confidentiality described above is the v1.0 design target, not a
-          guarantee that is live today.
+          ReineiraOS runs in two modes. The Arbitrum Sepolia testnet deployment
+          runs <strong>public mode</strong> today — state is plaintext so the
+          network can be exercised in the open; the chaos-net network launches{" "}
+          <strong>July–August 2026</strong>. Encrypted (FHE) mode activates at{" "}
+          <strong>v1.0 mainnet (Q4 2026)</strong>. The confidentiality described
+          above is the v1.0 design target, not a guarantee that is live today.
         </p>
       </Callout>
 

@@ -146,7 +146,7 @@ export default function PrivacyModel() {
 
       <PageHeader
         title="Privacy Model"
-        description="ReineiraOS ships in two modes: a public mode live at chaos-net, and an FHE-encrypted mode that activates at v1.0 mainnet."
+        description="ReineiraOS ships in two modes: a public mode live on Arbitrum Sepolia testnet, and an FHE-encrypted mode that activates at v1.0 mainnet."
         readingTime="6 min read"
       />
 
@@ -167,9 +167,9 @@ export default function PrivacyModel() {
           <strong className="text-docs-text-primary font-semibold">
             Public mode
           </strong>{" "}
-          <DocsBadge variant="blue">Chaos-net</DocsBadge> — all state is stored
-          in plaintext. This is the mode that runs at chaos-net (Jul 2026) on
-          Arbitrum L2.
+          <DocsBadge variant="blue">Arb. Sepolia</DocsBadge> — all state is
+          stored in plaintext. This is the mode that runs on Arbitrum Sepolia
+          testnet today, on Arbitrum L2.
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">
@@ -182,17 +182,15 @@ export default function PrivacyModel() {
         </li>
       </ul>
 
-      <Callout
-        variant="warning"
-        title="Encrypted state is not live at chaos-net"
-      >
+      <Callout variant="warning" title="Encrypted state is not live yet">
         <p>
-          Chaos-net runs <strong>public mode only</strong>: every value is
-          plaintext on-chain. Encrypted state does <strong>not</strong> exist
-          on-chain until the v1.0 mainnet deployment. The encrypted contracts
-          described below are a <strong>separate immutable deployment</strong>{" "}
-          at separate addresses; migration from the public deployment is{" "}
-          <strong>opt-in</strong> per user.
+          The Arbitrum Sepolia testnet deployment runs{" "}
+          <strong>public mode only</strong>: every value is plaintext on-chain.
+          Encrypted state does <strong>not</strong> exist on-chain until the
+          v1.0 mainnet deployment. The encrypted contracts described below are a{" "}
+          <strong>separate immutable deployment</strong> at separate addresses;
+          migration from the public deployment is <strong>opt-in</strong> per
+          user.
         </p>
       </Callout>
 
@@ -221,8 +219,8 @@ export default function PrivacyModel() {
         ) and{" "}
         <strong className="text-docs-text-primary font-semibold">public</strong>{" "}
         (visible to anyone inspecting the chain). The table below describes the
-        encrypted-mode state layout — at chaos-net these same fields are
-        plaintext.
+        encrypted-mode state layout — on the Arbitrum Sepolia testnet deployment
+        these same fields are plaintext.
       </p>
 
       <DocsTable columns={encryptedColumns} rows={encryptedRows} />
@@ -231,8 +229,8 @@ export default function PrivacyModel() {
         <p>
           In the encrypted-mode deployment, sensitive financial and identity
           fields are encrypted as part of the contract design — there is no
-          per-field opt-out. The public-mode deployment that runs at chaos-net
-          stores these same fields in plaintext.
+          per-field opt-out. The public-mode deployment that runs on Arbitrum
+          Sepolia testnet stores these same fields in plaintext.
         </p>
       </Callout>
 
@@ -250,7 +248,7 @@ export default function PrivacyModel() {
         the smart contracts can add escrow amounts, compare balances, and
         evaluate conditions — all while the underlying values remain ciphertext.
         FHE state is gated on Fhenix CoFHE reaching mainnet; the flows below
-        describe that deployment, not the public chaos-net one.
+        describe that deployment, not the public testnet one.
       </p>
 
       <h3
@@ -343,8 +341,9 @@ export default function PrivacyModel() {
         read them. In the encrypted-mode deployment{" "}
         <DocsBadge variant="amber">Spec'd · v1.0 mainnet</DocsBadge>, ReineiraOS
         limits what data is emitted in events to prevent metadata leakage. The
-        "hidden data" column below describes encrypted mode; at chaos-net these
-        values are emitted or otherwise readable in plaintext.
+        "hidden data" column below describes encrypted mode; on the Arbitrum
+        Sepolia testnet deployment these values are emitted or otherwise
+        readable in plaintext.
       </p>
 
       <DocsTable columns={eventColumns} rows={eventRows} />
