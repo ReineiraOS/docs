@@ -15,7 +15,6 @@ import type { TocItem } from "@/components/layout/TableOfContents";
 const toc: TocItem[] = [
   { id: "escrow", title: "Escrow", level: 2 },
   { id: "insurance", title: "Recourse", level: 2 },
-  { id: "orchestration", title: "Orchestration", level: 2 },
   { id: "tokens", title: "Tokens", level: 2 },
   { id: "external-dependencies", title: "External dependencies", level: 2 },
   { id: "cctp-source-chains", title: "CCTP source chains", level: 2 },
@@ -200,43 +199,6 @@ const recourseConfidentialRows = [
   },
 ];
 
-// Orchestration — live on Arbitrum Sepolia testnet. Proxy + implementation
-// pairs are from packages/orchestration/deployments/arbitrumSepolia.json.
-const orchestrationRows = [
-  {
-    name: "OperatorRegistry",
-    proxy: <AddressCell value="0x5Ac3a3750e0a9f7d4ddBC0B52c3f13E8f927FB59" />,
-    impl: (
-      <AddressCell value="0x681bd064ee0ac16cf005cf3f8894805ef3a7a694" muted />
-    ),
-    status: <StatusBadge status="testnet" />,
-  },
-  {
-    name: "TaskExecutor",
-    proxy: <AddressCell value="0x4D239335f39E585Bb75631C4683538EFC496a5EB" />,
-    impl: (
-      <AddressCell value="0xb1a93d5919e9970f29f84ba8a1fcdc9ce106cba0" muted />
-    ),
-    status: <StatusBadge status="testnet" />,
-  },
-  {
-    name: "FeeManager",
-    proxy: <AddressCell value="0x639f5cB99DcF9681A0461A1452c3845811d3308A" />,
-    impl: (
-      <AddressCell value="0x9212b3e6bc449d933ec228a820c4820ce3e7e86e" muted />
-    ),
-    status: <StatusBadge status="testnet" />,
-  },
-  {
-    name: "CCTPHandler",
-    proxy: <AddressCell value="0x575186a64B9FC49E135A2440DC4A1395edc0F3aD" />,
-    impl: (
-      <AddressCell value="0x12b7bec24cc534854751af524119b97a86ef4466" muted />
-    ),
-    status: <StatusBadge status="testnet" />,
-  },
-];
-
 const tokenRows = [
   {
     name: "ConfidentialUSDC (cUSDC)",
@@ -247,11 +209,6 @@ const tokenRows = [
     name: "USDC",
     address: <AddressCell value="0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d" />,
     status: <StatusBadge status="testnet" detail="Circle testnet" />,
-  },
-  {
-    name: "MockGovernanceToken (operator staking)",
-    address: <AddressCell value="0xb847e041bB3bC78C3CD951286AbCa28593739D12" />,
-    status: <StatusBadge status="testnet" detail="mock" />,
   },
 ];
 
@@ -397,16 +354,6 @@ export default function Contracts() {
       </p>
 
       <DocsTable columns={proxyColumns} rows={recourseConfidentialRows} />
-
-      {/* ── Orchestration ──────────────────────────────────────────────── */}
-      <h2
-        id="orchestration"
-        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
-      >
-        Orchestration
-      </h2>
-
-      <DocsTable columns={proxyColumns} rows={orchestrationRows} />
 
       {/* ── Tokens ─────────────────────────────────────────────────────── */}
       <h2

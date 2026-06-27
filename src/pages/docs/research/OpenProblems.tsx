@@ -56,7 +56,7 @@ const rows = [
   },
   {
     id: "8.1",
-    title: "Operator set growth trajectory",
+    title: "Relayer bot adoption and redundancy targets",
     target: "tracked through chaos-net operations; no pre-deployment gate",
   },
   {

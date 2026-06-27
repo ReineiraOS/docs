@@ -49,7 +49,7 @@ const timingRows = [
   { step: "USDC burn on source chain", duration: "~15 seconds" },
   { step: "Circle Iris attestation", duration: "60\u2013120 seconds" },
   {
-    step: "Operator relay and on-chain execution",
+    step: "Permissionless relay and on-chain settlement",
     duration: "10\u201360 seconds",
   },
   { step: "Total end-to-end", duration: "~90\u2013200 seconds" },
@@ -62,9 +62,9 @@ const feeColumns = [
 ];
 const feeRows = [
   {
-    fee: "Operator relay fee",
+    fee: "Relay fee (if any)",
     rate: <StatusBadge status="spec" />,
-    recipient: "Relay operator who executed the task",
+    recipient: "Whoever submits the settlement transaction",
   },
   {
     fee: "Protocol take",
@@ -136,11 +136,17 @@ export default function CrossChain() {
         steps={[
           { label: "Burn", sublabel: "SDK burns USDC on source chain" },
           { label: "Attest", sublabel: "Circle Iris signs the burn message" },
-          { label: "Dispatch", sublabel: "Coordinator distributes relay task" },
-          { label: "Claim", sublabel: "Operator claims within 60s window" },
-          { label: "Fetch", sublabel: "Operator fetches signed attestation" },
-          { label: "Execute", sublabel: "Relay submitted on-chain" },
-          { label: "Settle", sublabel: "USDC minted on destination chain" },
+          {
+            label: "Notify",
+            sublabel: "Coordinator notifies relayers of the burn",
+          },
+          { label: "Fetch", sublabel: "Relayer fetches signed attestation" },
+          {
+            label: "Settle",
+            sublabel:
+              "Anyone calls settle() with Circle's attestation on-chain",
+          },
+          { label: "Mint", sublabel: "USDC minted on destination chain" },
         ]}
       />
 
@@ -164,10 +170,16 @@ export default function CrossChain() {
           TokenMessenger
         </code>{" "}
         on the source chain. Circle Iris signs the burn message, the coordinator
-        dispatches a relay task, and an operator submits the message and
+        notifies relayers of the burn, and anyone can submit the message and
         attestation on-chain via{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-          TaskExecutor &rarr; MessageTransmitter.receiveMessage()
+          CCTPV2EscrowReceiver.settle()
+        </code>{" "}
+        to verify the attestation and mint USDC on the destination chain.
+        Settlement is permissionless: a relayer typically submits it for speed,
+        but any account with Circle&apos;s attestation can call{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          settle()
         </code>
         . USDC is then minted on the destination chain and routed to the escrow
         via hook data.
@@ -291,11 +303,12 @@ export default function CrossChain() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         The <strong>protocol charges nothing</strong> on a cross-chain transfer.
-        The only fee is the operator relay fee, which compensates the operator
-        that fronts the relay and submits it on-chain — its economics are
-        spec'd, not live, so there is no published rate to quote yet. When set,
-        any such fee is deducted from the bridged amount before settlement and
-        the remainder reaches the destination escrow.
+        Relaying is permissionless and unpaid by the protocol — a relayer only
+        covers destination-chain gas. Any relay fee, if introduced, is spec'd
+        rather than live, so there is no published rate to quote yet, and it
+        would go to whoever submits the settlement transaction. When set, any
+        such fee is deducted from the bridged amount before settlement and the
+        remainder reaches the destination escrow.
       </p>
 
       <h2
@@ -306,8 +319,9 @@ export default function CrossChain() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        If the assigned operator misses the relay, the task escalates through
-        progressively more permissive windows:
+        Settlement is permissionless from the start. Once Circle&apos;s
+        attestation is available, anyone with it can settle \u2014 there is no
+        assigned operator, exclusive window, or escalation:
       </p>
 
       <DocsTable
@@ -317,38 +331,23 @@ export default function CrossChain() {
         ]}
         rows={[
           {
-            window: "0\u201360s",
-            who: "Exclusive window for the assigned operator",
-          },
-          {
-            window: "60\u2013600s",
-            who: "Any registered operator can execute",
-          },
-          {
-            window: "After 600s",
-            who: "Fully permissionless \u2014 anyone can relay",
+            window: "0\u2013\u221e",
+            who: "Fully permissionless \u2014 anyone with Circle's attestation can settle",
           },
         ]}
       />
 
       <Callout variant="tip" title="Manual relay">
         <p>
-          If a relay is stuck, operators can manually trigger it using the CLI.
+          If a relay is stuck, anyone can complete settlement directly by
+          calling{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            CCTPV2EscrowReceiver.settle(message, attestation)
+          </code>{" "}
+          with Circle&apos;s attestation. A relayer being down only affects
+          speed, not whether settlement can happen.
         </p>
       </Callout>
-
-      <CodeBlock
-        filename="terminal"
-        language="bash"
-        lines={[
-          { content: "# Manual relay (operator CLI)" },
-          {
-            content: "reineira-operator relay --tx-hash 0xBurnTxHash",
-            highlighted: true,
-          },
-        ]}
-        showLineNumbers={false}
-      />
 
       <PageNav prev={prev} next={next} />
     </DocsLayout>

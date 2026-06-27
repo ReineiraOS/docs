@@ -54,9 +54,9 @@ const whatYouGetRows = [
       "Protocol-native coverage pools for chargebacks, fraud, and delivery failures; Underwriters earn yield by staking capital.",
   },
   {
-    capability: "Operators",
+    capability: "Relayers",
     description:
-      "Staked operator network that coordinates cross-chain messaging and settlement relay.",
+      "Permissionless relayer network that watches CCTP burns, fetches Circle attestations, and calls settle(). No registration, staking, or exclusive role required — any bot can relay.",
   },
   {
     capability: "Cross-Chain Settlement",
@@ -249,11 +249,14 @@ export default function Overview() {
           <li>
             <strong>No protocol fee.</strong> The protocol takes no cut. Any
             fees are builder- and role-configurable (a Gate's condition fee, an
-            underwriter's premium); the operator relay fee is specified.
+            underwriter's premium); relaying is permissionless and incurs only
+            destination-chain gas costs.
           </li>
           <li>
-            <strong>Operator economics are specified.</strong> Bonding, relay
-            fees, and slashing are defined in the spec, not yet wired live.
+            <strong>Permissionless settlement.</strong> Settlement is
+            permissionless and secured by Circle's CCTP attestation verified
+            on-chain. Relayers are stateless bots with no registration, bonding,
+            or slashing mechanism.
           </li>
           <li>
             <strong>No token.</strong> The protocol has no token.

@@ -8,7 +8,6 @@ import ArchitectureDiagram from "@/components/docs/ArchitectureDiagram";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
 import Steps, { Step } from "@/components/docs/Steps";
-import StatusBadge from "@/components/docs/StatusBadge";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
@@ -16,11 +15,9 @@ const toc: TocItem[] = [
   { id: "overview", title: "Overview", level: 2 },
   { id: "requirements", title: "Requirements", level: 2 },
   { id: "setup", title: "Setup", level: 2 },
-  { id: "staking", title: "Staking", level: 2 },
-  { id: "task-execution-flow", title: "Task execution flow", level: 2 },
+  { id: "settlement-flow", title: "Settlement flow", level: 2 },
   { id: "economics", title: "Economics", level: 2 },
   { id: "monitoring", title: "Monitoring", level: 2 },
-  { id: "unbonding", title: "Unbonding", level: 2 },
 ];
 
 const { prev, next } = getPrevNext("/operate/run-operator");
@@ -31,13 +28,13 @@ const requirementColumns = [
 ];
 const requirementRows = [
   {
-    req: "Bond asset",
+    req: "Bond / stake",
     details:
-      "cUSDC (the immutable confidential USDC wrapper) is the specified operator bond, bound in OperatorRegistry at deployment. The bond/slashing layer is Spec'd — not yet wired live on Arbitrum Sepolia testnet, so do not treat a posted bond as slashable collateral yet.",
+      "None. Running a relayer is permissionless — no registration, bond, or stake is required. Recourse pools (Shield) are funded by LPs and premiums and provide coverage capped at pool liquidity, not relayer collateral.",
   },
   {
     req: "ETH",
-    details: "Gas funds on Arbitrum Sepolia for relay transactions",
+    details: "Gas funds on Arbitrum Sepolia for settlement transactions",
   },
   {
     req: "RPC endpoints",
@@ -45,7 +42,7 @@ const requirementRows = [
   },
   {
     req: "Private key",
-    details: "Dedicated operator wallet \u2014 do not reuse personal wallets",
+    details: "Dedicated relayer wallet \u2014 do not reuse personal wallets",
   },
   { req: "Node.js", details: "v20 LTS or higher" },
   {
@@ -64,22 +61,18 @@ const economicsRows = [
     value: "None \u2014 the protocol charges nothing",
   },
   {
-    metric: "Operator relay/task fee",
+    metric: "Relayer reward",
     value:
-      "Operator's own charge, kept by the operator (no protocol cut). Spec'd \u2014 no live rate; not collected on Arbitrum Sepolia testnet today",
+      "None at the protocol level. Relayers run permissionlessly and recover only their own destination-chain gas costs",
   },
   {
-    metric: "Operator subsidy / token",
+    metric: "Relayer subsidy / token",
     value: "None \u2014 no subsidy programme and no protocol token",
   },
   {
-    metric: "Bond asset",
+    metric: "Bond / stake",
     value:
-      "cUSDC (bound in OperatorRegistry at deployment). Spec'd \u2014 not yet wired live on Arbitrum Sepolia testnet",
-  },
-  {
-    metric: "Unbonding period",
-    value: "7 days (hardcoded in OperatorRegistry)",
+      "None \u2014 running a relayer requires no bond, stake, or registration",
   },
 ];
 
@@ -89,9 +82,9 @@ export default function RunOperator() {
       <Breadcrumbs />
 
       <PageHeader
-        title="Run an Operator"
-        description="Operators are relay nodes that execute cross-chain CCTP v2 settlement tasks, relaying burn-and-mint messages between chains. You can build, run, and relay today. Operators earn relay/task fees and the protocol takes nothing. The economics that reward and discipline operators — the cUSDC stake/bond, relay/task fees, and slashing — are Spec'd: designed, not yet production-usable on Arbitrum Sepolia testnet."
-        readingTime="8 min read"
+        title="Run a Relayer"
+        description="Relayers are permissionless bots that watch CCTP burns, fetch Circle's signed attestation, and call settle() to complete cross-chain settlement. Running one requires no registration, bond, or stake — any address can relay. Settlement itself is permissionless and secured by Circle's CCTP attestation verified on-chain, so a relayer only affects speed: if it is down, anyone can still settle."
+        readingTime="6 min read"
       />
 
       <RiskCallout />
@@ -105,34 +98,28 @@ export default function RunOperator() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        You register on-chain, connect to the coordinator via SSE, and execute
-        cross-chain CCTP relay tasks. The coordinator distributes tasks via
-        round-robin. On-chain contracts (OperatorRegistry, TaskExecutor) enforce
-        the exclusive window and the permissionless fallback. Registration is
-        permissionless from day one: any address that meets the on-chain
-        criteria, is sanctions-clean, and has not been previously slashed can
-        register without Foundation invitation. The CLI, service, and relay all
-        work today; the cUSDC bond, the relay/task fees operators earn (the
-        protocol takes nothing), and slashing that make up the operator
-        economics are <StatusBadge status="spec" className="align-middle" />.
+        Connect to the coordinator via SSE and relay cross-chain CCTP
+        settlements. Running a relayer is permissionless: watch CCTP burns,
+        fetch Circle's signed attestation, and call settle(). The coordinator
+        does round-robin SSE notification of burn events to avoid duplicate gas,
+        but there is no on-chain operator registry or task assignment — no
+        registration, bond, or stake is required. Settlement itself is
+        permissionless and secured by Circle's CCTP attestation verified
+        on-chain, so the relayer only affects speed.
       </p>
 
       <Callout
-        variant="warning"
-        title="Operator economics are Spec'd, not production-usable"
+        variant="info"
+        title="Relaying is permissionless — you only need gas"
       >
         <p>
-          You can build from source, register, run the service, and relay CCTP
-          transfers on Arbitrum Sepolia testnet today. But the incentive layer
-          is{" "}
-          <strong>
-            designed, not yet production-usable on Arbitrum Sepolia testnet
-          </strong>
-          : the cUSDC stake/bond, the relay/task fees operators earn, and
-          slashing are specified but not wired end-to-end. The protocol takes no
-          cut, and there is no operator subsidy and no protocol token. Run an
-          operator to test the relay path, not to earn — and do not treat a
-          posted bond as economically at risk yet.
+          You can build from source, run the service, and relay CCTP transfers
+          on Arbitrum Sepolia testnet today. There is{" "}
+          <strong>no registration, bond, stake, or slashing</strong>: any
+          address can fetch Circle's attestation and call settle(). The protocol
+          takes no cut, and there is no relayer subsidy and no protocol token. A
+          relayer recovers only its own destination-chain gas; if it is down,
+          anyone else can still settle.
         </p>
       </Callout>
 
@@ -143,19 +130,19 @@ export default function RunOperator() {
         ]}
         rows={[
           {
-            prop: "Relay fee",
+            prop: "Protocol fee",
+            value: "None — the protocol charges nothing",
+          },
+          {
+            prop: "Registration",
+            value: "None — relaying is permissionless from the start",
+          },
+          {
+            prop: "Settlement",
             value:
-              "Spec'd operator economics — the protocol charges no fee; no live operator-fee rate",
+              "Permissionless — anyone can call settle() with a valid Circle attestation",
           },
-          {
-            prop: "Exclusive window",
-            value: "60 seconds for the assigned operator (configurable)",
-          },
-          {
-            prop: "Permissionless fallback",
-            value: "After 600 seconds, anyone can relay",
-          },
-          { prop: "Unbonding period", value: "7 days" },
+          { prop: "Bond / stake", value: "None" },
           { prop: "Testnet", value: "Arbitrum Sepolia" },
         ]}
       />
@@ -260,36 +247,9 @@ export default function RunOperator() {
             showLineNumbers={false}
           />
         </Step>
-        <Step title="Register as an operator">
+        <Step title="Start the relayer service">
           <p className="text-docs-text-secondary leading-relaxed mb-3">
-            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-              register
-            </code>{" "}
-            requires a{" "}
-            <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-              --stake
-            </code>{" "}
-            argument and errors without it (the stake amount is part of the
-            Spec'd operator economics — the figure below is illustrative):
-          </p>
-          <CodeBlock
-            filename="terminal"
-            language="bash"
-            lines={[
-              {
-                content: "reineira-operator register --stake 5000",
-                highlighted: true,
-              },
-              { content: "" },
-              { content: "# Verify your registration" },
-              { content: "reineira-operator status" },
-            ]}
-            showLineNumbers={false}
-          />
-        </Step>
-        <Step title="Start the operator service">
-          <p className="text-docs-text-secondary leading-relaxed mb-3">
-            The operator service (
+            There is no registration or staking step. The relayer service (
             <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
               @reineira-os/operator
             </code>
@@ -330,105 +290,57 @@ export default function RunOperator() {
             <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
               http://localhost:3001
             </code>
-            ) via SSE and then receives and executes relay tasks.
+            ) via SSE and then receives burn notifications and settles them
+            permissionlessly.
           </p>
         </Step>
       </Steps>
 
-      {/* Staking */}
+      {/* Settlement Flow */}
       <h2
-        id="staking"
+        id="settlement-flow"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Staking
-      </h2>
-
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Staking is part of the Spec'd operator economics{" "}
-        <StatusBadge status="spec" className="align-middle" />. The bond is
-        denominated in{" "}
-        <strong className="text-docs-text-primary font-semibold">cUSDC</strong>{" "}
-        (bound in OperatorRegistry at deployment) and the 7-day unbonding period
-        is hardcoded — but the bond-and-slashing layer is not wired end-to-end
-        on Arbitrum Sepolia testnet, so the bond does not yet act as live,
-        slashable collateral.
-      </p>
-
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        An optional ISanctionsOracle can be wired into the OperatorRegistry;
-        when configured, it blocks registration of listed addresses. Beyond that
-        there is no admission gate. The operator economy is sustained by the
-        relay/task fees operators earn — the protocol takes nothing, and there
-        is{" "}
-        <strong className="text-docs-text-primary font-semibold">
-          no operator subsidy programme and no protocol token
-        </strong>
-        . Those fee mechanics are Spec'd, not yet wired live on Arbitrum Sepolia
-        testnet <StatusBadge status="spec" className="align-middle" />.
-      </p>
-
-      <CodeBlock
-        filename="terminal"
-        language="bash"
-        lines={[
-          { content: "# Check current stake and status" },
-          { content: "reineira-operator stake info" },
-          { content: "" },
-          { content: "# Add to your stake" },
-          { content: "reineira-operator stake add --amount 1000" },
-          { content: "" },
-          { content: "# Begin unbonding (starts the 7-day cooldown)" },
-          { content: "reineira-operator unbond" },
-          { content: "" },
-          { content: "# Withdraw after unbonding completes" },
-          { content: "reineira-operator withdraw" },
-        ]}
-        showLineNumbers={false}
-      />
-
-      {/* Task Execution Flow */}
-      <h2
-        id="task-execution-flow"
-        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
-      >
-        Task execution flow
+        Settlement flow
       </h2>
 
       <ArchitectureDiagram
-        title="OPERATOR TASK EXECUTION"
+        title="PERMISSIONLESS CCTP SETTLEMENT"
         steps={[
           { label: "SDK submits burn tx", sublabel: "POST to coordinator" },
-          { label: "Coordinator distributes", sublabel: "Round-robin via SSE" },
           {
-            label: "Operator claims on-chain",
-            sublabel: "60s exclusive window",
+            label: "Coordinator notifies",
+            sublabel: "Round-robin via SSE",
           },
           { label: "Fetch attestation", sublabel: "Poll Circle Iris API" },
           {
-            label: "Execute relay",
-            sublabel: "TaskExecutor on destination chain",
+            label: "Call settle()",
+            sublabel: "CCTPV2EscrowReceiver on destination chain",
           },
         ]}
       />
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         The SDK submits a burn transaction hash to the coordinator. The
-        coordinator distributes it to the next operator via round-robin SSE. The
-        operator claims the task on-chain (OperatorRegistry.claimTask), polls
-        Circle Iris for the signed attestation, then submits the relay via{" "}
+        coordinator notifies the next relayer of the burn via round-robin SSE so
+        relayers do not duplicate gas. The relayer polls Circle Iris for the
+        signed attestation, then calls{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-          TaskExecutor.executeTask()
-        </code>
-        . CCTP mints USDC on Arbitrum Sepolia and funds are routed to the escrow
-        via hook data. The protocol itself takes no fee; any operator relay fee
-        is part of the Spec'd operator economics and is not collected on
-        Arbitrum Sepolia testnet today.
+          CCTPV2EscrowReceiver.settle(message, attestation)
+        </code>{" "}
+        on Arbitrum Sepolia. CCTP mints USDC on the destination chain and funds
+        are routed to the escrow via hook data. The protocol takes no fee.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        If the assigned operator misses the 60-second exclusive window, any
-        active operator can execute (60–600s). After 600 seconds, the task
-        becomes fully permissionless — anyone can relay without staking.
+        Settlement is permissionless from the start: anyone can call{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          settle()
+        </code>{" "}
+        with a valid Circle attestation, verified on-chain, regardless of
+        registration or stake. The relayer's role is to surface settlements
+        quickly; if the relayer is down, settlement is not blocked — any account
+        can settle the same burn.
       </p>
 
       {/* Economics */}
@@ -441,19 +353,15 @@ export default function RunOperator() {
 
       <DocsTable columns={economicsColumns} rows={economicsRows} />
 
-      <Callout variant="warning" title="No live operator earnings on testnet">
+      <Callout variant="info" title="Relaying is permissionless and unpaid">
         <p>
-          The cUSDC bond, the relay/task fees operators earn, and slashing that
-          would let an operator earn are{" "}
-          <strong>
-            Spec'd — designed, but not yet production-usable on Arbitrum Sepolia
-            testnet
-          </strong>
-          . The protocol itself charges no fee and takes no cut of operator
-          fees; there is no operator subsidy and no protocol token. No operator
-          relay fee is collected today. Run an operator to exercise and test the
-          relay path; do not expect revenue until the economic layer is wired
-          and live.
+          There is{" "}
+          <strong>no bond, stake, slashing, or protocol relay fee</strong>. The
+          protocol charges nothing, and there is no relayer subsidy and no
+          protocol token. A relayer recovers only its own destination-chain gas.
+          Run a relayer to keep cross-chain settlement fast; settlement itself
+          is permissionless and proceeds whether or not any particular relayer
+          is online.
         </p>
       </Callout>
 
@@ -513,57 +421,6 @@ export default function RunOperator() {
         ]}
         showLineNumbers={false}
       />
-
-      {/* Unbonding */}
-      <h2
-        id="unbonding"
-        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
-      >
-        Unbonding
-      </h2>
-
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        To exit the operator network, initiate unbonding which starts a 7-day
-        cooldown period. After the cooldown, withdraw your stake.
-      </p>
-
-      <CodeBlock
-        filename="terminal"
-        language="bash"
-        lines={[
-          { content: "# Initiate unbonding (starts 7-day cooldown)" },
-          { content: "reineira-operator unbond", highlighted: true },
-          { content: "" },
-          { content: "# Withdraw after cooldown completes" },
-          { content: "reineira-operator withdraw", highlighted: true },
-        ]}
-        showLineNumbers={false}
-      />
-
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-          unbond
-        </code>{" "}
-        supports a{" "}
-        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-          --confirm
-        </code>{" "}
-        flag to skip the interactive prompt.
-      </p>
-
-      <Callout variant="info" title="Unbonding period">
-        <p>
-          The 7-day unbonding period is hardcoded in the OperatorRegistry
-          contract (
-          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            UNBOND_PERIOD = 7 days
-          </code>
-          ). During this period your stake remains locked. Slashing of that
-          stake is Spec'd — the slashing manager is implemented but not yet
-          wired — so the stake is not actually slashable through the quorum
-          mechanism on Arbitrum Sepolia testnet today.
-        </p>
-      </Callout>
 
       <PageNav prev={prev} next={next} />
     </DocsLayout>

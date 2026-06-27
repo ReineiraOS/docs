@@ -70,32 +70,22 @@ const componentRows = [
       "Coverage manager + IUnderwriterPolicy. Public mode on Arbitrum Sepolia testnet.",
   },
   {
-    component: "Operator set (OperatorRegistry, TaskExecutor)",
-    status: <StatusBadge status="testnet" />,
-    notes: "Permissionless registration from Day 1; cUSDC bond.",
-  },
-  {
-    component: "FeeManager (zero-fee posture)",
+    component: "Relayer network (permissionless settlement)",
     status: <StatusBadge status="testnet" />,
     notes:
-      "The protocol charges nothing. Fee bps are owner-settable with no block gate; zero fees are policy, not a bytecode constant.",
+      "Permissionless relayer operation: any bot watches CCTP burns, fetches Circle attestation, and calls settle(). No registration, stake, or operator fees.",
   },
   {
-    component: "OperatorSubsidyManager",
-    status: <StatusBadge status="spec" />,
-    notes:
-      "Spec'd, no contract exists — an operator-onboarding cUSDC subsidy for the chaos-net window; build against the intent, not a live contract.",
-  },
-  {
-    component: "OperatorSlashingManager",
-    status: <StatusBadge status="spec" />,
-    notes:
-      "Spec'd — single stake-weighted quorum across the active set; not yet deployed (see CoordinatorRegistry below).",
-  },
-  {
-    component: "CCTPHandler (Circle CCTP V2 relay)",
+    component: "Zero protocol fees",
     status: <StatusBadge status="testnet" />,
-    notes: "Cross-chain USDC settlement task handler.",
+    notes:
+      "The protocol charges nothing — zero fees are inherent to the permissionless settlement model, not a configurable contract.",
+  },
+  {
+    component: "CCTPV2EscrowReceiver (permissionless settlement)",
+    status: <StatusBadge status="testnet" />,
+    notes:
+      "Permissionless on-chain settlement of CCTP burns; anyone with Circle's attestation can call settle().",
   },
   {
     component: "LayerZero OFT Handlers (USDT0 rail)",
@@ -125,10 +115,10 @@ const componentRows = [
     notes: "Specified, not yet shipped.",
   },
   {
-    component: "CoordinatorRegistry (cross-graph slashing)",
-    status: <StatusBadge status="spec" detail="v1.0-track" />,
+    component: "Coordinator (burn-notification inbox)",
+    status: <StatusBadge status="testnet" />,
     notes:
-      "Shipped slashing uses a single quorum; coordinator-partitioned slashing is not yet shipped.",
+      "Lightweight SSE inbox that notifies relayers of CCTP burns (round-robin) so they can settle faster. No on-chain registry, reputation, or slashing.",
   },
   {
     component:
@@ -151,7 +141,7 @@ const componentRows = [
     component: "Agentic handlers (AgentCall / VerdictSubmit / PoolRouting)",
     status: <StatusBadge status="spec" detail="post-v1.0" />,
     notes:
-      "Out of scope for v1.0 — only CCTPHandler ships. TASK_AGENT_CALL reserved, no handler.",
+      "Out of scope for v1.0 — only permissionless CCTP settlement ships. TASK_AGENT_CALL reserved, no handler.",
   },
   {
     component: "Agent identity / quorum registries",

@@ -46,12 +46,12 @@ const layerRows = [
   {
     layer: "Orchestration",
     tech: "Off-chain services",
-    desc: "Coordinator distributes cross-chain relay tasks to staked operators via round-robin assignment.",
+    desc: "Coordinator notifies relayers of CCTP burn events via round-robin SSE to avoid duplicate gas costs. Running a relayer is permissionless.",
   },
   {
     layer: "Settlement",
     tech: "Circle CCTP V2",
-    desc: "Cross-chain settlement routes USDC across EVM chains. Operators relay burn-and-mint attestations.",
+    desc: "Cross-chain settlement routes USDC across EVM chains. Settlement is permissionless — anyone can call settle() with a valid Circle CCTP attestation, verified on-chain.",
   },
 ];
 
@@ -258,9 +258,17 @@ export default function Architecture() {
         . A second LayerZero OFT / USDT0 rail for USDT (aimed at non-U.S. and
         non-EU users) is specified but not yet shipped{" "}
         <DocsBadge variant="amber">Spec'd</DocsBadge>. A coordinator service
-        distributes relay tasks to staked operators via round-robin assignment;
-        operators relay the burn-and-mint attestations so the escrow contract
-        receives the funds.
+        notifies relayers of CCTP burn events via round-robin SSE to reduce gas
+        duplication; relayers fetch the Circle attestation and call{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          settle()
+        </code>
+        . Settlement itself is permissionless — any account can call{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13.5px] text-docs-text-primary">
+          settle()
+        </code>{" "}
+        with a valid Circle attestation; relayers are one optional transport
+        layer.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -280,8 +288,8 @@ export default function Architecture() {
         steps={[
           { label: "Client (SDK)", sublabel: "Encrypts inputs via cofhejs" },
           { label: "EVM Contracts", sublabel: "ConfidentialEscrow and Gates" },
-          { label: "Coordinator", sublabel: "Task distribution" },
-          { label: "Operators", sublabel: "CCTP relay and settlement" },
+          { label: "Coordinator", sublabel: "Burn-event notification" },
+          { label: "Relayers", sublabel: "CCTP relay and settlement" },
         ]}
       />
 

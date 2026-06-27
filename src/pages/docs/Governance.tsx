@@ -33,16 +33,12 @@ const authorityRows = [
     can: "On Arbitrum Sepolia testnet today, every contract is UUPS-upgradeable behind a proxy: TestnetCoreBase gates _authorizeUpgrade with onlyOwner, so the contract owner can ship a new implementation. Renouncing this authority to reach immutable bytecode is the v1.0 mainnet target, not the current state.",
   },
   {
-    auth: "slashingManager",
-    can: "Execute OperatorRegistry.slash and route slashed stake, via OperatorSlashingManager (with owner as backstop). Slashing is spec'd — the manager is undeployed and unwired on Arbitrum Sepolia testnet.",
-  },
-  {
     auth: "Coverage Manager admin",
     can: "Admin setters (setEscrow, setPoolFactory) and policy registration, plus the owner-gated proxy upgrade hook on Arbitrum Sepolia testnet. At v1.0 there is no upgrade hook and no admin key on a state-bearing contract.",
   },
   {
     auth: "Fee governance",
-    can: "Set fee bps into FeeManager storage (owner-settable, no block gate). The protocol charges nothing today; zero-fee is the posture the owner maintains, not a constant baked into bytecode.",
+    can: "The protocol charges nothing — zero fees are the posture maintained, not a constant baked into bytecode, and there is no protocol fee contract to set or gate.",
   },
   {
     auth: "Trusted Forwarder (ERC-2771)",
@@ -74,11 +70,13 @@ export default function Governance() {
         on <strong>immutable singletons with no upgrade authority</strong> is
         the v1.0 mainnet target rather than the current state. The protocol{" "}
         <strong>charges nothing</strong> — zero fees are a posture the owner
-        maintains, not a constant locked into bytecode. Operators post a spec'd{" "}
-        <strong>cUSDC bond</strong>, not a token, and{" "}
-        <strong>there is no token</strong>. Reineira Labs Limited deploys the
-        contracts as a <strong>Software Vendor</strong>, not as an operator of
-        the protocol.
+        maintains, not a constant locked into bytecode. Running a relayer is{" "}
+        <strong>permissionless</strong> — a bot watches CCTP burns, fetches the
+        Circle attestation, and calls{" "}
+        <code className="not-italic">settle()</code>; there is no operator bond
+        and <strong>there is no token</strong>. Reineira Labs Limited deploys
+        the contracts as a <strong>Software Vendor</strong>, not as an operator
+        of the protocol.
       </p>
 
       <Callout variant="info" title="Governance on the path to immutability">
@@ -109,9 +107,9 @@ export default function Governance() {
         on deployed contracts (there are none to hold). There is{" "}
         <strong>no protocol token</strong> and <strong>no protocol fee</strong>:
         any fees in the system are set and kept by independent third parties —
-        Gate builders, recourse pools and their LPs, and operators — for the
-        work or capital they supply. Reineira Labs is a software company funded
-        by equity.
+        Gate builders, recourse pools and their LPs, and relayers — for the work
+        or capital they supply. Reineira Labs is a software company funded by
+        equity.
       </p>
 
       <h2
@@ -151,7 +149,7 @@ export default function Governance() {
         What the privileged roles can do
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Five authorities partition the protocol's privileged surface. The owner
+        Four authorities partition the protocol's privileged surface. The owner
         can ship UUPS upgrades on Arbitrum Sepolia testnet today (the
         immutable-bytecode target removes this later), but no authority can
         withdraw escrowed funds, modify escrow terms, force-resolve a gate, or
