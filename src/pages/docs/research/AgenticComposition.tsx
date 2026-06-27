@@ -130,9 +130,9 @@ export default function AgenticComposition() {
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         The specification calls for the following contracts;{" "}
-        <strong>none are shipped</strong> in the orchestration package or any
-        sibling package. The agentic-composition layer stays deferred from v1.0
-        RSS until they ship.
+        <strong>none are shipped</strong> — these agentic registries are
+        deferred from v1.0 and not yet built. The agentic-composition layer
+        stays deferred from v1.0 RSS until they ship.
       </p>
       <DocsTable columns={registryColumns} rows={registryRows} />
 

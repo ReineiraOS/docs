@@ -41,8 +41,11 @@ export default function RssWhatIs() {
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         The Reineira Settlement Standard (RSS) is the abstract conformance
-        specification for confidential settlement on the four primitives —
-        Escrow, Gate, Recourse, Operator. The contracts under{" "}
+        specification for confidential settlement on three primitives — Escrow,
+        Gate, and Recourse. Relaying (operator functions) is an optional
+        off-chain service outside the standard: settlement is permissionless,
+        secured by Circle's CCTP attestation verified on-chain. The contracts
+        under{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           packages/
         </code>{" "}
@@ -72,7 +75,7 @@ export default function RssWhatIs() {
         What RSS covers
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        RSS covers: the four-primitive interface surface and the canonical
+        RSS covers: the three-primitive interface surface and the canonical
         interfaces; the encrypted-type contract conventions and the
         silent-failure pattern; the storage conventions (ERC-7201 namespacing
         under{" "}
@@ -105,16 +108,16 @@ export default function RssWhatIs() {
         the protocol's load-bearing commitment. The split leaves any competing
         settlement contract two choices: <strong>implement RSS</strong> —
         legitimising the standard and inheriting its plugin ecosystem — or{" "}
-        <strong>fork it</strong>, fragmenting its plugin and operator surface
-        against the conforming majority.
+        <strong>fork it</strong>, fragmenting its plugin surface against the
+        conforming majority.
       </p>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         An RSS-conformant alternative implementation reduces vendor lock-in for
         protocol users: any conforming deployment can host the same plugins,
-        accept the same bridge handlers, be observed by the same indexers and
-        slashing oracles, and present the same SDK surface — independently of
-        who maintains its contracts. The protocol charges nothing; the reference
-        implementation competes on operational quality and audit history, not on
+        accept the same bridge handlers, be observed by the same indexers, and
+        present the same SDK surface — independently of who maintains its
+        contracts. The protocol charges nothing; the reference implementation
+        competes on operational quality and audit history, not on
         incompatibility.
       </p>
 
@@ -136,7 +139,7 @@ export default function RssWhatIs() {
           {
             title: "Interface Surface",
             description:
-              "The four-primitive interfaces, v0.1 mandatory and v0.2 spec'd.",
+              "The three-primitive interfaces, v0.1 mandatory and v0.2 spec'd.",
             href: "/settlement-standard/interface-surface",
             icon: FileCode2,
           },

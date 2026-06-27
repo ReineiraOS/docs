@@ -39,7 +39,7 @@ const toolRows = [
   },
   {
     tool: "get_contracts",
-    desc: "Deployed contract addresses on Arbitrum Sepolia, filterable by category (Escrow, Recourse, Orchestration, etc.).",
+    desc: "Deployed contract addresses on Arbitrum Sepolia, filterable by category (Escrow, Recourse, etc.).",
   },
   {
     tool: "get_interfaces",

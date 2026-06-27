@@ -61,10 +61,10 @@ export default function Risk() {
         <p>
           No external smart-contract audit is complete as of publication. The
           audit-readiness package is an internal Phase 7 self-review
-          (scope-freeze 2026-05-05) covering the four in-scope contract packages
-          — tokens, escrow, orchestration, and recourse — with ~85 manual
-          findings and eight mainnet blockers routed to remediation. A companion
-          checklist (2026-05-07) records the pinned dependency hashes and
+          (scope-freeze 2026-05-05) covering the in-scope contract packages —
+          tokens, escrow, and recourse — with ~85 manual findings and eight
+          mainnet blockers routed to remediation. A companion checklist
+          (2026-05-07) records the pinned dependency hashes and
           Safe-plus-Timelock mainnet-deploy posture the external auditor will
           verify. Tool-baseline reports from Slither (v0.11.5) and Aderyn
           (v0.6.8), dated 2026-05-04, are retained internally. The external
@@ -100,18 +100,18 @@ export default function Risk() {
       </h2>
       <blockquote className="border-l-4 border-docs-border-strong pl-4 my-6 text-docs-text-secondary leading-relaxed italic">
         <p>
-          The security model explicitly does not cover: the correctness of
-          operator-binary off-chain code, which the protocol observes only
-          through its attestation surface and slashing-evidence hashes;
+          The security model explicitly does not cover: relayer uptime or the
+          correctness of relayer-binary off-chain code, since relayers are
+          permissionless and operate without registration or staking;
           substrate-level (CoFHE) denial-of-service against homomorphic
-          evaluation, against which the operator-set's fee-routing posture
-          offers economic disincentive but no protocol-layer guarantee; bridge
-          counterparty risk during in-flight cross-chain transfers, bounded but
-          not eliminated; compromise of off-chain key material on operator
-          hardware (HSM posture is the operator's responsibility, out of scope
-          for the protocol layer); and MEV at the wrap boundary, whose
-          mitigation is the underlying-chain sequencer ordering, not a
-          protocol-layer defence.
+          evaluation, against which there is no protocol-layer guarantee
+          (relayers are permissionless and unpaid); bridge counterparty risk
+          during in-flight cross-chain transfers, bounded but not eliminated;
+          compromise of relayer key material on relayer hardware (key management
+          is each relayer's responsibility, and relayers are permissionless,
+          unpaid participants with no protocol-enforced security posture); and
+          MEV at the wrap boundary, whose mitigation is the underlying-chain
+          sequencer ordering, not a protocol-layer defence.
         </p>
       </blockquote>
 

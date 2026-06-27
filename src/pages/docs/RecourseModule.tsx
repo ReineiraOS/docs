@@ -390,20 +390,24 @@ export default function RecourseModule() {
         filename="bridge.ts"
         language="typescript"
         lines={[
-          { content: "// Check operator network health" },
-          { content: "const health = await sdk.bridge.checkHealth()" },
           {
             content:
-              "// health.reachable, health.connectedOperators, health.operators[]",
+              "// Check relayer connectivity (relayers submit attestations permissionlessly)",
           },
+          { content: "const health = await sdk.bridge.checkHealth()" },
+          { content: "// health.reachable, health.attestationDelay" },
           { content: "" },
           {
             content:
-              "// Submit burn tx to coordinator (used internally by fund())",
+              "// Notify coordinator of burn (round-robin SSE to relayers)",
           },
           {
             content:
-              "const taskId = await sdk.bridge.submitToCoordinator('0xBurnTxHash...')",
+              "const notificationId = await sdk.bridge.notifyCoordinator('0xBurnTxHash...')",
+          },
+          {
+            content:
+              "// Relayers watch this notification and can settle permissionlessly via Circle CCTP attestation",
           },
         ]}
       />

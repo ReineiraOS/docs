@@ -16,7 +16,7 @@ const toc: TocItem[] = [
     title: "CCTP attestation failure",
     level: 3,
   },
-  { id: "operator-offline", title: "Operator offline", level: 3 },
+  { id: "relayer-offline", title: "Relayer offline", level: 3 },
   {
     id: "pool-liquidity-exhaustion",
     title: "Pool liquidity exhaustion",
@@ -82,10 +82,10 @@ const trustRows = [
       "Incorrect release or permanent lock. The creator chose the resolver — the protocol cannot override that choice.",
   },
   {
-    component: "Operators",
-    trust: "Staked; slashing Spec'd (not yet wired)",
+    component: "Relayers",
+    trust: "Permissionless; no staking",
     impact:
-      "Censorship or delay. The 3-tier fallback and timeout relay work without Operator economics; slashing is Spec'd, not wired.",
+      "Delay only. Settlement is permissionless via CCTP attestation — any address can settle, so an offline relayer affects speed, not finality. No on-chain operator layer exists.",
   },
   {
     component: "Meta-tx relayer",
@@ -191,11 +191,11 @@ export default function Resilience() {
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">
-            Operator fallback
+            Permissionless settlement
           </strong>{" "}
-          — Cross-chain relay has a 3-tier fallback. If the assigned operator
-          goes offline, other operators can relay. After the permissionless
-          delay, anyone can relay — no stake required.
+          — Cross-chain settlement is permissionless. Anyone can call settle()
+          with a valid CCTP attestation, verified on-chain via Circle's CCTP. No
+          registration, staking, or relay priority required.
         </li>
       </ul>
 
@@ -234,57 +234,58 @@ export default function Resilience() {
         <strong className="text-docs-text-primary font-semibold">
           Recovery:
         </strong>{" "}
-        Once the attestation service recovers, an operator (or anyone after the
-        permissionless delay) can submit the attestation to the destination
-        chain and complete the settlement.
+        Once the attestation service recovers, anyone can submit the attestation
+        to the destination chain and complete the settlement immediately.
       </p>
 
       <h3
-        id="operator-offline"
+        id="relayer-offline"
         className="text-[20px] font-semibold tracking-[-0.01em] leading-[1.4] text-docs-text-primary mt-8 mb-3"
       >
-        Operator offline
+        Relayer offline
       </h3>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         <strong className="text-docs-text-primary font-semibold">
           What breaks:
         </strong>{" "}
-        The assigned operator fails to relay a cross-chain message within the
-        exclusive window.
+        A relayer or user fails to submit a CCTP attestation to complete
+        settlement.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         <strong className="text-docs-text-primary font-semibold">
           Impact:
         </strong>{" "}
-        Settlement is delayed but never permanently blocked. The 3-tier fallback
-        system ensures another operator or any user can complete the relay.
+        Settlement is delayed but never permanently blocked. Settlement is
+        permissionless — any address can relay by submitting the attestation, so
+        an offline relayer only affects speed, not finality.
       </p>
 
       <ArchitectureDiagram
-        title="3-TIER OPERATOR FALLBACK"
+        title="PERMISSIONLESS SETTLEMENT"
         steps={[
           {
-            label: "Exclusive (0–60s)",
-            sublabel: "Assigned operator has sole relay rights",
+            label: "Burn",
+            sublabel: "USDC is burned on the source chain via CCTP",
           },
           {
-            label: "Open (60–600s)",
-            sublabel: "Any active, registered operator can relay",
+            label: "Attest",
+            sublabel: "Circle produces a signed CCTP attestation",
           },
           {
-            label: "Open after 600s",
-            sublabel: "Anyone can relay — no stake required",
+            label: "Settle",
+            sublabel: "Any address can call settle() with the attestation",
           },
         ]}
       />
 
       <Callout variant="info" title="Liveness guarantee">
         <p>
-          After the permissionless delay (600 seconds), relay is open to any
-          address. Even if every operator in the network is offline, any EOA can
-          submit the attestation and complete settlement.
+          Settlement is permissionless from the moment Circle's attestation is
+          available. Even if every relayer is offline, any EOA can submit the
+          attestation and complete settlement — safety comes from Circle's CCTP
+          attestation verified on-chain, not from any relayer.
         </p>
       </Callout>
 

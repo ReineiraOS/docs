@@ -5,7 +5,6 @@ import Callout from "@/components/docs/Callout";
 import CodeBlock from "@/components/docs/CodeBlock";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
-import StatusBadge from "@/components/docs/StatusBadge";
 import Steps, { Step } from "@/components/docs/Steps";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
@@ -16,16 +15,10 @@ const toc: TocItem[] = [
   { id: "fee-structure", title: "Configurable fees", level: 2 },
   { id: "protocol-level-fees", title: "Where fees come from", level: 3 },
   { id: "insurance-level-fees", title: "Recourse premiums", level: 3 },
-  { id: "operator-subsidy", title: "Operator subsidy", level: 2 },
   { id: "policy-builders", title: "Earning: Policy Builders", level: 2 },
   { id: "pool-underwriters", title: "Earning: Pool Underwriters", level: 2 },
   { id: "pool-economics-example", title: "Pool economics example", level: 3 },
-  { id: "operators", title: "Earning: Operators", level: 2 },
-  {
-    id: "operator-economics-example",
-    title: "Operator economics example",
-    level: 3,
-  },
+  { id: "relayers", title: "Earning: Relayers", level: 2 },
   { id: "premium-calculation", title: "Premium calculation", level: 2 },
   { id: "dispute-resolution", title: "Dispute resolution", level: 2 },
   { id: "sustainability", title: "Sustainability model", level: 2 },
@@ -52,9 +45,9 @@ const overviewRows = [
     how: "Earn proportional share of premiums flowing into the pool",
   },
   {
-    role: "Operators",
-    what: "Run bonded relay nodes that execute cross-chain CCTP tasks",
-    how: "Bonding, slashing, and any subsidy are specified; the operator relay fee is slated for removal (no fee today)",
+    role: "Relayers",
+    what: "Run relay nodes that execute cross-chain CCTP tasks (permissionless, no bonding or staking required)",
+    how: "Settlement is permissionless and unpaid; relayers recover only their destination-chain gas costs",
   },
 ];
 
@@ -76,18 +69,6 @@ const protocolFeeRows = [
     setby: "Underwriter (per policy)",
     trigger: "Coverage purchase",
     recipient: "Recourse pool",
-  },
-  {
-    fee: "Operator relay fee (to be removed)",
-    setby: "Operator (operatorFeeBps)",
-    trigger: "Cross-chain CCTP relay execution",
-    recipient: "None — slated for removal",
-  },
-  {
-    fee: "Slasher reward",
-    setby: "Spec",
-    trigger: "Successful slashing",
-    recipient: "Slasher",
   },
 ];
 
@@ -116,21 +97,6 @@ const poolParamRows = [
   { param: "Average coverage amount", value: "2,000 USDC per escrow" },
   { param: "Average premium rate", value: "2.5% (250 bps)" },
   { param: "Monthly claim rate", value: "2% of covered volume" },
-];
-
-const operatorParamColumns = [
-  { header: "Parameter", key: "param", width: "280px" },
-  { header: "Value", key: "value" },
-];
-const operatorParamRows = [
-  { param: "Monthly relay volume", value: "500,000 USDC" },
-  {
-    param: "Operator relay fee rate",
-    value: "None — slated for removal",
-  },
-  { param: "Number of relay tasks", value: "100" },
-  { param: "Bond asset", value: "Specified" },
-  { param: "Unbonding period", value: "Specified" },
 ];
 
 const premiumColumns = [
@@ -167,7 +133,7 @@ export default function Economics() {
 
       <PageHeader
         title="Economics & Incentives"
-        description="Fee structure, earning mechanics, and worked numerical examples for protocol roles — policy builders, stakers, and operators."
+        description="Fee structure, earning mechanics, and worked numerical examples for protocol roles — policy builders, stakers, and relayers."
         readingTime="10 min read"
       />
 
@@ -182,9 +148,13 @@ export default function Economics() {
           The protocol takes <strong>no fee of its own</strong> — there is no
           base settlement fee and no protocol cut of volume. The fees on this
           page are <strong>builder- and role-configurable</strong>: a Gate's
-          condition fee, an underwriter's premium, and an operator's relay fee.
-          Operator economics (bond, relay fee, slashing, subsidy) are{" "}
-          <strong>specified</strong>, not yet shipped.
+          condition fee and an underwriter's premium. Settlement itself is{" "}
+          <strong>permissionless and unpaid</strong> — anyone can call{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            settle()
+          </code>{" "}
+          with a valid Circle CCTP attestation, paying only destination-chain
+          gas.
         </p>
       </Callout>
 
@@ -211,19 +181,16 @@ export default function Economics() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        ReineiraOS takes no protocol cut. The{" "}
-        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-          FeeManager
-        </code>{" "}
-        exists so that <em>builders and roles</em> can attach their own fees —
-        not so the protocol can skim volume. Its fee bps are owner-settable and
-        are being held at zero; there is no base settlement fee in the protocol
-        path. The fees that do exist are configured by whoever earns them: a
-        Gate sets its condition fee via{" "}
+        ReineiraOS takes no protocol cut. Fee mechanisms exist so that{" "}
+        <em>builders and roles</em> can attach their own fees — not so the
+        protocol can skim volume. There is no base settlement fee in the
+        protocol path. The fees that do exist are configured by whoever earns
+        them: a Gate sets its condition fee via{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           getConditionFee
-        </code>
-        , an underwriter sets its premium, and an operator sets its relay fee.
+        </code>{" "}
+        and an underwriter sets its premium. Settlement is permissionless and
+        carries no fee.
       </p>
 
       <Callout variant="info" title="Zero-fee posture, honestly stated">
@@ -231,8 +198,8 @@ export default function Economics() {
           The zero-fee posture is a commitment, not a coded block gate. There is
           no activation-block constant in the contracts; fee bps are owner
           parameters currently set to zero. The protocol itself never takes a
-          cut — the only money that moves is to the builder, underwriter, or
-          operator who configured it.
+          cut — the only money that moves is to the builder or underwriter who
+          configured it.
         </p>
       </Callout>
 
@@ -246,9 +213,9 @@ export default function Economics() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         The protocol itself charges nothing. Every fee below is set by the party
-        that earns it — a builder, an underwriter, or an operator. None of them
-        flow to the protocol, and rates are theirs to set (or zero). The
-        operator relay fee and slasher reward are <StatusBadge status="spec" />.
+        that earns it — a builder or an underwriter. None of them flow to the
+        protocol, and rates are theirs to set (or zero). Settlement is
+        permissionless and carries no fee.
       </p>
 
       <h3
@@ -263,9 +230,10 @@ export default function Economics() {
       <Callout variant="info" title="No escrow creation or settlement fee">
         <p>
           Escrow creation and settlement carry no protocol fee. The only fees
-          are the ones a builder, underwriter, or operator chooses to charge —
-          the Gate condition fee on conditional release, the underwriter premium
-          on coverage purchase, and the operator relay fee on CCTP execution.
+          are the ones a builder or underwriter chooses to charge — the Gate
+          condition fee on conditional release and the underwriter premium on
+          coverage purchase. Cross-chain settlement is permissionless and
+          unpaid.
         </p>
       </Callout>
 
@@ -288,30 +256,6 @@ export default function Economics() {
           runs on encrypted values — neither the coverage amount, risk score,
           nor resulting premium are visible on-chain. The premium is the
           underwriter's, set by their policy; the protocol takes none of it.
-        </p>
-      </Callout>
-
-      {/* ------------------------------------------------------------------ */}
-      <h2
-        id="operator-subsidy"
-        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
-      >
-        Operator subsidy <StatusBadge status="spec" />
-      </h2>
-
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The full operator economics — bonding, the relay fee, slashing, and a
-        bootstrap subsidy that compensates operators before relay-fee volume
-        ramps — are <strong>specified, not yet shipped</strong>. There is no
-        subsidy contract today; this describes the intended mechanism so
-        operators can build against it.
-      </p>
-
-      <Callout variant="info" title="No committed pool size">
-        <p>
-          No specific subsidy pool size or per-task rate is committed. The
-          subsidy is designed to bootstrap operator coverage and wind down as
-          operator relay-fee volume grows.
         </p>
       </Callout>
 
@@ -450,59 +394,28 @@ export default function Economics() {
 
       {/* ------------------------------------------------------------------ */}
       <h2
-        id="operators"
+        id="relayers"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Earning role: Operators
+        Earning role: Relayers
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Operators run relay nodes that execute cross-chain CCTP tasks: fetching
-        Circle attestations and submitting relay transactions on-chain. They
-        earn an operator relay fee they configure on the USDC amount they
-        bridge, with a bootstrap subsidy while volume ramps. The full mechanism
-        — bond, relay fee, slashing, subsidy — is <StatusBadge status="spec" />,
-        so the worked example below is illustrative.
+        Relayers are thin, permissionless bots that watch CCTP burns, fetch the
+        Circle attestation, and submit it on-chain. There is no registration,
+        bonding, or staking — anyone can run one. Relayers earn no protocol fee;
+        they recover only their destination-chain gas costs.
       </p>
 
-      <h3
-        id="operator-economics-example"
-        className="text-[20px] font-semibold tracking-[-0.01em] leading-[1.4] text-docs-text-primary mt-8 mb-3"
-      >
-        Operator economics — illustrative example
-      </h3>
-
-      <DocsTable columns={operatorParamColumns} rows={operatorParamRows} />
-
-      <CodeBlock
-        filename="operator-math"
-        language="bash"
-        lines={[
-          {
-            content:
-              "# Monthly operator revenue — rate r is operator-set (Spec'd; not yet enabled)",
-          },
-          {
-            content: "$500,000 x r = monthly relay revenue",
-            highlighted: true,
-          },
-          { content: "" },
-          { content: "# Per-task average" },
-          {
-            content: "monthly revenue / 100 tasks = per-task average",
-          },
-        ]}
-        showLineNumbers={false}
-      />
-
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Operators compete for relay tasks on a first-claim basis. The first
-        operator to call{" "}
+        Settlement is permissionless. Anyone — including unpaid relayers — can
+        fetch the Circle CCTP attestation and call{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-          claimTask()
+          settle()
         </code>{" "}
-        gets a 60-second exclusive window to execute. After that, any staked
-        operator can execute. After 600 seconds, execution is permissionless.
+        on-chain to finalize a cross-chain transfer. A relayer only affects
+        speed; if every relayer is down, any account can still settle once the
+        attestation is available.
       </p>
 
       {/* ------------------------------------------------------------------ */}
@@ -630,11 +543,12 @@ export default function Economics() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         <strong className="text-docs-text-primary font-semibold">
-          Loop 1: Cross-chain volume rewards operators.
+          Loop 1: Cross-chain volume sustains relayers.
         </strong>{" "}
-        Every CCTP relay pays the executing operator their relay fee. More
-        cross-chain settlement volume means more operators find it worthwhile to
-        bond and relay, which deepens settlement capacity.
+        Relayers execute CCTP settlement permissionlessly. More cross-chain
+        settlement volume means more relayers can run economically on
+        destination-chain gas alone, which deepens settlement capacity and
+        redundancy.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -649,9 +563,10 @@ export default function Economics() {
       <Callout variant="info" title="Aligned incentives">
         <p>
           The protocol takes no cut of premiums or settlement — every fee
-          accrues to the builder, underwriter, or operator who configured it.
-          The protocol succeeds when they do. That alignment is the zero-fee
-          posture, not a treasury that grows with volume.
+          accrues to the builder or underwriter who configured it, and
+          settlement itself is permissionless and unpaid. The protocol succeeds
+          when they do. That alignment is the zero-fee posture, not a treasury
+          that grows with volume.
         </p>
       </Callout>
 

@@ -6,19 +6,16 @@ import CodeBlock from "@/components/docs/CodeBlock";
 import ArchitectureDiagram from "@/components/docs/ArchitectureDiagram";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
-import DocsBadge from "@/components/docs/DocsBadge";
-import StatusBadge from "@/components/docs/StatusBadge";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
 const toc: TocItem[] = [
   { id: "overview", title: "Overview", level: 2 },
-  { id: "registration", title: "Operator registration", level: 2 },
+  { id: "running-a-relayer", title: "Running a relayer", level: 2 },
   { id: "architecture", title: "Architecture", level: 2 },
-  { id: "task-flow", title: "Task flow", level: 2 },
+  { id: "settlement-flow", title: "Settlement flow", level: 2 },
   { id: "api-endpoints", title: "API endpoints", level: 2 },
-  { id: "operator-assignment", title: "Operator assignment", level: 2 },
-  { id: "slashing", title: "Slashing", level: 2 },
+  { id: "settlement", title: "Settlement", level: 2 },
   { id: "current-limitations", title: "Current limitations", level: 2 },
 ];
 
@@ -33,17 +30,17 @@ const apiRows = [
   {
     method: "POST",
     endpoint: "/bridges/cctp/transactions",
-    desc: "Submit a CCTP burn transaction for relay. The coordinator distributes it to a subscribed operator.",
+    desc: "Notify the coordinator of a CCTP burn transaction. The coordinator forwards it to a subscribed relayer.",
   },
   {
     method: "GET",
     endpoint: "/operators/:address/subscribe",
-    desc: "SSE stream. Operators maintain a persistent connection to receive relay tasks in real time.",
+    desc: "SSE stream. Relayers maintain a persistent connection to receive burn notifications in real time.",
   },
   {
     method: "GET",
     endpoint: "/operators/stats",
-    desc: "Returns the count and list of currently subscribed operators.",
+    desc: "Returns the count and list of currently subscribed relayers.",
   },
 ];
 
@@ -56,39 +53,32 @@ const limitationRows = [
   {
     limitation: "Single coordinator in production",
     impact:
-      "Only the Foundation's canonical coordinator runs on Arbitrum Sepolia testnet, so if it goes down, relay tasks queue until it recovers. Third parties may already run independent coordinators against the same on-chain contracts.",
+      "Only the Foundation's canonical coordinator runs on Arbitrum Sepolia testnet, so if it goes down, burn notifications queue until it recovers. Third parties may already run independent coordinators, and settlement does not depend on any coordinator at all.",
     resolution:
-      "On-chain coordinator registration (CoordinatorRegistry) and cross-graph slashing land on the v1.0 track (Spec'd).",
-  },
-  {
-    limitation: "Coordinator does not pre-verify stake",
-    impact:
-      "The off-chain coordinator does not pre-check operator bond before accepting an SSE subscription. Registration and eligibility live on-chain in the OperatorRegistry; the bond-and-slashing economics that would back them are Spec'd, not yet wired.",
-    resolution:
-      "Optional coordinator-side stake check, once the bond economics are live, to reduce wasted dispatch to unbonded subscribers.",
+      "Additional independent coordinators. Because settlement is permissionless on-chain, coordinator availability only affects relay speed, not safety.",
   },
   {
     limitation: "Round-robin only",
     impact:
-      "Tasks are assigned by simple round-robin, not weighted by stake, uptime, or performance.",
-    resolution: "Stake-weighted assignment with operator scoring.",
+      "Notifications are dispatched by simple round-robin, not weighted by uptime or performance.",
+    resolution: "Smarter dispatch with relayer scoring.",
   },
   {
     limitation: "No health checks",
     impact:
-      "The coordinator does not monitor operator uptime, latency, or completion rate.",
+      "The coordinator does not monitor relayer uptime, latency, or completion rate.",
     resolution: "Health monitoring with automatic deregistration.",
   },
   {
     limitation: "In-memory state",
     impact:
-      "Subscribed operator list and round-robin index are lost on restart.",
+      "Subscribed relayer list and round-robin index are lost on restart.",
     resolution: "Persistent state store with automatic recovery.",
   },
   {
     limitation: "SSE only",
     impact:
-      "Task dispatch uses Server-Sent Events over HTTP. No WebSocket or P2P transport.",
+      "Notification dispatch uses Server-Sent Events over HTTP. No WebSocket or P2P transport.",
     resolution: "Additional transport options planned.",
   },
 ];
@@ -99,9 +89,9 @@ export default function CoordinatorNetwork() {
       <Breadcrumbs />
 
       <PageHeader
-        title="Operator Network"
-        description="The task-dispatch and coordination layer of ReineiraOS. Operators register on-chain and relay CCTP tasks; off-chain coordinators dispatch those tasks. Registration is permissionless from day one. Operators earn relay/task fees and the protocol takes nothing. The economic-security layer (cUSDC bond, relay/task fees, slashing) is Spec'd — designed, not yet production-usable on Arbitrum Sepolia testnet."
-        readingTime="6 min read"
+        title="Relayer Network"
+        description="The off-chain relay layer of ReineiraOS. Settlement is permissionless: anyone can call CCTPV2EscrowReceiver.settle() with a Circle CCTP attestation, verified on-chain. Relayers are lightweight bots that watch CCTP burns, fetch the attestation, and call settle() so transfers finalize quickly. A coordinator notifies relayers of burns via round-robin SSE. There is no operator registration, staking, fees, or slashing — relaying is permissionless and earns no protocol fee."
+        readingTime="5 min read"
       />
 
       {/* Overview */}
@@ -113,101 +103,99 @@ export default function CoordinatorNetwork() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The Operator Network has two layers. On-chain, operators register in the
-        OperatorRegistry, then claim and execute relay tasks via the
-        TaskExecutor. Off-chain, a{" "}
+        Settlement is{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          permissionless
+        </strong>
+        : anyone can call{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          CCTPV2EscrowReceiver.settle()
+        </code>{" "}
+        with a CCTP attestation from Circle, verified on-chain. Relayers are{" "}
+        <strong className="text-docs-text-primary font-semibold">
+          lightweight bots
+        </strong>{" "}
+        that watch CCTP burns, fetch the attestation, and call{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          settle()
+        </code>{" "}
+        — no registration required. Off-chain, a{" "}
         <strong className="text-docs-text-primary font-semibold">
           coordinator service
         </strong>{" "}
-        monitors source chains, dispatches tasks, and pushes them to subscribed{" "}
-        <strong className="text-docs-text-primary font-semibold">
-          operator nodes
-        </strong>{" "}
-        via Server-Sent Events (SSE). The operator node and CLI are open-source.
-        Operators can run today and relay CCTP transfers; the{" "}
-        <strong className="text-docs-text-primary font-semibold">
-          economic-security layer
-        </strong>{" "}
-        that incentivizes and disciplines them — the cUSDC stake/bond, the
-        relay/task fees operators earn (the protocol takes nothing), and
-        slashing — is <StatusBadge status="spec" className="align-middle" />.
+        notifies relayers of CCTP burns via Server-Sent Events (SSE) so they can
+        fetch the attestation and settle faster. The relayer node and CLI are
+        open-source.
       </p>
 
       <Callout
-        variant="warning"
-        title="Operator economics are Spec'd, not production-usable"
+        variant="info"
+        title="Relaying is permissionless and unpaid by the protocol"
       >
         <p>
-          The relay machinery works on Arbitrum Sepolia testnet today — the
-          coordinator dispatches, and operators can claim and execute CCTP
-          tasks. But the incentive layer is{" "}
+          Anyone can run a relayer: there is{" "}
           <strong>
-            designed, not yet production-usable on Arbitrum Sepolia testnet
+            no operator registration, bond, staking, fee, or slashing
           </strong>
-          : the cUSDC bond, the relay/task fees operators earn, and slashing are
-          specified but not wired end-to-end. The protocol takes no cut of those
-          fees, and there is no operator subsidy and no protocol token.{" "}
-          <code>OperatorSlashingManager</code> is implemented but undeployed and
-          unwired (only an owner-emergency path can slash today). Do not treat
-          the operator network as economically secured.
+          . A relayer only affects how fast a transfer settles — if every
+          relayer is down, any account can still call <code>settle()</code>{" "}
+          directly. Relayers cover their own destination-chain gas; the protocol
+          takes nothing. Coverage for loss events comes from{" "}
+          <strong>Recourse pools</strong> (LP-funded capital plus premiums,
+          capped at pool liquidity), not from operator collateral.
         </p>
       </Callout>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         The coordinator is a{" "}
         <strong className="text-docs-text-primary font-semibold">
-          dispatch layer only
+          burn-notification inbox only
         </strong>
-        : it does not custody funds or enforce eligibility. The Foundation
-        operates a canonical coordinator at a published URL, but any third party
-        may run an independent coordinator against the same on-chain
-        OperatorRegistry and TaskExecutor contracts. Security enforcement that
-        is live — registration, exclusive windows, permissionless fallback —
-        happens on-chain; the protocol itself charges no fee.
+        : it does not custody funds, enforce eligibility, or gate settlement.
+        The Foundation operates a canonical coordinator at a published URL, but
+        any third party may run an independent coordinator, and relayers may
+        subscribe to any of them. Because settlement is verified on-chain via
+        Circle's CCTP attestation, coordinator availability affects relay speed
+        only — never safety. The protocol charges no fee.
       </p>
 
-      {/* Operator registration */}
+      {/* Running a relayer */}
       <h2
-        id="registration"
+        id="running-a-relayer"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Operator registration
+        Running a relayer
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Registration is{" "}
+        Running a relayer is{" "}
         <strong className="text-docs-text-primary font-semibold">
-          permissionless from day one
+          permissionless
         </strong>{" "}
-        at the contract layer — there is no Foundation invitation and no
-        allowlist (a pre-approved set of addresses that would gate who may
-        join). Any address that meets the on-chain criteria may register and
-        begin claiming tasks:
+        — there is no Foundation invitation, no allowlist (a pre-approved set of
+        addresses that would gate who may join), and no on-chain registration. A
+        relayer simply does the following:
       </p>
 
       <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
         <li>
-          Posts the required{" "}
+          Watches for{" "}
           <strong className="text-docs-text-primary font-semibold">
-            operator bond
+            CCTP burn events
           </strong>{" "}
-          to the OperatorRegistry. The bond is denominated in{" "}
-          <strong className="text-docs-text-primary font-semibold">
-            cUSDC
-          </strong>{" "}
-          (the immutable confidential USDC wrapper), but the bond-and-slashing
-          economics are part of the Spec'd operator layer — not yet wired live
-          on Arbitrum Sepolia testnet{" "}
-          <StatusBadge status="spec" className="ml-1 align-middle" />
+          on source chains — either directly or via a coordinator's SSE feed
         </li>
         <li>
-          Passes sanctions screening via the optional{" "}
-          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            ISanctionsOracle
-          </code>{" "}
-          configured on the OperatorRegistry
+          Polls Circle's attestation service (Iris) for the signed attestation
+          backing the burn
         </li>
-        <li>Has not been previously slashed</li>
+        <li>
+          Calls{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            CCTPV2EscrowReceiver.settle(message, attestation)
+          </code>{" "}
+          on the destination chain to finalize the transfer
+        </li>
       </ul>
 
       <Callout
@@ -216,24 +204,24 @@ export default function CoordinatorNetwork() {
       >
         <p>
           The Foundation may publish an{" "}
-          <strong>off-chain list of operators it has worked with</strong> as a
+          <strong>off-chain list of relayers it has worked with</strong> as a
           curation signal — it is <strong>not</strong> a permission gate.
-          Operators that are not on any such list can still register, claim, and
-          execute tasks permissionlessly, against the canonical coordinator or
-          their own.
+          Relayers that are not on any such list can still subscribe and settle
+          permissionlessly, against the canonical coordinator or their own. No
+          bond, stake, or sanctions screening is enforced on-chain; any such
+          screening is each relayer's own choice.
         </p>
       </Callout>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The operator economy is sustained entirely by the relay/task fees
-        operators earn — there is{" "}
+        Relayers earn{" "}
         <strong className="text-docs-text-primary font-semibold">
-          no operator subsidy programme and no protocol token
-        </strong>
-        . The protocol takes no cut of operator fees. Those fee mechanics are
-        part of the Spec'd operator layer, not yet wired live on Arbitrum
-        Sepolia testnet.{" "}
-        <StatusBadge status="spec" className="ml-1 align-middle" />
+          no protocol fee
+        </strong>{" "}
+        — there is no operator subsidy programme and no protocol token. Whoever
+        submits the settlement transaction pays the destination-chain gas. More
+        cross-chain settlement volume simply means more relayers can run
+        economically on gas-cost recovery alone.
       </p>
 
       {/* Architecture */}
@@ -250,10 +238,10 @@ export default function CoordinatorNetwork() {
           dswtxw6k9mker.cloudfront.net
         </code>
         ). Coordinators are not privileged: any third party may run an
-        independent coordinator against the same on-chain OperatorRegistry and
-        TaskExecutor. On Arbitrum Sepolia testnet today the canonical instance
-        is the only one in production, which keeps debugging and iteration
-        simple.
+        independent coordinator, and settlement itself is permissionless via
+        on-chain CCTP attestation verification. On Arbitrum Sepolia testnet
+        today the canonical instance is the only one in production, which keeps
+        debugging and iteration simple.
       </p>
 
       <DocsTable
@@ -265,67 +253,76 @@ export default function CoordinatorNetwork() {
           { prop: "Instances", detail: "Single coordinator instance" },
           {
             prop: "Transport",
-            detail: "Operators connect via SSE (Server-Sent Events)",
+            detail: "Relayers connect via SSE (Server-Sent Events)",
           },
           {
-            prop: "Assignment",
-            detail: "Round-robin distribution across subscribed operators",
+            prop: "Dispatch",
+            detail: "Round-robin notification across subscribed relayers",
           },
           {
             prop: "State",
             detail:
-              "In-memory — operator subscriptions and round-robin index reset on restart",
+              "In-memory — relayer subscriptions and round-robin index reset on restart",
           },
         ]}
       />
 
-      {/* Task Flow */}
+      {/* Settlement Flow */}
       <h2
-        id="task-flow"
+        id="settlement-flow"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Task flow
+        Settlement flow
       </h2>
 
       <ArchitectureDiagram
-        title="RELAY TASK FLOW"
+        title="CCTP SETTLEMENT FLOW"
         steps={[
           { label: "SDK submits burn tx", sublabel: "POST to coordinator" },
           {
-            label: "Coordinator distributes",
-            sublabel: "Round-robin to next operator",
+            label: "Coordinator notifies",
+            sublabel: "Round-robin SSE to next relayer",
           },
           {
-            label: "Operator receives via SSE",
-            sublabel: "Relay event pushed",
+            label: "Relayer fetches attestation",
+            sublabel: "Polls Circle Iris",
           },
           {
-            label: "Operator executes on-chain",
-            sublabel: "Claims and executes task",
+            label: "Anyone calls settle()",
+            sublabel: "Permissionless on-chain settlement",
           },
         ]}
       />
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        When the SDK performs a cross-chain fund operation, it submits the burn
-        transaction hash to the coordinator via{" "}
+        When the SDK performs a cross-chain fund operation, it notifies the
+        coordinator of the burn transaction hash via{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           POST /bridges/cctp/transactions
         </code>
-        . The coordinator selects the next operator in round-robin order and
-        pushes the relay event via SSE. The operator then claims and executes
-        the task on-chain via the TaskExecutor contract, which enforces the
-        3-tier fallback (exclusive → open → permissionless).
+        . The coordinator forwards the notification to the next relayer in
+        round-robin order via SSE. That relayer polls Circle's Iris service for
+        the signed attestation and calls{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          CCTPV2EscrowReceiver.settle(message, attestation)
+        </code>
+        , which verifies the attestation on-chain and releases the funds.
+        Settlement is permissionless — any account can call{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          settle()
+        </code>{" "}
+        with a valid attestation; the relayer is one optional transport layer.
       </p>
 
-      <Callout variant="info" title="On-chain enforcement">
+      <Callout variant="info" title="Settlement security is on-chain">
         <p>
-          The coordinator only distributes tasks. Live security enforcement —
-          the exclusive window and the permissionless fallback — happens
-          on-chain via the OperatorRegistry and TaskExecutor contracts. The
-          protocol charges no fee; any operator relay fee is part of the Spec'd
-          operator economics, and the slashing that would back staking
-          requirements is Spec'd (see below).
+          The coordinator only notifies relayers of burns. The actual security
+          comes from{" "}
+          <strong>Circle's CCTP attestation verified on-chain</strong> inside{" "}
+          <code>CCTPV2EscrowReceiver.settle()</code> — not from any
+          registration, stake, or task framework. The protocol charges no fee,
+          and relayers have no protocol-enforced economics; the relayer being
+          down never blocks settlement.
         </p>
       </Callout>
 
@@ -347,14 +344,17 @@ export default function CoordinatorNetwork() {
       <DocsTable columns={apiColumns} rows={apiRows} />
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Example — subscribing to relay events:
+        Example — subscribing to burn notifications:
       </p>
 
       <CodeBlock
         filename="terminal"
         language="bash"
         lines={[
-          { content: "# Subscribe to relay events for your operator address" },
+          {
+            content:
+              "# Subscribe to burn notifications for your relayer address",
+          },
           { content: "curl -N \\", highlighted: true },
           {
             content:
@@ -365,12 +365,12 @@ export default function CoordinatorNetwork() {
         showLineNumbers={false}
       />
 
-      {/* Operator Assignment */}
+      {/* Settlement */}
       <h2
-        id="operator-assignment"
+        id="settlement"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Operator assignment
+        Settlement
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
@@ -378,113 +378,42 @@ export default function CoordinatorNetwork() {
         <strong className="text-docs-text-primary font-semibold">
           simple round-robin
         </strong>{" "}
-        to distribute tasks across subscribed operators. Each new transaction
-        goes to the next operator in the list. There is no stake-weighting,
-        scoring, or prioritization at the coordinator level.
+        to distribute burn notifications across subscribed relayers. Each new
+        burn goes to the next relayer in the list. This only reduces duplicate
+        gas spend by avoiding several relayers racing the same settlement — it
+        is not a stake-weighting, scoring, or assignment mechanism, and it does
+        not gate who may settle.
       </p>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        On-chain, the OperatorRegistry enforces the 3-tier execution window:
-      </p>
-
-      <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            0–60 seconds:
-          </strong>{" "}
-          Only the claiming operator can execute (exclusive window)
-        </li>
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            60–600 seconds:
-          </strong>{" "}
-          Any active, registered operator can execute (the stake-and-slashing
-          gate behind "active" is part of the Spec'd operator economics)
-        </li>
-        <li>
-          <strong className="text-docs-text-primary font-semibold">
-            600+ seconds:
-          </strong>{" "}
-          Fully permissionless — anyone can execute, no stake required
-        </li>
-      </ul>
-
-      {/* Slashing */}
-      <h2
-        id="slashing"
-        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
-      >
-        Slashing
-      </h2>
-
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Stake-weighted quorum slashing is{" "}
-        <StatusBadge status="spec" className="align-middle" />. The{" "}
-        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-          OperatorSlashingManager
-        </code>{" "}
-        is{" "}
+        Settlement is{" "}
         <strong className="text-docs-text-primary font-semibold">
-          implemented
-        </strong>{" "}
-        — it would slash a misbehaving operator's bond via a single
-        stake-weighted quorum across the active operator set — but it is{" "}
-        <strong className="text-docs-text-primary font-semibold">
-          not deployed and not wired
+          permissionless from the moment a valid CCTP attestation from Circle is
+          available on-chain
         </strong>
-        :{" "}
+        . Any address can call{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-          setSlashingManager
+          CCTPV2EscrowReceiver.settle(message, attestation)
         </code>{" "}
-        is never called, so the registry does not delegate to it. Today the only
-        active path is{" "}
-        <strong className="text-docs-text-primary font-semibold">
-          owner-direct emergency slashing
-        </strong>{" "}
-        — the contract owner can slash, but the quorum mechanism is inert. Do
-        not rely on quorum slashing as a live discipline.
+        with the attestation — there is no exclusive window, no registered
+        operator set, and no claim mechanism. A relayer that was notified first
+        will usually settle first simply because it sees the burn first, but
+        nothing prevents any other account from settling.
       </p>
 
       <Callout
-        variant="warning"
-        title="Slashing is designed, not yet production-usable on testnet"
+        variant="info"
+        title="No staking or slashing in the current architecture"
       >
         <p>
-          Because the slashing manager is undeployed and unwired, an operator's
-          bond is not actually at risk through the quorum mechanism today. The
-          economic security that slashing is meant to provide does not yet hold
-          on Arbitrum Sepolia testnet.
+          There is no operator staking, bonding, or slashing. Invalid
+          settlements are rejected at the contract level by attestation
+          verification, not through governance penalties. Coverage for loss
+          events comes from <strong>Recourse pools</strong> (LP-funded capital
+          plus premiums, capped at pool liquidity), not from operator collateral
+          or slashed bonds.
         </p>
       </Callout>
-
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Two related mechanisms are also specified for the v1.0 track but are{" "}
-        <strong className="text-docs-text-primary font-semibold">
-          not yet shipped
-        </strong>
-        :
-      </p>
-
-      <ul className="space-y-2 text-docs-text-secondary leading-relaxed list-disc list-inside mb-4">
-        <li>
-          On-chain coordinator registration and subscription via a{" "}
-          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            CoordinatorRegistry
-          </code>{" "}
-          <DocsBadge variant="amber" className="ml-1">
-            Spec'd
-          </DocsBadge>
-        </li>
-        <li>
-          Cross-graph slashing — slashing votes spanning{" "}
-          <strong className="text-docs-text-primary font-semibold">
-            three or more independent coordinator–operator graphs
-          </strong>{" "}
-          <DocsBadge variant="amber" className="ml-1">
-            Spec'd
-          </DocsBadge>
-        </li>
-      </ul>
 
       {/* Current Limitations */}
       <h2

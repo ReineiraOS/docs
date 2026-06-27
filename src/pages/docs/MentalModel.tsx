@@ -49,8 +49,8 @@ const buildingBlockRows = [
   },
   {
     primitive: "Operators",
-    role: "Relays cross-chain messages and routes settlement tasks; staking and relay fees are spec'd, not yet live.",
-    example: "A node relaying CCTP burn/mint attestations.",
+    role: "Permissionless relayers that bridge cross-chain messages via CCTP attestation verification. No registration, staking, or fees required.",
+    example: "A bot relaying CCTP burn/mint attestations.",
   },
 ];
 
@@ -83,7 +83,7 @@ const responsibilityRows = [
   {
     layer: "Operators",
     you: "Nothing — opt in or out",
-    protocol: "CCTP bridging, operator staking, message relay",
+    protocol: "CCTP bridging, message relay (permissionless)",
   },
 ];
 
@@ -133,9 +133,9 @@ export default function MentalModel() {
           </code>{" "}
           or an underwriter premium). The contracts are upgradeable today (UUPS
           with an owner); full immutability is a v1.0 target, not yet in force.
-          Operator economics — staking, relay fees, any bonding — are{" "}
-          <StatusBadge status="spec" />. The contracts are deployed by Reineira
-          Labs Limited (RAK DAO Free Zone, UAE) as a Software Vendor.
+          Operators are permissionless relayers with no economics or staking
+          requirements. The contracts are deployed by Reineira Labs Limited (RAK
+          DAO Free Zone, UAE) as a Software Vendor.
         </p>
       </Callout>
 
@@ -407,9 +407,8 @@ export default function MentalModel() {
           <strong className="text-docs-text-primary font-semibold">
             Operators
           </strong>{" "}
-          — Run relay nodes that bridge cross-chain messages. The economics
-          (relay fees, staked collateral) are <StatusBadge status="spec" /> and
-          not yet live.
+          — Run permissionless relay nodes that watch CCTP burns and settle
+          cross-chain messages. No registration, staking, or fees required.
         </li>
       </ul>
 

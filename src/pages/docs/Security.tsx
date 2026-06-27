@@ -5,95 +5,17 @@ import Callout from "@/components/docs/Callout";
 import PageNav from "@/components/docs/PageNav";
 import DocsTable from "@/components/docs/DocsTable";
 import Steps, { Step } from "@/components/docs/Steps";
-import DocsBadge from "@/components/docs/DocsBadge";
 import { getPrevNext } from "@/data/navigation";
 import type { TocItem } from "@/components/layout/TableOfContents";
 
 const toc: TocItem[] = [
-  { id: "operator-staking", title: "Operator staking", level: 2 },
-  { id: "slashing", title: "Slashing mechanism", level: 2 },
+  { id: "settlement-security", title: "Settlement security", level: 2 },
   { id: "cross-chain-security", title: "Cross-chain security", level: 2 },
   { id: "smart-contract-security", title: "Smart contract security", level: 2 },
   { id: "known-limitations", title: "Known limitations (testnet)", level: 2 },
 ];
 
 const { prev, next } = getPrevNext("/learn/security");
-
-const stakingColumns = [
-  { header: "Parameter", key: "param", width: "200px" },
-  { header: "Value", key: "value", mono: true, width: "140px" },
-  { header: "Description", key: "desc" },
-];
-const stakingRows = [
-  {
-    param: "Bond asset",
-    value: "cUSDC",
-    desc: "Spec'd economics bond cUSDC, an ERC-7984 USDC wrapper, not a governance token. The asset is configurable; bonding, fees, and slashing are not live.",
-  },
-  {
-    param: "Minimum bond",
-    value: "Config",
-    desc: "setConfig() controls spec'd cUSDC-denominated Operator economics; cUSDC is not a governance token.",
-  },
-  {
-    param: "Unbonding period",
-    value: "7 days",
-    desc: "After initiating withdrawal, staked funds are locked for 7 days to allow challenge windows to close.",
-  },
-  {
-    param: "Relay window (exclusive)",
-    value: "60 seconds",
-    desc: "The assigned operator has 60 seconds of exclusive relay rights before the task opens to other operators. Configurable.",
-  },
-  {
-    param: "Relay window (permissionless)",
-    value: "600 seconds",
-    desc: "After the permissionless delay, any staked operator can relay. First valid relay earns the fee. Configurable.",
-  },
-  {
-    param: "Relay fee",
-    value: "Spec'd",
-    desc: "The protocol charges nothing. An Operator relay fee is specified through FeeManager.setFeeConfig() but is not enabled.",
-  },
-];
-
-const slashingColumns = [
-  { header: "Parameter", key: "param", width: "200px" },
-  { header: "Value", key: "value", mono: true, width: "120px" },
-  { header: "Description", key: "desc" },
-];
-const slashingRows = [
-  {
-    param: "Challenge period",
-    value: "3 days",
-    desc: "Anyone can submit a challenge against an operator within 3 days of the disputed action.",
-  },
-  {
-    param: "Voting period",
-    value: "4 days",
-    desc: "Staked operators vote on the challenge validity.",
-  },
-  {
-    param: "Expiry period",
-    value: "14 days",
-    desc: "Unchallenged actions become final after 14 days. No retroactive slashing.",
-  },
-  {
-    param: "Quorum",
-    value: "10%",
-    desc: "At least 10% of total staked weight must vote for the result to be valid (1000 bps).",
-  },
-  {
-    param: "Proposer / Challenger bond",
-    value: "5%",
-    desc: "Both the proposer and challenger must post a 5% bond (500 bps) to participate.",
-  },
-  {
-    param: "Slasher reward",
-    value: "10%",
-    desc: "The slasher receives 10% of the slashed cUSDC stake (1000 bps).",
-  },
-];
 
 const contractSecurityColumns = [
   { header: "Mechanism", key: "mechanism", width: "200px" },
@@ -148,20 +70,14 @@ const limitationRows = [
   {
     limitation: "Single coordinator",
     impact:
-      "Single point of failure for relay task distribution. If the coordinator goes down, cross-chain settlement stalls.",
+      "Single coordinator instance for relayer burn-notification distribution. If the coordinator goes down, relayers are not notified — but settlement stays permissionless, so anyone can still settle directly.",
     plan: "Redundant coordinator instances with failover.",
   },
   {
-    limitation: "In-memory operator state",
+    limitation: "Relayer liveness",
     impact:
-      "Operator relay state is lost on restart. Pending messages may need manual resubmission.",
-    plan: "Persistent state store with automatic recovery.",
-  },
-  {
-    limitation: "Single-quorum slashing only",
-    impact:
-      "One active-set, stake-weighted quorum; cross-graph voting across ≥3 independent coordinator–Operator graphs is spec'd, not shipped.",
-    plan: "CoordinatorRegistry with cross-graph slashing on the v1.0 track.",
+      "Settlement speed depends on at least one relayer watching CCTP burns. If no relayer acts, cross-chain settlement is delayed until any party submits the attestation.",
+    plan: "More independent relayer bots and self-serve settlement tooling.",
   },
   {
     limitation: "Testnet FHE",
@@ -189,76 +105,35 @@ export default function Security() {
       />
 
       <h2
-        id="operator-staking"
+        id="settlement-security"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Operator staking
+        Settlement security
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        You post a cUSDC bond to join the relay network. Bonding aligns
-        incentives — you lose money if you misbehave, and earn fees when you
-        relay honestly. Registration is permissionless from day one: any address
-        that meets the bond, is sanctions-clean, and has not been previously
-        slashed can register at the contract layer, no invitation needed.
+        Settlement is permissionless and secured by Circle&apos;s CCTP
+        attestation, verified on-chain. Anyone can call{" "}
+        <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+          CCTPV2EscrowReceiver.settle(message, attestation)
+        </code>{" "}
+        to finalize a cross-chain transfer. There is no operator registration,
+        bonding, staking, or slashing — relayers are stateless bots that watch
+        CCTP burns, fetch the Circle attestation, and submit the settlement
+        transaction. A relayer only affects speed; if it is down, anyone can
+        settle directly.
       </p>
 
-      <DocsTable columns={stakingColumns} rows={stakingRows} />
-
-      <Callout
-        variant="info"
-        title="Permissionless registration and sanctions screening"
-      >
+      <Callout variant="info" title="No staking, no slashing">
         <p>
-          The OperatorRegistry is permissionless at the contract layer. An
-          optional ISanctionsOracle, when wired in, blocks registration of
-          listed addresses. A separate operator-onboarding subsidy programme
-          (OperatorSubsidyManager) is spec'd — no such contract exists yet — to
-          pay operators from a cUSDC pool during chaos-net against an off-chain
-          eligibility list. Operators participate normally without it; the
-          subsidy is an additive, future incentive, and there is no protocol
-          token. The operator set grows organically: N∈[5,10] at chaos-net
-          (Jul–Aug 2026) → N=20 by end-2026 → N≥30 by Q1 2028, bounded by market
-          demand rather than gating.
-        </p>
-      </Callout>
-
-      <h2
-        id="slashing"
-        className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
-      >
-        Slashing mechanism
-      </h2>
-
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Slashing is the penalty for operator misbehavior — submitting invalid
-        proofs, censoring messages, or failing to relay within the designated
-        window. The OperatorSlashingManager implements a single stake-weighted
-        quorum across the active operator set, using a challenge-vote-execute
-        pattern, with a slasher reward of 10% of the slashed cUSDC stake. The
-        parameters below are the contract's configured values.{" "}
-        <DocsBadge variant="amber">Spec&apos;d</DocsBadge> The slashing manager
-        is undeployed and unwired on Arbitrum Sepolia testnet — treat the
-        mechanism as specified, not live.
-      </p>
-
-      <p className="text-docs-text-secondary leading-relaxed mb-4">
-        A CoordinatorRegistry with cross-graph slashing — requiring votes
-        spanning at least three independent coordinator–operator graphs — is
-        planned but not yet shipped.{" "}
-        <DocsBadge variant="amber">Spec&apos;d</DocsBadge> CoordinatorRegistry /
-        cross-graph slashing is on the v1.0 track.
-      </p>
-
-      <DocsTable columns={slashingColumns} rows={slashingRows} />
-
-      <Callout variant="warning" title="Testnet caveat">
-        <p>
-          The Arbitrum Sepolia testnet deployment runs in public mode and is
-          unaudited. Single-quorum slashing exists in OperatorSlashingManager
-          but is undeployed and unwired, and the cross-graph slashing model is
-          not yet shipped. Do not rely on the slashing security model for
-          production guarantees at this stage.
+          Running a relayer requires no registration, bond, or sanctions
+          screening at the contract layer — any address can run a relayer bot.
+          Relayers earn no protocol fee and recover only their destination-chain
+          gas. Invalid settlements are rejected at the contract level by
+          verifying Circle&apos;s CCTP attestation, not through slashing
+          governance. Loss coverage comes from Recourse pools, which are funded
+          by LP capital and premiums and cap claims at pool liquidity — not from
+          operator collateral.
         </p>
       </Callout>
 
@@ -291,14 +166,15 @@ export default function Security() {
             signed attestation confirming the burn amount and destination.
           </p>
         </Step>
-        <Step title="Operator relays attestation">
+        <Step title="Relayer submits attestation">
           <p>
-            A staked operator picks up the attestation and submits it to the
+            Any relayer picks up the attestation and submits it to the
             destination chain's{" "}
             <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
               MessageTransmitter
             </code>
-            .
+            . Submission is permissionless — if no relayer acts, anyone can
+            submit it directly.
           </p>
         </Step>
         <Step title="Mint on destination chain">

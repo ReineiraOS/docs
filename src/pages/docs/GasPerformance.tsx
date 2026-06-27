@@ -438,8 +438,8 @@ export default function GasPerformance() {
             forge snapshot
           </code>{" "}
           baseline is pending; once it lands these tables will be replaced with
-          measured values. Actual costs will vary with network congestion, L1
-          calldata pricing, and CoFHE operator fees.
+          measured values. Actual costs will vary with network congestion and L1
+          calldata pricing.
         </p>
       </Callout>
 
@@ -649,13 +649,17 @@ export default function GasPerformance() {
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             EscrowFunded
           </code>{" "}
-          event fires — the operator relays the attestation and submits the
-          mint, so the SDK never calls{" "}
+          event fires — a relayer observes the Circle attestation and calls{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
-            receiveMessage
+            settle()
           </code>{" "}
-          itself. Funding several Escrows from the same source chain can share a
-          single wait.
+          on-chain, completing the mint in a single permissionless transaction.
+          Alternatively, any user or app can submit{" "}
+          <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
+            settle()
+          </code>{" "}
+          directly. Funding several Escrows from the same source chain can share
+          a single wait.
         </p>
       </Callout>
 

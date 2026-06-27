@@ -30,12 +30,12 @@ const layerRows = [
   { layer: "SDK, plugin templates, cofhejs glue", now: "MIT", after: "MIT" },
   { layer: "Token wrappers (cUSDC, cUSDT)", now: "MIT", after: "MIT" },
   {
-    layer: "Operator services (orchestrator, coordinator, CLI)",
+    layer: "Relayer coordinator (lightweight burn-notification inbox)",
     now: "Apache 2.0",
     after: "Apache 2.0",
   },
   {
-    layer: "Core protocol (Escrow, Recourse, orchestration)",
+    layer: "Core protocol (Escrow, Recourse)",
     now: "BUSL-1.1",
     after: "Apache 2.0",
   },
@@ -68,9 +68,9 @@ export default function RssLicensing() {
       <Callout variant="info" title="Two layers, two licenses">
         <p>
           The <strong>standard</strong> is free to implement against. The{" "}
-          <strong>reference implementation's core</strong> (Escrow, Recourse,
-          orchestration) is licensed under BUSL-1.1 and converts to Apache 2.0
-          on the irrevocable Change Date <strong>2029-06-01</strong>.
+          <strong>reference implementation's core</strong> (Escrow, Recourse) is
+          licensed under BUSL-1.1 and converts to Apache 2.0 on the irrevocable
+          Change Date <strong>2029-06-01</strong>.
         </p>
       </Callout>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
