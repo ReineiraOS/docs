@@ -56,7 +56,7 @@ const whatYouGetRows = [
   {
     capability: "Relayers",
     description:
-      "Permissionless relayer network that watches CCTP burns, fetches Circle attestations, and calls settle(). No registration, staking, or exclusive role required — any bot can relay.",
+      "Permissionless bots that watch CCTP burns, fetch Circle attestations, and call settle(). No registration, staking, or exclusive role required.",
   },
   {
     capability: "Cross-Chain Settlement",
@@ -76,7 +76,7 @@ const pillarRows = [
   {
     pillar: "Reineira Settlement Protocol",
     description:
-      "The on-chain contracts: confidential escrow, pluggable Gates, encrypted-state recourse, and operator-secured cross-chain settlement. Upgradeable today (UUPS); immutability is the v1.0 target.",
+      "The on-chain contracts: confidential escrow, pluggable Gates, encrypted-state recourse, and permissionless CCTP settlement. Upgradeable today (UUPS); immutability is the v1.0 target.",
   },
   {
     pillar: "Reineira Settlement Standard (RSS)",
@@ -437,7 +437,7 @@ export default function Overview() {
           },
           {
             title: "Mental Model",
-            description: "Core primitives: Escrow, Gate, Recourse, Operator.",
+            description: "Core primitives: Escrow, Gate, Recourse, Relayers.",
             href: "/learn/mental-model",
             icon: Brain,
           },

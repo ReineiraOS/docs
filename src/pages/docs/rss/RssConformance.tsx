@@ -36,7 +36,7 @@ const criteriaRows = [
   },
   {
     clause: "(d) Namespaced storage",
-    req: "ERC-7201 namespaced storage, inherits the protocol base contract, carries a uint256[50] private __gap reserve. Upgradeable deployments additionally follow UUPS (EIP-1822/1967); the v1.0 reference implementation is immutable.",
+    req: "ERC-7201 namespaced storage, inherits the protocol base contract, carries a uint256[50] private __gap reserve. Upgradeable deployments additionally follow UUPS (EIP-1822/1967); immutable deployment is the v1.0 reference target.",
   },
   {
     clause: "(e) Meta-transactions",

@@ -649,7 +649,8 @@ export default function GasPerformance() {
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             EscrowFunded
           </code>{" "}
-          event fires — a relayer observes the Circle attestation and calls{" "}
+          event fires — a relayer, user, or app observes the Circle attestation
+          and calls{" "}
           <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
             settle()
           </code>{" "}

@@ -62,9 +62,9 @@ const feeColumns = [
 ];
 const feeRows = [
   {
-    fee: "Relay fee (if any)",
-    rate: <StatusBadge status="spec" />,
-    recipient: "Whoever submits the settlement transaction",
+    fee: "Protocol relay fee",
+    rate: "None",
+    recipient: "No protocol-paid recipient",
   },
   {
     fee: "Protocol take",
@@ -304,11 +304,9 @@ export default function CrossChain() {
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         The <strong>protocol charges nothing</strong> on a cross-chain transfer.
         Relaying is permissionless and unpaid by the protocol — a relayer only
-        covers destination-chain gas. Any relay fee, if introduced, is spec'd
-        rather than live, so there is no published rate to quote yet, and it
-        would go to whoever submits the settlement transaction. When set, any
-        such fee is deducted from the bridged amount before settlement and the
-        remainder reaches the destination escrow.
+        recovers destination-chain gas. There is no relay-fee rate to quote, no
+        protocol cut, and no deduction from the bridged amount before settlement
+        reaches the destination escrow.
       </p>
 
       <h2
@@ -321,7 +319,7 @@ export default function CrossChain() {
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Settlement is permissionless from the start. Once Circle&apos;s
         attestation is available, anyone with it can settle \u2014 there is no
-        assigned operator, exclusive window, or escalation:
+        assigned relayer, exclusive window, or escalation:
       </p>
 
       <DocsTable

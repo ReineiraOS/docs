@@ -73,7 +73,7 @@ const componentRows = [
     component: "Relayer network (permissionless settlement)",
     status: <StatusBadge status="testnet" />,
     notes:
-      "Permissionless relayer operation: any bot watches CCTP burns, fetches Circle attestation, and calls settle(). No registration, stake, or operator fees.",
+      "Permissionless relayer operation: any bot watches CCTP burns, fetches Circle attestation, and calls settle(). No registration, stake, or protocol relay fee.",
   },
   {
     component: "Zero protocol fees",
@@ -190,7 +190,7 @@ const openRows = [
     target: "prior to chaos-net v1.0",
   },
   {
-    id: "8.1 Operator set growth trajectory",
+    id: "8.1 Relayer redundancy targets",
     status: <StatusBadge status="research" />,
     target: "tracked through chaos-net; no pre-deployment gate",
   },

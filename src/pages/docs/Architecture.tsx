@@ -44,7 +44,7 @@ const layerRows = [
     desc: "Encrypted state variables stored via namespaced storage. Contracts are UUPS-upgradeable proxies on Arbitrum Sepolia testnet today (immutable bytecode is the v1.0 target); ERC-7201 + __gap[50] keep storage layout safe across upgrades. ERC-2771 meta-transaction support.",
   },
   {
-    layer: "Orchestration",
+    layer: "Relay coordination",
     tech: "Off-chain services",
     desc: "Coordinator notifies relayers of CCTP burn events via round-robin SSE to avoid duplicate gas costs. Running a relayer is permissionless.",
   },

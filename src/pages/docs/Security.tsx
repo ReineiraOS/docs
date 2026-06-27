@@ -117,11 +117,11 @@ export default function Security() {
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           CCTPV2EscrowReceiver.settle(message, attestation)
         </code>{" "}
-        to finalize a cross-chain transfer. There is no operator registration,
-        bonding, staking, or slashing — relayers are stateless bots that watch
-        CCTP burns, fetch the Circle attestation, and submit the settlement
-        transaction. A relayer only affects speed; if it is down, anyone can
-        settle directly.
+        to finalize a cross-chain transfer. There is no on-chain relayer
+        registration, bonding, staking, or slashing — relayers are stateless
+        bots that watch CCTP burns, fetch the Circle attestation, and submit the
+        settlement transaction. A relayer only affects speed; if it is down,
+        anyone can settle directly.
       </p>
 
       <Callout variant="info" title="No staking, no slashing">
@@ -130,10 +130,10 @@ export default function Security() {
           screening at the contract layer — any address can run a relayer bot.
           Relayers earn no protocol fee and recover only their destination-chain
           gas. Invalid settlements are rejected at the contract level by
-          verifying Circle&apos;s CCTP attestation, not through slashing
-          governance. Loss coverage comes from Recourse pools, which are funded
-          by LP capital and premiums and cap claims at pool liquidity — not from
-          operator collateral.
+          verifying Circle&apos;s CCTP attestation, not through slashing or
+          governance penalties. Loss coverage comes from Recourse pools, which
+          are funded by LP capital and premiums and cap claims at pool liquidity
+          — not from relayer collateral.
         </p>
       </Callout>
 
