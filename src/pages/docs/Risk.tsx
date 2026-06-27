@@ -100,17 +100,14 @@ export default function Risk() {
       </h2>
       <blockquote className="border-l-4 border-docs-border-strong pl-4 my-6 text-docs-text-secondary leading-relaxed italic">
         <p>
-          The security model explicitly does not cover: relayer uptime or the
-          correctness of relayer-binary off-chain code, since relayers are
-          permissionless and operate without registration or staking;
-          substrate-level (CoFHE) denial-of-service against homomorphic
-          evaluation, against which there is no protocol-layer guarantee
-          (relayers are permissionless and unpaid); bridge counterparty risk
-          during in-flight cross-chain transfers, bounded but not eliminated;
-          compromise of relayer key material on relayer hardware (key management
-          is each relayer's responsibility, and relayers are permissionless,
-          unpaid participants with no protocol-enforced security posture); and
-          MEV at the wrap boundary, whose mitigation is the underlying-chain
+          The security model explicitly does not cover: relayer uptime or
+          relayer-binary correctness, since relayers are permissionless and
+          operate without registration or staking; substrate-level (CoFHE)
+          denial-of-service against homomorphic evaluation, against which there
+          is no protocol-layer guarantee; bridge counterparty risk during
+          in-flight cross-chain transfers, bounded but not eliminated; relayer
+          key compromise, since key management is each relayer's responsibility;
+          and MEV at the wrap boundary, whose mitigation is underlying-chain
           sequencer ordering, not a protocol-layer defence.
         </p>
       </blockquote>

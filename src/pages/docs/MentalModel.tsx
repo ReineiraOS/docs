@@ -34,7 +34,7 @@ const buildingBlockColumns = [
 const buildingBlockRows = [
   {
     primitive: "Escrow",
-    role: "Holds FHE-encrypted money until a condition is met. The chain and Operators cannot see the amount. Contract: ConfidentialEscrow.",
+    role: "Holds FHE-encrypted money until a condition is met. The chain and relayers cannot see the amount. Contract: ConfidentialEscrow.",
     example: "A freelance payment locked until deliverables are approved.",
   },
   {
@@ -48,7 +48,7 @@ const buildingBlockRows = [
     example: "A P2P marketplace policy that covers chargebacks.",
   },
   {
-    primitive: "Operators",
+    primitive: "Relayers",
     role: "Permissionless relayers that bridge cross-chain messages via CCTP attestation verification. No registration, staking, or fees required.",
     example: "A bot relaying CCTP burn/mint attestations.",
   },
@@ -81,7 +81,7 @@ const responsibilityRows = [
     protocol: "SDK encryption helpers, meta-tx relaying",
   },
   {
-    layer: "Operators",
+    layer: "Relayers",
     you: "Nothing — opt in or out",
     protocol: "CCTP bridging, message relay (permissionless)",
   },
@@ -94,7 +94,7 @@ export default function MentalModel() {
 
       <PageHeader
         title="Mental Model"
-        description="Every ReineiraOS application combines four primitives: Escrow, Gate, Recourse, and Operators."
+        description="Every ReineiraOS application combines four primitives: Escrow, Gate, Recourse, and Relayers."
         readingTime="6 min read"
       />
 
@@ -110,7 +110,7 @@ export default function MentalModel() {
         <strong className="text-docs-text-primary font-semibold">
           Reineira Settlement Protocol
         </strong>{" "}
-        (the on-chain immutable contracts), the{" "}
+        (the on-chain contracts), the{" "}
         <strong className="text-docs-text-primary font-semibold">
           Reineira Settlement Standard (RSS)
         </strong>{" "}
@@ -133,7 +133,7 @@ export default function MentalModel() {
           </code>{" "}
           or an underwriter premium). The contracts are upgradeable today (UUPS
           with an owner); full immutability is a v1.0 target, not yet in force.
-          Operators are permissionless relayers with no economics or staking
+          Relayers are permissionless bots with no protocol fees or staking
           requirements. The contracts are deployed by Reineira Labs Limited (RAK
           DAO Free Zone, UAE) as a Software Vendor.
         </p>
@@ -149,8 +149,8 @@ export default function MentalModel() {
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Four composable building blocks — there's nothing else to learn at the
         conceptual level. Escrow holds the money, Gate verifies the condition,
-        Recourse covers the outcome, Operators coordinate it all. Every app on
-        the protocol is some combination of these.
+        Recourse covers the outcome, and relayers move the cross-chain leg.
+        Every app on the protocol is some combination of these.
       </p>
 
       <DocsTable columns={buildingBlockColumns} rows={buildingBlockRows} />
@@ -221,9 +221,9 @@ export default function MentalModel() {
           Recourse
         </strong>{" "}
         policy evaluates risk at creation time and a pool backs the coverage. If
-        cross-chain settlement is enabled, an{" "}
+        cross-chain settlement is enabled, a{" "}
         <strong className="text-docs-text-primary font-semibold">
-          Operator
+          Relayer
         </strong>{" "}
         relays the settlement message via CCTP. Both are optional extensions to
         the core flow.
@@ -405,7 +405,7 @@ export default function MentalModel() {
         </li>
         <li>
           <strong className="text-docs-text-primary font-semibold">
-            Operators
+            Relayers
           </strong>{" "}
           — Run permissionless relay nodes that watch CCTP burns and settle
           cross-chain messages. No registration, staking, or fees required.
@@ -414,8 +414,7 @@ export default function MentalModel() {
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         Each role is permissionless. There is no approval process — deploy a
-        resolver, stake into a pool, or spin up an operator node whenever you
-        are ready.
+        resolver, stake into a pool, or run a relayer whenever you are ready.
       </p>
 
       <PageNav prev={prev} next={next} />

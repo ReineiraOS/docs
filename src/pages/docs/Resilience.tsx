@@ -85,7 +85,7 @@ const trustRows = [
     component: "Relayers",
     trust: "Permissionless; no staking",
     impact:
-      "Delay only. Settlement is permissionless via CCTP attestation — any address can settle, so an offline relayer affects speed, not finality. No on-chain operator layer exists.",
+      "Delay only. Settlement is permissionless via CCTP attestation — any address can settle, so an offline relayer affects speed, not finality. No on-chain relayer registry exists.",
   },
   {
     component: "Meta-tx relayer",
@@ -195,7 +195,7 @@ export default function Resilience() {
           </strong>{" "}
           — Cross-chain settlement is permissionless. Anyone can call settle()
           with a valid CCTP attestation, verified on-chain via Circle's CCTP. No
-          registration, staking, or relay priority required.
+          registration, staking, or relay priority.
         </li>
       </ul>
 
@@ -283,9 +283,9 @@ export default function Resilience() {
       <Callout variant="info" title="Liveness guarantee">
         <p>
           Settlement is permissionless from the moment Circle's attestation is
-          available. Even if every relayer is offline, any EOA can submit the
-          attestation and complete settlement — safety comes from Circle's CCTP
-          attestation verified on-chain, not from any relayer.
+          available. Even if every relayer is offline, any account can submit
+          the attestation and complete settlement — safety comes from Circle's
+          CCTP attestation verified on-chain, not from any relayer.
         </p>
       </Callout>
 

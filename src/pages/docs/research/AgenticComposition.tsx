@@ -25,11 +25,6 @@ const handlerColumns = [
 
 const handlerRows = [
   {
-    handler: "CCTPHandler",
-    role: "Circle CCTP V2 relay — the only task handler shipped in v1.0.",
-    status: <DocsBadge variant="green">Live</DocsBadge>,
-  },
-  {
     handler: "AgentCallHandler",
     role: "On-chain agent invocation. TASK_AGENT_CALL is reserved as a selector in TaskLib but has no registered handler.",
     status: <DocsBadge variant="amber">Spec'd · post-v1.0</DocsBadge>,
@@ -109,9 +104,10 @@ export default function AgenticComposition() {
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         ReineiraOS specifies an agentic / AI-execution composition layer above
-        the protocol perimeter. Of the task handlers it calls for,{" "}
-        <strong>only CCTPHandler ships in v1.0</strong>. The agentic handlers
-        and the agent/quorum registries are deferred.
+        the protocol perimeter. None of the agentic task handlers ship in v1.0;
+        CCTP settlement is a separate permissionless rail, not part of this
+        handler surface. The agentic handlers and the agent/quorum registries
+        are deferred.
       </p>
 
       <h2

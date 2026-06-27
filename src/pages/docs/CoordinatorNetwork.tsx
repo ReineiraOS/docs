@@ -67,7 +67,7 @@ const limitationRows = [
     limitation: "No health checks",
     impact:
       "The coordinator does not monitor relayer uptime, latency, or completion rate.",
-    resolution: "Health monitoring with automatic deregistration.",
+    resolution: "Health monitoring with automatic pruning.",
   },
   {
     limitation: "In-memory state",
@@ -90,7 +90,7 @@ export default function CoordinatorNetwork() {
 
       <PageHeader
         title="Relayer Network"
-        description="The off-chain relay layer of ReineiraOS. Settlement is permissionless: anyone can call CCTPV2EscrowReceiver.settle() with a Circle CCTP attestation, verified on-chain. Relayers are lightweight bots that watch CCTP burns, fetch the attestation, and call settle() so transfers finalize quickly. A coordinator notifies relayers of burns via round-robin SSE. There is no operator registration, staking, fees, or slashing — relaying is permissionless and earns no protocol fee."
+        description="The off-chain relay layer for CCTP settlement. Relayers watch burns, fetch Circle attestations, and call settle() for speed; settlement remains permissionless on-chain."
         readingTime="5 min read"
       />
 
@@ -135,14 +135,14 @@ export default function CoordinatorNetwork() {
         <p>
           Anyone can run a relayer: there is{" "}
           <strong>
-            no operator registration, bond, staking, fee, or slashing
+            no on-chain registration, bond, staking, protocol fee, or slashing
           </strong>
           . A relayer only affects how fast a transfer settles — if every
           relayer is down, any account can still call <code>settle()</code>{" "}
           directly. Relayers cover their own destination-chain gas; the protocol
           takes nothing. Coverage for loss events comes from{" "}
           <strong>Recourse pools</strong> (LP-funded capital plus premiums,
-          capped at pool liquidity), not from operator collateral.
+          capped at pool liquidity), not from relayer collateral.
         </p>
       </Callout>
 
@@ -218,7 +218,7 @@ export default function CoordinatorNetwork() {
         <strong className="text-docs-text-primary font-semibold">
           no protocol fee
         </strong>{" "}
-        — there is no operator subsidy programme and no protocol token. Whoever
+        — there is no relayer subsidy programme and no protocol token. Whoever
         submits the settlement transaction pays the destination-chain gas. More
         cross-chain settlement volume simply means more relayers can run
         economically on gas-cost recovery alone.
@@ -307,7 +307,7 @@ export default function CoordinatorNetwork() {
           CCTPV2EscrowReceiver.settle(message, attestation)
         </code>
         , which verifies the attestation on-chain and releases the funds.
-        Settlement is permissionless — any account can call{" "}
+        Settlement is permissionless: any account can call{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           settle()
         </code>{" "}
@@ -410,7 +410,7 @@ export default function CoordinatorNetwork() {
           settlements are rejected at the contract level by attestation
           verification, not through governance penalties. Coverage for loss
           events comes from <strong>Recourse pools</strong> (LP-funded capital
-          plus premiums, capped at pool liquidity), not from operator collateral
+          plus premiums, capped at pool liquidity), not from relayer collateral
           or slashed bonds.
         </p>
       </Callout>

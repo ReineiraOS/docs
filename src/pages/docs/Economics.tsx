@@ -18,7 +18,7 @@ const toc: TocItem[] = [
   { id: "policy-builders", title: "Earning: Policy Builders", level: 2 },
   { id: "pool-underwriters", title: "Earning: Pool Underwriters", level: 2 },
   { id: "pool-economics-example", title: "Pool economics example", level: 3 },
-  { id: "relayers", title: "Earning: Relayers", level: 2 },
+  { id: "relayers", title: "Role: Relayers", level: 2 },
   { id: "premium-calculation", title: "Premium calculation", level: 2 },
   { id: "dispute-resolution", title: "Dispute resolution", level: 2 },
   { id: "sustainability", title: "Sustainability model", level: 2 },
@@ -46,8 +46,8 @@ const overviewRows = [
   },
   {
     role: "Relayers",
-    what: "Run relay nodes that execute cross-chain CCTP tasks (permissionless, no bonding or staking required)",
-    how: "Settlement is permissionless and unpaid; relayers recover only their destination-chain gas costs",
+    what: "Run relay nodes that submit CCTP attestations (permissionless, no bonding or staking required)",
+    how: "No protocol fee; relayers recover only their destination-chain gas costs",
   },
 ];
 
@@ -133,14 +133,15 @@ export default function Economics() {
 
       <PageHeader
         title="Economics & Incentives"
-        description="Fee structure, earning mechanics, and worked numerical examples for protocol roles — policy builders, stakers, and relayers."
+        description="Fee structure, role mechanics, and worked numerical examples for policy builders, stakers, and relayers."
         readingTime="10 min read"
       />
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Participants earn in proportion to the value they contribute. This page
-        covers the fee structure, earning mechanics, and worked examples for
-        each role.
+        ReineiraOS keeps protocol economics deliberately narrow. Builders and
+        LPs earn through configurable fees and premiums; relayers keep
+        settlement fast without a protocol fee. This page covers the mechanics
+        and worked examples for each role.
       </p>
 
       <Callout variant="warning" title="The protocol charges nothing">
@@ -167,7 +168,7 @@ export default function Economics() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        Three roles earn from protocol activity:
+        Three roles participate in protocol activity:
       </p>
 
       <DocsTable columns={overviewColumns} rows={overviewRows} />
@@ -397,7 +398,7 @@ export default function Economics() {
         id="relayers"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Earning role: Relayers
+        Role: Relayers
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">

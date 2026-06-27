@@ -10,7 +10,11 @@ import type { TocItem } from "@/components/layout/TableOfContents";
 
 const toc: TocItem[] = [
   { id: "posture", title: "Public-Infrastructure posture", level: 2 },
-  { id: "software-vendor", title: "Software Vendor, not operator", level: 2 },
+  {
+    id: "software-vendor",
+    title: "Software Vendor, not protocol operator",
+    level: 2,
+  },
   {
     id: "immutable",
     title: "Upgradeability & the immutability target",
@@ -73,10 +77,10 @@ export default function Governance() {
         maintains, not a constant locked into bytecode. Running a relayer is{" "}
         <strong>permissionless</strong> — a bot watches CCTP burns, fetches the
         Circle attestation, and calls{" "}
-        <code className="not-italic">settle()</code>; there is no operator bond
+        <code className="not-italic">settle()</code>; there is no relayer bond
         and <strong>there is no token</strong>. Reineira Labs Limited deploys
-        the contracts as a <strong>Software Vendor</strong>, not as an operator
-        of the protocol.
+        the contracts as a <strong>Software Vendor</strong>, not as a protocol
+        operator.
       </p>
 
       <Callout variant="info" title="Governance on the path to immutability">
@@ -95,7 +99,7 @@ export default function Governance() {
         id="software-vendor"
         className="text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-docs-text-primary mt-12 mb-4"
       >
-        Software Vendor, not operator
+        Software Vendor, not protocol operator
       </h2>
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         <strong>Reineira Labs Limited is the Software Vendor.</strong> It
@@ -106,9 +110,9 @@ export default function Governance() {
         <strong>not</strong> custody user funds, and at v1.0 holds no admin keys
         on deployed contracts (there are none to hold). There is{" "}
         <strong>no protocol token</strong> and <strong>no protocol fee</strong>:
-        any fees in the system are set and kept by independent third parties —
-        Gate builders, recourse pools and their LPs, and relayers — for the work
-        or capital they supply. Reineira Labs is a software company funded by
+        Gate builders and recourse pools keep the fees or premiums they
+        configure, while relayers receive no protocol fee and recover only
+        destination-chain gas. Reineira Labs is a software company funded by
         equity.
       </p>
 

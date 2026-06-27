@@ -42,10 +42,9 @@ export default function RssWhatIs() {
       <p className="text-docs-text-secondary leading-relaxed mb-4">
         The Reineira Settlement Standard (RSS) is the abstract conformance
         specification for confidential settlement on three primitives — Escrow,
-        Gate, and Recourse. Relaying (operator functions) is an optional
-        off-chain service outside the standard: settlement is permissionless,
-        secured by Circle's CCTP attestation verified on-chain. The contracts
-        under{" "}
+        Gate, and Recourse. Relaying is an optional off-chain service outside
+        the standard: settlement is permissionless, secured by Circle's CCTP
+        attestation verified on-chain. The contracts under{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           packages/
         </code>{" "}

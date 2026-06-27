@@ -61,12 +61,12 @@ const economicsRows = [
     value: "None \u2014 the protocol charges nothing",
   },
   {
-    metric: "Relayer reward",
+    metric: "Protocol relay fee",
     value:
       "None at the protocol level. Relayers run permissionlessly and recover only their own destination-chain gas costs",
   },
   {
-    metric: "Relayer subsidy / token",
+    metric: "Subsidy / token",
     value: "None \u2014 no subsidy programme and no protocol token",
   },
   {
@@ -83,7 +83,7 @@ export default function RunOperator() {
 
       <PageHeader
         title="Run a Relayer"
-        description="Relayers are permissionless bots that watch CCTP burns, fetch Circle's signed attestation, and call settle() to complete cross-chain settlement. Running one requires no registration, bond, or stake — any address can relay. Settlement itself is permissionless and secured by Circle's CCTP attestation verified on-chain, so a relayer only affects speed: if it is down, anyone can still settle."
+        description="Run a permissionless bot that watches CCTP burns, fetches Circle's signed attestation, and calls settle(). Relayers need no registration, bond, or stake; they affect speed, not settlement safety."
         readingTime="6 min read"
       />
 
@@ -101,7 +101,7 @@ export default function RunOperator() {
         Connect to the coordinator via SSE and relay cross-chain CCTP
         settlements. Running a relayer is permissionless: watch CCTP burns,
         fetch Circle's signed attestation, and call settle(). The coordinator
-        does round-robin SSE notification of burn events to avoid duplicate gas,
+        uses round-robin SSE notification of burn events to avoid duplicate gas,
         but there is no on-chain operator registry or task assignment — no
         registration, bond, or stake is required. Settlement itself is
         permissionless and secured by Circle's CCTP attestation verified
@@ -159,7 +159,7 @@ export default function RunOperator() {
 
       <Callout variant="warning" title="Dedicated wallet">
         <p>
-          Use a dedicated operator wallet. Do not reuse personal wallets or
+          Use a dedicated relayer wallet. Do not reuse personal wallets or
           wallets used for other protocols. The private key is used to sign
           relay transactions and authenticate with the coordinator.
         </p>
@@ -174,9 +174,9 @@ export default function RunOperator() {
       </h2>
 
       <Steps>
-        <Step title="Build the operator CLI from source">
+        <Step title="Build the relayer CLI from source">
           <p className="text-docs-text-secondary leading-relaxed mb-3">
-            The operator CLI (
+            The relayer CLI (
             <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
               @reineira-os/operator-cli
             </code>
@@ -374,7 +374,7 @@ export default function RunOperator() {
       </h2>
 
       <p className="text-docs-text-secondary leading-relaxed mb-4">
-        The operator service exposes a local status API on port 3002
+        The relayer service exposes a local status API on port 3002
         (configurable via{" "}
         <code className="bg-docs-bg-code border border-docs-border-default rounded px-1.5 py-0.5 font-mono text-[13px] text-docs-text-primary">
           PORT
@@ -386,7 +386,7 @@ export default function RunOperator() {
         filename="terminal"
         language="bash"
         lines={[
-          { content: "# Overall operator status" },
+          { content: "# Overall relayer status" },
           { content: "curl http://localhost:3002/status" },
           { content: "" },
           { content: "# List relay jobs" },
